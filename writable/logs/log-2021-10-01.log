@@ -1,0 +1,9 @@
+CRITICAL - 2021-10-01 04:09:22 --> Trait 'setasign\Fpdi\FpdiTrait' not found
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-10-01 04:55:32 --> Trait 'setasign\Fpdi\FpdiTrait' not found
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-10-01 04:56:06 --> Trait 'setasign\Fpdi\FpdiTrait' not found
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}

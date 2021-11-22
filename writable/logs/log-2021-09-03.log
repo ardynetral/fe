@@ -1,0 +1,39 @@
+CRITICAL - 2021-09-03 01:39:11 --> Undefined index: cccode
+#0 /home/smartdepo/fe/modules/Container/Controllers/Container.php(276): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 276, Array)
+#1 /home/smartdepo/fe/modules/Container/Controllers/Container.php(160): Modules\Container\Controllers\Container->ccode_dropdown()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Container\Controllers\Container->add()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Container\Controllers\Container))
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#5 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#6 {main}
+CRITICAL - 2021-09-03 01:42:28 --> syntax error, unexpected 'name' (T_STRING), expecting ']'
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Autoloader/Autoloader.php(274): CodeIgniter\Autoloader\Autoloader->includeFile('/home/smartdepo...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Autoloader/Autoloader.php(228): CodeIgniter\Autoloader\Autoloader->loadInNamespace('Modules\\Contain...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('Modules\\Contain...')
+#3 [internal function]: spl_autoload_call('Modules\\Contain...')
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(892): class_exists('\\Modules\\Contai...', true)
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(416): CodeIgniter\CodeIgniter->startController()
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-09-03 01:43:29 --> Invalid file: Modules\Damagetype\Views\add.php
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(203): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('Modules\\Damaget...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Damaget...', Array, true)
+#2 /home/smartdepo/fe/modules/DamageType/Controllers/DamageType.php(102): view('Modules\\Damaget...', Array)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\DamageType\Controllers\DamageType->add()
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\DamageType\Controllers\DamageType))
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2021-09-03 02:41:00 --> Undefined index: data
+#0 /home/smartdepo/fe/app/Helpers/app_helper.php(260): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 260, Array)
+#1 /home/smartdepo/fe/modules/PraIn/Views/tab_base.php(104): principal_dropdown('')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\PraIn\\V...', Array, true)
+#5 /home/smartdepo/fe/modules/PraIn/Controllers/PraIn.php(35): view('Modules\\PraIn\\V...', Array)
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\PraIn\Controllers\PraIn->index()
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\PraIn\Controllers\PraIn))
+#8 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#9 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#10 {main}

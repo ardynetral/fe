@@ -1,0 +1,11 @@
+CRITICAL - 2021-09-18 10:05:09 --> Undefined index: username
+#0 /home/smartdepo/fe/modules/Auth/Views/user_profile.php(25): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 25, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Auth\\Vi...', Array, true)
+#4 /home/smartdepo/fe/modules/Auth/Controllers/Auth.php(211): view('Modules\\Auth\\Vi...', Array)
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->user_profile()
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#9 {main}

@@ -1,0 +1,7 @@
+CRITICAL - 2021-08-24 23:13:48 --> Undefined index: data
+#0 /home/smartdepo/fe/modules/User/Controllers/User.php(75): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 75, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\User\Controllers\User->index()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\User\Controllers\User))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}

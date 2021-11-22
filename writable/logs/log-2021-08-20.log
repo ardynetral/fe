@@ -1,0 +1,136 @@
+CRITICAL - 2021-08-20 06:43:56 --> Invalid file: Modules\damagetype\Views\add.php
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(203): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('Modules\\damaget...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\damaget...', Array, true)
+#2 /home/smartdepo/fe/modules/DamageType/Controllers/DamageType.php(108): view('Modules\\damaget...', Array)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\DamageType\Controllers\DamageType->add()
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\DamageType\Controllers\DamageType))
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2021-08-20 06:44:34 --> Invalid file: Modules\Damagetype\Views\view.php
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(203): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('Modules\\Damaget...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Damaget...', Array, true)
+#2 /home/smartdepo/fe/modules/DamageType/Controllers/DamageType.php(51): view('Modules\\Damaget...', Array)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\DamageType\Controllers\DamageType->view('AS')
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\DamageType\Controllers\DamageType))
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2021-08-20 06:45:03 --> Invalid file: Modules\damagetype\Views\add.php
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(203): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('Modules\\damaget...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\damaget...', Array, true)
+#2 /home/smartdepo/fe/modules/DamageType/Controllers/DamageType.php(108): view('Modules\\damaget...', Array)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\DamageType\Controllers\DamageType->add()
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\DamageType\Controllers\DamageType))
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2021-08-20 06:46:45 --> Invalid file: Modules\Damagetype\Views\add.php
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(203): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('Modules\\Damaget...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Damaget...', Array, true)
+#2 /home/smartdepo/fe/modules/DamageType/Controllers/DamageType.php(108): view('Modules\\Damaget...', Array)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\DamageType\Controllers\DamageType->add()
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\DamageType\Controllers\DamageType))
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2021-08-20 06:46:49 --> Invalid file: Modules\Damagetype\Views\add.php
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(203): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('Modules\\Damaget...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Damaget...', Array, true)
+#2 /home/smartdepo/fe/modules/DamageType/Controllers/DamageType.php(108): view('Modules\\Damaget...', Array)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\DamageType\Controllers\DamageType->add()
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\DamageType\Controllers\DamageType))
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2021-08-20 06:46:56 --> Invalid file: Modules\Damagetype\Views\add.php
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(203): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('Modules\\Damaget...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Damaget...', Array, true)
+#2 /home/smartdepo/fe/modules/DamageType/Controllers/DamageType.php(108): view('Modules\\Damaget...', Array)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\DamageType\Controllers\DamageType->add()
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\DamageType\Controllers\DamageType))
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2021-08-20 06:48:05 --> Invalid file: Modules\Damagetype\Views\add.php
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(203): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('Modules\\Damaget...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Damaget...', Array, true)
+#2 /home/smartdepo/fe/modules/DamageType/Controllers/DamageType.php(108): view('Modules\\Damaget...', Array)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\DamageType\Controllers\DamageType->add()
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\DamageType\Controllers\DamageType))
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2021-08-20 06:48:47 --> Invalid file: Modules\Damagetype\Views\add.php
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(203): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('Modules\\Damaget...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Damaget...', Array, true)
+#2 /home/smartdepo/fe/modules/DamageType/Controllers/DamageType.php(108): view('Modules\\Damaget...', Array)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\DamageType\Controllers\DamageType->add()
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\DamageType\Controllers\DamageType))
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2021-08-20 06:50:03 --> Invalid file: Modules\Damagetype\Views\add.php
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(203): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('Modules\\Damaget...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Damaget...', Array, true)
+#2 /home/smartdepo/fe/modules/DamageType/Controllers/DamageType.php(108): view('Modules\\Damaget...', Array)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\DamageType\Controllers\DamageType->add()
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\DamageType\Controllers\DamageType))
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2021-08-20 06:57:18 --> Invalid file: Modules\Damagetype\Views\view.php
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(203): CodeIgniter\Exceptions\FrameworkException::forInvalidFile('Modules\\Damaget...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Damaget...', Array, true)
+#2 /home/smartdepo/fe/modules/DamageType/Controllers/DamageType.php(51): view('Modules\\Damaget...', Array)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\DamageType\Controllers\DamageType->view('AS')
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\DamageType\Controllers\DamageType))
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#6 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#7 {main}
+CRITICAL - 2021-08-20 09:02:36 --> Undefined index: data
+#0 /home/smartdepo/fe/modules/Container/Controllers/Container.php(34): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 34, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Container\Controllers\Container->index()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Container\Controllers\Container))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-08-20 12:48:00 --> syntax error, unexpected 'groups' (T_STRING), expecting ',' or ')'
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(468): CodeIgniter\View\View->render('smartdepo/dashb...', NULL, true)
+#2 /home/smartdepo/fe/app/Views/smartdepo/dashboard/template.php(16): CodeIgniter\View\View->include('smartdepo/dashb...')
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(236): CodeIgniter\View\View->render('smartdepo/dashb...', Array, true)
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Dashboa...', Array, true)
+#7 /home/smartdepo/fe/modules/Dashboard/Controllers/Dashboard.php(18): view('Modules\\Dashboa...')
+#8 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Dashboard\Controllers\Dashboard->index()
+#9 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Dashboard\Controllers\Dashboard))
+#10 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#12 {main}
+CRITICAL - 2021-08-20 15:04:18 --> Undefined index: data
+#0 /home/smartdepo/fe/modules/Container/Controllers/Container.php(34): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 34, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Container\Controllers\Container->index()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Container\Controllers\Container))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-08-20 19:49:01 --> Undefined index: length
+#0 /home/smartdepo/fe/modules/ContainerCode/Views/view.php(23): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 23, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Contain...', Array, true)
+#4 /home/smartdepo/fe/modules/ContainerCode/Controllers/ContainerCode.php(51): view('Modules\\Contain...', Array)
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\ContainerCode\Controllers\ContainerCode->view('10GS')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\ContainerCode\Controllers\ContainerCode))
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2021-08-20 19:52:55 --> Undefined variable: ctcode
+#0 /home/smartdepo/fe/modules/ContainerCode/Controllers/ContainerCode.php(187): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/home/smartdepo...', 187, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\ContainerCode\Controllers\ContainerCode->delete('2276')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\ContainerCode\Controllers\ContainerCode))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}

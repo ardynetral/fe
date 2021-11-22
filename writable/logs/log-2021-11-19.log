@@ -1,0 +1,7 @@
+CRITICAL - 2021-11-19 06:58:12 --> Illegal string offset 'coadmm'
+#0 /home/smartdepo/fe/modules/PraIn/Controllers/PraIn.php(744): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Illegal string ...', '/home/smartdepo...', 744, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\PraIn\Controllers\PraIn->approve_order('70')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\PraIn\Controllers\PraIn))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}

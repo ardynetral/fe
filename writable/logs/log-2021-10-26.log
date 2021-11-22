@@ -1,0 +1,10 @@
+CRITICAL - 2021-10-26 08:10:26 --> Trait 'setasign\Fpdi\FpdiTrait' not found
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-10-26 08:34:49 --> Undefined variable: prcode
+#0 /home/smartdepo/fe/modules/RepoOut/Controllers/RepoOut.php(45): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/home/smartdepo...', 45, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\RepoOut\Controllers\RepoOut->index()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\RepoOut\Controllers\RepoOut))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}

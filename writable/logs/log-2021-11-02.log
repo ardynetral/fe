@@ -1,0 +1,23 @@
+CRITICAL - 2021-11-02 22:26:40 --> Undefined index: data
+#0 /home/smartdepo/fe/app/Helpers/app_helper.php(80): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 80, Array)
+#1 /home/smartdepo/fe/modules/WorkOrder/Controllers/WorkOrder.php(17): has_privilege('wo', '_view')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\WorkOrder\Controllers\WorkOrder->index()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\WorkOrder\Controllers\WorkOrder))
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#5 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#6 {main}
+CRITICAL - 2021-11-02 22:27:22 --> Undefined index: crno
+#0 /home/smartdepo/fe/modules/Survey/Views/index_data.php(29): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 29, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(468): CodeIgniter\View\View->render('\\Modules\\Survey...', NULL, true)
+#4 /home/smartdepo/fe/modules/Survey/Views/index.php(34): CodeIgniter\View\View->include('\\Modules\\Survey...')
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Survey\\...', Array, true)
+#8 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(56): view('Modules\\Survey\\...', Array)
+#9 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Survey\Controllers\Survey->index()
+#10 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#11 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#13 {main}

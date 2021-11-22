@@ -1,0 +1,33 @@
+CRITICAL - 2021-08-31 10:14:25 --> Undefined index: crno
+#0 /home/smartdepo/fe/modules/Container/Views/index.php(40): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 40, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Contain...', Array, true)
+#4 /home/smartdepo/fe/modules/Container/Controllers/Container.php(34): view('Modules\\Contain...', Array)
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Container\Controllers\Container->index()
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Container\Controllers\Container))
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2021-08-31 10:14:49 --> Undefined index: prcode
+#0 /home/smartdepo/fe/modules/Principal/Views/index.php(56): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 56, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Princip...', Array, true)
+#4 /home/smartdepo/fe/modules/Principal/Controllers/Principal.php(34): view('Modules\\Princip...', Array)
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Principal\Controllers\Principal->index()
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Principal\Controllers\Principal))
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2021-08-31 10:15:03 --> Undefined index: fullname
+#0 /home/smartdepo/fe/modules/User/Views/index.php(50): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 50, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\User\\Vi...', Array, true)
+#4 /home/smartdepo/fe/modules/User/Controllers/User.php(76): view('Modules\\User\\Vi...', Array)
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\User\Controllers\User->index()
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\User\Controllers\User))
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#9 {main}

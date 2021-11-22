@@ -1,0 +1,22 @@
+CRITICAL - 2021-10-09 08:07:04 --> Undefined variable: country_dropdown
+#0 /home/smartdepo/fe/modules/Dailymovementin/Views/add.php(65): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/home/smartdepo...', 65, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Dailymo...', Array, true)
+#4 /home/smartdepo/fe/modules/Dailymovementin/Controllers/Dailymovementin.php(18): view('Modules\\Dailymo...', Array)
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Dailymovementin\Controllers\Dailymovementin->index()
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Dailymovementin\Controllers\Dailymovementin))
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2021-10-09 08:07:35 --> Undefined variable: country_dropdown
+#0 /home/smartdepo/fe/modules/Dailymovementin/Views/add.php(65): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/home/smartdepo...', 65, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Dailymo...', Array, true)
+#4 /home/smartdepo/fe/modules/Dailymovementin/Controllers/Dailymovementin.php(18): view('Modules\\Dailymo...', Array)
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Dailymovementin\Controllers\Dailymovementin->index()
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Dailymovementin\Controllers\Dailymovementin))
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#9 {main}

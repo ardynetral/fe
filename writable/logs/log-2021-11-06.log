@@ -1,0 +1,15 @@
+CRITICAL - 2021-11-06 11:03:30 --> Undefined index: repoorderno
+#0 /home/smartdepo/fe/modules/RepoIn/Views/list_order_pra.php(26): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 26, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(432): CodeIgniter\View\View->render('\\Modules\\RepoIn...', NULL, true)
+#4 /home/smartdepo/fe/modules/RepoIn/Views/index.php(32): CodeIgniter\View\View->include('\\Modules\\RepoIn...')
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1092): CodeIgniter\View\View->render('Modules\\RepoIn\\...', Array, true)
+#8 /home/smartdepo/fe/modules/RepoIn/Controllers/RepoIn.php(45): view('Modules\\RepoIn\\...', Array)
+#9 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\RepoIn\Controllers\RepoIn->index()
+#10 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\RepoIn\Controllers\RepoIn))
+#11 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#13 {main}

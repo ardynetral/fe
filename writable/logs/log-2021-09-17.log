@@ -1,0 +1,30 @@
+CRITICAL - 2021-09-17 21:37:03 --> Call to undefined function Modules\User\Controllers\exp_time()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(907): Modules\User\Controllers\User->__construct()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(421): CodeIgniter\CodeIgniter->createController()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2021-09-17 21:37:08 --> Call to undefined function Modules\User\Controllers\exp_time()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(907): Modules\User\Controllers\User->__construct()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(421): CodeIgniter\CodeIgniter->createController()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2021-09-17 21:37:41 --> Call to undefined function Modules\User\Controllers\exp_time()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(907): Modules\User\Controllers\User->__construct()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(421): CodeIgniter\CodeIgniter->createController()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2021-09-17 21:41:12 --> Call to undefined function Modules\User\Controllers\exp_time()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(907): Modules\User\Controllers\User->__construct()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(421): CodeIgniter\CodeIgniter->createController()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2021-09-17 21:48:23 --> Call to undefined function Modules\User\Controllers\exp_time()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(907): Modules\User\Controllers\User->__construct()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(421): CodeIgniter\CodeIgniter->createController()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}

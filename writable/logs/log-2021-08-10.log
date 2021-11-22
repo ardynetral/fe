@@ -1,0 +1,329 @@
+CRITICAL - 2021-08-10 10:36:05 --> syntax error, unexpected 'register' (T_STRING), expecting ',' or ')'
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/View/View.php(468): CodeIgniter\View\View->render('smartdepo/landi...', NULL, true)
+#2 /var/www/html/smartdepo/app/Views/smartdepo/landing/template.php(13): CodeIgniter\View\View->include('smartdepo/landi...')
+#3 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/View/View.php(220): include('/var/www/html/s...')
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/View/View.php(236): CodeIgniter\View\View->render('smartdepo/landi...', Array, true)
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('smartdepo/homep...', Array, true)
+#7 /var/www/html/smartdepo/app/Controllers/Home.php(8): view('smartdepo/homep...')
+#8 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): App\Controllers\Home->index()
+#9 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#12 {main}
+CRITICAL - 2021-08-10 10:36:08 --> syntax error, unexpected 'register' (T_STRING), expecting ',' or ')'
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/View/View.php(468): CodeIgniter\View\View->render('smartdepo/landi...', NULL, true)
+#2 /var/www/html/smartdepo/app/Views/smartdepo/landing/template.php(13): CodeIgniter\View\View->include('smartdepo/landi...')
+#3 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/View/View.php(220): include('/var/www/html/s...')
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/View/View.php(236): CodeIgniter\View\View->render('smartdepo/landi...', Array, true)
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('smartdepo/homep...', Array, true)
+#7 /var/www/html/smartdepo/app/Controllers/Home.php(8): view('smartdepo/homep...')
+#8 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): App\Controllers\Home->index()
+#9 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#10 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#12 {main}
+CRITICAL - 2021-08-10 10:48:47 --> Class 'Config\Logn' not found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(402): CodeIgniter\Filters\Filters->run('dashboard', 'before')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#2 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#3 {main}
+CRITICAL - 2021-08-10 10:49:48 --> Class 'Config\Login' not found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(402): CodeIgniter\Filters\Filters->run('dashboard', 'before')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#2 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#3 {main}
+CRITICAL - 2021-08-10 10:51:58 --> Class 'Config\CodeIgniter\Filters\Login' not found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(402): CodeIgniter\Filters\Filters->run('dashboard', 'before')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#2 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#3 {main}
+CRITICAL - 2021-08-10 10:51:59 --> Class 'Config\CodeIgniter\Filters\Login' not found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(402): CodeIgniter\Filters\Filters->run('dashboard', 'before')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#2 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#3 {main}
+CRITICAL - 2021-08-10 10:52:23 --> Class 'Config\App\Filters\Login' not found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(402): CodeIgniter\Filters\Filters->run('dashboard', 'before')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#2 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#3 {main}
+CRITICAL - 2021-08-10 10:58:50 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(47): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:04:36 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(46): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:09:15 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(46): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:12:10 --> 35 : error:1408F10B:SSL routines:ssl3_get_record:wrong version number
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('35', 'error:1408F10B:...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'https://202.157...')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(46): CodeIgniter\HTTP\CURLRequest->request('POST', 'https://202.157...', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:12:15 --> 35 : error:1408F10B:SSL routines:ssl3_get_record:wrong version number
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('35', 'error:1408F10B:...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'https://202.157...')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(46): CodeIgniter\HTTP\CURLRequest->request('POST', 'https://202.157...', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:12:43 --> 35 : error:1408F10B:SSL routines:ssl3_get_record:wrong version number
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('35', 'error:1408F10B:...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'https://202.157...')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(46): CodeIgniter\HTTP\CURLRequest->request('POST', 'https://202.157...', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:12:46 --> 35 : error:1408F10B:SSL routines:ssl3_get_record:wrong version number
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('35', 'error:1408F10B:...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'https://202.157...')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(46): CodeIgniter\HTTP\CURLRequest->request('POST', 'https://202.157...', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:13:35 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(46): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:15:36 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(46): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:16:41 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(46): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:18:00 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(47): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:26:59 --> syntax error, unexpected '$response' (T_VARIABLE)
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/Router/Router.php(170): CodeIgniter\Router\Router->autoRoute('home/login')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(815): CodeIgniter\Router\Router->handle('home/login')
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(384): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+#3 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-08-10 11:27:19 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/app/Controllers/Home.php(29): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): App\Controllers\Home->login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:29:02 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/app/Controllers/Home.php(29): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): App\Controllers\Home->login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:29:04 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/app/Controllers/Home.php(29): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): App\Controllers\Home->login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:30:06 --> 35 : error:1408F10B:SSL routines:ssl3_get_record:wrong version number
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('35', 'error:1408F10B:...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'https://202.157...')
+#3 /var/www/html/smartdepo/app/Controllers/Home.php(29): CodeIgniter\HTTP\CURLRequest->request('POST', 'https://202.157...', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): App\Controllers\Home->login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:30:08 --> 35 : error:1408F10B:SSL routines:ssl3_get_record:wrong version number
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('35', 'error:1408F10B:...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'https://202.157...')
+#3 /var/www/html/smartdepo/app/Controllers/Home.php(29): CodeIgniter\HTTP\CURLRequest->request('POST', 'https://202.157...', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): App\Controllers\Home->login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:34:13 --> 35 : error:1408F10B:SSL routines:ssl3_get_record:wrong version number
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('35', 'error:1408F10B:...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('post', 'https://202.157...')
+#3 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(219): CodeIgniter\HTTP\CURLRequest->request('post', 'https://202.157...', Array)
+#4 /var/www/html/smartdepo/app/Controllers/Home.php(29): CodeIgniter\HTTP\CURLRequest->post('users/auth/sign...', Array)
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): App\Controllers\Home->login()
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\Home))
+#7 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2021-08-10 11:47:14 --> syntax error, unexpected '',' (T_CONSTANT_ENCAPSED_STRING), expecting ')'
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/Router/Router.php(170): CodeIgniter\Router\Router->autoRoute('home/login')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(815): CodeIgniter\Router\Router->handle('home/login')
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(384): CodeIgniter\CodeIgniter->tryToRouteIt(Object(CodeIgniter\Router\RouteCollection))
+#3 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-08-10 11:49:36 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(47): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:52:13 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(47): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 11:55:41 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(47): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 12:00:39 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('GET', 'http://202.157....')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(207): CodeIgniter\HTTP\CURLRequest->request('GET', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->user_profile()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 12:01:09 --> Undefined index: username
+#0 /var/www/html/smartdepo/modules/Auth/Views/user_profile.php(25): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/var/www/html/s...', 25, Array)
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/View/View.php(220): include('/var/www/html/s...')
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Auth\\Vi...', Array, true)
+#4 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(213): view('Modules\\Auth\\Vi...', Array)
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->user_profile()
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#7 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2021-08-10 12:03:30 --> 22 : The requested URL returned error: 404 Not Found
+#0 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /var/www/html/smartdepo/modules/Auth/Controllers/Auth.php(47): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /var/www/html/smartdepo/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /var/www/html/smartdepo/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 22:42:55 --> 22 : The requested URL returned error: 404 Not Found
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /home/smartdepo/fe/modules/Auth/Controllers/Auth.php(47): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 22:54:14 --> 22 : The requested URL returned error: 404 Not Found
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /home/smartdepo/fe/modules/Auth/Controllers/Auth.php(47): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-08-10 22:58:00 --> 22 : The requested URL returned error: 404 Not Found
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(805): CodeIgniter\HTTP\Exceptions\HTTPException::forCurlError('22', 'The requested U...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(418): CodeIgniter\HTTP\CURLRequest->sendRequest(Array)
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/HTTP/CURLRequest.php(127): CodeIgniter\HTTP\CURLRequest->send('POST', 'http://202.157....')
+#3 /home/smartdepo/fe/modules/Auth/Controllers/Auth.php(47): CodeIgniter\HTTP\CURLRequest->request('POST', 'http://202.157....', Array)
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Auth\Controllers\Auth->set_login()
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Auth\Controllers\Auth))
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}

@@ -1,0 +1,50 @@
+CRITICAL - 2021-09-16 08:29:39 --> CodeIgniter\Autoloader\Autoloader::main(): Failed opening required '/home/smartdepo/fe/vendor/mpdf/mpdf/src/mpdf.php' (include_path='.:/usr/share/php')
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-09-16 08:30:24 --> Trait 'Mpdf\Strict' not found
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-09-16 08:39:52 --> Call to undefined function voyage_list()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(468): CodeIgniter\View\View->render('\\Modules\\PraIn\\...', NULL, true)
+#3 /home/smartdepo/fe/modules/PraIn/Views/tab_base.php(80): CodeIgniter\View\View->include('\\Modules\\PraIn\\...')
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\PraIn\\V...', Array, true)
+#7 /home/smartdepo/fe/modules/PraIn/Controllers/PraIn.php(58): view('Modules\\PraIn\\V...', Array)
+#8 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\PraIn\Controllers\PraIn->index()
+#9 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\PraIn\Controllers\PraIn))
+#10 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#11 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#12 {main}
+CRITICAL - 2021-09-16 08:40:41 --> Trait 'setasign\Fpdi\FpdiTrait' not found
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-09-16 08:43:26 --> Trait 'setasign\Fpdi\FpdiTrait' not found
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-09-16 08:43:38 --> Trait 'setasign\Fpdi\FpdiTrait' not found
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-09-16 08:45:49 --> Trait 'setasign\Fpdi\FpdiTrait' not found
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-09-16 08:49:34 --> Trait 'setasign\Fpdi\FpdiTrait' not found
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-09-16 08:59:21 --> Trait 'setasign\Fpdi\FpdiTrait' not found
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-09-16 09:03:32 --> Trait 'setasign\Fpdi\FpdiTrait' not found
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-09-16 09:55:53 --> Trait 'setasign\Fpdi\FpdiTrait' not found
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-09-16 09:58:06 --> Class 'Modules\PraIn\Controllers\Mpdf' not found
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\PraIn\Controllers\PraIn->print_order('40')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\PraIn\Controllers\PraIn))
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}

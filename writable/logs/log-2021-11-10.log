@@ -1,0 +1,274 @@
+CRITICAL - 2021-11-10 00:01:58 --> Undefined index: repoorderno
+#0 /home/smartdepo/fe/modules/RepoOut/Views/index_data.php(28): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 28, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(432): CodeIgniter\View\View->render('\\Modules\\RepoOu...', NULL, true)
+#4 /home/smartdepo/fe/modules/RepoOut/Views/index.php(34): CodeIgniter\View\View->include('\\Modules\\RepoOu...')
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1092): CodeIgniter\View\View->render('Modules\\RepoOut...', Array, true)
+#8 /home/smartdepo/fe/modules/RepoOut/Controllers/RepoOut.php(50): view('Modules\\RepoOut...', Array)
+#9 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\RepoOut\Controllers\RepoOut->index()
+#10 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\RepoOut\Controllers\RepoOut))
+#11 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#13 {main}
+CRITICAL - 2021-11-10 05:46:33 --> Undefined index: repoorderno
+#0 /home/smartdepo/fe/modules/RepoOut/Views/index_data.php(28): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 28, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(432): CodeIgniter\View\View->render('\\Modules\\RepoOu...', NULL, true)
+#4 /home/smartdepo/fe/modules/RepoOut/Views/index.php(34): CodeIgniter\View\View->include('\\Modules\\RepoOu...')
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1092): CodeIgniter\View\View->render('Modules\\RepoOut...', Array, true)
+#8 /home/smartdepo/fe/modules/RepoOut/Controllers/RepoOut.php(50): view('Modules\\RepoOut...', Array)
+#9 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\RepoOut\Controllers\RepoOut->index()
+#10 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\RepoOut\Controllers\RepoOut))
+#11 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#13 {main}
+CRITICAL - 2021-11-10 08:44:39 --> Call to undefined method Modules\RepairInProgress\Controllers\RepairInProgress::get_start()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\RepairInProgress\Controllers\RepairInProgress->list_data()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\RepairInProgress\Controllers\RepairInProgress))
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2021-11-10 09:13:27 --> syntax error, unexpected '"data"' (T_CONSTANT_ENCAPSED_STRING), expecting ')'
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/home/smartdepo...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('Modules\\Survey\\...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('Modules\\Survey\\...')
+#3 [internal function]: spl_autoload_call('Modules\\Survey\\...')
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(767): class_exists('\\Modules\\Survey...', true)
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(386): CodeIgniter\CodeIgniter->startController()
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-11-10 09:15:48 --> Call to undefined method Modules\Survey\Controllers\Survey::get_start()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2021-11-10 09:17:35 --> Undefined variable: data
+#0 /home/smartdepo/fe/modules/Survey/Views/index_data.php(1): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/home/smartdepo...', 1, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(432): CodeIgniter\View\View->render('\\Modules\\Survey...', NULL, true)
+#4 /home/smartdepo/fe/modules/Survey/Views/index.php(34): CodeIgniter\View\View->include('\\Modules\\Survey...')
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1092): CodeIgniter\View\View->render('Modules\\Survey\\...', Array, true)
+#8 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(56): view('Modules\\Survey\\...', Array)
+#9 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->index()
+#10 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#11 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#13 {main}
+CRITICAL - 2021-11-10 09:18:24 --> Undefined property: Modules\Survey\Controllers\Survey::$get
+#0 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(70): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/home/smartdepo...', 70, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-11-10 09:20:46 --> Undefined property: Modules\Survey\Controllers\Survey::$input
+#0 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(70): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined prope...', '/home/smartdepo...', 70, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-11-10 09:25:05 --> Undefined index: total
+#0 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(91): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 91, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-11-10 09:26:42 --> Undefined index: total
+#0 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(91): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 91, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-11-10 09:29:21 --> Cannot use isset() on the result of an expression (you can use "null !== expression" instead)
+#0 [internal function]: CodeIgniter\Debug\Exceptions->shutdownHandler()
+#1 {main}
+CRITICAL - 2021-11-10 09:31:50 --> Undefined index: draw
+#0 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(82): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 82, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-11-10 09:32:10 --> Undefined index: total
+#0 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(83): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 83, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-11-10 09:32:46 --> Undefined variable: module
+#0 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(100): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/home/smartdepo...', 100, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-11-10 09:33:08 --> Undefined index: has_edit
+#0 /home/smartdepo/fe/app/Helpers/app_helper.php(117): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 117, Array)
+#1 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(101): has_privilege_check('survey', '_edit')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#5 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#6 {main}
+CRITICAL - 2021-11-10 09:33:47 --> Undefined index: has_edit
+#0 /home/smartdepo/fe/app/Helpers/app_helper.php(117): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 117, Array)
+#1 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(101): has_privilege_check('survey', '_edit')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#5 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#6 {main}
+CRITICAL - 2021-11-10 09:34:07 --> Undefined index: has_edit
+#0 /home/smartdepo/fe/app/Helpers/app_helper.php(117): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 117, Array)
+#1 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(101): has_privilege_check('survey', '_edit')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#5 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#6 {main}
+CRITICAL - 2021-11-10 09:36:26 --> syntax error, unexpected '}'
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Autoloader/Autoloader.php(241): CodeIgniter\Autoloader\Autoloader->includeFile('/home/smartdepo...')
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Autoloader/Autoloader.php(219): CodeIgniter\Autoloader\Autoloader->loadInNamespace('Modules\\Survey\\...')
+#2 [internal function]: CodeIgniter\Autoloader\Autoloader->loadClass('Modules\\Survey\\...')
+#3 [internal function]: spl_autoload_call('Modules\\Survey\\...')
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(767): class_exists('\\Modules\\Survey...', true)
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(386): CodeIgniter\CodeIgniter->startController()
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#7 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-11-10 09:55:16 --> Undefined index: data
+#0 /home/smartdepo/fe/app/Helpers/app_helper.php(144): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 144, Array)
+#1 /home/smartdepo/fe/app/Views/smartdepo/dashboard/sidebar.php(6): list_menu()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(432): CodeIgniter\View\View->render('smartdepo/dashb...', NULL, true)
+#5 /home/smartdepo/fe/app/Views/smartdepo/dashboard/template.php(16): CodeIgniter\View\View->include('smartdepo/dashb...')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#8 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(230): CodeIgniter\View\View->render('smartdepo/dashb...', Array, true)
+#9 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1092): CodeIgniter\View\View->render('Modules\\RepoIn\\...', Array, true)
+#10 /home/smartdepo/fe/modules/RepoIn/Controllers/RepoIn.php(45): view('Modules\\RepoIn\\...', Array)
+#11 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\RepoIn\Controllers\RepoIn->index()
+#12 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\RepoIn\Controllers\RepoIn))
+#13 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#14 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#15 {main}
+CRITICAL - 2021-11-10 10:06:41 --> Undefined variable: data
+#0 /home/smartdepo/fe/modules/Survey/Views/index_data.php(1): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/home/smartdepo...', 1, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(432): CodeIgniter\View\View->render('\\Modules\\Survey...', NULL, true)
+#4 /home/smartdepo/fe/modules/Survey/Views/index.php(34): CodeIgniter\View\View->include('\\Modules\\Survey...')
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1092): CodeIgniter\View\View->render('Modules\\Survey\\...', Array, true)
+#8 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(56): view('Modules\\Survey\\...', Array)
+#9 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->index()
+#10 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#11 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#13 {main}
+CRITICAL - 2021-11-10 10:09:04 --> Undefined variable: data
+#0 /home/smartdepo/fe/modules/Survey/Views/index_data.php(20): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined varia...', '/home/smartdepo...', 20, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(432): CodeIgniter\View\View->render('\\Modules\\Survey...', NULL, true)
+#4 /home/smartdepo/fe/modules/Survey/Views/index.php(34): CodeIgniter\View\View->include('\\Modules\\Survey...')
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1092): CodeIgniter\View\View->render('Modules\\Survey\\...', Array, true)
+#8 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(56): view('Modules\\Survey\\...', Array)
+#9 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->index()
+#10 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#11 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#13 {main}
+CRITICAL - 2021-11-10 10:13:10 --> Class 'Modules\RepoIn\Controllers\MyPaging' not found
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\RepoIn\Controllers\RepoIn->index()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\RepoIn\Controllers\RepoIn))
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2021-11-10 10:39:50 --> Undefined index: data
+#0 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(65): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 65, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-11-10 10:40:11 --> Undefined index: data
+#0 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(65): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 65, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-11-10 10:40:27 --> Undefined index: data
+#0 /home/smartdepo/fe/modules/Survey/Controllers/Survey.php(65): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 65, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Survey\Controllers\Survey->list_data()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Survey\Controllers\Survey))
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#4 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#5 {main}
+CRITICAL - 2021-11-10 10:48:40 --> unlink(/home/smartdepo/fe/writable/debugbar/debugbar_1636562541.json): No such file or directory
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'unlink(/home/sm...', '/home/smartdepo...', 74, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Debug/Toolbar/Collectors/History.php(74): unlink('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Debug/Toolbar.php(399): CodeIgniter\Debug\Toolbar\Collectors\History->setFiles(1636562919, 20)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Debug/Toolbar.php(375): CodeIgniter\Debug\Toolbar->format(Array, 'html')
+#4 /home/smartdepo/fe/app/Config/Events.php(52): CodeIgniter\Debug\Toolbar->respond()
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Events/Events.php(149): CodeIgniter\Events\Events::Config\{closure}()
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(299): CodeIgniter\Events\Events::trigger('pre_system')
+#7 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-11-10 10:48:43 --> unlink(/home/smartdepo/fe/writable/debugbar/debugbar_1636562559.json): No such file or directory
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'unlink(/home/sm...', '/home/smartdepo...', 74, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Debug/Toolbar/Collectors/History.php(74): unlink('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Debug/Toolbar.php(399): CodeIgniter\Debug\Toolbar\Collectors\History->setFiles(1636562921, 20)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Debug/Toolbar.php(375): CodeIgniter\Debug\Toolbar->format(Array, 'html')
+#4 /home/smartdepo/fe/app/Config/Events.php(52): CodeIgniter\Debug\Toolbar->respond()
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Events/Events.php(149): CodeIgniter\Events\Events::Config\{closure}()
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(299): CodeIgniter\Events\Events::trigger('pre_system')
+#7 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-11-10 11:02:13 --> unlink(/home/smartdepo/fe/writable/debugbar/debugbar_1636563485.json): No such file or directory
+#0 [internal function]: CodeIgniter\Debug\Exceptions->errorHandler(2, 'unlink(/home/sm...', '/home/smartdepo...', 74, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Debug/Toolbar/Collectors/History.php(74): unlink('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Debug/Toolbar.php(399): CodeIgniter\Debug\Toolbar\Collectors\History->setFiles(1636563732, 20)
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Debug/Toolbar.php(375): CodeIgniter\Debug\Toolbar->format(Array, 'html')
+#4 /home/smartdepo/fe/app/Config/Events.php(52): CodeIgniter\Debug\Toolbar->respond()
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Events/Events.php(149): CodeIgniter\Events\Events::Config\{closure}()
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(299): CodeIgniter\Events\Events::trigger('pre_system')
+#7 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#8 {main}
+CRITICAL - 2021-11-10 11:26:35 --> Undefined index: data
+#0 /home/smartdepo/fe/app/Helpers/app_helper.php(144): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 144, Array)
+#1 /home/smartdepo/fe/app/Views/smartdepo/dashboard/sidebar.php(6): list_menu()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(432): CodeIgniter\View\View->render('smartdepo/dashb...', NULL, true)
+#5 /home/smartdepo/fe/app/Views/smartdepo/dashboard/template.php(16): CodeIgniter\View\View->include('smartdepo/dashb...')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(214): include('/home/smartdepo...')
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(217): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#8 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(230): CodeIgniter\View\View->render('smartdepo/dashb...', Array, true)
+#9 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1092): CodeIgniter\View\View->render('Modules\\Dashboa...', Array, true)
+#10 /home/smartdepo/fe/modules/Dashboard/Controllers/Dashboard.php(15): view('Modules\\Dashboa...')
+#11 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(802): Modules\Dashboard\Controllers\Dashboard->index()
+#12 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(399): CodeIgniter\CodeIgniter->runController(Object(Modules\Dashboard\Controllers\Dashboard))
+#13 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(317): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#14 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#15 {main}

@@ -1,0 +1,42 @@
+CRITICAL - 2021-09-15 22:42:34 --> Call to undefined function Modules\User\Controllers\exp_time()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(907): Modules\User\Controllers\User->__construct()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(421): CodeIgniter\CodeIgniter->createController()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2021-09-15 22:42:55 --> Call to undefined function Modules\User\Controllers\exp_time()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(907): Modules\User\Controllers\User->__construct()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(421): CodeIgniter\CodeIgniter->createController()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2021-09-15 22:44:34 --> Call to undefined function Modules\User\Controllers\exp_time()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(907): Modules\User\Controllers\User->__construct()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(421): CodeIgniter\CodeIgniter->createController()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2021-09-15 22:45:06 --> Call to undefined function Modules\User\Controllers\exp_time()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(907): Modules\User\Controllers\User->__construct()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(421): CodeIgniter\CodeIgniter->createController()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2021-09-15 22:45:20 --> Call to undefined function Modules\User\Controllers\exp_time()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(907): Modules\User\Controllers\User->__construct()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(421): CodeIgniter\CodeIgniter->createController()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2021-09-15 22:46:39 --> Call to undefined function Modules\User\Controllers\exp_time()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(907): Modules\User\Controllers\User->__construct()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(421): CodeIgniter\CodeIgniter->createController()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}
+CRITICAL - 2021-09-15 22:47:09 --> Call to undefined function Modules\User\Controllers\exp_time()
+#0 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(907): Modules\User\Controllers\User->__construct()
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(421): CodeIgniter\CodeIgniter->createController()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#3 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#4 {main}

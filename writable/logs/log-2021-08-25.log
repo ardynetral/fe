@@ -1,0 +1,33 @@
+CRITICAL - 2021-08-25 08:41:04 --> Illegal string offset 'group_name'
+#0 /home/smartdepo/fe/modules/User/Views/view.php(29): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Illegal string ...', '/home/smartdepo...', 29, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\User\\Vi...', Array, true)
+#4 /home/smartdepo/fe/modules/User/Controllers/User.php(94): view('Modules\\User\\Vi...', Array)
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\User\Controllers\User->view('29')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\User\Controllers\User))
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2021-08-25 08:41:11 --> Illegal string offset 'group_name'
+#0 /home/smartdepo/fe/modules/User/Views/view.php(29): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Illegal string ...', '/home/smartdepo...', 29, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\User\\Vi...', Array, true)
+#4 /home/smartdepo/fe/modules/User/Controllers/User.php(94): view('Modules\\User\\Vi...', Array)
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\User\Controllers\User->view('29')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\User\Controllers\User))
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#9 {main}
+CRITICAL - 2021-08-25 08:42:10 --> Illegal string offset 'group_name'
+#0 /home/smartdepo/fe/modules/User/Views/view.php(29): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Illegal string ...', '/home/smartdepo...', 29, Array)
+#1 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\User\\Vi...', Array, true)
+#4 /home/smartdepo/fe/modules/User/Controllers/User.php(94): view('Modules\\User\\Vi...', Array)
+#5 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\User\Controllers\User->view('29')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\User\Controllers\User))
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#8 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#9 {main}

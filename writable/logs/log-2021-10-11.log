@@ -1,0 +1,17 @@
+CRITICAL - 2021-10-11 00:31:01 --> Undefined index: data
+#0 /home/smartdepo/fe/app/Helpers/app_helper.php(144): CodeIgniter\Debug\Exceptions->errorHandler(8, 'Undefined index...', '/home/smartdepo...', 144, Array)
+#1 /home/smartdepo/fe/app/Views/smartdepo/dashboard/sidebar.php(6): list_menu()
+#2 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#3 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#4 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(468): CodeIgniter\View\View->render('smartdepo/dashb...', NULL, true)
+#5 /home/smartdepo/fe/app/Views/smartdepo/dashboard/template.php(16): CodeIgniter\View\View->include('smartdepo/dashb...')
+#6 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(220): include('/home/smartdepo...')
+#7 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(222): CodeIgniter\View\View->CodeIgniter\View\{closure}()
+#8 /home/smartdepo/fe/vendor/codeigniter4/framework/system/View/View.php(236): CodeIgniter\View\View->render('smartdepo/dashb...', Array, true)
+#9 /home/smartdepo/fe/vendor/codeigniter4/framework/system/Common.php(1217): CodeIgniter\View\View->render('Modules\\Contrac...', Array, true)
+#10 /home/smartdepo/fe/modules/Contract/Controllers/Contract.php(30): view('Modules\\Contrac...', Array)
+#11 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(935): Modules\Contract\Controllers\Contract->index()
+#12 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(431): CodeIgniter\CodeIgniter->runController(Object(Modules\Contract\Controllers\Contract))
+#13 /home/smartdepo/fe/vendor/codeigniter4/framework/system/CodeIgniter.php(332): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#14 /home/smartdepo/fe/index.php(44): CodeIgniter\CodeIgniter->run()
+#15 {main}

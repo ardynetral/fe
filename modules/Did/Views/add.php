@@ -13,7 +13,7 @@
 		<div class="widget">
 			<div class="widget-header"></div>
 			<div class="rows">
-				<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print To PDF</button>
+				<a href="" id="printPdf" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print To PDF</a>
 				<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print To CSV</button>
 			</div>
 			<div class="widget-content">
@@ -73,6 +73,6 @@
 
 <?= $this->Section('script_js');?>
 	
-	<?= $this->include('\Modules\Dailymovementout\Views\js'); ?>
+	<?= $this->include('\Modules\Did\Views\js'); ?>
 
 <?= $this->endSection();?>

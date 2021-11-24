@@ -29,7 +29,7 @@ class Database extends Config
 	 * The default database connection.
 	 *
 	 * @var array
-	 */
+	 
 	public $default = [
 		'DSN'      => '',
 		'hostname' => 'localhost',
@@ -39,6 +39,26 @@ class Database extends Config
 		'DBDriver' => 'MySQLi',
 		'DBPrefix' => '',
 		'pConnect' => false,
+		'DBDebug'  => (ENVIRONMENT !== 'production'),
+		'charset'  => 'utf8',
+		'DBCollat' => 'utf8_general_ci',
+		'swapPre'  => '',
+		'encrypt'  => false,
+		'compress' => false,
+		'strictOn' => false,
+		'failover' => [],
+		'port'     => 3306,
+	]; */
+	
+	public $default = [
+		'DSN'      => '',
+		'hostname' => '127.0.0.1',
+		'username' => 'root',
+		'password' => 'Smartdepo2021!',
+		'database' => 'smartdepo',
+		'DBDriver' => 'MySQLi',
+		'DBPrefix' => '',
+		'pConnect' => true,
 		'DBDebug'  => (ENVIRONMENT !== 'production'),
 		'charset'  => 'utf8',
 		'DBCollat' => 'utf8_general_ci',

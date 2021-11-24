@@ -52,9 +52,9 @@ class Database extends Config
 	
 	public $default = [
 		'DSN'      => '',
-		'hostname' => 'localhost',
-		'username' => 'root',
-		'password' => '',
+		'hostname' => '202.157.185.83',
+		'username' => 'manager-user',
+		'password' => 'Sm4rtd3p0#2021',
 		'database' => 'smartdepo',
 		'DBDriver' => 'MySQLi',
 		'DBPrefix' => '',

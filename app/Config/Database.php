@@ -54,7 +54,7 @@ class Database extends Config
 		'DSN'      => '',
 		'hostname' => 'localhost',
 		'username' => 'root',
-		'password' => 'Smartdepo2021!',
+		'password' => '',
 		'database' => 'smartdepo',
 		'DBDriver' => 'MySQLi',
 		'DBPrefix' => '',

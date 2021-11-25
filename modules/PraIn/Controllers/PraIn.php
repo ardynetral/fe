@@ -175,17 +175,17 @@ class PraIn extends \CodeIgniter\Controller
 		$std40 = 0;
 		foreach($datas as $data) {
 	
-			if((floatval($data['ccheight'])==8.5) && (floatval($data['cclength'])<=20)) {
+			if((floatval($data['ccheight'])>8.5) && (floatval($data['cclength'])<=20)) {
 				$hc20=$hc20+1;
-			} else if((floatval($data['ccheight'])==8.5) && (floatval($data['cclength'])==40)) {
+			} else if((floatval($data['ccheight'])>8.5) && (floatval($data['cclength'])==40)) {
 				$hc40=$hc40+1;
-			} else if((floatval($data['ccheight']))==8.5 && (floatval($data['cclength'])==45)) {
+			} else if((floatval($data['ccheight']))>8.5 && (floatval($data['cclength'])==45)) {
 				$hc45=$hc45+1;
 			}
 
-			if((floatval($data['ccheight'])>8.5) && (floatval($data['cclength'])<=20)) {
+			if((floatval($data['ccheight'])==8.5) && (floatval($data['cclength'])<=20)) {
 				$std20=$std20+1;
-			} else if((floatval($data['ccheight'])>8.5) && (floatval($data['cclength'])==40)) {
+			} else if((floatval($data['ccheight'])==8.5) && (floatval($data['cclength'])==40)) {
 				$std40=$std40+1;
 			}
 
@@ -1030,13 +1030,20 @@ class PraIn extends \CodeIgniter\Controller
 
 		$dt_order = json_decode($get_order->getBody()->getContents(), true);
 		// dd($dt_order);
-		$contract = $this->get_contract($dt_order['data']['datas'][0]['cpopr']);
+		$contract = $this->get_contract("CTP");
 
-		$hc20 = ((isset($dt_order['data']['orderPraContainers'])&&($dt_order['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['orderPraContainers'])['hc20'] : 0);
-		$hc40 = ((isset($dt_order['data']['orderPraContainers'])&&($dt_order['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['orderPraContainers'])['hc40'] : 0);
-		$hc45 = ((isset($dt_order['data']['orderPraContainers'])&&($dt_order['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['orderPraContainers'])['hc45'] : 0);
-		$std20 = ((isset($dt_order['data']['orderPraContainers'])&&($dt_order['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['orderPraContainers'])['std20'] : 0);
-		$std40 = ((isset($dt_order['data']['orderPraContainers'])&&($dt_order['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['orderPraContainers'])['std40'] : 0);	
+		$cont_std20 = $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['std20'];
+		$cont_std40 = $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['std40'];
+		$cont_hc20 = $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['hc20'];
+		$cont_hc40 = $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['hc40'];
+		$cont_hc45 = $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['hc45'];
+
+
+		$hc20 = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $cont_hc20 : 0);
+		$hc40 = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $cont_hc40 : 0);
+		$hc45 = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $cont_hc45 : 0);
+		$std20 = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $cont_std20 : 0);
+		$std40 = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $cont_std40 : 0);	
 		
 		if($contract['coadmm']==0) {
 				// liftOn

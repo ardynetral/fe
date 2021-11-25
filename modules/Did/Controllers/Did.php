@@ -15,6 +15,18 @@ class Did extends \CodeIgniter\Controller
 		$module = service('uri')->getSegment(1);
 		has_privilege($module, "_view"); 
 		$data = [];
+		// $db = \Config\Database::connect();
+		// $sql = "
+		// select 
+		// cp.cpopr as principal,
+		// month(cp.cpitgl) as dinfo_month,
+		// day(cp.cpitgl) as dinfo_daily,
+		// count(cp.crno) as total, count(cp.cpopr)
+		// from container_process cp
+		// where year(cp.cpitgl)=year(now())
+		// group by cp.cpopr, month(cp.cpitgl), day(cp.cpitgl)
+		// ";
+		// $dpreport = $db->query($sql)->getResult();
 		return view('Modules\Did\Views\add',$data);		
 	}
 

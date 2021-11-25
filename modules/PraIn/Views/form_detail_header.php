@@ -7,7 +7,7 @@ $group_id = $token['groupId'];
 		<input type="hidden" name="pracrnoid" id="pracrnoid">
 		<fieldset>
 			
-			<?php if(($group_id==4 || $group_id==3)): ?>
+<!-- 			<?php if(($group_id==4 || $group_id==3)): ?>
 			
 			<div class="form-group">
 				<label for="prcode" class="col-sm-4 control-label text-right">Principal</label>
@@ -22,7 +22,7 @@ $group_id = $token['groupId'];
 				</div>
 			</div> 
 			
-			<?php endif; ?>	
+			<?php endif; ?>	 -->
 
 			<div class="form-group">
 				<label class="col-sm-4 control-label text-right">Container No. </label>

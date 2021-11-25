@@ -10,6 +10,8 @@ $routes->add('/prain/delete/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::del
 // $routes->post('/prain/edit/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::edit/$1', ['filter' => 'login']);
 $routes->add('/prain/print_order/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::print_order/$1', ['filter' => 'login']);
 $routes->add('/prain/approve_order/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::approve_order/$1', ['filter' => 'login']);
+$routes->add('/prain/appv1_update_container', '\Modules\PraIn\Controllers\PraIn::appv1_update_container', ['filter' => 'login']);
+
 $routes->add('/prain/approval2/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::approval2/$1', ['filter' => 'login']);
 $routes->add('/prain/proforma/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::proforma/$1', ['filter' => 'login']);
 $routes->add('/prain/bukti_bayar', '\Modules\PraIn\Controllers\PraIn::bukti_bayar', ['filter' => 'login']);

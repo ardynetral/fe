@@ -16,7 +16,7 @@
 			<div class="widget-content">
 <!-- FORM HEADER -->
 				<div class="row">
-					<form id="fEditPraIn" class="form-horizontal" role="form">
+					<form id="fEditPraIn" class="form-horizontal" role="form" method="post">
 						<?= csrf_field() ?>
 						<input type="hidden" name="praid" id="praid" value="<?=$data['praid']?>">
 						<fieldset>
@@ -212,7 +212,7 @@
 						</fieldset>
 						<div class="form-footer">
 							<div class="form-group text-center">
-								<button type="button" id="update" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp;
+								<button type="sumbit" id="update" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp;
 								<button type="button" id="cancel" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</button>
 							</div>	
 						</div>

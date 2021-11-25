@@ -619,8 +619,6 @@ class PraIn extends \CodeIgniter\Controller
 		{
 			$form_params = [
 				'pracrnoid' => $_POST['pracrnoid'],
-				'cpopr' => $_POST['cpopr'],
-				'cpcust' => $_POST['cpcust'],
 				'praid' => $_POST['praid'],
 				'crno' => $_POST['crno'],
 				'cccode' => $_POST['ccode'],
@@ -632,6 +630,13 @@ class PraIn extends \CodeIgniter\Controller
 				'cpiremark' => $_POST['cpiremark']
 			];
 
+			// if(($_POST['cpopr'] !='')||($_POST['cpcust'] !='')) {
+			// 	$dt_principal = [
+			// 		'cpopr' => $_POST['cpopr'],
+			// 		'cpcust' => $_POST['cpcust'],
+			// 	];
+			// 	array_push($form_params, $dt_principal);
+			// }
 
 			$validate = $this->validate([
 	            'pracrnoid' 	=> 'required',
@@ -705,6 +710,7 @@ class PraIn extends \CodeIgniter\Controller
 		}
 	}		
 
+	// Approval-1
 	public function approve_order($id) 
 	{
 		check_exp_time();
@@ -729,7 +735,15 @@ class PraIn extends \CodeIgniter\Controller
 			$dt_order = json_decode($get_order->getBody()->getContents(), true);
 
 			// contract
-			$contract = $this->get_contract($dt_order['data']['cpopr']);
+			// utk sementara PRCODE/CPOPR diisi manual(ada perubahan proses bisnis)
+			$contract = $this->get_contract("CTP");
+
+			if($contract==""){
+				$data['message'] = "Failled";
+				$data['message_body'] = "Approval gagal. Data Contract tidak ditemukan untuk Operator ".$dt_order['data']['cpopr'];
+				echo json_encode($data);die();	
+			}
+
 
 			$hc20 = ((isset($dt_order['data']['orderPraContainers'])&&($dt_order['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['orderPraContainers'])['hc20'] : 0);
 			$hc40 = ((isset($dt_order['data']['orderPraContainers'])&&($dt_order['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['orderPraContainers'])['hc40'] : 0);
@@ -737,7 +751,7 @@ class PraIn extends \CodeIgniter\Controller
 			$std20 = ((isset($dt_order['data']['orderPraContainers'])&&($dt_order['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['orderPraContainers'])['std20'] : 0);
 			$std40 = ((isset($dt_order['data']['orderPraContainers'])&&($dt_order['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['orderPraContainers'])['std40'] : 0);
 
-			// dd($contract);
+			// dd($contract);die();
 
 			// admin_tarif: coadmv
 			// cleaning by: coadmm (1=by_order, 0=by_container)
@@ -795,20 +809,6 @@ class PraIn extends \CodeIgniter\Controller
 
 			$result = json_decode($response->getBody()->getContents(), true);	
 
-			// UPDATE CONTAINER (PRINCIPAL & CSTOMER)
-			// $response2 = $this->client->request('PUT','orderPraContainers/updateData',[
-			// 	'headers' => [
-			// 		'Accept' => 'application/json',
-			// 		'Authorization' => session()->get('login_token')
-			// 	],
-			// 	'form_params' => [
-			// 		'pracrnoid' => $_POST['pracrnoid'],
-			// 		'cpopr' => $_POST['cpopr'],
-			// 		'cpcust' => $_POST['cpcust'],
-			// 	],
-			// ]);	
-
-			// $result2 = json_decode($response->getBody()->getContents(), true);	
 
 			if((isset($result['status'])) && ($result['status']=="Failled"))
 			{
@@ -816,6 +816,7 @@ class PraIn extends \CodeIgniter\Controller
 				echo json_encode($data);die();				
 			}			
 
+			// $result2 = json_decode($response->getBody()->getContents(), true);	
 			// $data['lon_hc20'] = $lon_hc20;
 			// $data['lon_hc40'] = $lon_hc40;
 			// $data['lon_hc45'] = $lon_hc45;
@@ -852,6 +853,38 @@ class PraIn extends \CodeIgniter\Controller
 
 		return view('Modules\PraIn\Views\approval1',$data);
 
+	}
+
+	// set principal & customer to oder pra container
+	public function appv1_update_container() 
+	{
+		// UPDATE CONTAINER (PRINCIPAL & CSTOMER)
+		if ($this->request->isAJAX()) 
+		{		
+			$response = $this->client->request('PUT','orderPraContainers/updateData',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'form_params' => [
+					'pracrnoid' => $_POST['pracrnoid'],
+					'cpopr' => $_POST['cpopr'],
+					'cpcust' => $_POST['cpcust'],
+				],
+			]);	
+
+			$result = json_decode($response->getBody()->getContents(), true);
+
+			if((isset($result['status'])) && ($result['status']=="Failled"))
+			{
+				$data['message'] = $result['message'];
+				echo json_encode($data);die();				
+			}
+			
+			$data['message'] = 'success';
+			$data['message_body'] = "Principal berhasil ditambahkan";
+			echo json_encode($data);die();				
+		}
 	}
 
 	public function approval2($id)

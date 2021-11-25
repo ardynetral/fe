@@ -178,7 +178,7 @@
 
 <!-- CONTAINERS -->
 		<div class="row">
-<!-- 			<div class="col-sm-4">
+			<div class="col-sm-4">
 				<div class="widget widget-table">
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> Form Input Container</h3>
@@ -270,13 +270,7 @@
 		</div>								
 		<div class="form-group">
 			<div class="col-sm-offset-4 col-sm-8">
-				<?php if(isset($act)&&$act=="add"):?>
-				<button type="button" id="saveDetail" class="btn btn-primary"><i class="fa fa-check-circle"></i> Approve</button>
-				<?php endif; ?>
-				<?php if(isset($act)&&$act=="approval1"):?>
-				<button type="button" id="ApprovalOrder" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>
-				<?php endif; ?>
-				<button type="button" id="cancelDetail" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</button>
+				<button type="button" id="apvUpdateContainer" class="btn btn-info"><i class="fa fa-pencil"></i> Update Container</button>
 			</div>
 		</div>						
 	</fieldset>
@@ -284,8 +278,8 @@
 
 					</div>
 				</div>						
-			</div> -->
-			<div class="col-sm-12">
+			</div>
+			<div class="col-sm-8">
 				<div class="widget widget-table">
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> List Order Pra Container</h3>
@@ -304,6 +298,7 @@
 									<th>Hold/Release</th>
 									<th>Remark</th>
 									<th>GateIn Date</th>
+									<th></th>
 								</tr>
 							</thead>
 							
@@ -324,21 +319,28 @@
 											<td><?=((isset($row['cpishold'])&&$row['cpishold']==1)?"Hold":"Release")?></td>
 											<td><?=$row['cpiremark']?></td>
 											<td></td>
+											<td><a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a></td>
 										</tr>
 									<?php $i++; endforeach; ?>
 								<?php endif; ?>
 							</tbody>
 						</table>	
-						<div class="text-center">
+					</div>
+				</div>
+			</div>
+		</div>	
+		<div class="row">
+			<div class="col-md-12">
+				<div class="widget widget-table">
+					<div class="widget-content text-center">
 							<?php if((isset($act)&&$act=="approval1")&&($data['orderPraContainers']!=null)):?>
 
-								<button type="button" id="ApprovalOrder" class="btn btn-primary"><i class="fa fa-check-circle"></i> Approve</button>
+						<button type="button" id="ApprovalOrder" class="btn btn-danger"><i class="fa fa-check-circle"></i> Approve Order</button>
 
 							<?php endif; ?>
 							<a href="<?=site_url('prain');?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>			
 						</div>
-					</div>
-				</div>
+				</div>				
 			</div>
 		</div>			
 		

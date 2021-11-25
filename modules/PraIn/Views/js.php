@@ -96,7 +96,8 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					window.location.href = "#formDetail";
+					// window.location.href = "#formDetail";
+					window.location.href = "<?php echo site_url('prain'); ?>";
 					// $("#navItem3").removeClass("disabled");
 					// $("#navLink3").attr("data-toggle","tab");
 					// $("#navLink3").trigger("click");	
@@ -191,7 +192,7 @@ $(document).ready(function() {
 		$("#cancel").show();
 	});
 
-	$("form#fEditPraIn").click(function(e){
+	$("form#fEditPraIn").on("submit",function(e){
 		e.preventDefault();
 		// var formData = "cpiorderno=" + $("#cpiorderno").val();
 		// formData += "&praid=" + $("#praid").val();
@@ -225,6 +226,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.msgdata+'</div>'
 					});
+					window.location.href = "<?php echo site_url('prain'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -562,6 +564,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});
+					window.location.href = "<?php echo site_url('prain'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -579,8 +582,8 @@ $(document).ready(function() {
 		e.preventDefault();
 		var cpife = $("input:radio[name=cpife]:checked").val();
 		var formData = "praid=" + $("#praid").val();
-		formData += "&cpiorderno=" + $("#cpiorderno").val();
 		formData += "&pracrnoid=" + $("#pracrnoid").val();
+		formData += "&cpiorderno=" + $("#cpiorderno").val();
 		formData += "&crno=" + $("#crno").val();
 		formData += "&ccode=" + $("#ccode").val();
 		formData += "&ctcode=" + $("#ctcode").val();
@@ -609,12 +612,41 @@ $(document).ready(function() {
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
+					  html: '<div class="text-danger">'+json.message_body+'</div>'
 					});						
 				}
 			}
 		});	
 
+	});
+
+	// Set Principal to OrderPraContainer
+	$("#apvUpdateContainer").on("click",function(){
+		formData = "&pracrnoid=" + $("#pracrnoid").val();
+		formData += "&cpopr=" + $("#prcode").val();
+		formData += "&cpcust=" + $("#cucode").val();
+		$.ajax({
+			url: "<?php echo site_url('prain/appv1_update_container')?>",
+			type: "POST",
+			data: formData,
+			dataType: 'json',
+			success: function(json) {
+				if(json.message == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message_body+'</div>'
+					});
+					// window.location.href = "<?php echo site_url('prain'); ?>";
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});						
+				}
+			}
+		});
 	});
 
 	// Approve2

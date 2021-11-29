@@ -149,7 +149,7 @@ function list_menu() {
 
 	foreach ($dt_arr as $parent) {
 
-		if(($parent['group_id']==$groupId) && ($parent['has_view']==1)) {
+		if(($parent['group_id']==$groupId) && ($parent['has_view']==1) && ($parent['modules']['module_status']==1)) {
 
 			if($parent['modules']['module_parent']==0) {
 
@@ -162,10 +162,14 @@ function list_menu() {
 					echo "<ul class='sub-menu'>";
 
 					foreach($dt_arr as $child) {
-						if(($child['group_id']==$groupId) && ($child['has_view']==1)) {
+						if(($child['group_id']==$groupId) && ($child['has_view']==1) && ($child['modules']['module_status']==1)) {
 							if($parent['modules']['module_id']==$child['modules']['module_parent']) {
-
-								echo "<li>" ;
+								if(service('uri')->getSegment(1)==$child['modules']['module_url']) {
+									echo "<li class='active'>" ;
+								}else{
+									echo "<li>" ;
+								}
+								
 								echo '<a href="'.site_url().'/'.$child['modules']['module_url'].'"><i class="fa ' .$child['modules']['module_icon']. '"></i><span class="text">' . $child['modules']['module_name'] . '</span></a>';
 								echo "</li>";
 							}

@@ -26,4 +26,11 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?php echo base_url();?>/public/themes/smartdepo/js/plugins/fontawesome-iconpicker/dist/js/fontawesome-iconpicker.min.js"></script>
 
+<script>
+	$(document).ready(function(){
+		$(".sub-menu li.active").parent().parent().addClass('active');
+		$(".sub-menu li.active").parent().show();
+	});
+</script>
+
 <?= $this->renderSection('script_js'); ?>

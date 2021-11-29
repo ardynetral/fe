@@ -69,21 +69,6 @@ class Module extends \CodeIgniter\Controller
 		return view('Modules\Module\Views\index',$data);
 	}
 
-	// public function privilege_list()
-	// {
-	// 	$data = [];
-	// 	$response = $this->client->request('GET','modules/list',[
-	// 		'headers' => [
-	// 			'Accept' => 'application/json',
-	// 			'Authorization' => session()->get('login_token')
-	// 		]
-	// 	]);
-
-	// 	$result = json_decode($response->getBody()->getContents(),true);	
-	// 	$data['data'] = isset($result['data'])?$result['data']:"";
-	// 	return view('Modules\Module\Views\index',$data);
-	// }
-
 	public function view($code)
 	{
 		$response = $this->client->request('GET','modules/getDetailData',[
@@ -176,7 +161,7 @@ class Module extends \CodeIgniter\Controller
 		if ($this->request->isAJAX()) 
 		{
 		    $form_params = [
-		    	"id" 				=> $_POST['id'],
+		    	"id" 				=> $_POST['module_id'],
 		    	"module_parent" 	=> $_POST['module_parent'],
 			    "module_var" 		=> $_POST['module_var'],
 			    "module_name" 		=> $_POST['module_name'],
@@ -191,7 +176,7 @@ class Module extends \CodeIgniter\Controller
 			];
 
 			$validate = $this->validate([
-		    	"id" 	=> 'required',
+		    	"module_id" 	=> 'required',
 		    	"module_parent" 	=> 'required',
 			    "module_var" 		=> 'required',
 			    "module_name" 		=> 'required',
@@ -208,7 +193,7 @@ class Module extends \CodeIgniter\Controller
 		    if ($this->request->getMethod() === 'post' && $validate)
 		    {
 
-				$response = $this->client->request('POST','modules/updateData',[
+				$response = $this->client->request('PUT','modules/updateData',[
 					'headers' => [
 						'Accept' => 'application/json',
 						'Authorization' => session()->get('login_token')
@@ -224,7 +209,7 @@ class Module extends \CodeIgniter\Controller
 					echo json_encode($data);die();				
 				}
 
-				session()->setFlashdata('sukses','Success, Country Saved.');
+				session()->setFlashdata('sukses','Berhasil menyimpan data.');
 				$data['message'] = "success";
 				echo json_encode($data);die();
 
@@ -234,6 +219,7 @@ class Module extends \CodeIgniter\Controller
 		    	$data['message'] = \Config\Services::validation()->listErrors();
 		    	echo json_encode($data);die();			
 			}			
+
 		}		
 
 		$response = $this->client->request('GET','modules/getDetailData',[

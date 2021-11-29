@@ -32,8 +32,9 @@
 					
 				</div>
 
-				<form id="#formModule" class="form-horizontal" role="form">
+				<form id="#formModule" class="form-horizontal" role="form" method="post">
 					<?= csrf_field() ?>
+					<input type="hidden" name="module_id" class="form-control" id="module_id" value="<?=@$data['module_id']?>">
 					<fieldset>
 						<div class="form-group">
 							<label for="module_name" class="col-sm-2 control-label text-right">Module Name</label>
@@ -53,15 +54,17 @@
 								<?=module_dropdown(@$data['module_parent']);?>
 							</div>
 						</div>	
+
 						<div class="form-group">
 							<label for="module_config" class="col-sm-2 control-label text-right">Config</label>
 							<div class="col-sm-3">
+
 								<select name="module_config[]" id="module_config" class="module_config select2 select2-multiple" multiple>
 									<optgroup label="Select module config">
-										<option value="VIEW">VIEW</option>
-										<option value="INSERT">INSERT</option>
-										<option value="UPDATE">UPDATE</option>
-										<option value="DELETE">DELETE</option>
+										<option value="VIEW" <?=(in_array('VIEW',explode(',',$data['module_config']))?"selected":'');?>>VIEW</option>
+										<option value="INSERT" <?=(in_array('INSERT',explode(',',$data['module_config']))?"selected":'');?>>INSERT</option>
+										<option value="UPDATE" <?=(in_array('UPDATE',explode(',',$data['module_config']))?"selected":'');?>>UPDATE</option>
+										<option value="DELETE" <?=(in_array('DELETE',explode(',',$data['module_config']))?"selected":'');?>>DELETE</option>
 									</optgroup>
 								</select>
 							</div>
@@ -83,8 +86,8 @@
 							<div class="col-sm-3">
 								<select name="module_type" id="module_type" class="form-control">
 									<option value="">-select-</option>
-									<option value="module">MODULE</option>
-									<option value="any">ANY</option>
+									<option value="module" <?=(isset($data['module_type'])&&($data['module_type']=='module')?'selected':'');?>>MODULE</option>
+									<option value="any" <?=(isset($data['module_type'])&&($data['module_type']=='any')?'selected':'');?>>ANY</option>
 								</select>
 							</div>
 						</div>
@@ -111,8 +114,8 @@
 							<div class="col-sm-3">
 								<select name="module_status" id="module_status" class="form-control">
 									<option value="">-select-</option>
-									<option value="1">ACTIVE</option>
-									<option value="0">INACTIVE</option>
+									<option value="1" <?=(isset($data['module_status'])&&($data['module_status']=='1')?'selected':'');?>>ACTIVE</option>
+									<option value="0" <?=(isset($data['module_status'])&&($data['module_status']=='0')?'selected':'');?>>INACTIVE</option>
 								</select>
 							</div>
 						</div>	

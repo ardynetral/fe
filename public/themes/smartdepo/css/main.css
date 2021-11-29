@@ -17479,3 +17479,13 @@ ul.recent-file-list {
 }
 
 .col-xs {width:60px;}
+
+ul.main-menu .sub-menu li.active > a {
+    background: #f5f5f5!important;
+}
+
+ul.main-menu > li.active > a {
+    font-weight: 700;
+    color:#000000;
+    background-color: #dfdfdf;
+}

@@ -26,7 +26,6 @@ $(document).ready(function() {
 		formData += "&module_url=" + $("#module_url").val();		
 		formData += "&module_content=" + $("#module_content").val();		
 		formData += "&sort_index=" + $("#sort_index").val();		
-		console.log(formData);
 		$.ajax({
 			url: "<?php echo site_url('module/add'); ?>",
 			type: "POST",
@@ -52,13 +51,23 @@ $(document).ready(function() {
 	});
 
 	// EDIT DATA
-	$("#updateData").click(function(e){
+	$("#updateData").on("click", function(e){
 		e.preventDefault();
-		var formData = "code=" + $("#code").val();
-		formData += "&desc=" + $("#desc").val();
+		var formData = "module_id=" + $("#module_id").val();
+		formData += "&module_name=" + $("#module_name").val();
+		formData += "&module_description=" + $("#module_description").val();		
+		formData += "&module_parent=" + $("#module_parent").val();
+		formData += "&module_config=" + $("#module_config").select2('val');		
+		formData += "&module_type=" + $("#module_type").val();		
+		formData += "&module_icon=" + $("#module_icon").val();		
+		formData += "&module_var=" + $("#module_var").val();		
+		formData += "&module_status=" + $("#module_status").val();		
+		formData += "&module_url=" + $("#module_url").val();		
+		formData += "&module_content=" + $("#module_content").val();		
+		formData += "&sort_index=" + $("#sort_index").val();
 		console.log(formData);
 		$.ajax({
-			url: "<?php echo site_url('country/edit/'); ?>"+$("#code").val(),
+			url: "<?php echo site_url('module/edit/'); ?>"+$("#module_id").val(),
 			type: "POST",
 			data: formData,
 			dataType: 'json',
@@ -69,7 +78,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					window.location.href = "<?php echo site_url('country'); ?>";
+					window.location.href = "<?php echo site_url('module'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',

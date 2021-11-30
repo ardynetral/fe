@@ -28,44 +28,18 @@
 				</div><br>		
 				<div class="row">
 					<div class="col-md-12">
-						<?php if($user==""): ?>
-							<p class="alert alert-warning">Something wrong!. Data not found.</p>
-						<?php else: ?>
-
 						<table id="usrTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
 									<th>No.</th>
+									<th>Username</th>
 									<th>Fullname</th>
 									<th>Email</th>
 									<th>Group</th>
 									<th></th>
 								</tr>
 							</thead>
-							
-							<tbody>
-								<?php $i=1; foreach($user as $u): ?>
-								<tr>
-									<td><?=$i;?></td>
-									<td><?=$u['fullname'];?></td>
-									<td><?=$u['email'];?></td>
-									<td><?=$u['groups']['group_name'];?></td>
-									<td width="150">
-										<a href="<?=site_url('users/view/'.$u['user_id']);?>" class="btn btn-xs btn-primary">View</a>
-										<a href="<?=site_url('users/edit/'.$u['user_id']);?>" class="btn btn-xs btn-default">Edit</a>
-										<?php if($u['is_block']=="y"): ?>
-										<a href="#" class="btn btn-xs btn-success" id="sendEmail" data-uid="<?=$u['user_id']?>">Send email</a>
-										<?php else: ?>
-											<span class="btn btn-xs disabled">Activated</span>
-										<?php endif; ?>
-
-									</td>
-								</tr>
-								<?php $i++; endforeach; ?>
-							</tbody>
 						</table>
-
-						<?php endif; ?>
 
 					</div>
 				</div>

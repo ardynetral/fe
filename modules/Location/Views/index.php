@@ -4,8 +4,8 @@
 
 <div class="content">
 	<div class="main-header">
-		<h2>Location</h2>
-		<em>Location page</em>
+		<h2><?=$page_title; ?></h2>
+		<em><?=$page_title; ?> page</em>
 	</div>
 
 	<?php if(session()->getFlashdata('sukses')):?>
@@ -19,18 +19,13 @@
 
 		<div class="widget widget-table">
 			<div class="widget-header">
-				<h3><i class="fa fa-table"></i> Location</h3></div>
+				<h3><i class="fa fa-table"></i> <?=$page_title; ?></h3></div>
 			<div class="widget-content">
 				<div class="row">
 					<div class="col-md-12">
 						<a href="<?=site_url('location/add');?>"class="btn btn-primary"><i class="fa fa-plus-square"></i>&nbsp;Add New</a>
 					</div>
 				</div><br>	
-
-				<?php if($data ==''): ?>
-					<p class="alert alert-warning"> Data not found.</p>
-				<?php else : ?>
-
 				<div class="row">
 					<div class="col-md-12">
 
@@ -44,26 +39,10 @@
 									<th></th>
 								</tr>
 							</thead>
-							
-							<tbody>
-								<?php $i=1; foreach($data as $row): ?>
-								<tr>
-									<td><?=$i;?></td>
-									<td><?=$row['lccode'];?></td>
-									<td><?=$row['lcdesc'];?></td>
-									<td width="150">
-										<a href="<?=site_url('location/view/'.$row['lccode']);?>" class="btn btn-xs btn-primary">View</a>
-										<a href="<?=site_url('location/edit/'.$row['lccode'])?>" class="btn btn-xs btn-success">Edit</a>
-										<a href="#" class="btn btn-xs btn-danger delete" id="delete" data-kode="<?=$row['lccode'];?>">Delete</a>
-									</td>
-								</tr>
-								<?php $i++; endforeach; ?>
-							</tbody>
+													
 						</table>
 					</div>
 				</div>
-
-				<?php endif; ?>
 
 			</div>		
 		</div>		

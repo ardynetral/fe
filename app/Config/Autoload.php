@@ -43,7 +43,8 @@ class Autoload extends AutoloadConfig
 		APP_NAMESPACE => APPPATH, // For custom app namespace
 		'Config'      => APPPATH . 'Config',
 		'Modules'     => ROOTPATH . 'modules',
-		'Mpdf'	      => ROOTPATH . 'vendor/mpdf/mpdf/src'
+		'Mpdf'	      => ROOTPATH . 'vendor/mpdf/mpdf/src',
+		'Picqer'	  => ROOTPATH . 'vendor/picqer/php-barcode-generator/src'	
 	];
 
 	/**

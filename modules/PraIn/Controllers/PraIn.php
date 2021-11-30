@@ -211,8 +211,9 @@ class PraIn extends \CodeIgniter\Controller
 
 		if ($this->request->isAJAX()) 
 		{
-			$cpidisdat = date_format(date_create($_POST['cpidisdat']),"Y-m-d");
-			$cpipratgl = date_format(date_create($_POST['cpipratgl']),"Y-m-d");
+			$cpidisdat = date("Y-m-d", strtotime($_POST['cpidisdat']));
+			$cpipratgl = date("Y-m-d", strtotime($_POST['cpipratgl']));
+			// echo var_dump($cpipratgl);die();
 
 			$post_arr = [];
 
@@ -1118,6 +1119,138 @@ class PraIn extends \CodeIgniter\Controller
 			return view('Modules\PraIn\Views\proforma',$data);		
 	}
 
+	// Page siap cetak kitir order 
+	public function final_order($id)
+	{
+		check_exp_time();
+		// $data = [];
+		$token = get_token_item();
+		$group_id = $token['groupId'];
+		$prcode = $token['prcode'];
+		$data['act'] = "approval2";
+		$data['group_id'] = $group_id;
+
+		// GET DETAIL ORDER
+		$response = $this->client->request('GET','orderPras/printOrderByPraOrderId',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => ['praid' => $id],
+		]);
+		$result = json_decode($response->getBody()->getContents(), true);
+		$dt_order  = $result['data']['datas']['0']; 
+		$dt_company = $this->get_company();
+
+		if ($this->request->isAJAX()) 
+		{
+			$cprocess_params = [];
+			$containers = $dt_order['orderPraContainers'];
+			// echo var_dump($containers);die();
+			if($containers!="") {
+				$no=0;
+				foreach ($containers as $c) {
+					$cprocess_params[$no] = [
+						"CRNO" => $c['crno'],
+					    "CPOPR" => $c['cpopr'],
+					    "CPCUST" => $c['cpcust'],					    
+					    "CPDEPO" => $dt_order['cpdepo'],
+					    "SPDEPO" => $dt_company['sdcode'],
+					    "CPIFE" => $c['cpife'],
+					    "CPICARGO" => $dt_order['cpicargo'],
+					    "CPIPRATGL" => $dt_order['cpipratgl'],
+					    "CPIREFIN" => $dt_order['cpirefin'],
+					    "CPIVES" => $dt_order['cpives'],
+					    "CPIDISH" => $dt_order['cpidish'],
+					    "CPIDISDAT" => $dt_order['cpidisdat'],
+					    "CPIJAM" => $dt_order['cpijam'],
+					    "CPICHRGBB" => 1,
+					    "CPIDELIVER" => $dt_order['cpideliver'],
+					    "CPIORDERNO" => $dt_order['cpiorderno'],
+					    "CPISHOLD" => $c['cpishold'],
+					    "CPIREMARK" => $c['cpiremark'],
+					    "CPIVOYID" => $dt_order['cpivoyid'],
+					    "CPIVOY" => $dt_order['voyages']['voyno'],
+					    "CPISTATUS" => 0,
+					];	
+
+					// get One Container
+					$cr_req = $this->client->request('GET','containers/listOne',[
+						'headers' => [
+							'Accept' => 'application/json',
+							'Authorization' => session()->get('login_token')
+						],
+						'form_params' => ['crNo' => $c['crno']],
+					]);
+
+					$cr_result = json_decode($cr_req->getBody()->getContents(), true);
+
+					if(isset($cr_result['data'])) {
+						$mtcode_cccode = [
+							'MTCODE' => $cr_result['data']['mtcode'],
+							'CCCODE' => $cr_result['data']['cccode']
+						];
+						array_push($cprocess_params[$no], $mtcode_cccode);
+					}		
+
+					// Container Process
+					$cp_response = $this->client->request('POST','praIns/createNewData',[
+						'headers' => [
+							'Accept' => 'application/json',
+							'Authorization' => session()->get('login_token')
+						],
+						'form_params' => $cprocess_params[$no]
+					]);
+
+					$result = json_decode($cp_response->getBody()->getContents(), true);	
+
+					if(isset($result['status']) && ($result['status']=="Failled"))
+					{
+						$data['message'] = $result['message'];
+						echo json_encode($data);die();				
+					}
+		
+					$no++;
+				} //endforeach
+
+				// echo var_dump($result);die();
+
+				// UPDATE ORDER PRA appv=2
+				$op_response = $this->client->request('PUT','orderPras/updateData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'form_params' => [
+						'praid' => $id,
+						'appv' => 2
+					]
+				]);
+
+				$opresult = json_decode($op_response->getBody()->getContents(), true);
+				if(isset($opresult['status']) && ($opresult['status']=="Failled"))
+				{
+					$data['message'] = $opresult['message'];
+					echo json_encode($data);die();				
+				}
+
+				$data['message'] = "success";
+				$data['msgdata'] = $opresult['data'];
+				echo json_encode($data);die();
+			}		
+		}		
+
+		$data['data'] = $dt_order;
+		$data['contract'] = $this->get_contract($data['data']['cpopr']);
+		$data['hc20'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['hc20'] : 0);
+		$data['hc40'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['hc40'] : 0);
+		$data['hc45'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['hc45'] : 0);
+		$data['std20'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['std20'] : 0);
+		$data['std40'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['std40'] : 0);	
+
+		return view('Modules\PraIn\Views\cetak_kitir',$data);		
+	}
+
 	public function get_contract($id) {
 		$data = "";
 		$response = $this->client->request('GET','contracts/listOne',[
@@ -1201,6 +1334,175 @@ class PraIn extends \CodeIgniter\Controller
 			echo json_encode($data);die();			
 		}
 	} 
+
+	public function cetak_kitir($crno="")
+	{
+		$db = \Config\Database::connect();
+		$generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+		$mpdf = new \Mpdf\Mpdf();
+		
+
+		// $response = $this->client->request('GET','orderPraContainers/getDetailData',[
+		// 	'headers' => [
+		// 		'Accept' => 'application/json',
+		// 		'Authorization' => session()->get('login_token')
+		// 	],
+		// 	'query' => [
+		// 		'pracrnoid' => $pracrnoid,
+		// 	]
+		// ]);
+		// $result = json_decode($response->getBody()->getContents(), true);
+			
+		$sql = "SELECT * FROM container_process cp 
+		left join tblcontainer con  on cp.cpid = con.crcpid
+		WHERE con.crno ='MSCU7597949'";
+		
+		$result = $db->query($sql)->getRow();
+		dd($result);
+
+		$CRNO = $result->crno;
+		$CPID = $result->cpid;
+
+		$barcode = $generator->getBarcode($CPID, $generator::TYPE_CODE_128);		
+		
+		$html = '';
+
+		$html .= '
+		<html>
+			<head>
+				<title>Order PraIn</title>
+
+				<style>
+					body{font-family: Arial;font-size:12px;}
+					.page-header{display:block;padding:0;min-height:30px;margin-bottom:30px;}
+					.head-left{float:left;width:200px;padding:0px;}
+					.head-right{float:left;padding:0px;margin-left:200px;text-align: right;}
+
+					.tbl_head_prain, .tbl_det_prain{border-spacing: 0;border-collapse: collapse;}
+					.tbl_head_prain td{border-collapse: collapse;padding-top:5px;}
+					.t-right{text-align:right;}
+					.t-left{text-align:left;}
+					.t-center{text-align:center;}
+
+					.tbl_det_prain th,.tbl_det_prain td {
+						border:1px solid #666666!important;
+						border-spacing: 0;
+						border-collapse: collapse;
+						padding:5px;
+
+					}
+					.line-space{border-bottom:1px solid #dddddd;margin:30px 0;}
+				</style>
+			</head>
+		';
+		$html .= '<body>
+			<div class="page-header">
+				<h2 align="center">PT. CONTINDO RAYA<br>
+				CONTAINER RELEASE ORDER</h2>
+			</div>
+		';		
+		$html .='
+			<table class="tbl_head_prain" width="100%">
+				<tbody>
+					<tr>
+						<td width="100">NO.</td>
+						<td></td>
+						<td colspan="2" class="t-center" style="width:20%;">
+							<input type="text" value="" size="5" style=";">
+							<input type="text" value="" size="5" style=";">&nbsp;
+							<input type="text" value="ST" size="5" style=";">
+							<input type="text" value="HC" size="5" style=";">
+						</td>
+						<td>TYPE</td>
+						<td>:</td>
+					</tr>		
+					<tr>
+						<td class="" width=""></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td class="" width="">PRINCIPAL</td>
+						<td>:</td>
+					</tr>
+					<tr>
+						<td class="" width="">SHIPPER</td>
+						<td width="">:</td>
+						<td></td>
+						<td></td>						
+						<td class="" width="">VESSEL</td>
+						<td style="width:20%;">: M. PEMATANG SIANTAR M. PEMATANG SIANTAR Voy.1120</td>
+					</tr>
+					<tr>
+						<td class="" width="">DATE</td>
+						<td width="">:</td>
+						<td></td>
+						<td></td>						
+						<td class="" width="">DESTINATION</td>
+						<td>:</td>
+					</tr>					
+					<tr>
+						<td class="" width="">CONDITION</td>
+						<td width="">: 
+							<input type="text" value="AV" size="7">
+							<input type="text" value="DMG" size="10">
+						</td>
+						<td></td>
+						<td></td>						
+						<td class="" width="">NO. MOBIL</td>
+						<td>:</td>
+					</tr>
+					<tr>
+						<td class="" width="">REMARKS</td>
+						<td width="">:</td>
+						<td></td>
+						<td></td>						
+						<td class="" width="">CLEAN</td>
+						<td>: 
+							<input type="text" value="YES" size="7">
+							<input type="text" value="NO" size="7">
+						</td>
+					</tr>
+					<tr>
+						<td class="" width="">CONTAINER NO.</td>
+						<td width="">:</td>
+						<td></td>
+						<td></td>						
+						<td class="" width="">SEAL NO.</td>
+						<td>:</td>
+					</tr>
+					<tr>
+						<td class="" width=""></td>
+						<td width=""></td>
+						<td></td>
+						<td></td>
+						<td class="" width=""></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td class="t-center"  style="padding-top:40px; width:33%" colspan="2">RECEIVER</td>
+						<td class="t-center"  style="padding-top:40px;" colspan="2">YARDMAN</td>
+						<td class="t-center"  style="padding-top:40px; width:33%" colspan="2">INVENTORY</td>
+
+					</tr>
+				</tbody>
+			</table>
+			<div style="margin-top:100px;display:block;">
+			<div style="float:left;display:inline-block;text-align:bottom;width:30%;"><i>PRINTED ON : '.date("d/m/Y H:i:s").'</i>
+			</div>
+			<div class="t-right" style="float:right;display:inline-block;width:250px;">
+				<img src="data:image/png;base64,' . base64_encode($barcode) . '" style="height:40px;">
+			</div>
+			</div>
+		';		
+		$html .='
+		</body>
+		</html>
+		';
+		$mpdf->WriteHTML($html);
+		$mpdf->Output();
+		//echo $html;
+		die();			
+	}
 
 	// Print detail order
 	public function print_order($id) 
@@ -1628,4 +1930,12 @@ class PraIn extends \CodeIgniter\Controller
 		return $company; 
 		die();					
 	}
+
+	// function generate_barcode($str="") 
+	// {
+	// 	$generator = new \Picqer\Barcode\BarcodeGeneratorHTML();
+	// 	$barcode = $generator->getBarcode($str, $generator::TYPE_CODE_128);
+	// 	return $barcode;
+	// }
+
 }

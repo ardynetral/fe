@@ -24,31 +24,53 @@ class CfsPrincipal extends \CodeIgniter\Controller
 		$token = get_token_item();
 		$user_id = $token['id'];
 		$group_id = $token['groupId'];
-		// $prcode = $token['prcode'];
 
-		$data = [];
-		$offset=0;
-		$limit=100;
-
-		// $response = $this->client->request('GET','companies/list',[
-		// 	'headers' => [
-		// 		'Accept' => 'application/json',
-		// 		'Authorization' => session()->get('login_token')
-		// 	]
-		// ]);
-
-		// $result = json_decode($response->getBody()->getContents(),true);	
-
-		// $data['data'] = isset($result['data']['datas'])?$result['data']['datas']:"";
-
-
-		// $data['prcode'] = $prcode;
-		// $data['cucode'] = $prcode;
-		// echo dd($data);
-		// return view('Modules\PraIn\Views\tab_base',$data);
-		$data['data'] = "";
 		$data['page_title'] = "Cfs Principal";
 		$data['page_subtitle'] = "Cfs Principal Page";
 		return view('Modules\CfsPrincipal\Views\index',$data);
 	}
+
+	public function list_data() {
+
+		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+        $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
+        $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
+		// PULL data from API
+		$response = $this->client->request('GET','principals/list',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'query' => [
+					'offset' => $offset,
+					'limit'	=> $limit
+				]
+			]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => @$result['data']['count'],
+            "recordsFiltered" => @$result['data']['count'],
+            "data" => array()
+        );
+        
+		$no = ($offset !=0)?$offset+1 :1;
+		foreach ($result['data']['datas'] as $k=>$v) {
+				
+			$btn_list="";
+            $record = array(); 
+	            $record[] = $no;
+	            $record[] = $v['prcode'];
+	            $record[] = $v['cucode'];
+	            $record[] = $v['prname'];
+	            $record[] = $v['praddr'];
+				
+	            $no++;
+
+	            $output['data'][] = $record;
+        } 
+        echo json_encode($output);
+	}	
 }

@@ -44,6 +44,7 @@ class ComposerStaticInitf38a301d3e1ec213f69afe6fb7d428c5
             'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
             'Prophecy\\' => 9,
+            'Picqer\\Barcode\\' => 15,
         ),
         'M' => 
         array (
@@ -126,6 +127,10 @@ class ComposerStaticInitf38a301d3e1ec213f69afe6fb7d428c5
         'Prophecy\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
+        ),
+        'Picqer\\Barcode\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/picqer/php-barcode-generator/src',
         ),
         'Mpdf\\' => 
         array (

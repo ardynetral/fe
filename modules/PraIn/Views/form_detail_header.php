@@ -89,13 +89,12 @@ $group_id = $token['groupId'];
 				<div class="col-sm-offset-4 col-sm-8">
 					<?php if(isset($act)&&$act=="add"):?>
 					<button type="button" id="saveDetail" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>
-					<?php endif; ?>
-					<?php if((isset($act)&&$act=="edit")&&($data['orderPraContainers']==null)):?>
+					<?php elseif((isset($act)&&$act=="edit")&&($data['orderPraContainers']==null)):?>
 						<button type="button" id="saveDetail" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>
 					<?php else:?>
 						<button type="button" id="updateDetail" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>
 					<?php endif; ?>
-					<button type="button" id="cancelDetail" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</button>
+					<button type="button" id="cancelDetail" class="btn btn-default cancel"><i class="fa fa-times-circle"></i> Cancel</button>
 				</div>
 			</div>						
 		</fieldset>

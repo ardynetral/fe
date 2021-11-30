@@ -23,6 +23,8 @@ $routes->add('/prain/get_one_container/(:alphanum)', '\Modules\PraIn\Controllers
 $routes->add('/prain/edit_container', '\Modules\PraIn\Controllers\PraIn::edit_container', ['filter' => 'login']);
 $routes->add('/prain/checkContainerNumber', '\Modules\PraIn\Controllers\PraIn::checkContainerNumber', ['filter' => 'login']);
 $routes->add('/prain/delete_container/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::delete_container/$1', ['filter' => 'login']);
+$routes->add('/prain/final_order/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::final_order/$1', ['filter' => 'login']);
+$routes->add('/prain/cetak_kitir/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::cetak_kitir/$1', ['filter' => 'login']);
 
 // ajax request
 $routes->add('/prain/ajax_ccode_listOne/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::ajax_ccode_listOne/$1', ['filter' => 'login']);
@@ -30,3 +32,7 @@ $routes->add('/prain/ajax_prcode_listOne/(:alphanum)', '\Modules\PraIn\Controlle
 $routes->add('/prain/ajax_vessel_listOne/(:any)', '\Modules\PraIn\Controllers\PraIn::ajax_vessel_listOne/$1', ['filter' => 'login']);
 $routes->add('/prain/ajax_voyage_list', '\Modules\PraIn\Controllers\PraIn::ajax_voyage_list', ['filter' => 'login']);
 $routes->add('/prain/ajax_view/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::ajax_view/$1', ['filter' => 'login']);
+
+// barcode_generator
+$routes->get('/prain/generate_barcode', '\Modules\PraIn\Controllers\PraIn::generate_barcode', ['filter' => 'login']);
+

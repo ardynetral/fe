@@ -327,6 +327,9 @@
 							</tbody>
 						</table>						
 					</div>
+					<div class="widget-footer text-center">
+						<button type="button" id="cancel" class="btn btn-default cancel"><i class="fa fa-times-circle"></i> Cancel</button>
+					</div>					
 				</div>
 			</div>
 		</div>			

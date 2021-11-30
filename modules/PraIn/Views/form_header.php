@@ -53,7 +53,7 @@ $group_id = $token['groupId'];
 					<label for="cpidisdat" class="col-sm-5 control-label text-right">Discharge Date</label>
 					<div class="col-sm-7">
 						<div class="input-group">
-							<input type="text" name="cpidisdat" id="cpidisdat" class="form-control tanggal" required>
+							<input type="text" name="cpidisdat" id="cpidisdat" class="form-control"  value="<?=date('d/m/Y')?>" readonly>
 							<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 						</div>									
 					</div>
@@ -194,7 +194,7 @@ $group_id = $token['groupId'];
 			<div class="form-group text-center">
 				<button type="submit" id="save" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
 				<button type="button" id="update" class="btn btn-primary" style="display:none;"><i class="fa fa-check-circle"></i> Update</button>&nbsp;
-				<button type="button" id="cancel" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</button>
+				<button type="button" id="cancel" class="btn btn-default cancel"><i class="fa fa-times-circle"></i> Cancel</button>
 			</div>	
 		</div>
 	</form>

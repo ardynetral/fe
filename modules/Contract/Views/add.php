@@ -12,14 +12,14 @@ if(isset($data) && ($data!='')) {
 
 <div class="content">
 	<div class="main-header">
-		<h2>Contract</h2>
-		<em>Contract page</em>
+		<h2><?=$page_title?></h2>
+		<em><?=$page_title?> page</em>
 	</div>
 	<div class="main-content">
 
 		<div class="widget">
 			<div class="widget-header">
-				<h3><i class="fa fa-edit"></i> <?=((isset($act))&&($act=="view")?"Detail ":"Add ")?>Contract</h3>
+				<h3><i class="fa fa-edit"></i> <?=((isset($act))&&($act=="view")?"Detail ":"Add ")?><?=$page_title?></h3>
 			</div>
 			<div class="widget-content">
 

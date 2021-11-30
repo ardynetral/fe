@@ -27,10 +27,6 @@
 					</div>
 				</div><br>	
 
-				<?php if($data ==''): ?>
-					<p class="alert alert-warning"> Data not found.</p>
-				<?php else : ?>
-
 				<div class="row">
 					<div class="col-md-12">
 
@@ -47,27 +43,9 @@
 								</tr>
 							</thead>
 							
-							<tbody>
-								<?php $i=1; foreach($data as $row): ?>
-									<tr>
-										<td><?=$i;?></td>
-										<td><?=$row['cono'];?></td>
-										<td><?=$row['prcode'];?></td>
-										<td><?=$row['codate'];?></td>
-										<td><?=$row['coexpdate'];?></td>
-										<td width="150">
-											<a href="<?=site_url('contract/view/'.$row['prcode']);?>" class="btn btn-xs btn-primary">View</a>
-											<!-- <a href="<?=site_url('contract/edit/'.$row['cono'])?>" class="btn btn-xs btn-success">Edit</a> -->
-											<a href="#" class="btn btn-xs btn-danger delete" id="delete" data-kode="<?=$row['prcode'];?>">Delete</a>
-										</td>
-									</tr>
-								<?php $i++; endforeach; ?>
-							</tbody>
 						</table>
 					</div>
 				</div>
-
-				<?php endif; ?>
 
 			</div>		
 		</div>		

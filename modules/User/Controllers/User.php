@@ -10,67 +10,84 @@ class User extends \CodeIgniter\Controller
 		$this->client = api_connect();
 	}
 
-	// public function index()
-	// {
-	// 	$data = [];
-	// 	$offset=0;
-	// 	$limit=10;
-	// 	$response = $this->client->request('GET','users/allUser',[
-	// 		'headers' => [
-	// 			'Accept' => 'application/json',
-	// 			'Authorization' => session()->get('login_token')
-	// 		],
-	// 		'query'=>[
-	// 			'offset'=>$offset,
-	// 			'limit'=>$limit
-	// 		]
-	// 	]);
-
-	// 	$result = json_decode($response->getBody()->getContents(),true);	
-	// 	$data['user'] = isset($result['data'])?$result['data']:"";
-	// 	$data['total'] = count($result['data']);
-	// 	return view('Modules\User\Views\index',$data);
-	// }
-
 	public function index()
 	{
 		$module = service('uri')->getSegment(1);
 		has_privilege($module, "_view"); 		
 		$data = [];
 	
-		if ($this->request->isAJAX()) {
-			$offset=0;
-			$limit=100;			
+		check_exp_time();
+		$module = service('uri')->getSegment(1);
+		has_privilege($module, "_view");
+		define("has_insert", has_privilege_check($module, '_insert'));
+		define("has_approval", has_privilege_check($module, '_approval'));
+		define("has_edit", has_privilege_check($module, '_update'));
+		define("has_delete", has_privilege_check($module, '_delete'));
+		define("has_print", has_privilege_check($module, '_printpdf'));
+
+
+		$token = get_token_item();
+		$user_id = $token['id'];
+		$group_id = $token['groupId'];
+
+		$data['page_title'] = "Users";
+		$data['page_subtitle'] = "Users Page";		
+		return view('Modules\User\Views\index',$data);
+	}
+
+	public function list_data() {
+
+		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+        $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
+        $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
+		// PULL data from API
 			$response = $this->client->request('GET','users/allUser',[
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
 				],
-				'query'=>[
-					'offset'=>$offset,
-					'limit'=>$limit
+				'query' => [
+					'offset' => $offset,
+					'limit'	=> $limit
 				]
 			]);
 
-			$result = json_decode($response->getBody()->getContents(),true);	
-			$data['user'] = isset($result['data']['datas'])?$result['data']['datas']:"";
-		}		
+		$result = json_decode($response->getBody()->getContents(), true);
 		
-		$response = $this->client->request('GET','users/allUser',[
-			'headers' => [
-				'Accept' => 'application/json',
-				'Authorization' => session()->get('login_token')
-			],
-			'query'=>[
-				'offset'=>0,
-				'limit'=>100
-			]
-		]);
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => @$result['data']['count'],
+            "recordsFiltered" => @$result['data']['count'],
+            "data" => array()
+        );
+        
+		$no = ($offset !=0)?$offset+1 :1;
+		foreach ($result['data']['datas'] as $k=>$v) {
+				
+			$btn_list="";
+            $record = array(); 
 
-		$result = json_decode($response->getBody()->getContents(),true);	
-		$data['user'] = isset($result['data']['datas'])?$result['data']['datas']:"";
-		$data['total'] = $result['data']['count'];
-		return view('Modules\User\Views\index',$data);
+            $record[] = $no;
+            $record[] = $v['username'];
+            $record[] = $v['fullname'];
+            $record[] = $v['email'];
+            $record[] = $v['groups']['group_name'];
+            $uid = $v['user_id'];
+			$btn_list .='<a href="'.site_url("users/view/".$uid).'" id="" class="btn btn-xs btn-primary btn-table" data-users="">view</a>&nbsp;';
+			$btn_list .='<a href="'.site_url('users/edit/'.$uid).'" id="editUser" class="btn btn-xs btn-success btn-table">edit</a>&nbsp;';
+
+			if($v['is_block']=="y"):
+			$btn_list .= '<a href="#" class="btn btn-xs btn-success" id="sendEmail" data-uid="'.$uid.'">Send email</a>&nbsp;';
+			else:
+				$btn_list .= '<span class="btn btn-xs disabled">Activated</span>';
+			endif;
+		
+            $record[] = '<div>'.$btn_list.'</div>';				
+            $no++;
+            $output['data'][] = $record;
+
+        } 
+        echo json_encode($output);
 	}
 
 	// admin only can view
@@ -240,11 +257,12 @@ class User extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody(), true);
+		$data['act'] = 'edit';
 		$data['data'] = (isset($result['data']) ? $result['data'] : '');
 		$data['group'] = $this->group_dropdown($result['data']['group_id']);
 		$data['principal_dropdown'] = principal_dropdown($result['data']['prcode']);
-		//$data['debitur_dropdown'] = debitur_dropdown($result['data']['cucode']);
-
+		// $data['debitur_dropdown'] = debitur_dropdown($result['data']['cucode']);
+		// dd($result['data']);
 		return view('Modules\User\Views\edit',$data);		
 	}	
 

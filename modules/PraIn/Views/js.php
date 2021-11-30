@@ -637,7 +637,6 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message_body+'</div>'
 					});
-					// window.location.href = "<?php echo site_url('prain'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -651,31 +650,6 @@ $(document).ready(function() {
 
 	// Approve2
 	$('#approval2').on('click', function(e){
-/*
-    "CRNO": "MRTU2190445",
-    "CPOPR": "MRT",
-    "CPCUST": "MRT",
-    "CPDEPO": "000",
-    "SPDEPO": "D1",
-    "CPIFE": 0,
-    "CPICARGO": "",
-    "CPIPRATGL": "2021-04-28",
-    "CPIREFIN": "",
-    "CPIVES": "M.PEMATANG SIANTAR",
-    "CPIDISH": "IDJKT",
-    "CPIDISDAT": "2021-04-28",
-    "CPIJAM": "",
-    "CPICHRGBB": 1,
-    "CPIDELIVER": "PT.JAGAD SAMUDERA",
-    "CPIORDERNO": "PI000D100000709",
-    "CPISHOLD": 0,
-    "CPIREMARK": "heriipurnama",
-    "CPIVOYID": 12296,
-    "CPIVOY": 2108,
-    "CPISTATUS": "NO",
-    "MTCODE": "GP",
-    "CCCODE": "22G1"
-*/
 		e.preventDefault();
 		var praid = $("#praid").val();
 		$.ajax({
@@ -691,6 +665,7 @@ $(document).ready(function() {
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});
 					$(this).hide();
+					window.location.href = "<?php echo site_url('prain'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -700,6 +675,13 @@ $(document).ready(function() {
 				}
 			}			
 		});
+	});
+
+	// Print Kitir
+	$("#cetak_kitir").on("click", function(e){
+		e.preventDefault();
+		var crno = $(this).attr('data-crno');
+		window.open("<?php echo site_url('prain/cetak_kitir/'); ?>" + crno, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	$("#crno").on("keyup", function(){
@@ -744,6 +726,11 @@ $(document).ready(function() {
 
 	    $this.tab('show');
 	    return false;
+	});
+
+	$("button.cancel").on("click", function(e){
+		e.preventDefault();
+		window.location.href = "<?php echo site_url('prain'); ?>";
 	});
 
 });

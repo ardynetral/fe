@@ -1,6 +1,7 @@
 <?php
 
 $routes->add('/users', '\Modules\User\Controllers\User::index', ['filter' => 'login']);
+$routes->add('/users/list_data', '\Modules\User\Controllers\User::list_data', ['filter' => 'login']);
 $routes->add('/users/view/(:alphanum)', '\Modules\User\Controllers\User::view/$1', ['filter' => 'login']);
 $routes->add('/users/add', '\Modules\User\Controllers\User::add', ['filter' => 'login']);
 $routes->post('/users/add', '\Modules\User\Controllers\User::add', ['filter' => 'login']);

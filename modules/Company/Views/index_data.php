@@ -39,7 +39,7 @@ $cp = $data[0];
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						<!-- <button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp; -->
-						<button type="button" id="cancel" class="btn btn-default"><i class="fa fa-times-circle"></i> Back</button>
+						<!-- <a href="<?=site_url('users')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Back</a> -->
 					</div>
 				</div>						
 			</fieldset>

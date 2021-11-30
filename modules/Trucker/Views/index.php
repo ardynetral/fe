@@ -25,9 +25,9 @@
 			<div class="widget-content">
 				<div class="row">
 					<div class="col-md-12">
-						<?php /* if(has_insert==true): ?>
-						<a href="#" class="btn btn-primary" id=""><i class="fa fa-plus-square"></i>&nbsp;Add New</a>
-						<?php endif; */?>
+						<?php if(has_insert==true): ?>
+							<a href="<?=site_url('trucker/add');?>"class="btn btn-primary"><i class="fa fa-plus-square"></i>&nbsp;Add New</a>
+						<?php endif; ?>
 					</div>
 				</div><br>	
 

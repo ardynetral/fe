@@ -321,10 +321,10 @@ if(isset($data) && ($data!='')) {
 								<?php if(isset($act)&&($act=='view')):?>
 								<!-- <button type="button" id="updateData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp; -->
 								<button type="button" id="deleteData" class="btn btn-danger"><i class="fa fa-times-circle"></i> Delete</button>&nbsp;
-								<button type="button" id="cancel" class="btn btn-default"><i class="fa fa-ban"></i> Back</button>								
+								<a href="<?=site_url('contract')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 								<?php else: ?>
 								<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
-								<button type="button" id="cancel" class="btn btn-default text-right"><i class="fa fa-ban"></i> Cancel</button>								
+								<a href="<?=site_url('contract')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 								<?php endif; ?>
 							</td>
 						</tr>

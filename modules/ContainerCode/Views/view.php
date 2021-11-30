@@ -31,7 +31,7 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<a href="<?=site_url('ccode');?>"class="btn btn-default">Back</a>
+						<a href="<?=site_url('containercode');?>"class="btn btn-default">Back</a>
 						<a class="btn btn-success">Edit</a>
 					</div>
 				</div>

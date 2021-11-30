@@ -113,24 +113,11 @@
 							<div class="col-sm-3">
 								<input type="text" name="cunppkp" class="form-control" id="cunppkp">
 							</div>
-						</div>
-						<div class="form-group">
-							<label for="cutype" class="col-sm-2 control-label text-right"></label>
-							<div class="col-sm-3">
-								<select name="groupid" id="groupid" class="form-control">
-									<option value="">-- select --</option>
-									<option value="1">Principal</option>
-									<option value="2">Customer</option>
-									<option value="3">Forwarding/EMKL</option>
-									<option value="4">Trucker</option>
-									<option value="5">Other</option>
-								</select>
-							</div>
-						</div>						
+						</div>				
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
 								<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
-								<button type="button" id="cancel" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</button>
+								<a href="<?=site_url('shipper')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 							</div>
 						</div>						
 					</fieldset>

@@ -33,8 +33,8 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<a href="<?=site_url('principal');?>" class="btn btn-default">Back</a>
-						<a href="<?=site_url('principal/edit/'.$data['prcode']);?>" class="btn btn-success">Edit</a>
+						<a href="<?=site_url('damageprogress');?>" class="btn btn-default">Back</a>
+						<a href="<?=site_url('damageprogress/edit/'.$data['prcode']);?>" class="btn btn-success">Edit</a>
 					</div>
 				</div>
 			</div>		

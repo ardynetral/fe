@@ -213,7 +213,7 @@
 						<div class="form-footer">
 							<div class="form-group text-center">
 								<button type="sumbit" id="update" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp;
-								<button type="button" id="cancel" class="btn btn-default cancel"><i class="fa fa-times-circle"></i> Cancel</button>
+								<a href="<?=site_url('prain')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 							</div>	
 						</div>
 					</form>

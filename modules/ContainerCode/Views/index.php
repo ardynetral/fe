@@ -61,7 +61,7 @@
 									<td width="150">
 										<a href="<?=site_url('containercode/view/'.$cc['cccode']);?>" class="btn btn-xs btn-primary">View</a>
 										<a href="<?=site_url('containercode/edit/'.$cc['cccode'])?>" class="btn btn-xs btn-success">Edit</a>
-										<a href="<?=site_url('containercode/delete/'.$cc['cccode'])?>" class="btn btn-xs btn-danger" id="delete" data-kode="<?=$cc['cccode'];?>">Delete</a>
+										<a href="#" class="btn btn-xs btn-danger delete" id="delete" data-kode="<?=$cc['cccode'];?>">Delete</a>
 									</td>
 								</tr>
 								<?php $i++; endforeach; ?>

@@ -20,8 +20,8 @@
 							<tbody>
 								<tr><th width="100">ID CODE</th><td width="2">:</td><td><?=$ccode['cccode'];?></td></tr>
 								<tr><th width="100">Type</th><td width="2">:</td><td><?=$ccode['ctcode'];?></td></tr>
-								<tr><th width="100">Length</th><td width="2">:</td><td><?=$ccode['length'];?></td></tr>
-								<tr><th width="100">Height</th><td width="2">:</td><td><?=$ccode['height'];?></td></tr>
+								<tr><th width="100">Length</th><td width="2">:</td><td><?=$ccode['cclength'];?></td></tr>
+								<tr><th width="100">Height</th><td width="2">:</td><td><?=$ccode['ccheight'];?></td></tr>
 							</tbody>
 						</table>
 						<?php else: ?>
@@ -31,8 +31,8 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<a href="<?=site_url('containercode');?>"class="btn btn-default">Back</a>
-						<a class="btn btn-success">Edit</a>
+						<a href="<?=site_url('containercode');?>" class="btn btn-default">Back</a>
+						<a href="<?=site_url('containercode/edit/'.$ccode['cccode']);?>" class="btn btn-success">Edit</a>
 					</div>
 				</div>
 			</div>		

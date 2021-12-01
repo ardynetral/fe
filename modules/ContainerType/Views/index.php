@@ -57,7 +57,7 @@
 									<td width="150">
 										<a href="<?=site_url('containertype/view/'.$ct['ctcode']);?>" class="btn btn-xs btn-primary">View</a>
 										<a href="<?=site_url('containertype/edit/'.$ct['ctcode'])?>" class="btn btn-xs btn-success">Edit</a>
-										<a href="<?=site_url('containertype/delete/'.$ct['ctcode'])?>" class="btn btn-xs btn-danger" id="delete" data-kode="<?=$ct['ctcode'];?>">Delete</a>
+										<a href="#" class="btn btn-xs btn-danger delete" id="delete" data-kode="<?=$ct['ctcode'];?>">Delete</a>
 									</td>
 								</tr>
 								<?php $i++; endforeach; ?>
@@ -84,6 +84,48 @@ $(document).ready(function(){
 	        style: 'single'
 	    }
 	});
+
+	$('#ctTable tbody').on('click', '.delete', function(e){
+		e.preventDefault();	
+		var code = $(this).data('kode');
+		Swal.fire({
+		  title: 'Are you sure?',
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+		  if (result.isConfirmed) {
+		  	delete_data(code);
+		  }
+		});		
+		
+	});
+
+	function delete_data(code) {
+		$.ajax({
+			url: "<?php echo site_url('containertype/delete/'); ?>"+code,
+			type: "POST",
+			dataType: 'json',
+			success: function(json) {
+				if(json.message == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});							
+					window.location.href = "<?php echo site_url('containertype'); ?>";
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});						
+				}
+			}
+		});		
+	}	
 
 });
 </script>			

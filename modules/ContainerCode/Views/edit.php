@@ -5,14 +5,14 @@
 
 <div class="content">
 	<div class="main-header">
-		<h2>Container Type</h2>
-		<em>edit container type</em>
+		<h2>Container Code</h2>
+		<em>edit container code</em>
 	</div>
 	<div class="main-content">
 
 		<div class="widget">
 			<div class="widget-header">
-				<h3><i class="fa fa-edit"></i> Edit Container Type (CT)</h3>
+				<h3><i class="fa fa-edit"></i> Edit Container Code (CC)</h3>
 			</div>
 			<div class="widget-content">
 
@@ -36,21 +36,44 @@
 					<?= csrf_field() ?>
 					<fieldset>
 						<div class="form-group">
-							<label for="ctcode" class="col-sm-2 control-label text-right">Code</label>
+							<label for="cccode" class="col-sm-2 control-label text-right">Code</label>
 							<div class="col-sm-3">
-								<input type="text" name="ctcode" class="form-control" id="ctcode" value="<?=@$ctype['ctcode'];?>" readonly>
+								<input type="text" name="cccode" class="form-control" id="cccode" value="<?=@$data['cccode']; ?>" readonly>
 							</div>
 						</div>	
 						<div class="form-group">
-							<label for="ctdesc" class="col-sm-2 control-label text-right">Description</label>
-							<div class="col-sm-8">
-								<input type="text" name="ctdesc"class="form-control" id="ctdesc" value="<?=@$ctype['ctdesc'];?>">
+							<label for="ctype" class="col-sm-2 control-label text-right">Container Type</label>
+							<div class="col-sm-3">
+								<?=$ctype;?>
 							</div>
 						</div>
-						
+						<div class="form-group">
+							<label for="length" class="col-sm-2 control-label text-right">Length</label>
+							<div class="col-sm-3">
+								<input type="text" name="length" class="form-control" id="length"  value="<?=@$data['cclength']; ?>">
+							</div>
+						</div>						
+						<div class="form-group">
+							<label for="height" class="col-sm-2 control-label text-right">Height</label>
+							<div class="col-sm-3">
+								<input type="text" name="height" class="form-control" id="height"  value="<?=@$data['ccheight']; ?>">
+							</div>
+						</div>	
+						<div class="form-group">
+							<label for="alias1" class="col-sm-2 control-label text-right">Alias 1</label>
+							<div class="col-sm-3">
+								<input type="text" name="alias1"class="form-control" id="alias1"  value="<?=@$data['ccalias1']; ?>">
+							</div>
+						</div>	
+						<div class="form-group">
+							<label for="alias2" class="col-sm-2 control-label text-right">Alias 2</label>
+							<div class="col-sm-3">
+								<input type="text" name="alias2"class="form-control" id="alias2" value="<?=@$data['ccalias2']; ?>">
+							</div>
+						</div>																		
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
-								<button type="button" id="updateCType" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>
+								<button type="button" id="updateCCode" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
 								<a href="<?=site_url('containercode')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 							</div>
 						</div>						
@@ -65,7 +88,7 @@
 
 <?= $this->endSection();?>
 
-
+<!-- Load JS -->
 <?= $this->Section('script_js');?>
 
 	<?= $this->include('\Modules\ContainerCode\Views\js'); ?>

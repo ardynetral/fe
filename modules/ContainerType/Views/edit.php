@@ -76,7 +76,7 @@ $(document).ready(function(){
 		formData += "&ctdesc=" + $("#ctdesc").val();
 		console.log(formData);
 		$.ajax({
-			url: "<?php echo site_url('ctype/edit/'); ?>"+$("#ctcode").val(),
+			url: "<?php echo site_url('containertype/edit/'); ?>"+$("#ctcode").val(),
 			type: "POST",
 			data: formData,
 			dataType: 'json',
@@ -87,7 +87,7 @@ $(document).ready(function(){
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					window.location.href = "<?php echo site_url('ctype'); ?>";
+					window.location.href = "<?php echo site_url('containertype'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',

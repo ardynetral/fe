@@ -111,8 +111,8 @@ class ContainerType extends \CodeIgniter\Controller
 
 				$msg = $result['data'];
 				$dataFlash['sukses'] = [
-					'ctcode'	=> $msg['ctCode'],
-					'ctdesc'		=> $msg['ctDesc']
+					'ctcode'	=> $msg['ctcode'],
+					'ctdesc'		=> $msg['ctdesc']
 				];
 
 				session()->setFlashdata('sukses','Success, Container Type Saved.');
@@ -214,11 +214,15 @@ class ContainerType extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);	
-		$success = $result['success'];
-		if($success){
-			session()->setFlashdata('sukses','Success, Container Type : <b>'.$ctcode.'<b> Deleted.');
-			return redirect()->to('containertype');
+		if(isset($result['status']) && ($result['status']=="Failled"))
+		{
+			$data['message'] = $result['message'];
+			echo json_encode($data);die();				
 		}
+
+		session()->setFlashdata('sukses','Hapus data sukses.');
+		$data['message'] = "success";
+		echo json_encode($data);die();
 	}	
 
 	public function ajax_ctype()

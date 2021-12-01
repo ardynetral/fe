@@ -50,7 +50,7 @@
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
 								<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
-								<button type="button" id="cancel" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</button>
+								<a href="<?=site_url('city')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 							</div>
 						</div>						
 					</fieldset>

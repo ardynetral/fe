@@ -63,10 +63,10 @@ class Shipper extends \CodeIgniter\Controller
             $record[] = $v['cucode'];
             $record[] = $v['cuname'];
 			
-			$btn_list .='<a href="#" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>&nbsp;';						
-			$btn_list .='<a href="#" id="editPraIn" class="btn btn-xs btn-success btn-table">edit</a>&nbsp;';
+			$btn_list .='<a href="'.site_url('shipper/view/').$v["cucode"].'" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>&nbsp;';						
+			$btn_list .='<a href="'.site_url('shipper/edit/').$v["cucode"].'" class="btn btn-xs btn-success btn-table">edit</a>&nbsp;';
 			$btn_list .='<a href="#" class="btn btn-xs btn-info btn-table" data-praid="">print</a>&nbsp;';	
-			$btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table">delete</a>';			
+			$btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table delete" data-kode="'.$v['cucode'].'">delete</a>';			
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
 
@@ -144,7 +144,7 @@ class Shipper extends \CodeIgniter\Controller
 					echo json_encode($data);die();				
 				}
 
-				session()->setFlashdata('sukses','Success, Debitur Saved.');
+				session()->setFlashdata('sukses','Berhasil menyimpan data.');
 				$data['message'] = "success";
 				echo json_encode($data);die();
 
@@ -211,7 +211,7 @@ class Shipper extends \CodeIgniter\Controller
 					echo json_encode($data);die();				
 				}
 
-				session()->setFlashdata('sukses','Success, City Saved.');
+				session()->setFlashdata('sukses','Berhasil menyimpan data.');
 				$data['message'] = "success";
 				echo json_encode($data);die();
 
@@ -244,13 +244,13 @@ class Shipper extends \CodeIgniter\Controller
 	{
 		if ($this->request->isAJAX()) 
 		{		
-			$response = $this->client->request('DELETE','debiturs/delete',[
+			$response = $this->client->request('DELETE','debiturs/deleteData',[
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
 				],
 				'form_params' => [
-					'cityId' => $code,
+					'cucode' => $code,
 				]
 			]);
 

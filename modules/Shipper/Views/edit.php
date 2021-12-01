@@ -120,7 +120,7 @@
 								<div class="form-group">
 									<div class="col-sm-offset-3 col-sm-12"><br>
 									<button type="button" id="updateData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp;
-									<a href="<?=site_url('forwading')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+									<a href="<?=site_url('shipper')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 									</div>
 								</div>
 							</div>	
@@ -139,6 +139,6 @@
 <!-- Load JS -->
 <?= $this->Section('script_js');?>
 
-	<?= $this->include('\Modules\Forwading\Views\js'); ?>
+	<?= $this->include('\Modules\Shipper\Views\js'); ?>
 
 <?= $this->endSection();?>

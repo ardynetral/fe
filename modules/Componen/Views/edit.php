@@ -59,6 +59,7 @@
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
 								<button type="button" id="updateData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>
+								<a href="<?=site_url('componen')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 							</div>
 						</div>						
 					</fieldset>

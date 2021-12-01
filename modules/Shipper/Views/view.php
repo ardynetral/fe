@@ -41,8 +41,8 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<a href="<?=site_url('forwading');?>" class="btn btn-default">Back</a>
-						<a href="<?=site_url('forwading/edit/'.$data['cucode']);?>" class="btn btn-success">Edit</a>
+						<a href="<?=site_url('shipper');?>" class="btn btn-default">Back</a>
+						<a href="<?=site_url('shipper/edit/'.$data['cucode']);?>" class="btn btn-success">Edit</a>
 					</div>
 				</div>
 			</div>		

@@ -328,7 +328,7 @@
 						</table>						
 					</div>
 					<div class="widget-footer text-center">
-						<button type="button" id="cancel" class="btn btn-default cancel"><i class="fa fa-times-circle"></i> Cancel</button>
+					<a href="<?=site_url('prain')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 					</div>					
 				</div>
 			</div>

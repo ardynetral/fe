@@ -242,7 +242,7 @@ if(isset($data) && ($data!='')) {
 								<button type="button" id="cancel" class="btn btn-default"><i class="fa fa-ban"></i> Back</button>								
 								<?php else: ?>
 								<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
-								<button type="button" id="cancel" class="btn btn-default text-right"><i class="fa fa-ban"></i> Cancel</button>								
+								<a href="<?=site_url('gateout')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 								<?php endif; ?>
 							</td>
 						</tr>						

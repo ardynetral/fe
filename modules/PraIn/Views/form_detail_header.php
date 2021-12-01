@@ -94,7 +94,7 @@ $group_id = $token['groupId'];
 					<?php else:?>
 						<button type="button" id="updateDetail" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>
 					<?php endif; ?>
-					<button type="button" id="cancelDetail" class="btn btn-default cancel"><i class="fa fa-times-circle"></i> Cancel</button>
+					<a href="<?=site_url('prain')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 				</div>
 			</div>						
 		</fieldset>

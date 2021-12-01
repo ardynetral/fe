@@ -29,8 +29,8 @@
 				</div>
 				<div class="row">
 					<div class="col-md-12">
-						<a href="<?=site_url('country');?>" class="btn btn-default">Back</a>
 						<a href="<?=site_url('country/edit/'.$data['cncode']);?>" class="btn btn-success">Edit</a>
+						<a href="<?=site_url('module')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 					</div>
 				</div>
 			</div>		

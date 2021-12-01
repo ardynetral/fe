@@ -9,6 +9,52 @@ class DamageType extends \CodeIgniter\Controller
 		helper(['url','form','app']);
 		$this->client = api_connect();
 	}
+
+	function list_data(){		
+		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+        $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
+        $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
+        // $sort_dir = $this->get_sort_dir();		
+		// PULL data from API
+		$response = $this->client->request('GET','damagetype/list',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'json' => [
+					'start' => (int)$offset,
+					'rows'	=> (int)$limit
+				]
+			]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => @$result['data']['count'],
+            "recordsFiltered" => @$result['data']['count'],
+            "data" => array()
+        );
+		$no = ($offset !=0)?$offset+1 :1;
+		foreach ($result['data']['datas'] as $k=>$v) {
+			$btn_list="";
+            $record = array(); 
+            $record[] = $no;
+            $record[] = $v['dycode'];
+            $record[] = $v['dydesc'];
+			
+			$btn_list .= '<a href="'.site_url().'/damagetype/view/'.$v['dycode'].'" class="btn btn-xs btn-primary btn-tbl">View</a>';	
+			$btn_list .= '<a href="'.site_url().'/damagetype/edit/'.$v['dycode'].'" class="btn btn-xs btn-success btn-tbl">Edit</a>';
+			$btn_list .= '<a href="'.site_url().'/damagetype/delete/'.$v['dycode'].'" class="btn btn-xs btn-danger btn-tbl">Delete</a>';
+            $record[] = '<div>'.$btn_list.'</div>';
+            $no++;
+
+            $output['data'][] = $record;
+        } 
+        
+        echo json_encode($output);
+		
+	}
+
 	public function index()
 	{
 		$data = [];

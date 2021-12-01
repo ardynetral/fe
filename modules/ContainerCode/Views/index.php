@@ -1,7 +1,11 @@
 <?= $this->extend('smartdepo/dashboard/template') ?>
 
 <?= $this->section('content') ?>
-
+<style type="text/css">
+	.btn-tbl{
+		margin-right: 5px;
+	}
+</style>
 <div class="content">
 	<div class="main-header">
 		<h2>Container Code</h2>
@@ -28,9 +32,7 @@
 				</div><br>		
 				<div class="row">
 					<div class="col-md-12">
-						<?php if($ccode==""): ?>
-							<p class="alert alert-warning">Something wrong!. Data not found.</p>
-						<?php else: ?>
+						
 						<table>
 							<tbody>
 								<tr><th width="100">ID Code</th><td width="2">:</td>
@@ -50,25 +52,10 @@
 								</tr>
 							</thead>
 							
-							<tbody>
-								<?php $i=1; foreach($ccode as $cc): ?>
-								<tr>
-									<td><?=$i;?></td>
-									<td><?=$cc['cccode'];?></td>
-									<td><?=$cc['ctcode'];?></td>
-									<td><?=$cc['cclength'];?></td>
-									<td><?=$cc['ccheight'];?></td>
-									<td width="150">
-										<a href="<?=site_url('containercode/view/'.$cc['cccode']);?>" class="btn btn-xs btn-primary">View</a>
-										<a href="<?=site_url('containercode/edit/'.$cc['cccode'])?>" class="btn btn-xs btn-success">Edit</a>
-										<a href="<?=site_url('containercode/delete/'.$cc['cccode'])?>" class="btn btn-xs btn-danger" id="delete" data-kode="<?=$cc['cccode'];?>">Delete</a>
-									</td>
-								</tr>
-								<?php $i++; endforeach; ?>
-							</tbody>
+							
 						</table>
 
-						<?php endif; ?>
+						
 
 					</div>
 				</div>

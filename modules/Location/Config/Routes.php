@@ -7,3 +7,4 @@ $routes->post('/location/add', '\Modules\Location\Controllers\Location::add', ['
 $routes->add('/location/edit/(:alphanum)', '\Modules\Location\Controllers\Location::edit/$1', ['filter' => 'login']);
 $routes->post('/location/edit/(:alphanum)', '\Modules\Location\Controllers\Location::edit/$1', ['filter' => 'login']);
 $routes->add('/location/delete/(:alphanum)', '\Modules\Location\Controllers\Location::delete/$1', ['filter' => 'login']);
+$routes->add('/location/list_data', '\Modules\Location\Controllers\Location::list_data', ['filter' => 'login']);

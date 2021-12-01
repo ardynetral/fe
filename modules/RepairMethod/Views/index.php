@@ -31,7 +31,23 @@
 					</div>
 				</div><br>	
 
-				<?= $this->include('\Modules\RepairMethod\Views\index_data');?>
+				<div class="row">
+					<div class="col-md-12">
+						<table id="ctTable" class="table table-hover table-bordered" style="width:100%;">
+							<thead>
+								<tr>
+									<th width="40">#</th>
+									<th>RMCODE</th>
+									<th>RMDESC</th>
+									<th>RMCLEAN</th>
+									<th></th>
+								</tr>
+							</thead>
+
+						</table>
+					</div>
+							
+				</div>
 
 			</div>		
 		</div>		

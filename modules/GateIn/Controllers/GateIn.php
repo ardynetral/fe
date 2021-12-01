@@ -210,5 +210,55 @@ class GateIn extends \CodeIgniter\Controller
 				echo json_encode($data);die();				    	
 		    }
 		}
+	}
+
+	function list_data(){		
+		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+        $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
+        $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
+        	
+		// PULL data from API
+		$response = $this->client->request('GET','dataListReports/listAllGateOuts',
+			[
+				'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+				'query' => [
+				'offset' => $offset,
+				'limit'	=> $limit
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => @$result['data']['Total'],
+            "recordsFiltered" => @$result['data']['Total'],
+            "data" => array()
+        );
+		$no = ($offset !=0)?$offset+1 :1;
+		foreach ($result['data']['datas'] as $k=>$v) {
+			$btn_list="";
+            $record = array(); 
+            $record[] = $no;
+            $record[] = $v['CRNO'];
+            $record[] = $v['CPOTGL'];
+            $record[] = $v['CPOPR1'];
+            $record[] = $v['CPOORDERNO'];
+			$record[] = $v['CPOEIR'];
+			
+			$btn_list .='<a href="#" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>';						
+			$btn_list .='<a href="#" id="editPraIn" class="btn btn-xs btn-success btn-table">edit</a>';
+			$btn_list .='<a href="#" class="btn btn-xs btn-info btn-table" data-praid="">print</a>';	
+			$btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table">delete</a>';			
+            $record[] = '<div>'.$btn_list.'</div>';
+            $no++;
+
+            $output['data'][] = $record;
+        } 
+        echo json_encode($output);
+		
 	}		
 }

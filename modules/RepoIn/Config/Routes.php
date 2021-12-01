@@ -13,4 +13,5 @@ $routes->add('/repoin/ajax_prcode_listOne/(:alphanum)', '\Modules\RepoIn\Control
 $routes->add('/repoin/ajax_vessel_listOne/(:any)', '\Modules\RepoIn\Controllers\RepoIn::ajax_vessel_listOne/$1', ['filter' => 'login']);
 $routes->add('/repoin/ajax_voyage_list', '\Modules\RepoIn\Controllers\RepoIn::ajax_voyage_list', ['filter' => 'login']);
 $routes->add('/repoin/print_order/(:alphanum)', '\Modules\RepoIn\Controllers\RepoIn::print_order/$1', ['filter' => 'login']);
+$routes->add('/repoin/list_data', '\Modules\RepoIn\Controllers\RepoIn::list_data', ['filter' => 'login']);
 

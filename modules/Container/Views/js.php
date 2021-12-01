@@ -5,10 +5,10 @@ $(document).ready(function(){
 	$('.select-ccode').select2();
 	$('.select-material').select2();
 
-	$("#ctTable").DataTable({
-        "paging":   false,
-        "info": false,		
-	});
+	// $("#ctTable").DataTable({
+ //        "paging":   false,
+ //        "info": false,		
+	// });
 
 	$("#cccode").on("change", function(){
 		var cccode = $(this).val();
@@ -170,5 +170,26 @@ $(document).ready(function(){
 	    var cracep_val = this.checked ? '1' : '0';
 	    this.value=cracep_val;
 	});		
+
+	runDataTables();
+	var table = $('#ctTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "autoWidth": false,
+        "fixedColumns": true,
+        "ajax": $.fn.dataTable.pipeline( {
+            url: '<?=site_url('container/list_data');?>',
+            pages: 5  
+        } )
+        ,
+        sDom: 'T<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-right"ip>>>',
+        PaginationType : "bootstrap", 
+        oLanguage: { "sSearch": "",
+            "sLengthMenu" : "_MENU_ &nbsp;"}
+    });
+	
+	$('.dataTables_filter input').attr("placeholder", "Search");
+    $('.DTTT_container').css('display','none');
+    $('.DTTT').css('display','none');	
 });
 </script>	

@@ -1,7 +1,11 @@
 <?= $this->extend('smartdepo/dashboard/template') ?>
 
 <?= $this->section('content') ?>
-
+<style type="text/css">
+	.btn-tbl{
+		margin-right: 5px;
+	}
+</style>
 <div class="content">
 	<div class="main-header">
 		<h2>Container</h2>
@@ -52,9 +56,7 @@
 
 						</table>
 					</div>
-					<div class="col-sm-12">
-						<p><?=$pager->links('container');?></p>
-					</div>					
+							
 				</div>
 			</div>		
 		</div>		

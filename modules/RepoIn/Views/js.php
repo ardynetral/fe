@@ -12,10 +12,10 @@ $(document).ready(function() {
 	$('.select-ccode').select2();
 	$('.selects').select2();
 	// DATATABLE
-	$("#ctTable").DataTable({
-        "paging": false,
-        "info": false,		
-	});
+	// $("#ctTable").DataTable({
+ //        "paging": false,
+ //        "info": false,		
+	// });
 	// datePicker
 	$(".tanggal").datepicker({
 		autoclose:true,
@@ -378,6 +378,27 @@ $(document).ready(function() {
 			$(".breakdownBill").addClass('hideBlock');
 		}
 	});
+
+	runDataTables();
+	var table = $('#ctTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "autoWidth": false,
+        "fixedColumns": true,
+        "ajax": $.fn.dataTable.pipeline( {
+            url: '<?=site_url('repoin/list_data');?>',
+            pages: 5  
+        } )
+        ,
+        sDom: 'T<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-right"ip>>>',
+        PaginationType : "bootstrap", 
+        oLanguage: { "sSearch": "",
+            "sLengthMenu" : "_MENU_ &nbsp;"}
+    });
+	
+	$('.dataTables_filter input').attr("placeholder", "Search");
+    $('.DTTT_container').css('display','none');
+    $('.DTTT').css('display','none');
 
 });
 

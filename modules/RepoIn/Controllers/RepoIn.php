@@ -15,6 +15,55 @@ class RepoIn extends \CodeIgniter\Controller
 		$this->client = api_connect();
 	}
 
+	function list_data(){		
+		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+        $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
+        $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
+        // $sort_dir = $this->get_sort_dir();		
+		// PULL data from API
+		$response = $this->client->request('GET','dataListReports/listAllRepoIns',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'query' => [
+					'offset' => (int)$offset,
+					'limit'	=> (int)$limit
+				]
+			]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => @$result['data']['Total'],
+            "recordsFiltered" => @$result['data']['Total'],
+            "data" => array()
+        );
+		$no = ($offset !=0)?$offset+1 :1;
+		foreach ($result['data']['datas'] as $k=>$v) {
+			$btn_list="";
+            $record = array(); 
+            $record[] = $no;
+            $record[] = $v['CPIPRANO'];
+            $record[] = $v['CPIPRATGL'];
+            $record[] = $v['CPOPR'];
+            $record[] = $v['VESID'];
+            $record[] = $v['CPIVOY'];
+			
+			$btn_list .= '<a href="#" id="deleteRepoIn" class="btn btn-xs btn-primary btn-tbl">View</a>';	
+			$btn_list .= '<a href="#" data-repoid="'.$v['CPID'].'" class="btn btn-xs btn-info print_order btn-tbl">Print</a>';
+			$btn_list .= '<a href="#" id="deleteRepoIn" class="btn btn-xs btn-danger btn-tbl">Delete</a>';
+            $record[] = '<div>'.$btn_list.'</div>';
+            $no++;
+
+            $output['data'][] = $record;
+        } 
+        
+        echo json_encode($output);
+		
+	}
+
 	public function index()
 	{
 		check_exp_time();
@@ -29,17 +78,9 @@ class RepoIn extends \CodeIgniter\Controller
 		$token = get_token_item();
 		$group_id = $token['groupId'];
 		$prcode = $token['prcode'];
+		$data = [];
 		$data['prcode'] = $prcode;
 		$data['cucode'] = $prcode;
-
-		$data = [];
-		$paging = new MyPaging();
-		$limit = 10;
-		$endpoint = 'dataListReports/listAllRepoIns';
-		$data['data'] = $paging->paginate($endpoint,$limit,'repoin');
-		$data['pager'] = $paging->pager;
-		$data['nomor'] = $paging->nomor($this->request->getVar('page_repoin'), $limit);
-
 		$data['page_title'] = "Order Repo Pra In";
 		$data['page_subtitle'] = "Order Repo Pra In Page";		
 		return view('Modules\RepoIn\Views\index',$data);

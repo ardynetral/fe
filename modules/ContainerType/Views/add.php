@@ -76,18 +76,18 @@ $(document).ready(function(){
 		formData += "&ctdesc=" + $("#ctdesc").val();
 		console.log(formData);
 		$.ajax({
-			url: "<?php echo site_url('ctype/add'); ?>",
+			url: "<?php echo site_url('containertype/add'); ?>",
 			type: "POST",
 			data: formData,
 			dataType: 'json',
 			success: function(json) {
 				if(json.message == "success") {
 					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					window.location.href = "<?php echo site_url('ctype'); ?>";
+					window.location.href = "<?php echo site_url('containertype'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',

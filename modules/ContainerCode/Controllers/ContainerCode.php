@@ -108,7 +108,82 @@ class ContainerCode extends \CodeIgniter\Controller
 		return view('Modules\ContainerCode\Views\add',$data);		
 	}	
 
-	public function ctype_dropdown()
+	public function edit($code)
+	{
+		$data = [];
+
+		if ($this->request->isAJAX()) 
+		{
+	    	$cccode = $this->request->getPost('cccode');
+	    	$ctcode = $this->request->getPost('ctype');
+	    	$height = $this->request->getPost('height');
+	    	$length = $this->request->getPost('length');
+	    	$alias1 = $this->request->getPost('alias1');
+	    	$alias2 = $this->request->getPost('alias2');
+
+			$validate = $this->validate([
+	            'cccode' 	=> 'required',
+	            'ctype'  => 'required',
+	            'height'  => 'required',
+	            'length'  => 'required'
+	        ]);			
+			// echo var_dump($_POST);die();
+		    if ($this->request->getMethod() === 'post' && $validate)
+		    {
+				$user = $this->get_admin();
+				$response = $this->client->request('POST','containercode/update',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'json' => [
+						'ccCode' =>$cccode,
+						'ctCode' =>$ctcode,
+						'ccLength' =>$length,
+						'ccHeight' =>$height,
+						'ccAlias1' =>$alias1,
+						'ccAlias2' =>$alias2,
+						'idUser' =>$user['user_id']
+					]
+				]);
+
+				$result = json_decode($response->getBody()->getContents(), true);	
+				$dt_err="";
+
+				if(isset($result['status']) && ($result['status']=="Failled"))
+				{
+					$data['message'] = $result['message'];
+					echo json_encode($data);die();				
+				}
+
+				session()->setFlashdata('sukses','Success, Container Code Saved.');
+				$data['message'] = "success";
+				echo json_encode($data);die();
+
+			}
+			else 
+			{
+		    	$data['message'] = \Config\Services::validation()->listErrors();
+		    	echo json_encode($data);die();			
+			}			
+		}		
+		$response = $this->client->request('GET','containercode/listOne',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'form_params' => [
+				'ccCode' => service('uri')->getSegment('3'),
+				]
+			]);
+			
+		$result = json_decode($response->getBody()->getContents(), true);	
+		$data['ctype'] = $this->ctype_dropdown($result['data']['ctcode']);
+		$data['data'] = $result['data'];		
+		return view('Modules\ContainerCode\Views\edit',$data);		
+	}	
+
+	public function ctype_dropdown($selected="")
 	{
 		$data = [];
 		$response = $this->client->request('GET','containertype/list',[
@@ -123,7 +198,7 @@ class ContainerCode extends \CodeIgniter\Controller
 		$option = "";
 		$option .= '<select name="ctype" id="ctype" class="select-ctype">';
 		foreach($ctype as $ct) {
-			$option .= "<option value=".$ct['ctcode'].">".$ct['ctcode']."</option>"; 
+			$option .= "<option value=".$ct['ctcode'] . ((isset($selected)&&($selected==$ct['ctcode']))?' selected':'').">".$ct['ctcode']."</option>"; 
 		}
 		$option .="</select>";
 		return $option; 
@@ -176,11 +251,15 @@ class ContainerCode extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);	
-		$success = $result['success'];
-		if($success){
-			session()->setFlashdata('sukses','Success, Container Type : <b>'.$ctcode.'<b> Deleted.');
-			return $this->index();
+		if(isset($result['status']) && ($result['status']=="Failled"))
+		{
+			$data['message'] = $result['message'];
+			echo json_encode($data);die();				
 		}
+
+		session()->setFlashdata('sukses','Hapus data sukses.');
+		$data['message'] = "success";
+		echo json_encode($data);die();
 	}	
 	public function get_admin()
 	{

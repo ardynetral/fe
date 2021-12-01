@@ -36,23 +36,6 @@
 									<th></th>
 								</tr>
 							</thead>
-							
-							<tbody>
-								<?php $i=1; foreach($container as $cr): ?>
-								<tr>
-									<td><?=$nomor++;?></td>
-									<td><?=$cr['crno'];?></td>
-									<td><?=$cr['container_code']['ctcode'];?></td>
-									<td><?=$cr['container_code']['cclength'];?></td>
-									<td><?=$cr['container_code']['ccheight'];?></td>
-									<td width="150">
-										<a href="<?=site_url('container/view/'.$cr['crno']);?>" class="btn btn-xs btn-primary">View</a>
-										<a href="<?=site_url('container/edit/'.$cr['crno'])?>" class="btn btn-xs btn-success">Edit</a>
-										<a href="#" class="btn btn-xs btn-danger delete" data-kode="<?=$cr['crno']?>">Delete</a>
-									</td>
-								</tr>
-								<?php $i++; endforeach; ?>
-							</tbody>
 
 						</table>
 					</div>

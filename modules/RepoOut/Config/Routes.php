@@ -5,3 +5,4 @@ $routes->add('/repoout', '\Modules\RepoOut\Controllers\RepoOut::index', ['filter
 // $routes->add('/prain/add', '\Modules\PraIn\Controllers\PraIn::add', ['filter' => 'login']);
 // $routes->add('/prain/edit/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::edit/$1', ['filter' => 'login']);
 // $routes->add('/prain/delete/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::delete/$1', ['filter' => 'login']);
+$routes->add('/repoout/list_data', '\Modules\RepoOut\Controllers\RepoOut::list_data', ['filter' => 'login']);

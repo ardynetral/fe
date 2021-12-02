@@ -19,7 +19,7 @@ $(document).ready(function() {
         PaginationType : "bootstrap", 
         oLanguage: { "sSearch": "",
             "sLengthMenu" : "_MENU_ &nbsp;"}
-    });
+	});
 	
 	$('.dataTables_filter input').attr("placeholder", "Search");
     $('.DTTT_container').css('display','none');
@@ -175,16 +175,16 @@ function runDataTables() {
             if (settings.clearCache) { 
                 ajax = true;
                 settings.clearCache = false;
-            }
+				}
             else if (cacheLower < 0 || requestStart < cacheLower || requestEnd > cacheUpper) { 
                 ajax = true;
-            }
+			}
             else if (JSON.stringify(request.order) !== JSON.stringify(cacheLastRequest.order) ||
                 JSON.stringify(request.columns) !== JSON.stringify(cacheLastRequest.columns) ||
                 JSON.stringify(request.search) !== JSON.stringify(cacheLastRequest.search)
         ) { 
                 ajax = true;
-            }
+			}
 
             cacheLastRequest = $.extend(true, {}, request);
 
@@ -200,15 +200,15 @@ function runDataTables() {
                 request.rows = requestLength;
 
                 if ($.isFunction(conf.data)) {
-                   
+		
                     var d = conf.data(request);
                     if (d) {
                         $.extend(request, d);
                     }
-                }
+				}
                 else if ($.isPlainObject(conf.data)) { 
                     $.extend(request, conf.data);
-                }
+			}
 
                 settings.jqXHR = $.ajax({
                     "type": conf.method,
@@ -229,13 +229,13 @@ function runDataTables() {
 
                         if (cacheLower != drawStart) {
                             json.data.splice(0, drawStart - cacheLower);
-                        }
+					}
                         json.data.splice(requestLength, json.data.length);
 
                         drawCallback(json);
-                    }
-                });
-            }
+				}
+	});
+				}
             else {
                 json = $.extend(true, {}, cacheLastJson);
                 json.draw = request.draw;  
@@ -243,8 +243,8 @@ function runDataTables() {
                 json.data.splice(requestLength, json.data.length);
 
                 drawCallback(json);
-            }
-        }
+				}
+			}
     }    
 }
 </script>

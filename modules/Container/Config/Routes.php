@@ -10,3 +10,4 @@ $routes->add('/container/edit/(:alphanum)', '\Modules\Container\Controllers\Cont
 $routes->add('/container/edit/(:alphanum)', '\Modules\Container\Controllers\Container::edit/$1', ['filter' => 'login']);
 $routes->add('/container/delete/(:alphanum)', '\Modules\Container\Controllers\Container::delete/$1', ['filter' => 'login']);
 $routes->add('/container/ajax_ccode/(:alphanum)', '\Modules\Container\Controllers\Container::ajax_ccode/$1', ['filter' => 'login']);
+$routes->add('/container/list_data', '\Modules\Container\Controllers\Container::list_data', ['filter' => 'login']);

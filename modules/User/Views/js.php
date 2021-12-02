@@ -19,7 +19,7 @@ $(document).ready(function() {
         PaginationType : "bootstrap", 
         oLanguage: { "sSearch": "",
             "sLengthMenu" : "_MENU_ &nbsp;"}
-    });
+	});
 
 	check_group();
 

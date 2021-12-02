@@ -41,7 +41,7 @@ class User extends \CodeIgniter\Controller
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
 		// PULL data from API
-		$response = $this->client->request('GET','users/allUser',[
+			$response = $this->client->request('GET','users/allUser',[
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
@@ -81,7 +81,7 @@ class User extends \CodeIgniter\Controller
 			else:
 				$btn_list .= '<span class="btn btn-xs disabled">Activated</span>';
 			endif;
-			
+		
             $record[] = '<div>'.$btn_list.'</div>';				
             $no++;
             $output['data'][] = $record;

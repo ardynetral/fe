@@ -167,9 +167,8 @@ function list_menu() {
 								if(service('uri')->getSegment(1)==$child['modules']['module_url']) {
 									echo "<li class='active'>" ;
 								}else{
-									echo "<li>" ;
-								}
-								
+								echo "<li>" ;
+								}								
 								echo '<a href="'.site_url().'/'.$child['modules']['module_url'].'"><i class="fa ' .$child['modules']['module_icon']. '"></i><span class="text">' . $child['modules']['module_name'] . '</span></a>';
 								echo "</li>";
 							}

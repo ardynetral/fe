@@ -63,7 +63,7 @@
 							<label for="alias1" class="col-sm-2 control-label text-right">Alias 1</label>
 							<div class="col-sm-3">
 								<input type="text" name="alias1"class="form-control" id="alias1"  value="<?=@$data['ccalias1']; ?>">
-							</div>
+						</div>
 						</div>	
 						<div class="form-group">
 							<label for="alias2" class="col-sm-2 control-label text-right">Alias 2</label>

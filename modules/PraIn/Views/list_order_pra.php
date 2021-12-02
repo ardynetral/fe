@@ -28,6 +28,7 @@
 						<td><?=$row['cpivoyid']?></td>
 						<td>
 						<?php if(has_approval==true): ?>
+<<<<<<< HEAD
             
 							<?php if($row['appv']==0): ?>
 								<a href="<?=site_url('prain/view/'.$row['praid']);?>" id="" class="btn btn-xs btn-default" data-praid="<?=$row['praid'];?>">view</a>
@@ -35,6 +36,15 @@
 								<?php if(has_delete==true): ?>
 								<a href="#" id="deletePraIn" class="btn btn-xs btn-danger">delete</a>
 								<?php endif; ?>											
+=======
+	
+									<?php if($row['appv']==0): ?>
+								<a href="<?=site_url('prain/view/'.$row['praid']);?>" id="" class="btn btn-xs btn-default" data-praid="<?=$row['praid'];?>">view</a>
+									<a href="<?=site_url('prain/approve_order/'.$row['praid']);?>" id="" class="btn btn-xs btn-primary" data-praid="<?=$row['praid'];?>">Approval</a>
+										<?php if(has_delete==true): ?>
+										<a href="#" id="deletePraIn" class="btn btn-xs btn-danger">delete</a>
+										<?php endif; ?>											
+>>>>>>> cd1ad87e995100840895862f246b6cf14957748d
 						
 							<?php elseif($row['appv']==1): ?>
 								<a href="<?=site_url('prain/proforma/'.$row['praid']);?>" id="" class="btn btn-xs btn-primary" data-praid="<?=$row['praid'];?>">Proforma</a>
@@ -44,9 +54,15 @@
 								<!-- <a href="<?=site_url('prain/view/'.$row['praid']);?>" id="" class="btn btn-xs btn-default" data-praid="<?=$row['praid'];?>">view</a> -->
 								<a href="<?=site_url('prain/final_order/'.$row['praid']);?>" class="btn btn-xs btn-info">Cetak Kitir</a>
 						
+<<<<<<< HEAD
 							<?php endif; ?>	
 						
 						<?php endif; ?>
+=======
+									<?php endif; ?>	
+						
+							<?php endif; ?>
+>>>>>>> cd1ad87e995100840895862f246b6cf14957748d
 
 
 						</td>

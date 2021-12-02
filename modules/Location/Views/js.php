@@ -16,7 +16,7 @@ $(document).ready(function() {
         PaginationType : "bootstrap", 
         oLanguage: { "sSearch": "",
             "sLengthMenu" : "_MENU_ &nbsp;"}
-    });
+	});
 	
 	$('.dataTables_filter input').attr("placeholder", "Search");
     $('.DTTT_container').css('display','none');

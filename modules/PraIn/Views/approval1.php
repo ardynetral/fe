@@ -341,9 +341,12 @@
 					<?php endif; ?>
 					<a href="<?=site_url('prain');?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>	
 					</div>
+
+
+
 				</div>				
 			</div>
-		</div>			
+		</div>		
 		
 	</div>
 </div>

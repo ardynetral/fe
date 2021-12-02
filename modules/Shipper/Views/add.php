@@ -133,7 +133,10 @@
 
 <!-- Load JS -->
 <?= $this->Section('script_js');?>
+
+
+
 	<?= $this->include('\Modules\Shipper\Views\js'); ?>
-	<?= $this->include('\Modules\Forwading\Views\js'); ?>
+
 
 <?= $this->endSection();?>

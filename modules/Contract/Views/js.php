@@ -20,16 +20,7 @@ $(document).ready(function() {
         PaginationType : "bootstrap", 
         oLanguage: { "sSearch": "",
             "sLengthMenu" : "_MENU_ &nbsp;"}
-<<<<<<< HEAD
-    });
-	
-	$('.dataTables_filter input').attr("placeholder", "Search");
-    $('.DTTT_container').css('display','none');
-    $('.DTTT').css('display','none');
-    // END DATATABLE
-=======
 	});
->>>>>>> cd1ad87e995100840895862f246b6cf14957748d
 	
 	$('.dataTables_filter input').attr("placeholder", "Search");
     $('.DTTT_container').css('display','none');

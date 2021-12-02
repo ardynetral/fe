@@ -41,7 +41,9 @@
 							<label class="col-sm-2 control-label text-right">Container No. </label>
 							<div class="col-sm-3">
 								<input type="text" name="crno" class="form-control" id="crno" value="<?=$container['crno']?>">
+								<i class="err-crno text-danger"></i>
 							</div>
+							<i class="fa fa-check text-success" id="validNum" style="display:none;padding-top:10px;font-size:18px;color:#3ad108"></i>
 						</div>	
 						<div class="form-group">
 							<label class="col-sm-2 control-label text-right">ID Code </label>

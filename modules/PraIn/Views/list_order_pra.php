@@ -1,3 +1,4 @@
+
 <?php if($data_pra ==''): ?>
 	<p class="alert alert-warning"> Data not found.</p>
 <?php else : ?>
@@ -58,5 +59,6 @@
 		</table>
 	</div>
 </div>
+
 
 <?php endif; ?>	

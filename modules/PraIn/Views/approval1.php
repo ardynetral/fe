@@ -333,7 +333,7 @@
 			<div class="col-md-12">
 				<div class="widget widget-table">
 					<div class="widget-content text-center">
-<<<<<<< HEAD
+
 					<?php if((isset($act)&&$act=="approval1")&&($data['orderPraContainers']!=null)):?>
 
 						<button type="button" id="ApprovalOrder" class="btn btn-danger"><i class="fa fa-check-circle"></i> Approve Order</button>
@@ -341,15 +341,9 @@
 					<?php endif; ?>
 					<a href="<?=site_url('prain');?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>	
 					</div>
-=======
-							<?php if((isset($act)&&$act=="approval1")&&($data['orderPraContainers']!=null)):?>
 
-						<button type="button" id="ApprovalOrder" class="btn btn-danger"><i class="fa fa-check-circle"></i> Approve Order</button>
 
-							<?php endif; ?>
-							<a href="<?=site_url('prain');?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>			
-						</div>
->>>>>>> cd1ad87e995100840895862f246b6cf14957748d
+
 				</div>				
 			</div>
 		</div>		

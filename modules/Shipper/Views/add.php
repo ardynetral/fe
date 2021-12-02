@@ -134,14 +134,9 @@
 <!-- Load JS -->
 <?= $this->Section('script_js');?>
 
-<<<<<<< HEAD
+
+
 	<?= $this->include('\Modules\Shipper\Views\js'); ?>
-=======
-<<<<<<< HEAD:modules/Forwading/Views/add.php
-	<?= $this->include('\Modules\Forwading\Views\js'); ?>
-=======
-	<?= $this->include('\Modules\Shipper\Views\js'); ?>
->>>>>>> cd1ad87e995100840895862f246b6cf14957748d:modules/Shipper/Views/add.php
->>>>>>> cd1ad87e995100840895862f246b6cf14957748d
+
 
 <?= $this->endSection();?>

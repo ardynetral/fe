@@ -45,13 +45,26 @@
 						<div class="form-group">
 							<label for="username" class="col-sm-2 control-label text-right">Username</label>
 							<div class="col-sm-3">
-								<input type="text" name="username"class="form-control" id="username" value="<?=@$data['username']?>">
+								<input type="text" name="username" class="form-control" id="username" value="<?=@$data['username']?>" readonly>
 							</div>
-						</div>						
+						</div>	
+						<div class="form-group">
+							<label for="username" class="col-sm-2 control-label text-right">Password</label>
+							<div class="col-sm-3">
+								<input type="password" name="password" class="form-control" id="password" value="<?=@$data['password']?>">
+							</div>
+						</div>	
+						<div class="form-group">
+							<label for="username" class="col-sm-2 control-label text-right">Block user</label>
+							<div class="col-sm-3">
+								<input type="radio" name="isblock" class="" id="isblocky" value="y" <?=((isset($data['is_block'])&&($data['is_block']=='y')) ? "checked":"");?>> Yes
+								<input type="radio" name="isblock" class="" id="isblockn" value="n" <?=((isset($data['is_block'])&&($data['is_block']=='n')) ? "checked":"");?>> No 
+							</div>
+						</div>																		
 						<div class="form-group">
 							<label for="email" class="col-sm-2 control-label text-right">Email</label>
 							<div class="col-sm-3">
-								<input type="text" name="email"class="form-control" id="email" value="<?=@$data['email']?>">
+								<input type="text" name="email"class="form-control" id="email" value="<?=@$data['email']?>" readonly>
 							</div>
 						</div>		
 						<div class="form-group">
@@ -61,21 +74,21 @@
 							</div>
 						</div>
 
-						<?php if($data['group_id']==1):?>
-						<div class="form-group" id="input_debitur">
+
+						<div class="form-group" id="input_debitur" style="display:none;">
 							<label for="cucode" class="col-sm-2 control-label text-right">EMKL</label>
 							<div class="col-sm-4" id="debitur-dropdown">
-								
+							<?=$debitur_dropdown;?>
 							</div>
 						</div>	
-						<?php elseif($data['group_id']==2):?>
-						<div class="form-group" id="input_principal">
+
+						<div class="form-group" id="input_principal" style="display:none;">
 							<label for="prcode" class="col-sm-2 control-label text-right">Principal</label>
-							<div class="col-sm-4" id="pr-dropdown">
+							<div class="col-sm-4" id="pr-dropdown" >
 								<?=$principal_dropdown;?>
 							</div>
 						</div>	
-						<?php endif; ?>
+
 
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">

@@ -159,23 +159,27 @@ class User extends \CodeIgniter\Controller
 				]);
 
 				$result = json_decode($response->getBody()->getContents(), true);	
-				// echo var_dump($result);die();
-				$dt_err="";
-				if($result['success']!=true)
+				// echo $result["success"];die();
+				if(($result["success"]=="Failled")&&($result["message"]!="user created"))
 				{
-					foreach($result['message'] as $message_arr){
-						foreach($message_arr as $msg) {
-							$dt_err .= $msg ."<br>";
+					$msg = array();
+					$i=1;
+					foreach($result["message"] as $results) {
+						foreach($results as $row){
+							$msg[] = "- ".$row."<br>";
 						}
 					}
-					$data['message'] = $dt_err;
-					echo json_encode($data);die();				
+					$data["status"] = "failled";
+					$data["message"] = $msg;
+				} else {
+					$data['status'] = "success";
+					$data['message'] = $result["message"];
 				}
 
-				session()->setFlashdata('sukses','Success, New User Created.');
-				$data['message'] = "success";
-				$data['data'] = $result['message'];
+				session()->setFlashdata('sukses','Berhasil menyimpan data.');
 				echo json_encode($data);die();
+
+				// echo json_encode($data);die();
 			}
 			else 
 			{
@@ -200,7 +204,9 @@ class User extends \CodeIgniter\Controller
 				"groupId"	=> $_POST["group_id"],
 				"fullName"	=> $_POST["fullname"],
 				"username"	=> $_POST["username"],
+				"password"	=> $_POST["password"],
 				"email"		=> $_POST["email"],
+				"isBlock"	=> $_POST["isblock"],
 				"prcode"	=> $_POST["prcode"]
 			];
 
@@ -233,7 +239,7 @@ class User extends \CodeIgniter\Controller
 					echo json_encode($data);die();				
 				}
 
-				// session()->setFlashdata('sukses','Success, New User Updated.');
+				session()->setFlashdata('sukses','Success, New User Updated.');
 				$data['message'] = "success";
 				echo json_encode($data);die();
 
@@ -261,7 +267,7 @@ class User extends \CodeIgniter\Controller
 		$data['data'] = (isset($result['data']) ? $result['data'] : '');
 		$data['group'] = $this->group_dropdown($result['data']['group_id']);
 		$data['principal_dropdown'] = principal_dropdown($result['data']['prcode']);
-		// $data['debitur_dropdown'] = debitur_dropdown($result['data']['cucode']);
+		$data['debitur_dropdown'] = $this->debitur_dropdown($result['data']['prcode']);
 		// dd($result['data']);
 		return view('Modules\User\Views\edit',$data);		
 	}	
@@ -363,7 +369,7 @@ class User extends \CodeIgniter\Controller
 			$result = json_decode($response->getBody()->getContents(),true);	
 			$debitur = $result['data']['datas'];
 			$option = "";
-			$option .= '<select name="cucode" id="cucode" class="select-debitur">';
+			$option .= '<select name="prcode" id="prcode" class="select-debitur">';
 			$option .= '<option vlue="">-select-</option>';
 			foreach($debitur as $cu) {
 				$option .= "<option value='".$cu['cucode'] ."'". ((isset($selected) && $selected==$cu['cucode']) ? ' selected' : '').">".$cu['cuname']."</option>";
@@ -406,4 +412,27 @@ class User extends \CodeIgniter\Controller
 			die();
 		}
 	}
+
+	function debitur_dropdown($selected="")
+{
+	$api = api_connect();
+	$response = $api->request('GET','debiturs/getAllData',[
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		],
+	]);
+
+	$result = json_decode($response->getBody()->getContents(),true);	
+	$debitur = $result['data']['datas'];
+	$option = "";
+	$option .= '<select name="prcode" id="prcode" class="select-debitur">';
+	$option .= '<option vslue="">-select-</option>';
+	foreach($debitur as $cu) {
+		$option .= "<option value='".$cu['cucode'] ."'". ((isset($selected) && $selected==$cu['cucode']) ? ' selected' : '').">".$cu['cuname']."</option>";
+	}
+	$option .="</select>";
+	return $option; 
+	die();			
+}
 }

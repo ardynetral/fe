@@ -1,7 +1,11 @@
 <?= $this->extend('smartdepo/dashboard/template') ?>
 
 <?= $this->section('content') ?>
-
+<style type="text/css">
+	.btn-tbl{
+		margin-right: 5px;
+	}
+</style>
 <div class="content">
 	<div class="main-header">
 		<h2>Damage Type</h2>
@@ -48,20 +52,7 @@
 								</tr>
 							</thead>
 							
-							<tbody>
-								<?php $i=1; foreach($damagetype as $dt): ?>
-								<tr>
-									<td><?=$i;?></td>
-									<td><?=$dt['dycode'];?></td>
-									<td><?=$dt['dydesc'];?></td>
-									<td width="150">
-										<a href="<?=site_url('damagetype/view/'.$dt['dycode']);?>" class="btn btn-xs btn-primary">View</a>
-										<a href="<?=site_url('damagetype/edit/'.$dt['dycode'])?>" class="btn btn-xs btn-success">Edit</a>
-										<a href="<?=site_url('damagetype/delete/'.$dt['dycode'])?>" class="btn btn-xs btn-danger" id="delete" data-kode="<?=$dt['dycode'];?>">Delete</a>
-									</td>
-								</tr>
-								<?php $i++; endforeach; ?>
-							</tbody>
+							
 						</table>
 
 						<?php endif; ?>

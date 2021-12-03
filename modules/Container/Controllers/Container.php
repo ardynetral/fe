@@ -308,4 +308,54 @@ class Container extends \CodeIgniter\Controller
 		return $result['data'];
 	}	
 
+	public function checkContainerNumber() 
+	{
+		/*
+		return:
+		- 
+		*/
+		$data = [];
+		
+		if($this->request->isAjax()) {
+
+			$ccode = $_POST['ccode'];
+			// $ccode = "APZU";
+			$validate = $this->validate([
+	            'ccode' => 'required'
+	        ]);			
+		
+		    if ($this->request->getMethod() === 'post' && $validate)
+		    {
+				$response = $this->client->request('GET','containers/checkcCode',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'query'=>[
+						'cContainer' => $ccode, 
+					]
+				]);
+
+				$result = json_decode($response->getBody()->getContents(),true);
+				// echo var_dump($result);die();
+				if(isset($result['success']) && ($result['success']==false))
+				{
+					$data['status'] = "Failled";
+					$data['message'] = $result['message'];
+					echo json_encode($data);die();				
+				}
+
+				$data['status'] = "Success";
+				$data['message'] = $result['message'];
+				echo json_encode($data);die();
+
+		    } else {
+
+				$data['status'] = "Failled";
+				$data['message'] = \Config\Services::validation()->listErrors();;
+				echo json_encode($data);die();				    	
+		    }
+		}
+	}	
+	
 }

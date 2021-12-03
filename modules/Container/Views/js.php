@@ -158,6 +158,32 @@ $(document).ready(function(){
 		});		
 	}
 
+	$("#crno").on("keyup", function(){
+		var crno = $("#crno").val();
+		var status = "";
+		$.ajax({
+			url:"<?=site_url('container/checkContainerNumber');?>",
+			type:"POST",
+			data: "ccode="+crno,
+			dataType:"JSON",
+			success: function(json){
+				if(json.status=="Failled") {
+					$(".err-crno").show();
+					$("#validNum").hide();
+					$(".err-crno").html(json.message);
+					$("#crno").css("background", "#ffbfbf!important");
+					$("#crno").css("border-color", "#ea2525");					
+				} else {
+					$(".err-crno").html("");
+					$(".err-crno").hide();
+					$("#validNum").show();
+					$("#crno").css("background", "#fff!important");
+					$("#crno").css("border-color", "#1D92AF");
+				}
+			}
+		});
+	});
+
 	$('#crcdp').on('change', function() {
 	    var crcdp_val = this.checked ? '1' : '0';
 	    return this.value=crcdp_val;

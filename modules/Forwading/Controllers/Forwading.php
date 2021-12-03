@@ -36,7 +36,7 @@ class Forwading extends \CodeIgniter\Controller
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
 
-		$response = $this->client->request('GET','debiturs/getAllData',[
+		$response = $this->client->request('GET','debiturs/getAllDataByCutype',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
@@ -44,6 +44,7 @@ class Forwading extends \CodeIgniter\Controller
 			'query' => [
 				'offset' => $offset,
 				'limit' => $limit,
+				'cutype' =>1,
 			]
 		]);
 

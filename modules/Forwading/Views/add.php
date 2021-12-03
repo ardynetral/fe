@@ -113,12 +113,14 @@
 							<div class="col-sm-3">
 								<input type="text" name="cunppkp" class="form-control" id="cunppkp">
 							</div>
+
 						</div>
 					
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
 								<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
 								<a href="<?=site_url('forwading')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+
 							</div>
 						</div>						
 					</fieldset>
@@ -135,6 +137,11 @@
 <!-- Load JS -->
 <?= $this->Section('script_js');?>
 
+
+
 	<?= $this->include('\Modules\Forwading\Views\js'); ?>
+
+
+
 
 <?= $this->endSection();?>

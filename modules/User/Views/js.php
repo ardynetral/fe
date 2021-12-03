@@ -32,7 +32,6 @@ $(document).ready(function() {
 		formData += "&email=" + $("#email").val();
 		formData += "&group_id=" + $("#group_id").val();
 		formData += "&prcode=" + $("#prcode").val();
-		formData += "&cucode=" + $("#cucode").val();
 		console.log(formData);
 		$.ajax({
 			url: "<?php echo site_url('users/add'); ?>",
@@ -40,13 +39,14 @@ $(document).ready(function() {
 			data: formData,
 			dataType: 'json',
 			success: function(json) {
-				if(json.message == "success") {
+				console.log(json.status);
+				if(json.status === "success") {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
-					  html: '<div class="text-success">'+json.data+'</div>'
+					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					window.location.href = "<?php echo site_url('users'); ?>";
+					// window.location.href = "<?php echo site_url('users'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -99,6 +99,8 @@ $(document).ready(function() {
 		// formData += "&repeat_password=" + $("#repeat_password").val();
 		formData += "&fullname=" + $("#fullname").val();
 		formData += "&email=" + $("#email").val();
+		formData += "&password=" + $("#password").val();
+		formData += "&isblock=" + $("input[name=isblock]:checked").val();
 		formData += "&group_id=" + $("#group_id").val();
 		formData += "&prcode=" + $("#prcode").val();
 		console.log(formData);
@@ -165,7 +167,7 @@ $(document).ready(function() {
 			$("#input_debitur").hide();			
 			$("#input_principal").hide();
 		}
-		console.log($("#group_id").val());
+		// console.log($("#group_id").val());
 	}
 });
 

@@ -42,7 +42,6 @@
 									<th></th>
 								</tr>
 							</thead>
-							
 						</table>
 					</div>
 				</div>

@@ -9,3 +9,4 @@ $routes->add('/containercode/edit/(:alphanum)', '\Modules\ContainerCode\Controll
 $routes->post('/containercode/edit/(:alphanum)', '\Modules\ContainerCode\Controllers\ContainerCode::edit/$1', ['filter' => 'login']);
 $routes->add('/containercode/delete/(:alphanum)', '\Modules\ContainerCode\Controllers\ContainerCode::delete/$1', ['filter' => 'login']);
 $routes->post('/containercode/cek_cccode', '\Modules\ContainerCode\Controllers\ContainerCode::cek_cccode', ['filter' => 'login']);
+$routes->add('/containercode/list_data', '\Modules\ContainerCode\Controllers\ContainerCode::list_data', ['filter' => 'login']);

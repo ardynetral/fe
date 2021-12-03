@@ -8,3 +8,4 @@ $routes->post('/containertype/add', '\Modules\ContainerType\Controllers\Containe
 $routes->add('/containertype/edit/(:alphanum)', '\Modules\ContainerType\Controllers\ContainerType::edit/$1', ['filter' => 'login']);
 $routes->post('/containertype/edit/(:alphanum)', '\Modules\ContainerType\Controllers\ContainerType::edit/$1', ['filter' => 'login']);
 $routes->add('/containertype/delete/(:alphanum)', '\Modules\ContainerType\Controllers\ContainerType::delete/$1', ['filter' => 'login']);
+$routes->add('/containertype/list_data', '\Modules\ContainerType\Controllers\ContainerType::list_data', ['filter' => 'login']);

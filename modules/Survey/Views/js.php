@@ -585,6 +585,9 @@ $(document).ready(function() {
         "serverSide": true,
         "autoWidth": false,
         "fixedColumns": true,
+        "language": {
+		     "processing": '<Processing...'
+		},
         "ajax": $.fn.dataTable.pipeline( {
             url: '<?=site_url('survey/list_data');?>',
             pages: 5  
@@ -669,9 +672,15 @@ function runDataTables() {
                     "dataType": "json",
                     "cache": false,
 					"beforeSend": function(){
-						$("#spinner").show();
-						$("#SearchSC").attr("disabled","disabled");
-						$("#SearchSC").append('<i class="fa fa-gear fa-1x fa-spin"></i>');
+						// Here, manually add the loading message.
+				          $('#ctTable > tbody').html(
+				            '<tr class="odd">' +
+				              '<td valign="top" colspan="6" class="dataTables_empty">Loading&hellip; <i class="fa fa-gear fa-1x fa-spin"></i></td>' +
+				            '</tr>'
+				          );
+						// $("#spinner").show();
+						// $("#SearchSC").attr("disabled","disabled");
+						// $("#SearchSC").append('<i class="fa fa-gear fa-1x fa-spin"></i>');
 					},
                     "success": function (json) {
 						$("#spinner").hide();

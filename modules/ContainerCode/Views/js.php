@@ -214,9 +214,11 @@ function runDataTables() {
                     "dataType": "json",
                     "cache": false,
 					"beforeSend": function(){
-						$("#spinner").show();
-						$("#SearchSC").attr("disabled","disabled");
-						$("#SearchSC").append('<i class="fa fa-gear fa-1x fa-spin"></i>');
+						$('#ctTable > tbody').html(
+						'<tr class="odd">' +
+						'<td valign="top" colspan="6" class="dataTables_empty">Loading&hellip; <i class="fa fa-gear fa-1x fa-spin"></i></td>' +
+						'</tr>'
+						);
 					},
                     "success": function (json) {
 						$("#spinner").hide();

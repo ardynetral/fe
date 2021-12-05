@@ -23,7 +23,7 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $baseURL = 'http://localhost/fe';
+	public $baseURL = 'http://202.157.185.83/smartdepo';
 
 	/**
 	 * --------------------------------------------------------------------------

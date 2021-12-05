@@ -7,3 +7,4 @@ $routes->post('/damagetype/add', '\Modules\DamageType\Controllers\DamageType::ad
 $routes->add('/damagetype/edit/(:alphanum)', '\Modules\DamageType\Controllers\DamageType::edit/$1', ['filter' => 'login']);
 $routes->post('/damagetype/edit/(:alphanum)', '\Modules\DamageType\Controllers\DamageType::edit/$1', ['filter' => 'login']);
 $routes->add('/damagetype/delete/(:alphanum)', '\Modules\DamageType\Controllers\DamageType::delete/$1', ['filter' => 'login']);
+$routes->add('/damagetype/list_data', '\Modules\DamageType\Controllers\DamageType::list_data', ['filter' => 'login']);

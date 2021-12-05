@@ -30,7 +30,7 @@ $(document).ready(function() {
 	// datePicker
 	// $.fn.datepicker.defaults.format = "dd/mm/yyyy";
 	$(".tanggal").datepicker({
-		// format: 'dd/mm/yyyy',
+		format: 'dd-mm-yyyy',
 		autoclose:true,
 	});
 
@@ -81,12 +81,10 @@ $(document).ready(function() {
 	// EDIT DATA
 	$("#updateData").click(function(e){
 		e.preventDefault();
-		var formData = "code=" + $("#cityId").val();
-		formData += "&name=" + $("#name").val();
-		formData += "&cncode=" + $("#cncode").val();
 		console.log(formData);
+		var formData = $("form#fContract").serialize();
 		$.ajax({
-			url: "<?php echo site_url('city/edit/'); ?>"+$("#code").val(),
+			url: "<?php echo site_url('contract/edit/'); ?>"+$("#prcode").val(),
 			type: "POST",
 			data: formData,
 			dataType: 'json',
@@ -97,7 +95,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					window.location.href = "<?php echo site_url('city'); ?>";
+					window.location.href = "<?php echo site_url('contract'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',

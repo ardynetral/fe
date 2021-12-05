@@ -4,8 +4,7 @@
 
 <?php
 if(isset($data) && ($data!='')) {
-	$codate = date('d/m/Y',strtotime($data['codate']));
-	$coexpdate = date('d/m/Y',strtotime($data['coexpdate']));
+
 }
 ?>
 
@@ -45,7 +44,13 @@ if(isset($data) && ($data!='')) {
 					<tbody>
 						<tr>
 							<td class="text-right" width="130"><label for="cono" class="text-right">Contract No :</label></td>
-							<td><input type="text" name="cono" class="form-control" id="cono" value="<?=@$data['cono'];?>"></td>
+							<td>
+							<?php if(isset($act)&&($act=='add')):?>
+								<input type="text" name="cono" class="form-control" id="cono" value="<?=@$data['cono'];?>">
+							<?php else:?>
+								<input type="text" name="conos" class="form-control" id="conos" value="<?=@$data['cono'];?>">
+							<?php endif;?>
+							</td>
 							<td colspan="7"></td>
 						</tr>
 						<tr>
@@ -54,14 +59,14 @@ if(isset($data) && ($data!='')) {
 							<td class="text-right" width="130"><label for="codate" class="text-right">Begin :</label></td>
 							<td colspan="2">
 								<div class="input-group">
-								<input type="text" name="codate" id="codate" class="form-control tanggal" required="" value="<?=@$codate?>">
+								<input type="text" name="codate" id="codate" class="form-control tanggal" required="" value="<?=@date('d-m-Y',strtotime($data['codate']))?>">
 								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 								</div>									
 							</td>							
 							<td class="text-right" width="130"><label for="coexpdate" class="text-right">Expire :</label></td>
 							<td colspan="2">
 								<div class="input-group">
-								<input type="text" name="coexpdate" id="coexpdate" class="form-control tanggal" required="" value="<?=@$coexpdate;?>">
+								<input type="text" name="coexpdate" id="coexpdate" class="form-control tanggal" required="" value="<?=@date('d-m-Y',strtotime($data['coexpdate']));?>">
 								<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 								</div>									
 							</td>
@@ -74,15 +79,15 @@ if(isset($data) && ($data!='')) {
 							</td>
 							<td class="text-right" width="130"><label for="cofreedn" class="text-right">Free (Repair) :</label></td>
 							<td colspan="6">
-								<input type="checkbox" name="cofreedn" class="" id="cofreedn" <?=((isset($data['cofreedn'])&&($data['cofreedn']==1)) ? "checked" : "");?>>
+								<input type="checkbox" name="cofreedn" class="" id="cofreedn" value="<?=((isset($data['cofreedn'])&&($data['cofreedn']==1)) ? "1" : "0");?>" <?=((isset($data['cofreedn'])&&($data['cofreedn']==1)) ? "checked" : "");?>>
 								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								<label for="cofreedmg" class="text-right">Free (Damage) :</label>
-								<input type="checkbox" name="cofreedmg" class="" id="cofreedmg" <?=((isset($data['cofreedmg'])&&($data['cofreedmg']==1)) ? "checked" : "");?>>
+								<input type="checkbox" name="cofreedmg" class="" id="cofreedmg" value="<?=((isset($data['cofreedmg'])&&($data['cofreedmg']==1)) ? "1" : "0");?>" <?=((isset($data['cofreedmg'])&&($data['cofreedmg']==1)) ? "checked" : "");?>>
 							</td>	
 						</tr>						
 						<tr>
 							<td class="text-right" width="130"><label for="covcurr" class="text-right">Approval/Repair Currency :</label></td>
-							<td><?=currency_dropdown('covcurr',@$data['covcurr']);?></td>
+							<td><?=currency_dropdown2('covcurr',@$data['covcurr']);?></td>
 							<td colspan="4"></td>
 						</tr>
 						<tr>
@@ -112,7 +117,7 @@ if(isset($data) && ($data!='')) {
 						</tr>	
 						<tr>
 							<td class="text-right" width="130"><label for="colabrtcurr" class="text-right">Labour Rate Currency :</label></td>
-							<td><?=currency_dropdown('colabrtcurr',@$data['colabrtcurr']);?></td>
+							<td><?=currency_dropdown2('colabrtcurr',@$data['colabrtcurr']);?></td>
 							<td colspan="3"></td>
 						</tr>
 						<tr>
@@ -145,7 +150,7 @@ if(isset($data) && ($data!='')) {
 						</tr>	
 						<tr>
 							<td class="text-right" width="130"><label for="costrcurr" class="text-right">Storage :</label></td>
-							<td><?=currency_dropdown('costrcurr',@$data['costrcurr']);?></td>
+							<td><?=currency_dropdown2('costrcurr',@$data['costrcurr']);?></td>
 							<td><input type="text" name="costrv20" class="form-control" id="costrv20" value="<?=@$data['costrv20']?>"></td>
 							<td><input type="text" name="costrv40" class="form-control" id="costrv40" value="<?=@$data['costrv40']?>"></td>
 							<td><input type="text" name="costrv45" class="form-control" id="costrv45" value="<?=@$data['costrv45']?>"></td>
@@ -164,102 +169,102 @@ if(isset($data) && ($data!='')) {
 						</tr>	
 						<tr>
 							<td class="text-right" width="130"><label for="lifton" class="text-right">Lift On :</label></td>
-							<td><?=currency_dropdown('colomtycurr',@$data['colomtycurr']);?></td>
-							<td><input type="text" name="colonmty20" class="form-control" id="colonmty20" value="<?=@$data['colonmty20']?>"></td>
-							<td><input type="text" name="colonmty40" class="form-control" id="colonmty40" value="<?=@$data['colonmty40']?>"></td>
-							<td><input type="text" name="colonmty45" class="form-control" id="colonmty45" value="<?=@$data['colonmty45']?>"></td>
+							<td><?=currency_dropdown2('colomtycurr',@$data['colomtycurr']);?></td>
+							<td><input type="text" name="colonmty20" class="form-control" id="colonmty20" value="<?=@(isset($data['colonmty20'])&&($data['colonmty20']!="")?$data['colonmty20']:"0")?>"></td>
+							<td><input type="text" name="colonmty40" class="form-control" id="colonmty40" value="<?=@(isset($data['colonmty40'])&&($data['colonmty40']!="")?$data['colonmty40']:"0")?>"></td>
+							<td><input type="text" name="colonmty45" class="form-control" id="colonmty45" value="<?=@(isset($data['colonmty45'])&&($data['colonmty45']!="")?$data['colonmty45']:"0")?>"></td>
 							<td></td>
-							<td><input type="text" name="coloncy20" class="form-control" id="coloncy20" value="<?=@$data['coloncy20']?>"></td>
-							<td><input type="text" name="coloncy40" class="form-control" id="coloncy40" value="<?=@$data['coloncy40']?>"></td>			
-							<td><input type="text" name="coloncy45" class="form-control" id="coloncy45" value="<?=@$data['coloncy45']?>"></td>			
+							<td><input type="text" name="coloncy20" class="form-control" id="coloncy20" value="<?=@(isset($data['coloncy20'])&&($data['coloncy20']!="")?$data['coloncy20']:"0")?>"></td>
+							<td><input type="text" name="coloncy40" class="form-control" id="coloncy40" value="<?=@(isset($data['coloncy40'])&&($data['coloncy40']!="")?$data['coloncy40']:"0")?>"></td>			
+							<td><input type="text" name="coloncy45" class="form-control" id="coloncy45" value="<?=@(isset($data['coloncy45'])&&($data['coloncy45']!="")?$data['coloncy45']:"0")?>"></td>			
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="colocycurr" class="text-right">Lift Off :</label></td>
-							<td><?=currency_dropdown('colocycurr',@$data['colocycurr']);?></td>
-							<td><input type="text" name="colofmty20" class="form-control" id="colofmty20" value="<?=@$data['colofmty20']?>"></td>
-							<td><input type="text" name="colofmty40" class="form-control" id="colofmty40" value="<?=@$data['colofmty40']?>"></td>
-							<td><input type="text" name="colofmty45" class="form-control" id="colofmty45" value="<?=@$data['colofmty45']?>"></td>
+							<td><?=currency_dropdown2('colocycurr',@$data['colocycurr']);?></td>
+							<td><input type="text" name="colofmty20" class="form-control" id="colofmty20" value="<?=@(isset($data['colofmty20'])&&($data['colofmty20']!="")?$data['colofmty20']:"0")?>"></td>
+							<td><input type="text" name="colofmty40" class="form-control" id="colofmty40" value="<?=@(isset($data['colofmty40'])&&($data['colofmty40']!="")?$data['colofmty40']:"0")?>"></td>
+							<td><input type="text" name="colofmty45" class="form-control" id="colofmty45" value="<?=@(isset($data['colofmty45'])&&($data['colofmty45']!="")?$data['colofmty45']:"0")?>"></td>
 							<td></td>
-							<td><input type="text" name="colofcy20" class="form-control" id="colofcy20" value="<?=@$data['colofcy20']?>"></td>
-							<td><input type="text" name="colofcy40" class="form-control" id="colofcy40" value="<?=@$data['colofcy40']?>"></td>
-							<td><input type="text" name="colofcy45" class="form-control" id="colofcy45" value="<?=@$data['colofcy45']?>"></td>
+							<td><input type="text" name="colofcy20" class="form-control" id="colofcy20" value="<?=@(isset($data['colofcy20'])&&($data['colofcy20']!="")?$data['colofcy20']:"0")?>"></td>
+							<td><input type="text" name="colofcy40" class="form-control" id="colofcy40" value="<?=@(isset($data['colofcy40'])&&($data['colofcy40']!="")?$data['colofcy40']:"0")?>"></td>
+							<td><input type="text" name="colofcy45" class="form-control" id="colofcy45" value="<?=@(isset($data['colofcy45'])&&($data['colofcy45']!="")?$data['colofcy45']:"0")?>"></td>
 						</tr>	
 						<tr>
 							<td class="text-right" width="130"><label for="cowwmtycurr" class="text-right">Water Wash :</label></td>
-							<td><?=currency_dropdown('cowwmtycurr',@$data['cowwmtycurr']);?></td>
-							<td><input type="text" name="cowwmty20" class="form-control" id="cowwmty20" value="<?=@$data['cowwmty20']?>"></td>
-							<td><input type="text" name="cowwmty40" class="form-control" id="cowwmty40" value="<?=@$data['cowwmty40']?>"></td>
-							<td><input type="text" name="cowwmty45" class="form-control" id="cowwmty45" value="<?=@$data['cowwmty45']?>"></td>
-							<td><?=currency_dropdown('cowwcycurr',@$data['cowwcycurr']);?></td>
-							<td><input type="text" name="cowwcy20" class="form-control" id="cowwcy20" value="<?=@$data['cowwcy20']?>"></td>
-							<td><input type="text" name="cowwcy40" class="form-control" id="cowwcy40" value="<?=@$data['cowwcy40']?>"></td>					
-							<td><input type="text" name="cowwcy45" class="form-control" id="cowwcy45" value="<?=@$data['cowwcy45']?>"></td>					
+							<td><?=currency_dropdown2('cowwmtycurr',@$data['cowwmtycurr']);?></td>
+							<td><input type="text" name="cowwmty20" class="form-control" id="cowwmty20" value="<?=@(isset($data['cowwmty20'])&&($data['cowwmty20']!="")?$data['cowwmty20']:"0")?>"></td>
+							<td><input type="text" name="cowwmty40" class="form-control" id="cowwmty40" value="<?=@(isset($data['cowwmty40'])&&($data['cowwmty40']!="")?$data['cowwmty40']:"0")?>"></td>
+							<td><input type="text" name="cowwmty45" class="form-control" id="cowwmty45" value="<?=@(isset($data['cowwmty45'])&&($data['cowwmty45']!="")?$data['cowwmty45']:"0")?>"></td>
+							<td><?=currency_dropdown2('cowwcycurr',@$data['cowwcycurr']);?></td>
+							<td><input type="text" name="cowwcy20" class="form-control" id="cowwcy20" value="<?=@(isset($data['cowwcy20'])&&($data['cowwcy20']!="")?$data['cowwcy20']:"0")?>"></td>
+							<td><input type="text" name="cowwcy40" class="form-control" id="cowwcy40" value="<?=@(isset($data['cowwcy40'])&&($data['cowwcy40']!="")?$data['cowwcy40']:"0")?>"></td>					
+							<td><input type="text" name="cowwcy45" class="form-control" id="cowwcy45" value="<?=@(isset($data['cowwcy45'])&&($data['cowwcy45']!="")?$data['cowwcy45']:"0")?>"></td>					
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="cosc" class="text-right">Steam Wash :</label></td>
-							<td><?=currency_dropdown('coscmtycurr',@$data['coscmtycurr']);?></td>
-							<td><input type="text" name="coscmty20" class="form-control" id="coscmty20" value="<?=@$data['coscmty20']?>"></td>
-							<td><input type="text" name="coscmty40" class="form-control" id="coscmty40" value="<?=@$data['coscmty40']?>"></td>
-							<td><input type="text" name="coscmty45" class="form-control" id="coscmty45" value="<?=@$data['coscmty45']?>"></td>
-							<td><?=currency_dropdown('cosccycurr',@$data['cosccycurr']);?></td>
-							<td><input type="text" name="cosccy20" class="form-control" id="cosccy20" value="<?=@$data['cosccy20']?>"></td>
-							<td><input type="text" name="cosccy40" class="form-control" id="cosccy40" value="<?=@$data['cosccy40']?>"></td>						
-							<td><input type="text" name="cosccy45" class="form-control" id="cosccy45" value="<?=@$data['cosccy45']?>"></td>						
+							<td><?=currency_dropdown2('coscmtycurr',@$data['coscmtycurr']);?></td>
+							<td><input type="text" name="coscmty20" class="form-control" id="coscmty20" value="<?=@(isset($data['coscmty20'])&&($data['coscmty20']!="")?$data['coscmty20']:"0")?>"></td>
+							<td><input type="text" name="coscmty40" class="form-control" id="coscmty40" value="<?=@(isset($data['coscmty40'])&&($data['coscmty40']!="")?$data['coscmty40']:"0")?>"></td>
+							<td><input type="text" name="coscmty45" class="form-control" id="coscmty45" value="<?=@(isset($data['coscmty45'])&&($data['coscmty45']!="")?$data['coscmty45']:"0")?>"></td>
+							<td><?=currency_dropdown2('cosccycurr',@$data['cosccycurr']);?></td>
+							<td><input type="text" name="cosccy20" class="form-control" id="cosccy20" value="<?=@(isset($data['cosccy20'])&&($data['cosccy20']!="")?$data['cosccy20']:"0")?>"></td>
+							<td><input type="text" name="cosccy40" class="form-control" id="cosccy40" value="<?=@(isset($data['cosccy40'])&&($data['cosccy40']!="")?$data['cosccy40']:"0")?>"></td>						
+							<td><input type="text" name="cosccy45" class="form-control" id="cosccy45" value="<?=@(isset($data['cosccy45'])&&($data['cosccy45']!="")?$data['cosccy45']:"0")?>"></td>						
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="comb" class="text-right">Meat Bone :</label></td>
-							<td><?=currency_dropdown('combmtycurr',@$data['combmtycurr']);?></td>
-							<td><input type="text" name="combmty20" class="form-control" id="combmty20" value="<?=@$data['combmty20']?>"></td>
-							<td><input type="text" name="combmty40" class="form-control" id="combmty40" value="<?=@$data['combmty40']?>"></td>
-							<td><input type="text" name="combmty45" class="form-control" id="combmty45" value="<?=@$data['combmty45']?>"></td>
-							<td><?=currency_dropdown('combcycurr',@$data['combcycurr']);?></td>
-							<td><input type="text" name="combcy20" class="form-control" id="combcy20" value="<?=@$data['combcy20']?>"></td>
-							<td><input type="text" name="combcy40" class="form-control" id="combcy40" value="<?=@$data['combcy40']?>"></td>						
-							<td><input type="text" name="combcy45" class="form-control" id="combcy45" value="<?=@$data['combcy45']?>"></td>						
+							<td><?=currency_dropdown2('combmtycurr',@$data['combmtycurr']);?></td>
+							<td><input type="text" name="combmty20" class="form-control" id="combmty20" value="<?=@(isset($data['combmty20'])&&($data['combmty20']!="")?$data['combmty20']:"0")?>"></td>
+							<td><input type="text" name="combmty40" class="form-control" id="combmty40" value="<?=@(isset($data['combmty40'])&&($data['combmty40']!="")?$data['combmty40']:"0")?>"></td>
+							<td><input type="text" name="combmty45" class="form-control" id="combmty45" value="<?=@(isset($data['combmty45'])&&($data['combmty45']!="")?$data['combmty45']:"0")?>"></td>
+							<td><?=currency_dropdown2('combcycurr',@$data['combcycurr']);?></td>
+							<td><input type="text" name="combcy20" class="form-control" id="combcy20" value="<?=@(isset($data['combcy20'])&&($data['combcy20']!="")?$data['combcy20']:"0")?>"></td>
+							<td><input type="text" name="combcy40" class="form-control" id="combcy40" value="<?=@(isset($data['combcy40'])&&($data['combcy40']!="")?$data['combcy40']:"0")?>"></td>						
+							<td><input type="text" name="combcy45" class="form-control" id="combcy45" value="<?=@(isset($data['combcy45'])&&($data['combcy45']!="")?$data['combcy45']:"0")?>"></td>						
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="cord" class="text-right">Debrish Remove :</label></td>
-							<td><?=currency_dropdown('cordmtycurr',@$data['cordmtycurr']);?></td>
-							<td><input type="text" name="cordmty20" class="form-control" id="cordmty20" value="<?=@$data['cordmty20']?>"></td>
-							<td><input type="text" name="cordmty40" class="form-control" id="cordmty40" value="<?=@$data['cordmty40']?>"></td>
-							<td><input type="text" name="cordmty45" class="form-control" id="cordmty45" value="<?=@$data['cordmty45']?>"></td>
-							<td><?=currency_dropdown('cordcycurr',@$data['cordcycurr']);?></td>
-							<td><input type="text" name="cordcy20" class="form-control" id="cordcy20" value="<?=@$data['cordcy20']?>"></td>
-							<td><input type="text" name="cordcy40" class="form-control" id="cordcy40" value="<?=@$data['cordcy40']?>"></td>
-							<td><input type="text" name="cordcy45" class="form-control" id="cordcy45" value="<?=@$data['cordcy45']?>"></td>					
+							<td><?=currency_dropdown2('cordmtycurr',@$data['cordmtycurr']);?></td>
+							<td><input type="text" name="cordmty20" class="form-control" id="cordmty20" value="<?=@(isset($data['cordmty20'])&&($data['cordmty20']!="")?$data['cordmty20']:"0")?>"></td>
+							<td><input type="text" name="cordmty40" class="form-control" id="cordmty40" value="<?=@(isset($data['cordmty40'])&&($data['cordmty40']!="")?$data['cordmty40']:"0")?>"></td>
+							<td><input type="text" name="cordmty45" class="form-control" id="cordmty45" value="<?=@(isset($data['cordmty45'])&&($data['cordmty45']!="")?$data['cordmty45']:"0")?>"></td>
+							<td><?=currency_dropdown2('cordcycurr',@$data['cordcycurr']);?></td>
+							<td><input type="text" name="cordcy20" class="form-control" id="cordcy20" value="<?=@(isset($data['cordcy20'])&&($data['cordcy20']!="")?$data['cordcy20']:"0")?>"></td>
+							<td><input type="text" name="cordcy40" class="form-control" id="cordcy40" value="<?=@(isset($data['cordcy40'])&&($data['cordcy40']!="")?$data['cordcy40']:"0")?>"></td>
+							<td><input type="text" name="cordcy45" class="form-control" id="cordcy45" value="<?=@(isset($data['cordcy45'])&&($data['cordcy45']!="")?$data['cordcy45']:"0")?>"></td>					
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="comm" class="text-right">Mark Remove :</label></td>
-							<td><?=currency_dropdown('commmtycurr',@$data['commmtycurr']);?></td>
-							<td><input type="text" name="commmty20" class="form-control" id="commmty20" value="<?=@$data['commmty20']?>"></td>
-							<td><input type="text" name="commmty40" class="form-control" id="commmty40" value="<?=@$data['commmty40']?>"></td>
-							<td><input type="text" name="commmty45" class="form-control" id="commmty45" value="<?=@$data['commmty45']?>"></td>
-							<td><?=currency_dropdown('commcycurr',@$data['commcycurr']);?></td>
-							<td><input type="text" name="commcy20" class="form-control" id="commcy20" value="<?=@$data['commcy20']?>"></td>
-							<td><input type="text" name="commcy40" class="form-control" id="commcy40" value="<?=@$data['commcy40']?>"></td>					
-							<td><input type="text" name="commcy45" class="form-control" id="commcy45" value="<?=@$data['commcy45']?>"></td>					
+							<td><?=currency_dropdown2('commmtycurr',@$data['commmtycurr']);?></td>
+							<td><input type="text" name="commmty20" class="form-control" id="commmty20" value="<?=@(isset($data['commmty20'])&&($data['commmty20']!="")?$data['commmty20']:"0")?>"></td>
+							<td><input type="text" name="commmty40" class="form-control" id="commmty40" value="<?=@(isset($data['commmty40'])&&($data['commmty40']!="")?$data['commmty40']:"0")?>"></td>
+							<td><input type="text" name="commmty45" class="form-control" id="commmty45" value="<?=@(isset($data['commmty45'])&&($data['commmty45']!="")?$data['commmty45']:"0")?>"></td>
+							<td><?=currency_dropdown2('commcycurr',@$data['commcycurr']);?></td>
+							<td><input type="text" name="commcy20" class="form-control" id="commcy20" value="<?=@(isset($data['commcy20'])&&($data['commcy20']!="")?$data['commcy20']:"0")?>"></td>
+							<td><input type="text" name="commcy40" class="form-control" id="commcy40" value="<?=@(isset($data['commcy40'])&&($data['commcy40']!="")?$data['commcy40']:"0")?>"></td>					
+							<td><input type="text" name="commcy45" class="form-control" id="commcy45" value="<?=@(isset($data['commcy45'])&&($data['commcy45']!="")?$data['commcy45']:"0")?>"></td>					
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="cocc" class="text-right">Chemical Clean :</label></td>
-							<td><?=currency_dropdown('coccmtycurr',@$data['coccmtycurr']);?></td>
-							<td><input type="text" name="coccmty20" class="form-control" id="coccmty20" value="<?=@$data['coccmty20']?>"></td>
-							<td><input type="text" name="coccmty40" class="form-control" id="coccmty40" value="<?=@$data['coccmty40']?>"></td>
-							<td><input type="text" name="coccmty45" class="form-control" id="coccmty45" value="<?=@$data['coccmty45']?>"></td>
-							<td><?=currency_dropdown('cocccycurr',@$data['cocccycurr']);?></td>
-							<td><input type="text" name="cocccy20" class="form-control" id="cocccy20" value="<?=@$data['cocccy20']?>"></td>
-							<td><input type="text" name="cocccy40" class="form-control" id="cocccy40" value="<?=@$data['cocccy40']?>"></td>					
-							<td><input type="text" name="cocccy45" class="form-control" id="cocccy45" value="<?=@$data['cocccy45']?>"></td>					
+							<td><?=currency_dropdown2('coccmtycurr',@$data['coccmtycurr']);?></td>
+							<td><input type="text" name="coccmty20" class="form-control" id="coccmty20" value="<?=@(isset($data['coccmty20'])&&($data['coccmty20']!="")?$data['coccmty20']:"0")?>"></td>
+							<td><input type="text" name="coccmty40" class="form-control" id="coccmty40" value="<?=@(isset($data['coccmty40'])&&($data['coccmty40']!="")?$data['coccmty40']:"0")?>"></td>
+							<td><input type="text" name="coccmty45" class="form-control" id="coccmty45" value="<?=@(isset($data['coccmty45'])&&($data['coccmty45']!="")?$data['coccmty45']:"0")?>"></td>
+							<td><?=currency_dropdown2('cocccycurr',@$data['cocccycurr']);?></td>
+							<td><input type="text" name="cocccy20" class="form-control" id="cocccy20" value="<?=@(isset($data['cocccy20'])&&($data['cocccy20']!="")?$data['cocccy20']:"0")?>"></td>
+							<td><input type="text" name="cocccy40" class="form-control" id="cocccy40" value="<?=@(isset($data['cocccy40'])&&($data['cocccy40']!="")?$data['cocccy40']:"0")?>"></td>					
+							<td><input type="text" name="cocccy45" class="form-control" id="cocccy45" value="<?=@(isset($data['cocccy45'])&&($data['cocccy45']!="")?$data['cocccy45']:"0")?>"></td>					
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="cowp" class="text-right">Sweeping :</label></td>
-							<td><?=currency_dropdown('cowpmtycurr',@$data['cowpmtycurr']);?></td>
-							<td><input type="text" name="cowpmty20" class="form-control" id="cowpmty20" value="<?=@$data['cowpmty20']?>"></td>
-							<td><input type="text" name="cowpmty40" class="form-control" id="cowpmty40" value="<?=@$data['cowpmty40']?>"></td>
-							<td><input type="text" name="cowpmty45" class="form-control" id="cowpmty45" value="<?=@$data['cowpmty45']?>"></td>
-							<td><?=currency_dropdown('cowpcycurr',@$data['cowpcycurr']);?></td>
-							<td><input type="text" name="cowpcy20" class="form-control" id="cowpcy20" value="<?=@$data['cowpcy20']?>"></td>
-							<td><input type="text" name="cowpcy40" class="form-control" id="cowpcy40" value="<?=@$data['cowpcy40']?>"></td>						
-							<td><input type="text" name="cowpcy45" class="form-control" id="cowpcy45" value="<?=@$data['cowpcy45']?>"></td>						
+							<td><?=currency_dropdown2('cowpmtycurr',@$data['cowpmtycurr']);?></td>
+							<td><input type="text" name="cowpmty20" class="form-control" id="cowpmty20" value="<?=@(isset($data['cowpmty20'])&&($data['cowpmty20']!="")?$data['cowpmty20']:"0")?>"></td>
+							<td><input type="text" name="cowpmty40" class="form-control" id="cowpmty40" value="<?=@(isset($data['cowpmty40'])&&($data['cowpmty40']!="")?$data['cowpmty40']:"0")?>"></td>
+							<td><input type="text" name="cowpmty45" class="form-control" id="cowpmty45" value="<?=@(isset($data['cowpmty45'])&&($data['cowpmty45']!="")?$data['cowpmty45']:"0")?>"></td>
+							<td><?=currency_dropdown2('cowpcycurr',@$data['cowpcycurr']);?></td>
+							<td><input type="text" name="cowpcy20" class="form-control" id="cowpcy20" value="<?=@(isset($data['cowpcy20'])&&($data['cowpcy20']!="")?$data['cowpcy20']:"0")?>"></td>
+							<td><input type="text" name="cowpcy40" class="form-control" id="cowpcy40" value="<?=@(isset($data['cowpcy40'])&&($data['cowpcy40']!="")?$data['cowpcy40']:"0")?>"></td>						
+							<td><input type="text" name="cowpcy45" class="form-control" id="cowpcy45" value="<?=@(isset($data['cowpcy45'])&&($data['cowpcy45']!="")?$data['cowpcy45']:"0")?>"></td>						
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="coadmm" class="text-right">Administrtion (Cashier) :</label></td>
@@ -284,7 +289,7 @@ if(isset($data) && ($data!='')) {
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="coadmcurr" class="text-right">Adm Currency (Cashier) :</label></td>
-							<td><?=currency_dropdown('coadmcurr',@$data['coadmcurr']);?></td>
+							<td><?=currency_dropdown2('coadmcurr',@$data['coadmcurr']);?></td>
 							<td></td>
 							<td></td>
 							<td></td>
@@ -314,17 +319,31 @@ if(isset($data) && ($data!='')) {
 							<td></td>
 							<td></td>						
 							<td></td>						
-						</tr>						
+						</tr>
+						<tr>
+							<td class="text-right" width="130"><label for="comaterai" class="text-right">Materai :</label></td>
+							<td><input type="text" name="comaterai" class="form-control" id="comaterai" value="<?=@$data['comaterai']?>"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>						
+							<td></td>						
+						</tr>												
 						<tr>
 							<td></td>
 							<td colspan="8">
+								<?php if(isset($act)&&($act=='add')):?>
+									<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
+									<a href="<?=site_url('contract')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+								<?php endif; ?>
+								<?php if(isset($act)&&($act=='edit')):?>
+									<button type="button" id="updateData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp;
+									<a href="<?=site_url('contract')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+								<?php endif; ?>
 								<?php if(isset($act)&&($act=='view')):?>
-								<!-- <button type="button" id="updateData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp; -->
-								<button type="button" id="deleteData" class="btn btn-danger"><i class="fa fa-times-circle"></i> Delete</button>&nbsp;
-								<a href="<?=site_url('contract')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
-								<?php else: ?>
-								<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
-								<a href="<?=site_url('contract')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+									<a href="<?=site_url('contract')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Kembali</a>
 								<?php endif; ?>
 							</td>
 						</tr>

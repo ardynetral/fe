@@ -75,11 +75,11 @@ class Location extends \CodeIgniter\Controller
             $record[] = $no;
             $record[] = $v['lccode'];
             $record[] = $v['lcdesc'];
-			
-			$btn_list .='<a href="#" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>&nbsp;';						
-			$btn_list .='<a href="#" id="edit" class="btn btn-xs btn-success btn-table">edit</a>&nbsp;';
-			$btn_list .='<a href="#" class="btn btn-xs btn-info btn-table" data-praid="">print</a>&nbsp;';	
-			$btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table">delete</a>';			
+			$lccode = $v['lccode'];
+			$btn_list .='<a href="'.site_url("location/view/").$lccode.'" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>&nbsp;';						
+			$btn_list .='<a href="'.site_url("location/edit/").$lccode.'" id="edit" class="btn btn-xs btn-success btn-table">edit</a>&nbsp;';
+			// $btn_list .='<a href="#" class="btn btn-xs btn-info btn-table" data-praid="">print</a>&nbsp;';	
+			$btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table delete" data-kode="'.$lccode.'">delete</a>';			
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
 

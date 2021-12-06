@@ -439,6 +439,13 @@ function ccode_dropdown($selected="")
 		'headers' => [
 			'Accept' => 'application/json',
 			'Authorization' => session()->get('login_token')
+		],
+		'json' => [
+			'start' => 0,
+			'rows'	=> 100,
+			'search'=> "",
+			'orderColumn' => "cccode",
+			'orderType' => "ASC"
 		]
 	]);
 

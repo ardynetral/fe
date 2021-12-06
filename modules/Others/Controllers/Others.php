@@ -44,7 +44,7 @@ class Others extends \CodeIgniter\Controller
 			'query' => [
 				'offset' => $offset,
 				'limit' => $limit,
-				'cutype' =>2,
+				'cutype' =>5,
 			]
 		]);
 
@@ -119,7 +119,7 @@ class Others extends \CodeIgniter\Controller
 			    "cunpwp" => $this->request->getPost("cunpwp"),
 			    "cuskada" => $this->request->getPost("cuskada"),
 			    "cudebtur" => $this->request->getPost("cudebtur"),
-			    "cutype" => '2',
+			    "cutype" => '5',
 			    "cunppkp" => $this->request->getPost("cunppkp")		
 			];
 
@@ -186,7 +186,7 @@ class Others extends \CodeIgniter\Controller
 			    "cunpwp" => $this->request->getPost("cunpwp"),
 			    "cuskada" => $this->request->getPost("cuskada"),
 			    "cudebtur" => $this->request->getPost("cudebtur"),
-			    "cutype" => '2',
+			    "cutype" => '5',
 			    "cunppkp" => $this->request->getPost("cunppkp")		
 			];
 

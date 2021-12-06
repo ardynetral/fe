@@ -26,7 +26,8 @@ class Survey extends \CodeIgniter\Controller
 				],
 				'query' => [
 					'offset' => (int)$offset,
-					'limit'	=> (int)$limit
+					'limit'	=> (int)$limit,
+					'search' => $search
 				]
 			]);
 

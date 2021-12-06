@@ -65,7 +65,7 @@ class Contract extends \CodeIgniter\Controller
 
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		
+		print_r($result); die();
         $output = array(
 			"draw" => $this->request->getPost('draw'),
             "recordsTotal" => @$result['data']['count'],

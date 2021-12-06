@@ -32,9 +32,7 @@
 				</div><br>		
 				<div class="row">
 					<div class="col-md-12">
-						<?php if($damagetype==""): ?>
-							<p class="alert alert-warning">Something wrong!. Data not found.</p>
-						<?php else: ?>
+						
 						<table>
 							<tbody>
 								<tr><th width="100">Damage Type</th><td width="2">:</td>
@@ -54,8 +52,6 @@
 							
 							
 						</table>
-
-						<?php endif; ?>
 
 					</div>
 				</div>

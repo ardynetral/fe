@@ -71,19 +71,19 @@ class ContainerType extends \CodeIgniter\Controller
 	public function index()
 	{
 		$data = [];
-		$response = $this->client->request('GET','containertype/list',[
-			'headers' => [
-				'Accept' => 'application/json',
-				'Authorization' => session()->get('login_token')
-			],
-			// 'json'=>[
-			// 	'start'=>0,
-			// 	'rows'=>10
-			// ]
-		]);
+		// $response = $this->client->request('GET','containertype/list',[
+		// 	'headers' => [
+		// 		'Accept' => 'application/json',
+		// 		'Authorization' => session()->get('login_token')
+		// 	],
+		// 	// 'json'=>[
+		// 	// 	'start'=>0,
+		// 	// 	'rows'=>10
+		// 	// ]
+		// ]);
 
-		$result = json_decode($response->getBody()->getContents(),true);	
-		$data['ctype'] = $result['data']['datas'];
+		// $result = json_decode($response->getBody()->getContents(),true);	
+		// $data['ctype'] = $result['data']['datas'];
 		/*if ($this->request->isAJAX()) {
 			// $request = Services::request();
 

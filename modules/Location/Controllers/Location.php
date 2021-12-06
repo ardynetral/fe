@@ -36,7 +36,7 @@ class Location extends \CodeIgniter\Controller
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
         $sort_column = $this->request->getPost('order[0][column]');	
-        $sort_type = $this->request->getPost('order[0][dir]');	
+        $sort_type = $this->request->getPost('order[0][dir]');		
         $orderColumn = '';
         if ($sort_column == '0') {
         	$orderColumn = '';
@@ -44,15 +44,15 @@ class Location extends \CodeIgniter\Controller
         	$orderColumn = 'lccode';
         } elseif ($sort_column == '2') {
         	$orderColumn = 'lcdesc';
-        } 		
+        } 
 		$response = $this->client->request('GET','locations/list',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
 			],
-			'query'=>[
-				'start'=>$offset,
-				'rows'=>$limit,
+			'json' => [
+				'start' => (int)$offset,
+				'rows'	=> (int)$limit,
 				'search'=> (string)$search,
 				'orderColumn' => (string)$orderColumn,
 				'orderType' => (string)$sort_type
@@ -61,7 +61,6 @@ class Location extends \CodeIgniter\Controller
 
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		
         $output = array(
             "draw" => $this->request->getPost('draw'),
             "recordsTotal" => @$result['data']['count'],

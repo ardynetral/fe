@@ -134,6 +134,7 @@ $(document).ready(function() {
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});									
 					$("#saveData").prop('disabled', true);
+					window.location.href = "<?php echo site_url('prain'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',

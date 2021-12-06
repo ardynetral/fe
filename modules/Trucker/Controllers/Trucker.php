@@ -32,10 +32,19 @@ class Trucker extends \CodeIgniter\Controller
 
 	public function list_data() {
 
-		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+		$search = ($this->request->getPost('search[value]') != "")?$this->request->getPost('search[value]'):"";
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
-
+        $sort_column = $this->request->getPost('order[0][column]');	
+        $sort_type = $this->request->getPost('order[0][dir]');	
+        $orderColumn = '';
+        if ($sort_column == '0') {
+        	$orderColumn = '';
+        } elseif ($sort_column == '1') {
+        	$orderColumn = 'cucode';
+        } elseif ($sort_column == '2') {
+        	$orderColumn = 'cuname';
+        } 
 		$response = $this->client->request('GET','debiturs/getAllDataByCutype',[
 			'headers' => [
 				'Accept' => 'application/json',
@@ -45,11 +54,14 @@ class Trucker extends \CodeIgniter\Controller
 				'offset' => $offset,
 				'limit' => $limit,
 				'cutype' => 3,
+				'search'=> (string)$search,
+				'orderColumn' => (string)$orderColumn,
+				'orderType' => (string)$sort_type
 			]
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		
+		// print_r($result); die;
         $output = array(
             "draw" => $this->request->getPost('draw'),
             "recordsTotal" => @$result['data']['count'],
@@ -64,10 +76,10 @@ class Trucker extends \CodeIgniter\Controller
             $record[] = $v['cucode'];
             $record[] = $v['cuname'];
 			
-			$btn_list .='<a href="'.site_url('trucker/view/').$v["cucode"].'" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>&nbsp;';						
-			$btn_list .='<a href="'.site_url('trucker/edit/').$v["cucode"].'" class="btn btn-xs btn-success btn-table">edit</a>&nbsp;';
-			$btn_list .='<a href="#" class="btn btn-xs btn-info btn-table" data-praid="">print</a>&nbsp;';	
-			$btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table delete" data-kode="'.$v['cucode'].'">delete</a>';			
+			// $btn_list .='<a href="'.site_url('trucker/view/').$v["cucode"].'" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>&nbsp;';						
+			// $btn_list .='<a href="'.site_url('trucker/edit/').$v["cucode"].'" class="btn btn-xs btn-success btn-table">edit</a>&nbsp;';
+			// $btn_list .='<a href="#" class="btn btn-xs btn-info btn-table" data-praid="">print</a>&nbsp;';	
+			// $btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table delete" data-kode="'.$v['cucode'].'">delete</a>';			
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
 

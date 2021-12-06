@@ -32,9 +32,19 @@ class Forwading extends \CodeIgniter\Controller
 
 	public function list_data() {
 
-		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+		$search = ($this->request->getPost('search[value]') != "")?$this->request->getPost('search[value]'):"";
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
+        $sort_column = $this->request->getPost('order[0][column]');	
+        $sort_type = $this->request->getPost('order[0][dir]');	
+        $orderColumn = '';
+        if ($sort_column == '0') {
+        	$orderColumn = '';
+        } elseif ($sort_column == '1') {
+        	$orderColumn = 'cucode';
+        } elseif ($sort_column == '2') {
+        	$orderColumn = 'cuname';
+        } 
 
 		$response = $this->client->request('GET','debiturs/getAllDataByCutype',[
 			'headers' => [
@@ -45,6 +55,9 @@ class Forwading extends \CodeIgniter\Controller
 				'offset' => $offset,
 				'limit' => $limit,
 				'cutype' =>1,
+				'search'=> (string)$search,
+				'orderColumn' => (string)$orderColumn,
+				'orderType' => (string)$sort_type
 			]
 		]);
 

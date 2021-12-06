@@ -36,7 +36,7 @@ class Contract extends \CodeIgniter\Controller
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
         $sort_column = $this->request->getPost('order[0][column]');	
-        $sort_type = $this->request->getPost('order[0][dir]');		
+        $sort_type = $this->request->getPost('order[0][dir]');	
         $orderColumn = '';
         if ($sort_column == '0') {
         	$orderColumn = '';
@@ -46,9 +46,10 @@ class Contract extends \CodeIgniter\Controller
         	$orderColumn = 'prcode';
         } elseif ($sort_column == '3') {
         	$orderColumn = 'codate';
-        } elseif ($sort_column == '4') {
+        } elseif ($sort_column == '4'){
         	$orderColumn = 'coexpdate';
-        }				
+        }		
+
 		$response = $this->client->request('GET','contracts/list',[
 			'headers' => [
 				'Accept' => 'application/json',

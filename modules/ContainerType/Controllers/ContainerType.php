@@ -11,10 +11,19 @@ class ContainerType extends \CodeIgniter\Controller
 	}
 
 	function list_data(){		
-		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+		$search = ($this->request->getPost('search[value]') != "")?$this->request->getPost('search[value]'):"";
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
-        // $sort_dir = $this->get_sort_dir();		
+        $sort_column = $this->request->getPost('order[0][column]');	
+        $sort_type = $this->request->getPost('order[0][dir]');	
+        $orderColumn = '';
+        if ($sort_column == '0') {
+        	$orderColumn = '';
+        } elseif ($sort_column == '1') {
+        	$orderColumn = 'ctcode';
+        } elseif ($sort_column == '2') {
+        	$orderColumn = 'ctdesc';
+        } 
 		// PULL data from API
 		$response = $this->client->request('GET','containertype/list',[
 				'headers' => [
@@ -23,7 +32,10 @@ class ContainerType extends \CodeIgniter\Controller
 				],
 				'json' => [
 					'start' => (int)$offset,
-					'rows'	=> (int)$limit
+					'rows'	=> (int)$limit,
+					'search'=> (string)$search,
+					'orderColumn' => (string)$orderColumn,
+					'orderType' => (string)$sort_type
 				]
 			]);
 

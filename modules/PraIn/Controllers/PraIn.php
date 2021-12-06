@@ -273,11 +273,11 @@ class PraIn extends \CodeIgniter\Controller
 			if($_FILES["files"] !="") {
 				foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name) {
 					if(is_array($_FILES["files"]["tmp_name"])) {
-						$post_arr[] = array(
-							'name' => 'files',
+						$post_arr[] = [
+							'name' => 'file',
 							'contents'	=> fopen($_FILES["files"]['tmp_name'][$key],'r'),
 							'filename'	=> $_FILES["files"]['name'][$key],
-						);
+						];
 						$post_arr[] = [
 							'name'		=> 'flag',
 							'contents'	=> 2
@@ -286,6 +286,7 @@ class PraIn extends \CodeIgniter\Controller
 					}
 				}
 			}
+			
 
 			$validate = $this->validate([
 	            'cpiorderno' 	=> 'required',
@@ -293,6 +294,7 @@ class PraIn extends \CodeIgniter\Controller
 	            'cpivoyid' 	=> 'required',
 	        ]);			
 
+			// echo var_dump($post_arr);die();
 		    if ($this->request->getMethod() === 'post' && $validate)
 		    {
 
@@ -305,6 +307,7 @@ class PraIn extends \CodeIgniter\Controller
 				]);
 
 				$result = json_decode($response->getBody()->getContents(), true);	
+				// echo var_dump();
 				if(isset($result['status']) && ($result['status']=="Failled"))
 				{
 					$data['message'] = $result['message'];
@@ -416,15 +419,18 @@ class PraIn extends \CodeIgniter\Controller
 				'contents'	=> 0
 			];
 
-			if($_FILES["files"]['name'][0]!=="") {
+			if($_FILES["files"] !="") {
 				foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name) {
 					if(is_array($_FILES["files"]["tmp_name"])) {
 						$post_arr[] = array(
-							'name' => 'files',
+							'name' => 'file',
 							'contents'	=> fopen($_FILES["files"]['tmp_name'][$key],'r'),
 							'filename'	=> $_FILES["files"]['name'][$key],
 						);
-
+						$post_arr[] = [
+							'name'		=> 'flag',
+							'contents'	=> 2
+						];
 						continue;
 					}
 				}
@@ -491,13 +497,13 @@ class PraIn extends \CodeIgniter\Controller
 	{
 		if ($this->request->isAJAX()) 
 		{		
-			$response = $this->client->request('DELETE','city/delete',[
+			$response = $this->client->request('DELETE','orderPras/deleteData',[
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
 				],
 				'form_params' => [
-					'cityId' => $code,
+					'praid' => (int)$code,
 				]
 			]);
 
@@ -508,7 +514,7 @@ class PraIn extends \CodeIgniter\Controller
 				echo json_encode($data);die();				
 			}
 
-			session()->setFlashdata('sukses','Success, City Code '.$code.' Deleted.');
+			session()->setFlashdata('sukses','Berhasil menghapus data.');
 			$data['message'] = "success";
 			echo json_encode($data);die();
 		}
@@ -906,12 +912,14 @@ class PraIn extends \CodeIgniter\Controller
 			],
 			'query' => ['praid' => $id],
 		]);
-		$result = json_decode($response->getBody()->getContents(), true);
-		$dt_order  = $result['data']['datas']['0']; 
+		$dt_order = json_decode($response->getBody()->getContents(), true);
+		dd($dt_order);
+		$data['data'] = $dt_order;
 		$dt_company = $this->get_company();
-
+		
 		if ($this->request->isAJAX()) 
 		{
+			$dt_order  = $dt_order['data']['datas']['0']; 
 			$cprocess_params = [];
 			$containers = $dt_order['orderPraContainers'];
 			// echo var_dump($containers);die();
@@ -1008,29 +1016,6 @@ class PraIn extends \CodeIgniter\Controller
 			}		
 		}		
 
-		$data['data'] = $dt_order;
-		$data['contract'] = $this->get_contract($data['data']['cpopr']);
-		$data['hc20'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['hc20'] : 0);
-		$data['hc40'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['hc40'] : 0);
-		$data['hc45'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['hc45'] : 0);
-		$data['std20'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['std20'] : 0);
-		$data['std40'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['std40'] : 0);	
-
-		return view('Modules\PraIn\Views\approval2',$data);		
-	}	
-
-	public function proforma($id) 
-	{
-		$get_order = $this->client->request('GET','orderPras/printOrderByPraOrderId',[
-			'headers' => [
-				'Accept' => 'application/json',
-				'Authorization' => session()->get('login_token')
-			],
-			'query' => ['praid' => $id],
-		]);
-
-		$dt_order = json_decode($get_order->getBody()->getContents(), true);
-		// dd($dt_order);
 		$contract = $this->get_contract("CTP");
 
 		$cont_std20 = $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['std20'];
@@ -1115,6 +1100,107 @@ class PraIn extends \CodeIgniter\Controller
 			$data['message'] = "success";
 			$data['coadmm'] = $coadmm;
 			$data['data'] = $dt_order['data']['datas'][0];
+		return view('Modules\PraIn\Views\approval2',$data);		
+	}	
+
+	public function proforma($id) 
+	{
+		$get_order = $this->client->request('GET','orderPras/printOrderByPraOrderId',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => ['praid' => $id],
+		]);
+
+		$dt_order = json_decode($get_order->getBody()->getContents(), true);
+		// dd($dt_order);
+		$contract = $this->get_contract("CTP");
+
+		$cont_std20 = $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['std20'];
+		$cont_std40 = $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['std40'];
+		$cont_hc20 = $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['hc20'];
+		$cont_hc40 = $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['hc40'];
+		$cont_hc45 = $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['hc45'];
+
+
+		$hc20 = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $cont_hc20 : 0);
+		$hc40 = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $cont_hc40 : 0);
+		$hc45 = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $cont_hc45 : 0);
+		$std20 = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $cont_std20 : 0);
+		$std40 = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $cont_std40 : 0);	
+		
+		if($contract['coadmm']==0) {
+				// liftOn
+				$lon20 = $contract['colonmty20'];
+				$lon40 = $contract['colonmty40'];
+				$lon45 = $contract['colonmty45'];
+				// liftOff
+				$lof20 = $contract['colofmty20'];
+				$lof40 = $contract['colofmty40'];
+				$lof45 = $contract['colofmty45'];	
+
+				$coadmm = "By Order";
+
+			} else if($contract['coadmm']==1) {
+				// liftOn
+				$lon20 = $contract['coloncy20'];
+				$lon40 = $contract['coloncy40'];
+				$lon45 = $contract['coloncy45'];
+				// liftOff
+				$lof20 = $contract['colofcy20'];
+				$lof40 = $contract['colofcy40'];
+				$lof45 = $contract['colofcy45'];
+				
+				$coadmm = "By Container";
+			}
+
+			// hitung billing
+			$lon_hc20 = $hc20 * $lon20; 
+			$lon_hc40 = $hc40 * $lon40; 
+			$lon_hc45 = $hc45 * $lon45; 			
+			$lon_std20 = $std20 * $lon20; 
+			$lon_std40 = $std40 * $lon40;			
+
+			$lof_hc20 = $hc20 * $lof20; 
+			$lof_hc40 = $hc40 * $lof40; 
+			$lof_hc45 = $hc45 * $lof45; 			
+			$lof_std20 = $std20 * $lof20; 
+			$lof_std40 = $std40 * $lof40; 
+
+			$subtotal = $lon_hc20+$lon_hc40+$lon_hc45+$lon_std20+$lon_std40;
+			$pajak = $contract['cotax'] * $subtotal;
+			$adm_tarif = $contract['coadmv'];
+			$materai = $contract['comaterai'];
+			$totalcharge = $subtotal + $pajak + $adm_tarif + $materai;
+
+			// hitungHCSTD
+			$data['std20'] = $std20;
+			$data['std40'] = $std40;
+			$data['hc20'] = $hc20;
+			$data['hc40'] = $hc40;
+			$data['hc45'] = $hc45;
+
+			//tarif liftOn
+			$data['lon20'] = $lon20;
+			$data['lon40'] = $lon40;
+			$data['lon45'] = $lon45;
+			// Hitung subtotal
+			$data['lon_hc20'] = $lon_hc20;
+			$data['lon_hc40'] = $lon_hc40;
+			$data['lon_hc45'] = $lon_hc45;
+			$data['lon_std20'] = $lon_std20;
+			$data['lon_std40'] = $lon_std40;
+
+			$data['subtotal_charge'] = $subtotal;
+			$data['pajak'] = $pajak;
+			$data['adm_tarif'] = $adm_tarif;
+			$data['materai'] = $materai;
+			$data['totalcharge'] = $totalcharge;
+
+			$data['message'] = "success";
+			$data['coadmm'] = $coadmm;
+			$data['data'] = $dt_order['data']['datas'][0];
 // dd($data['data']);
 			return view('Modules\PraIn\Views\proforma',$data);		
 	}
@@ -1141,6 +1227,7 @@ class PraIn extends \CodeIgniter\Controller
 		$result = json_decode($response->getBody()->getContents(), true);
 		$dt_order  = $result['data']['datas']['0']; 
 		$dt_company = $this->get_company();
+		// dd($dt_order);
 
 		if ($this->request->isAJAX()) 
 		{
@@ -1337,33 +1424,64 @@ class PraIn extends \CodeIgniter\Controller
 
 	public function cetak_kitir($crno="")
 	{
-		$db = \Config\Database::connect();
+
 		$generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
 		$mpdf = new \Mpdf\Mpdf();
-		
 
-		// $response = $this->client->request('GET','orderPraContainers/getDetailData',[
-		// 	'headers' => [
-		// 		'Accept' => 'application/json',
-		// 		'Authorization' => session()->get('login_token')
-		// 	],
-		// 	'query' => [
-		// 		'pracrnoid' => $pracrnoid,
-		// 	]
-		// ]);
-		// $result = json_decode($response->getBody()->getContents(), true);
+		$query_params = [
+			"cpife1" => 1,
+			"cpife2" => 0,
+			"retype1" => 21,
+			"retype2" => 22,
+			"retype3" => 23,
+			"crlastact1" => "od",
+			"crlastact2" => "bi",
+			"crno" => "BSIU2762785"
+		];
+
+		$response = $this->client->request('GET','containerProcess/getDataGateIN',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => $query_params,
+		]);
+		
+		$result = json_decode($response->getBody()->getContents(),true);
+		// dd($result['data']);
+		if(isset($result['data'][0])&&(count($result['data'][0])) > 0){
+			$CRNO = $result['data'][0]['crno'];
+			$LENGTH = $result['data'][0]['cclength'];
+			$HEIGTH = $result['data'][0]['ccheight'];
+			$CPIORDERNO = $result['data'][0]['cpiorderno'];
+			$TYPE = $result['data'][0]['cccode'];
+			$PRINCIPAL = $result['data'][0]['prcode'];
+			$SHIPPER = $result['data'][0]['cpideliver'];
+			$VESSEL = $result['data'][0]['vesid'];
+			$VOY = $result['data'][0]['cpivoy'];
+			$DATE = $result['data'][0]['cpidisdat'];
+			$DESTINATION = "";
+			$REMARK = $result['data'][0]['cpiremark'];
+			$NOPOL = $result['data'][0]['cpinopol'];
+		} else {
+			$CRNO = "";
+			$LENGTH = "";
+			$HEIGTH = "";
+			$CPIORDERNO = "";
+			$TYPE = "";
+			$PRINCIPAL = "";
+			$SHIPPER = "";
+			$VESSEL = "";
+			$VOY = "";
+			$DATE = "";
+			$DESTINATION = "";
+			$REMARK = "";
+			$NOPOL = "";			
+		}
+
+		$result = json_decode($response->getBody()->getContents(), true);
 			
-		$sql = "SELECT * FROM container_process cp 
-		left join tblcontainer con  on cp.cpid = con.crcpid
-		WHERE con.crno ='MSCU7597949'";
-		
-		$result = $db->query($sql)->getRow();
-		dd($result);
-
-		$CRNO = $result->crno;
-		$CPID = $result->cpid;
-
-		$barcode = $generator->getBarcode($CPID, $generator::TYPE_CODE_128);		
+		$barcode = $generator->getBarcode($crno, $generator::TYPE_CODE_128);		
 		
 		$html = '';
 
@@ -1389,8 +1507,8 @@ class PraIn extends \CodeIgniter\Controller
 						border-spacing: 0;
 						border-collapse: collapse;
 						padding:5px;
-
 					}
+					.kotak{border:1px solid #000000;padding:5px!important;}
 					.line-space{border-bottom:1px solid #dddddd;margin:30px 0;}
 				</style>
 			</head>
@@ -1403,72 +1521,61 @@ class PraIn extends \CodeIgniter\Controller
 		';		
 		$html .='
 			<table class="tbl_head_prain" width="100%">
-				<tbody>
+				<tbody>		
 					<tr>
 						<td width="100">NO.</td>
-						<td></td>
-						<td colspan="2" class="t-center" style="width:20%;">
-							<input type="text" value="" size="5" style=";">
-							<input type="text" value="" size="5" style=";">&nbsp;
-							<input type="text" value="ST" size="5" style=";">
-							<input type="text" value="HC" size="5" style=";">
+						<td>: '.$CPIORDERNO.'</td>
+						<td colspan="2" class="t-center" style="width:220px;">
+							<input type="text" value="" size="10" style="" value="'.$LENGTH.'">&nbsp;
+							<input type="text" value="" size="10" style="" value="'.$HEIGTH.'">&nbsp;
+							<input type="text" value="ST" size="5" style="">
+							<input type="text" value="HC" size="5" style="">
 						</td>
 						<td>TYPE</td>
-						<td>:</td>
-					</tr>		
-					<tr>
-						<td class="" width=""></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td class="" width="">PRINCIPAL</td>
-						<td>:</td>
+						<td>: '.$TYPE.'</td>
 					</tr>
 					<tr>
 						<td class="" width="">SHIPPER</td>
-						<td width="">:</td>
+						<td width="">: '.$SHIPPER.'</td>
 						<td></td>
 						<td></td>						
-						<td class="" width="">VESSEL</td>
-						<td style="width:20%;">: M. PEMATANG SIANTAR M. PEMATANG SIANTAR Voy.1120</td>
+						<td class="" width="">PRINCIPAL</td>
+						<td>: '.$PRINCIPAL.'</td>
 					</tr>
 					<tr>
 						<td class="" width="">DATE</td>
-						<td width="">:</td>
+						<td width="">: '.$DATE.'</td>
 						<td></td>
 						<td></td>						
-						<td class="" width="">DESTINATION</td>
-						<td>:</td>
+						<td class="" width="">VESSEL</td>
+						<td style="width:20%;">: '.$VESSEL.' Voy.'.$VOY.'</td>
 					</tr>					
 					<tr>
 						<td class="" width="">CONDITION</td>
 						<td width="">: 
-							<input type="text" value="AV" size="7">
-							<input type="text" value="DMG" size="10">
+						<input type="text" value="AV" size="7">
+						<input type="text" value="DMG" size="10">
 						</td>
 						<td></td>
 						<td></td>						
-						<td class="" width="">NO. MOBIL</td>
+						<td class="" width="">DESTINATION</td>
 						<td>:</td>
 					</tr>
 					<tr>
 						<td class="" width="">REMARKS</td>
-						<td width="">:</td>
+						<td width="">: '.$REMARK.'</td>
 						<td></td>
 						<td></td>						
-						<td class="" width="">CLEAN</td>
-						<td>: 
-							<input type="text" value="YES" size="7">
-							<input type="text" value="NO" size="7">
-						</td>
+						<td class="" width="">NO. MOBIL</td>
+						<td>: '.$NOPOL.'</td>
 					</tr>
 					<tr>
 						<td class="" width="">CONTAINER NO.</td>
-						<td width="">:</td>
+						<td width="">: '.$CRNO.'</td>
 						<td></td>
 						<td></td>						
-						<td class="" width="">SEAL NO.</td>
-						<td>:</td>
+						<td></td>
+						<td></td>
 					</tr>
 					<tr>
 						<td class="" width=""></td>
@@ -1477,12 +1584,6 @@ class PraIn extends \CodeIgniter\Controller
 						<td></td>
 						<td class="" width=""></td>
 						<td></td>
-					</tr>
-					<tr>
-						<td class="t-center"  style="padding-top:40px; width:33%" colspan="2">RECEIVER</td>
-						<td class="t-center"  style="padding-top:40px;" colspan="2">YARDMAN</td>
-						<td class="t-center"  style="padding-top:40px; width:33%" colspan="2">INVENTORY</td>
-
 					</tr>
 				</tbody>
 			</table>

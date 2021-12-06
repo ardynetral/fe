@@ -97,7 +97,7 @@ $(document).ready(function() {
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
 					// window.location.href = "#formDetail";
-					window.location.href = "<?php echo site_url('prain'); ?>";
+					// window.location.href = "<?php echo site_url('prain'); ?>";
 					// $("#navItem3").removeClass("disabled");
 					// $("#navLink3").attr("data-toggle","tab");
 					// $("#navLink3").trigger("click");	
@@ -359,7 +359,7 @@ $(document).ready(function() {
 
 	function delete_data(code) {
 		$.ajax({
-			url: "<?php echo site_url('city/delete/'); ?>"+code,
+			url: "<?php echo site_url('prain/delete/'); ?>"+code,
 			type: "POST",
 			dataType: 'json',
 			success: function(json) {
@@ -369,7 +369,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					window.location.href = "<?php echo site_url('city'); ?>";
+					window.location.href = "<?php echo site_url('prain'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -734,4 +734,104 @@ $(document).ready(function() {
 	});
 
 });
+
+function runDataTables() {		
+    $.fn.dataTable.pipeline = function ( opts ) { 
+        var conf = $.extend({
+            pages: 5,      
+            url: '',      
+            data: null,    
+            method: 'POST'  
+        }, opts);
+
+        var cacheLower = -1;
+        var cacheUpper = null;
+        var cacheLastRequest = null;
+        var cacheLastJson = null;
+
+        return function (request, drawCallback, settings) {
+            
+			var ajax = true;
+            var requestStart = request.start;
+            var drawStart = request.start;
+            var requestLength = request.length;
+            var requestEnd = requestStart + requestLength;
+
+            if (settings.clearCache) { 
+                ajax = true;
+                settings.clearCache = false;
+            }
+            else if (cacheLower < 0 || requestStart < cacheLower || requestEnd > cacheUpper) { 
+                ajax = true;
+            }
+            else if (JSON.stringify(request.order) !== JSON.stringify(cacheLastRequest.order) ||
+                JSON.stringify(request.columns) !== JSON.stringify(cacheLastRequest.columns) ||
+                JSON.stringify(request.search) !== JSON.stringify(cacheLastRequest.search)
+        ) { 
+                ajax = true;
+            }
+
+            cacheLastRequest = $.extend(true, {}, request);
+
+            if (ajax) { 
+
+                cacheLower = requestStart;
+                cacheUpper = requestStart + (requestLength * conf.pages);
+
+                request.start = requestStart;
+                request.length = requestLength * conf.pages;
+                request.startdate = $("#startdate").val();
+                request.enddate = $("#enddate").val();
+                request.rows = requestLength;
+
+                if ($.isFunction(conf.data)) {
+                   
+                    var d = conf.data(request);
+                    if (d) {
+                        $.extend(request, d);
+                    }
+                }
+                else if ($.isPlainObject(conf.data)) { 
+                    $.extend(request, conf.data);
+                }
+
+                settings.jqXHR = $.ajax({
+                    "type": conf.method,
+                    "url": conf.url,
+                    "data": request,
+                    "dataType": "json",
+                    "cache": false,
+					"beforeSend": function(){
+						$('#ctTable > tbody').html(
+				            '<tr class="odd">' +
+				              '<td valign="top" colspan="6" class="dataTables_empty">Loading&hellip; <i class="fa fa-gear fa-1x fa-spin"></i></td>' +
+				            '</tr>'
+				          );
+					},
+                    "success": function (json) {
+						$("#spinner").hide();
+						$(".fa-spin").remove();
+						$("#SearchSC").removeAttr("disabled");
+                        cacheLastJson = $.extend(true, {}, json);
+
+                        if (cacheLower != drawStart) {
+                            json.data.splice(0, drawStart - cacheLower);
+                        }
+                        json.data.splice(requestLength, json.data.length);
+
+                        drawCallback(json);
+                    }
+                });
+            }
+            else {
+                json = $.extend(true, {}, cacheLastJson);
+                json.draw = request.draw;  
+                json.data.splice(0, requestStart - cacheLower);
+                json.data.splice(requestLength, json.data.length);
+
+                drawCallback(json);
+            }
+        }
+    } 	   
+}
 </script>

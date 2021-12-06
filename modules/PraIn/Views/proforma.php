@@ -20,19 +20,6 @@
 						<fieldset>
 							<div class="col-sm-6">				
 								<div class="form-group">
-									<label for="prcode" class="col-sm-5 control-label text-right">Principal</label>
-									<div class="col-sm-7">
-										<input type="text" name="prcode" class="form-control" id="prcode" value="<?=$data['cpopr'];?>" readOnly>
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="cucode" class="col-sm-5 control-label text-right">Customer</label>
-									<div class="col-sm-7">
-										<input type="text" name="cucode" class="form-control" id="cucode" value="<?=$data['cpcust']?>" readOnly>
-									</div>
-								</div> 
-
-								<div class="form-group">
 									<label for="cpidish " class="col-sm-5 control-label text-right">Origin Port</label>
 									<div class="col-sm-4">
 										<input type="text" name="cpidish" class="form-control" id="cpidish" value="<?=$data['cpidish']?>" readOnly>
@@ -212,7 +199,14 @@
 			<td class="text-right" colspan="2">Adm Tarif</td>
 			<td colspan="2"><input type="text" name="" value="IDR" class="form-control" readonly></td>
 			<td><input type="text" name="" value="<?=number_format($adm_tarif,2);?>" class="form-control" readonly></td>
-		</tr>		
+		</tr>	
+		<tr>
+			<td></td>
+			<td></td>
+			<td></td>
+			<td class="text-right" colspan="2">Materai</td>
+			<td><input type="text" name="" value="" class="form-control" readonly></td>
+		</tr>			
 		<tr>
 			<td></td>
 			<td></td>
@@ -275,7 +269,7 @@
 					</div>
 				</div>
 
-			<?php endif; ?>						
+<?php endif; ?>						
 
 			</div>
 		</div>	
@@ -328,7 +322,7 @@
 						</table>						
 					</div>
 					<div class="widget-footer text-center">
-					<a href="<?=site_url('prain')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+					<a href="<?=site_url('prain')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Kembali</a>
 					</div>					
 				</div>
 			</div>

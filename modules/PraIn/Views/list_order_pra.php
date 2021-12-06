@@ -36,7 +36,7 @@
 							<a href="<?=site_url('prain/approve_order/'.$row['praid']);?>" id="" class="btn btn-xs btn-primary" data-praid="<?=$row['praid'];?>">Approval</a>
 							
 							<?php if(has_delete==true): ?>
-								<a href="#" id="deletePraIn" class="btn btn-xs btn-danger">delete</a>
+								<a href="#" id="" class="btn btn-xs btn-danger delete" data-kode="<?=$row['praid']?>">delete</a>
 							<?php endif; ?>	
 
 						<?php elseif($row['appv']==1): ?>

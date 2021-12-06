@@ -44,7 +44,7 @@ class Consignee extends \CodeIgniter\Controller
 			'query' => [
 				'offset' => $offset,
 				'limit' => $limit,
-				'cutype' =>2,
+				'cutype' =>4,
 			]
 		]);
 

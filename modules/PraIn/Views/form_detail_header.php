@@ -35,7 +35,7 @@ $group_id = $token['groupId'];
 			<div class="form-group">
 				<label class="col-sm-4 control-label text-right">ID Code </label>
 				<div class="col-sm-8">
-					<?=ccode_dropdown();?>
+					<?=ccode_dropdown("");?>
 				</div>
 			</div>
 			<div class="form-group">

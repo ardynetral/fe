@@ -46,7 +46,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					// window.location.href = "<?php echo site_url('users'); ?>";
+					window.location.href = "<?php echo site_url('users'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',

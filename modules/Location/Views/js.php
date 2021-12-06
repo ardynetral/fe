@@ -222,6 +222,6 @@ function runDataTables() {
                 drawCallback(json);
             }
         }
-    }    
+    } 	   
 }
 </script>

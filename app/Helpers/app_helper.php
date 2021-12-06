@@ -439,6 +439,13 @@ function ccode_dropdown($selected="")
 		'headers' => [
 			'Accept' => 'application/json',
 			'Authorization' => session()->get('login_token')
+		],
+		'json' => [
+			'start' => 0,
+			'rows'	=> 100,
+			'search'=> "",
+			'orderColumn' => "cccode",
+			'orderType' => "ASC"
 		]
 	]);
 
@@ -483,3 +490,25 @@ function currency_dropdown($selected="")
 	die();
 }
 
+function currency_dropdown2($varname="",$selected="")
+{
+	$client = api_connect();
+
+	$response = $client->request('GET','currency/getAllData',[
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		]
+	]);
+
+	$result = json_decode($response->getBody()->getContents(),true);	
+	$res = $result['data']['datas'];
+	$option = "";
+	$option .= '<select name="'.$varname.'" id="'.$varname.'" class="form-control">';
+	foreach($res as $r) {
+		$option .= "<option value='".$r['tucode'] ."'". ((isset($selected) && $selected==$r['tucode']) ? ' selected' : '').">".$r['curr_symbol']."</option>"; 
+	}
+	$option .="</select>";
+	return $option; 
+	die();
+}

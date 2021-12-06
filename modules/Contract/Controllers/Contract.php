@@ -49,14 +49,15 @@ class Contract extends \CodeIgniter\Controller
         } elseif ($sort_column == '4'){
         	$orderColumn = 'coexpdate';
         }		
+
 		$response = $this->client->request('GET','contracts/list',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
 			],
-			'query'=>[
-				'start'=>(int)$offset,
-				'rows'=>(int)$limit,
+			'json' => [
+				'start' => (int)$offset,
+				'rows'	=> (int)$limit,
 				'search'=> (string)$search,
 				'orderColumn' => (string)$orderColumn,
 				'orderType' => (string)$sort_type
@@ -67,7 +68,7 @@ class Contract extends \CodeIgniter\Controller
 		$result = json_decode($response->getBody()->getContents(), true);
 		print_r($result); die();
         $output = array(
-            "draw" => $this->request->getPost('draw'),
+			"draw" => $this->request->getPost('draw'),
             "recordsTotal" => @$result['data']['count'],
             "recordsFiltered" => @$result['data']['count'],
             "data" => array()
@@ -83,9 +84,9 @@ class Contract extends \CodeIgniter\Controller
             $record[] = $v['coexpdate'];
 			$prcode = $v['prcode'];
 			$btn_list .='<a href="'.site_url('contract/view/'.$prcode).'" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>&nbsp;';						
-			// $btn_list .='<a href="#" id="edit" class="btn btn-xs btn-success btn-table">edit</a>&nbsp;';
+			$btn_list .='<a href="'.site_url('contract/edit/'.$prcode).'" id="edit" class="btn btn-xs btn-success btn-table">edit</a>&nbsp;';
 			// $btn_list .='<a href="#" class="btn btn-xs btn-info btn-table" data-praid="">print</a>&nbsp;';	
-			// $btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table">delete</a>';			
+			$btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table delete" data-kode="'.$prcode.'">delete</a>';			
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
 
@@ -126,12 +127,17 @@ class Contract extends \CodeIgniter\Controller
 		{		
 		    if ($this->request->getMethod() === 'post')
 		    {
+				$format_date = [
+					'codate' => date('Y-m-d',strtotime($_POST['codate'])),
+					'coexpdate' => date('Y-m-d',strtotime($_POST['coexpdate']))  
+				];
+
 				$response = $this->client->request('POST','contracts/create',[
 					'headers' => [
 						'Accept' => 'application/json',
 						'Authorization' => session()->get('login_token')
 					],
-					'form_params' => $_POST
+					'form_params' => array_replace($_POST,$format_date)
 				]);
 
 				$result = json_decode($response->getBody()->getContents(), true);	
@@ -142,7 +148,7 @@ class Contract extends \CodeIgniter\Controller
 					echo json_encode($data);die();				
 				}
 
-				session()->setFlashdata('sukses','Success, Contract Saved.');
+				session()->setFlashdata('sukses','Berhasil menyimpan data');
 				$data['message'] = "success";
 				echo json_encode($data);die();
 
@@ -167,28 +173,20 @@ class Contract extends \CodeIgniter\Controller
 
 		if ($this->request->isAJAX()) 
 		{
-	    	// $cityId/ = $this->request->getPost('cityId/');
-	    	$name = $this->request->getPost('name');
-	    	$cncode = $this->request->getPost('cncode');
 
-			$validate = $this->validate([
-	            'name' 	=> 'required',
-	            'cncode'  => 'required'
-	        ]);			
-		
-		    if ($this->request->getMethod() === 'post' && $validate)
+		    if ($this->request->getMethod() === 'post')
 		    {
+				$format_date = [
+					'codate' => date('Y-m-d',strtotime($_POST['codate'])),
+					'coexpdate' => date('Y-m-d',strtotime($_POST['coexpdate']))  
+				];
 
-				$response = $this->client->request('POST','contract/update',[
+				$response = $this->client->request('POST','contracts/update',[
 					'headers' => [
 						'Accept' => 'application/json',
 						'Authorization' => session()->get('login_token')
 					],
-					'form_params' => [
-						'cityId' =>$code,
-						'name' =>$name,
-						'cncode' =>$cncode,
-					]
+					'form_params' => array_replace($_POST,$format_date)
 				]);
 
 				$result = json_decode($response->getBody()->getContents(), true);	
@@ -199,32 +197,33 @@ class Contract extends \CodeIgniter\Controller
 					echo json_encode($data);die();				
 				}
 
-				session()->setFlashdata('sukses','Success, City Saved.');
+				session()->setFlashdata('sukses','Berhasil menyimpan data.');
 				$data['message'] = "success";
 				echo json_encode($data);die();
 
 			}
 			else 
 			{
-		    	$data['message'] = \Config\Services::validation()->listErrors();
+		    	$data['message'] = "Lengkapi data";
 		    	echo json_encode($data);die();			
 			}			
 		}		
 
-		$response = $this->client->request('GET','contract/listOne',[
+		$response = $this->client->request('GET','contracts/listOne',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
 			],
 			'form_params' => [
-				'cityId' => $code,
+				'idContract' => $code,
 			]
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);	
+
+		$data['act'] = "edit";
 		$data['data'] = isset($result['data'])?$result['data']:"";
-		$data['country_dropdown'] = $this->country_dropdown($result['data']['cncode']);
-		return view('Modules\Contract\Views\edit',$data);		
+		return view('Modules\Contract\Views\add',$data);		
 	}	
 
 	public function delete($code)

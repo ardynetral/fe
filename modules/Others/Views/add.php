@@ -117,7 +117,7 @@
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
 								<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
-								<a href="<?=site_url('shipper')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+								<a href="<?=site_url('others')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 							</div>
 						</div>						
 					</fieldset>
@@ -136,7 +136,7 @@
 
 
 
-	<?= $this->include('\Modules\Shipper\Views\js'); ?>
+	<?= $this->include('\Modules\Others\Views\js'); ?>
 
 
 <?= $this->endSection();?>

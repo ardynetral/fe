@@ -64,8 +64,8 @@ class Consignee extends \CodeIgniter\Controller
             $record[] = $v['cucode'];
             $record[] = $v['cuname'];
 			
-			$btn_list .='<a href="'.site_url('Consignee/view/').$v["cucode"].'" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>&nbsp;';						
-			$btn_list .='<a href="'.site_url('Consignee/edit/').$v["cucode"].'" class="btn btn-xs btn-success btn-table">edit</a>&nbsp;';
+			$btn_list .='<a href="'.site_url('consignee/view/').$v["cucode"].'" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>&nbsp;';						
+			$btn_list .='<a href="'.site_url('consignee/edit/').$v["cucode"].'" class="btn btn-xs btn-success btn-table">edit</a>&nbsp;';
 			$btn_list .='<a href="#" class="btn btn-xs btn-info btn-table" data-praid="">print</a>&nbsp;';	
 			$btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table delete" data-kode="'.$v['cucode'].'">delete</a>';			
             $record[] = '<div>'.$btn_list.'</div>';

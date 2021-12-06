@@ -913,7 +913,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => ['praid' => $id],
 		]);
 		$dt_order = json_decode($response->getBody()->getContents(), true);
-		dd($dt_order);
+		// dd($dt_order);
 		$data['data'] = $dt_order;
 		$dt_company = $this->get_company();
 		
@@ -1436,7 +1436,7 @@ class PraIn extends \CodeIgniter\Controller
 			"retype3" => 23,
 			"crlastact1" => "od",
 			"crlastact2" => "bi",
-			"crno" => "BSIU2762785"
+			"crno" => $crno
 		];
 
 		$response = $this->client->request('GET','containerProcess/getDataGateIN',[

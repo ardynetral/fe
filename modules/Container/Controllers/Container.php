@@ -189,7 +189,7 @@ class Container extends \CodeIgniter\Controller
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
 				],
-				'form_params' => [
+				'json' => [
 					'crNo' => $this->request->getPost('crno'),
 					'dset' => $body
 				]
@@ -248,7 +248,7 @@ class Container extends \CodeIgniter\Controller
 				echo json_encode($data);die();				
 			}
 
-			session()->setFlashdata('sukses','Success, Container '.$code.' Deleted.');
+			session()->setFlashdata('sukses','Success, Container '.$crno.' Deleted.');
 			$data['message'] = "success";
 			echo json_encode($data);die();
 		}
@@ -262,6 +262,13 @@ class Container extends \CodeIgniter\Controller
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
 			],
+			'json' => [
+				'start' => 0,
+				'rows'	=> 100,
+				'search'=> "",
+				'orderColumn' => "cccode",
+				'orderType' => "ASC"
+			]
 		]);
 
 		$result = json_decode($response->getBody()->getContents(),true);	
@@ -287,7 +294,7 @@ class Container extends \CodeIgniter\Controller
 			],
 			'query' => [
 				'offset' =>0,
-				'limit' =>0
+				'limit' =>100
 			]
 		]);
 
@@ -297,7 +304,7 @@ class Container extends \CodeIgniter\Controller
 		$option .= '<select name="mtcode" id="mtcode" class="select-material">';
 		$option .= '<option value="">-select-</option>';
 		foreach($material as $mt) {
-			$option .= "<option value=".$mt['mtcode'].">".$mt['mtcode']."</option>"; 
+			$option .= "<option value=".$mt['mtcode'].">".$mt['mtdesc']."</option>"; 
 		}
 		$option .="</select>";
 		return $option; 

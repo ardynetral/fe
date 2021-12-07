@@ -29,7 +29,6 @@
 						<td><?=$row['cpivoyid']?></td>
 						<td>
 						<?php if($row['appv']==0): ?>
-							<a href="<?=site_url('prain/view/'.$row['praid']);?>" id="" class="btn btn-xs btn-default" data-praid="<?=$row['praid'];?>">view</a>
 
 							<a href="<?=site_url('prain/edit/'.$row['praid']);?>" id="editPraIn" class="btn btn-xs btn-warning">edit</a>
 
@@ -43,7 +42,7 @@
 
 							<a href="<?=site_url('prain/proforma/'.$row['praid']);?>" id="" class="btn btn-xs btn-primary" data-praid="<?=$row['praid'];?>">Proforma</a>
 							
-							<?php if(isset($row['files']['flag'])&&($row['files']['flag']==1)):?>
+							<?php if(isset($row['files'])&&(array_search('1', array_column($row['files'], 'flag'))!==false)):?>
 							<a href="<?=site_url('prain/approval2/'.$row['praid']);?>" id="" class="btn btn-xs btn-success approve" data-praid="<?=$row['praid'];?>">Approval 2</a>
 							<?php endif;?>
 

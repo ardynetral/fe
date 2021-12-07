@@ -62,7 +62,7 @@ class ContainerCode extends \CodeIgniter\Controller
 			
 			$btn_list .= '<a href="'.site_url().'/containercode/view/'.$v['cccode'].'" class="btn btn-xs btn-primary btn-tbl">View</a>';	
 			$btn_list .= '<a href="'.site_url().'/containercode/edit/'.$v['cccode'].'" class="btn btn-xs btn-success btn-tbl">Edit</a>';
-			$btn_list .= '<a href="'.site_url().'/containercode/delete/'.$v['cccode'].'" class="btn btn-xs btn-danger btn-tbl">Delete</a>';
+			$btn_list .= '<a href="#" class="btn btn-xs btn-danger btn-tbl delete" data-kode="'.$v['cccode'].'">Delete</a>';
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
 
@@ -255,6 +255,13 @@ class ContainerCode extends \CodeIgniter\Controller
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
 			],
+			'json' => [
+				'start' => 0,
+				'rows'	=> 100,
+				'search'=> "",
+				'orderColumn' => "",
+				'orderType' => ""
+			]
 		]);
 
 		$result = json_decode($response->getBody()->getContents(),true);	

@@ -56,7 +56,7 @@ class ContainerType extends \CodeIgniter\Controller
 			
 			$btn_list .= '<a href="'.site_url().'/containertype/view/'.$v['ctcode'].'" class="btn btn-xs btn-primary btn-tbl">View</a>';	
 			$btn_list .= '<a href="'.site_url().'/containertype/edit/'.$v['ctcode'].'" class="btn btn-xs btn-success btn-tbl">Edit</a>';
-			$btn_list .= '<a href="'.site_url().'/containertype/delete/'.$v['ctcode'].'" class="btn btn-xs btn-danger btn-tbl" id="delete" data-kode="'.$v['ctcode'].'">Delete</a>';
+			$btn_list .= '<a href="#" class="btn btn-xs btn-danger btn-tbl delete" data-kode="'.$v['ctcode'].'">Delete</a>';
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
 

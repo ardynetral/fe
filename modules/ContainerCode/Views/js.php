@@ -122,6 +122,23 @@ $(document).ready(function() {
     $('.DTTT_container').css('display','none');
     $('.DTTT').css('display','none');
 
+	$('#ctTable tbody').on('click', '.delete', function(e){
+		e.preventDefault();	
+		var code = $(this).data('kode');
+		Swal.fire({
+		  title: 'Are you sure?',
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+		  if (result.isConfirmed) {
+		  	delete_data(code);
+		  }
+		});		
+		
+	});	
     function delete_data(code) {
 		$.ajax({
 			url: "<?php echo site_url('containercode/delete/'); ?>"+code,

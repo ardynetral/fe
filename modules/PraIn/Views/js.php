@@ -90,24 +90,25 @@ $(document).ready(function() {
             cache: false,			
 			dataType: 'json',
 			success: function(json) {
-				if(json.message == "success") {
+				if(json.status == "success") {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					// window.location.href = "#formDetail";
+					window.location.href = "#formDetail";
+					$("#crno").focus();
 					// window.location.href = "<?php echo site_url('prain'); ?>";
 					// $("#navItem3").removeClass("disabled");
 					// $("#navLink3").attr("data-toggle","tab");
 					// $("#navLink3").trigger("click");	
-					$("#praid").val(json.praid);				
+					$("#praid").val(json.praid);			
 					$("#saveData").prop('disabled', true);
 				} else {
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
+					  html: '<div class="text-danger">'+json.message_body+'</div>'
 					});						
 				}
 			}

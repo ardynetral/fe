@@ -185,7 +185,7 @@ $group_id = $token['groupId'];
 				<div class="form-group">
 					<label for="cpideliver" class="col-sm-4 control-label text-right">File Upload</label>
 					<div class="col-sm-6">
-						<input type="file" name="files[]" class="form-control" id="files" multiple="true" accept="image/*">
+						<input type="file" name="files[]" class="form-control" id="files" multiple="true" accept="image/*" required="">
 					</div>
 				</div>	
 			</div>	

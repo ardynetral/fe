@@ -231,7 +231,7 @@ class PraIn extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'liftoffcharge',
-				'contents'	=> $_POST['liftoffcharge']
+				'contents'	=> (isset($_POST['liftoffcharge'])?$_POST['liftoffcharge']:0)
 			];
 			$post_arr[] = [
 				'name'		=> 'cpdepo',
@@ -307,20 +307,24 @@ class PraIn extends \CodeIgniter\Controller
 				]);
 
 				$result = json_decode($response->getBody()->getContents(), true);	
-				// echo var_dump();
-				if(isset($result['status']) && ($result['status']=="Failled"))
+				// echo var_dump($result);die();
+				if(isset($result['message']) && ($result['message']!="succes created order Pra"))
 				{
-					$data['message'] = $result['message'];
+					$data['status'] = "Failled";
+					$data['message'] = "Gagal menyimpan data";
 					echo json_encode($data);die();				
 				}
 
 				session()->setFlashdata('sukses','Success, Order Pra Saved.');
-				$data['message'] = "success";
-				$data['praid'] = $result['data']['praid'];
+				session()->setFlashdata('notif_insert_container','Silahkan mengisi data Container.');
+				$data['status'] = "success";
+				$data['message'] = "Berasil menyimpan data";
+				$data['praid'] = $result['data']["data order Pra"]['praid'];
 				echo json_encode($data);die();
 			}
 			else 
 			{
+				$data['status'] = "Failled";
 		    	$data['message'] = \Config\Services::validation()->listErrors();
 		    	echo json_encode($data);die();			
 			}			

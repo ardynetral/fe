@@ -337,7 +337,7 @@ function debitur_dropdown($selected="")
 	die();			
 }
 
-function port_dropdown($selected="")
+function port_dropdown($varname="",$selected="")
 {
 	$api = api_connect();
 	$response = $api->request('GET','ports/list',[
@@ -350,7 +350,7 @@ function port_dropdown($selected="")
 	$result = json_decode($response->getBody()->getContents(),true);	
 	$port = $result['data']['datas'];
 	$option = "";
-	$option .= '<select name="cpidish" id="cpidish" class="select-port">';
+	$option .= '<select name="'.$varname.'" id="'.$varname.'" class="select-port">';
 	$option .= '<option value="">-select-</option>';
 	foreach($port as $p) {
 		$option .= "<option value='".$p['poport'] ."'". ((isset($selected) && $selected==$p['poport']) ? ' selected' : '').">".$p['poport']." - ".$p['cncode']."</option>";

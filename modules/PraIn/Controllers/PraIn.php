@@ -270,6 +270,11 @@ class PraIn extends \CodeIgniter\Controller
 				'contents'	=> 0
 			];
 
+			$post_arr[] = [
+				'name'		=> 'flag',
+				'contents'	=> 2
+			];	
+
 			if($_FILES["files"] !="") {
 				foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name) {
 					if(is_array($_FILES["files"]["tmp_name"])) {
@@ -278,20 +283,17 @@ class PraIn extends \CodeIgniter\Controller
 							'contents'	=> fopen($_FILES["files"]['tmp_name'][$key],'r'),
 							'filename'	=> $_FILES["files"]['name'][$key],
 						];
-						$post_arr[] = [
-							'name'		=> 'flag',
-							'contents'	=> 2
-						];
 						continue;
 					}
 				}
 			}
+
 			
 
 			$validate = $this->validate([
 	            'cpiorderno' 	=> 'required',
-	            'cpives' 	=> 'required',
-	            'cpivoyid' 	=> 'required',
+	            // 'cpives' 	=> 'required',
+	            // 'cpivoyid' 	=> 'required',
 	        ]);			
 
 			// echo var_dump($post_arr);die();
@@ -384,7 +386,7 @@ class PraIn extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'liftoffcharge',
-				'contents'	=> $_POST['liftoffcharge']
+				'contents'	=> (isset($_POST['liftoffcharge'])?$_POST['liftoffcharge']:0)
 			];
 			$post_arr[] = [
 				'name'		=> 'cpdepo',
@@ -423,7 +425,12 @@ class PraIn extends \CodeIgniter\Controller
 				'contents'	=> 0
 			];
 
-			if($_FILES["files"] !="") {
+			$post_arr[] = [
+				'name'		=> 'flag',
+				'contents'	=> 2
+			];
+
+			if($_FILES["files"]["name"][0]!="") {
 				foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name) {
 					if(is_array($_FILES["files"]["tmp_name"])) {
 						$post_arr[] = array(
@@ -431,10 +438,6 @@ class PraIn extends \CodeIgniter\Controller
 							'contents'	=> fopen($_FILES["files"]['tmp_name'][$key],'r'),
 							'filename'	=> $_FILES["files"]['name'][$key],
 						);
-						$post_arr[] = [
-							'name'		=> 'flag',
-							'contents'	=> 2
-						];
 						continue;
 					}
 				}
@@ -1173,7 +1176,7 @@ class PraIn extends \CodeIgniter\Controller
 			$lof_std40 = $std40 * $lof40; 
 
 			$subtotal = $lon_hc20+$lon_hc40+$lon_hc45+$lon_std20+$lon_std40;
-			$pajak = $contract['cotax'] * $subtotal;
+			$pajak = ($contract['cotax']/100) * $subtotal;
 			$adm_tarif = $contract['coadmv'];
 			$materai = $contract['comaterai'];
 			$totalcharge = $subtotal + $pajak + $adm_tarif + $materai;
@@ -1392,16 +1395,17 @@ class PraIn extends \CodeIgniter\Controller
 				'contents'	=> $_POST['cpirate']
 			];	
 
+			$post_arr[] = [
+				'name'		=> 'flag',
+				'contents'	=> 1
+			];
+
 			if($_FILES["files"] !="") {
 				$post_arr[] = array(
 					'name' => 'file',
 					'contents'	=> fopen($_FILES["files"]['tmp_name'],'r'),
 					'filename'	=> $_FILES["files"]['name'],
 				);
-				$post_arr[] = [
-					'name'		=> 'flag',
-					'contents'	=> 1
-				];
 			}
 
 			$response = $this->client->request('POST','orderPraRecepts/createNewData',[
@@ -1425,6 +1429,45 @@ class PraIn extends \CodeIgniter\Controller
 			echo json_encode($data);die();			
 		}
 	} 
+
+	public function get_container_by_praid($praid) 
+	{
+		$response = $this->client->request('GET','orderPraContainers/getAllData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'praid' => $praid,
+				'offset' => 0,
+				'limit' => 100,
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);			
+		$i=1; 
+		$html="";
+		foreach($result['data']['datas'] as $row){
+			$pracrid=$row['pracrnoid'];
+			$html .= "<tr>
+				<td>".$i."</td>
+				<td>".$row['crno']."</td>
+				<td>".$row['cccode']."</td>
+				<td>".$row['ctcode']."</td>
+				<td>".$row['cclength']."</td>
+				<td>".$row['ccheight']."</td>
+				<td>".((isset($row['cpife'])&&$row['cpife']==1)?'Full':'Empty')."</td>
+				<td>".((isset($row['cpishold'])&&$row['cpishold']==1)?'Hold':'Release')."</td>
+				<td>".$row['cpiremark']."</td>
+				<td></td>
+				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."'>edit</a></td>
+				</tr>";
+			$i++; 
+		}
+
+		echo json_encode($html);
+		die();
+	}
 
 	public function cetak_kitir($crno="")
 	{
@@ -1873,6 +1916,7 @@ class PraIn extends \CodeIgniter\Controller
 
 				$data['status'] = "Success";
 				$data['message'] = $result['message'];
+				$data['data'] = $result['data']['rows'][0];
 				echo json_encode($data);die();
 
 		    } else {

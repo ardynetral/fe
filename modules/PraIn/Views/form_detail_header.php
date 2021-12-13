@@ -65,20 +65,20 @@ $group_id = $token['groupId'];
 						<span><i></i>Full</span>
 					</label>
 					<label class="control-inline fancy-radio custom-bgcolor-green">
-						<input type="radio" name="cpife" id="cpife" value="0">
+						<input type="radio" name="cpife" id="cpife" value="0" checked>
 						<span><i></i>Empty</span>
 					</label>				
 				</div>	
 			</div>					
-			<div class="form-group">
+<!-- 			<div class="form-group">
 				<label class="col-sm-4 control-label text-right">Hold</label>
 				<div class="col-sm-8">
-					<label class="control-inline fancy-checkbox custom-color-green">
-						<input type="checkbox" name="cpishold" id="cpishold" value="0">
-						<span></span>
+					<label class="control-inline fancy-checkbox custom-color-green"> -->
+						<input type="hidden" name="cpishold" id="cpishold" value="0">
+<!-- 						<span></span>
 					</label>
 				</div>	
-			</div>	
+			</div>	 -->
 			<div class="form-group">
 				<label class="col-sm-4 control-label text-right">Remark</label>
 				<div class="col-sm-8">

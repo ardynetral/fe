@@ -21,6 +21,7 @@ $routes->add('/prain/bukti_bayar', '\Modules\PraIn\Controllers\PraIn::bukti_baya
 $routes->add('/prain/addcontainer', '\Modules\PraIn\Controllers\PraIn::addcontainer', ['filter' => 'login']);
 $routes->add('/prain/get_container_form', '\Modules\PraIn\Controllers\PraIn::get_container_form', ['filter' => 'login']);
 $routes->add('/prain/get_one_container/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::get_one_container/$1', ['filter' => 'login']);
+$routes->add('/prain/get_container_by_praid/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::get_container_by_praid/$1', ['filter' => 'login']);
 $routes->add('/prain/edit_container', '\Modules\PraIn\Controllers\PraIn::edit_container', ['filter' => 'login']);
 $routes->add('/prain/checkContainerNumber', '\Modules\PraIn\Controllers\PraIn::checkContainerNumber', ['filter' => 'login']);
 $routes->add('/prain/delete_container/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::delete_container/$1', ['filter' => 'login']);

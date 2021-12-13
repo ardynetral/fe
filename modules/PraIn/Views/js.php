@@ -483,9 +483,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					// window.location.href = "<?php echo site_url('prain/view/'); ?>"+json.praid;
-					window.location.href = "<?php echo site_url('prain'); ?>";
-					// getDetailOrder(json.praid);
+					loadTableContainer($("#praid").val());
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -695,16 +693,28 @@ $(document).ready(function() {
 			data: "ccode="+crno,
 			dataType:"JSON",
 			success: function(json){
+
 				if(json.status=="Failled") {
+
 					$(".err-crno").show();
 					$(".err-crno").html(json.message);
 					$("#crno").css("background", "#ffbfbf!important");
 					$("#crno").css("border-color", "#ea2525");					
+
 				} else {
+
 					$(".err-crno").html("");
 					$(".err-crno").hide();
 					$("#crno").css("background", "#fff!important");
 					$("#crno").css("border-color", "#ccc");
+					console.log(json.data);
+					if(json.data!=null) {
+
+						$("#ccode").select2().select2('val',json.data.cccode);
+						$("#ctcode").val(json.data.container_code.ctcode);
+						$("#cclength").val(json.data.container_code.cclength);
+						$("#ccheight").val(json.data.container_code.ccheight);
+					}
 				}
 			}
 		});
@@ -736,6 +746,17 @@ $(document).ready(function() {
 	});
 
 });
+
+function loadTableContainer(praid) {
+	$('#detTable tbody').html("");
+	$.ajax({
+		url: "<?=site_url('prain/get_container_by_praid/')?>"+praid,
+		dataType: "json",
+		success: function(json) {
+			$('#detTable tbody').html(json);
+		}
+	});
+}
 
 function runDataTables() {		
     $.fn.dataTable.pipeline = function ( opts ) { 

@@ -7,3 +7,4 @@ $routes->post('/vessel/add', '\Modules\Vessel\Controllers\Vessel::add', ['filter
 $routes->add('/vessel/edit/(:alphanum)', '\Modules\Vessel\Controllers\Vessel::edit/$1', ['filter' => 'login']);
 $routes->post('/vessel/edit/(:alphanum)', '\Modules\Vessel\Controllers\Vessel::edit/$1', ['filter' => 'login']);
 $routes->add('/vessel/delete/(:alphanum)', '\Modules\Vessel\Controllers\Vessel::delete/$1', ['filter' => 'login']);
+$routes->add('/vessel/list_data', '\Modules\Vessel\Controllers\Vessel::list_data', ['filter' => 'login']);

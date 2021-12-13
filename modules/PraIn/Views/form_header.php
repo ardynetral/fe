@@ -45,7 +45,7 @@ $group_id = $token['groupId'];
 				<div class="form-group">
 					<label for="cpidish " class="col-sm-5 control-label text-right">Origin Port</label>
 					<div class="col-sm-4">
-						<?=port_dropdown();?>
+						<?=port_dropdown("cpidish","");?>
 					</div>
 					<label class="col-sm-3 control-label">* Port Country</label>
 				</div>	
@@ -53,7 +53,7 @@ $group_id = $token['groupId'];
 					<label for="cpidisdat" class="col-sm-5 control-label text-right">Discharge Date</label>
 					<div class="col-sm-7">
 						<div class="input-group">
-							<input type="text" name="cpidisdat" id="cpidisdat" class="form-control"  value="<?=date('d/m/Y')?>" readonly>
+							<input type="text" name="cpidisdat" id="cpidisdat" class="form-control tanggal"  value="<?=date('d/m/Y')?>">
 							<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 						</div>									
 					</div>
@@ -185,7 +185,7 @@ $group_id = $token['groupId'];
 				<div class="form-group">
 					<label for="cpideliver" class="col-sm-4 control-label text-right">File Upload</label>
 					<div class="col-sm-6">
-						<input type="file" name="files[]" class="form-control" id="files" multiple="true" accept="image/*" required="">
+						<input type="file" name="files[]" class="form-control" id="files" multiple="true" required="">
 					</div>
 				</div>	
 			</div>	

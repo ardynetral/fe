@@ -46,7 +46,7 @@
 								<div class="form-group">
 									<label for="cpidish " class="col-sm-5 control-label text-right">Origin Port</label>
 									<div class="col-sm-4">
-										<?=port_dropdown($data['cpidish']);?>
+										<?=port_dropdown("cpidish",$data['cpidish']);?>
 									</div>
 									<label class="col-sm-3 control-label">* Port Country</label>
 								</div>	
@@ -193,14 +193,18 @@
 								</div>	
 								<div class="form-group">
 									<div class="col-sm-offset-4 col-sm-6">
-										<div class="imgPreview alert alert-info">
+										<div class="imgPreview alert" style="display:block">
 										<b>File Uploaded : </b><br><br>
 											<?php if($data['files']=="") :
 												echo "No files found.";
 											else: ?>
 												
 												<?php foreach($data['files'] as $key=>$val):?>
-													<img src="<?=$data['files'][$key]['url'];?>" alt="" class="thumbnail" width="190">
+													<ul>
+														<li>
+															<?=$data['files'][$key]['url'];?>
+														</li>
+													</ul>
 												<?php endforeach; ?>
 												
 											<?php endif;?>

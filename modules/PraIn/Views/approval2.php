@@ -35,6 +35,7 @@
 										</div>									
 									</div>
 								</div>
+<?php /*								
 								<div class="form-group">
 									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
 									<div class="col-sm-7">
@@ -50,6 +51,7 @@
 										<input type="text" name="cpdepo" class="form-control" id="cpdepo" value="<?=$data['cpdepo']?>" readOnly>
 									</div>
 								</div>	
+*/?>								
 								<h2>&nbsp;</h2>
 
 							
@@ -83,7 +85,8 @@
 										<input type="text" name="cpijam" class="form-control" id="cpijam" required readonly value="<?=$data['cpijam'];?>">
 									</div>
 									<!-- <label class="col-sm-2 control-label">hh:mm:ss</label> -->
-								</div>								
+								</div>		
+<?php /*														
 								<div class="form-group">
 									<label for="cpives" class="col-sm-4 control-label text-right">Vessel</label>
 									<div class="col-sm-6">
@@ -104,6 +107,7 @@
 										<input type="text" name="cpopr" class="form-control" id="cpopr" readonly value="<?=$data['cpopr']?>" readonly>
 									</div>
 								</div>
+*/?>								
 								<div class="form-group">
 									<label for="cpicargo" class="col-sm-4 control-label text-right">Ex Cargo</label>
 									<div class="col-sm-6">

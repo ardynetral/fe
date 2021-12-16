@@ -133,7 +133,7 @@
 						<legend>Lift On : </legend>
 					</div>
 					<div class="col-sm-6">
-
+<!-- 
 						<table class="tbl-form" width="100%">
 							<tbody>
 								<tr>
@@ -220,7 +220,7 @@
 								</tr>
 							</tbody>
 						</table>
-		
+		 -->
 					</div>
 					<div class="col-sm-6">	
 						<!-- BUKTI BAYAR -->
@@ -316,8 +316,9 @@
 									<th>Type</th>
 									<th>Length</th>
 									<th>Height</th>
-									<th>F/E</th>
-									<th>Hold/Release</th>
+									<th>Principal</th>
+									<th>Lift Off</th>
+									<th>Deposit</th>
 									<th>Remark</th>
 									<th>GateIn Date</th>
 								</tr>
@@ -336,8 +337,9 @@
 											<td><?=$row['ctcode']?></td>
 											<td><?=$row['cclength']?></td>
 											<td><?=$row['ccheight']?></td>
-											<td><?=((isset($row['cpife'])&&$row['cpife']==1)?"Full":"Empty");?></td>
-											<td><?=((isset($row['cpishold'])&&$row['cpishold']==1)?"Hold":"Release")?></td>
+											<td><?=$row['cpopr'];?></td>
+											<td></td>
+											<td></td>
 											<td><?=$row['cpiremark']?></td>
 											<td></td>
 										</tr>

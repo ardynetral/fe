@@ -21,6 +21,8 @@ $(document).ready(function() {
 	// datePicker
 	$(".tanggal").datepicker({
 		autoclose:true,
+		format:'yy-mm-dd',
+		startDate: '-5y'
 	});
 
 	// $("#cpipratgl").datepicker("disable");
@@ -103,7 +105,7 @@ $(document).ready(function() {
 					// $("#navLink3").attr("data-toggle","tab");
 					// $("#navLink3").trigger("click");	
 					$("#praid").val(json.praid);			
-					$("#saveData").prop('disabled', true);
+					$("#save").prop('disabled', true);
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -157,6 +159,13 @@ $(document).ready(function() {
 		return $(this).val(val);
 	});
 
+	$("#deposit").on("change", function(){
+		var val = this.checked ? '1' : '0';
+		if(val=='0'){
+			$("#biaya_clean").val("0");
+		}
+		return $(this).val(val);
+	});
 	// EDIT DATA ORDER
 	function enableFormOrder() {
 		// $("#prcode").select2('enable');
@@ -385,11 +394,24 @@ $(document).ready(function() {
 
 	// STEP 1 :
 	$("#prcode").on("change", function(){
+		$("#deposit").prop('checked',false);
+		$("#deposit").val("0");		
+		$("#cleaning_type").val("Water Wash");	
 		var prcode = $(this).val();
+		var pracrnoid = $("#pracrnoid").val();
+		
+		if(pracrnoid=="") {
+			Swal.fire({
+			  icon: 'error',
+			  title: "Container belum dipilih",
+			  html: '<div class="text-danger">Klik view pada tabel Container</div>'
+			});	
+		}
+
 		$.ajax({
 			url:"<?=site_url('prain/ajax_prcode_listOne/');?>"+prcode,
 			type:"POST",
-			data: "prcode="+prcode,
+			data: {"prcode":prcode,"pracrnoid":pracrnoid},
 			dataType:"JSON",
 			success: function(json){
 				if(json.status=="Failled") {
@@ -399,7 +421,20 @@ $(document).ready(function() {
 					  html: '<div class="text-danger">'+json.message+'</div>'
 					});		
 				} else {
+					
 					$("#cucode").val(json.data.cucode);
+
+					if(json.data.prcode==="ONES") {
+						$("#deposit").removeAttr("disabled");
+						$("#deposit").prop('checked',true);
+						$("#deposit").val("1");						
+						// $("#biaya_clean").val(json.biaya_clean);
+						$("#biaya_clean").val("100000");
+					} else {
+						$("#deposit").attr("disabled","disabled");
+					}
+					
+					$("#biaya_lolo").val(json.biaya_lolo);
 				}
 			}
 		});
@@ -431,6 +466,9 @@ $(document).ready(function() {
 	// STEP 2 : 
 	//Get Container Code detail
 	$("#ccode").on("change", function(){
+		$("#ctcode").val("");
+		$("#cclength").val("");
+		$("#ccheight").val("");		
 		var cccode  = $(this).val();
 		$.ajax({
 			url:"<?=site_url('prain/ajax_ccode_listOne/');?>"+cccode,
@@ -470,21 +508,29 @@ $(document).ready(function() {
 		formData += "&cpife=" + cpife;
 		formData += "&cpishold=" + $("#cpishold").val();
 		formData += "&cpiremark=" + $("#cpiremark").val();
-		
+		formData += "&cleaning_type=" + $("#cleaning_type").val();
+
 		$.ajax({
 			url: "<?php echo site_url('prain/addcontainer'); ?>",
 			type: "POST",
 			data: formData,
 			dataType: 'json',
 			success: function(json) {
+				
 				if(json.message == "success") {
+
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
-					});							
+					});	
+					
+					$("#formDetail").trigger("reset");
+					$("#ccode").select2().select2('val',"");					
 					loadTableContainer($("#praid").val());
+
 				} else {
+
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
@@ -498,6 +544,7 @@ $(document).ready(function() {
 
 	$('#detTable tbody').on('click', '.edit', function(e){
 		e.preventDefault();
+		$("#formDetail").trigger("reset");
 		var crid = $(this).data("crid");
 	    var cpife = $('input:radio[name=cpife]');
 		$.ajax({
@@ -528,9 +575,15 @@ $(document).ready(function() {
 					if(json.cr.cpishold==1) {
 						$("#cpishold").prop('checked',true);
 						$("#cpishold").val(json.cr.cpishold);
+					}
+					if(json.cr.cpopr=="ONES") {
+						$("#deposit").prop("checked",true);
 					}					
 					$("#cpiremark").val(json.cr.cpiremark);
-
+					$("#cleaning_type").val(json.cr.cleaning_type);
+					$("#biaya_clean").val(json.cr.biaya_clean);
+					$("#biaya_lolo").val(json.cr.biaya_lolo);
+					console.log(json.cr.deposit);
 				}
 			}		
 		})
@@ -594,6 +647,9 @@ $(document).ready(function() {
 		formData += "&cpiremark=" + $("#cpiremark").val();
 		formData += "&cpopr=" + $("#prcode").val();
 		formData += "&cpcust=" + $("#cucode").val();
+		formData += "&total_lolo=" + $("#total_lolo").val();
+		formData += "&total_cleaning=" + $("#total_cleaning").val();
+		formData += "&subtotal_bill=" + $("#subtotal_bill").val();
 		
 		$.ajax({
 			url: "<?php echo site_url('prain/approve_order/'); ?>"+$("#praid").val(),
@@ -620,11 +676,19 @@ $(document).ready(function() {
 
 	});
 
-	// Set Principal to OrderPraContainer
+	// update OrderPraContainer di approval1
 	$("#apvUpdateContainer").on("click",function(){
 		formData = "&pracrnoid=" + $("#pracrnoid").val();
 		formData += "&cpopr=" + $("#prcode").val();
+		if($("#prcode").val()=="ONES") {
+			formData += "&deposit=" + $("#deposit").val("1");
+		} else {
+			formData += "&deposit=" + $("#deposit").val("0");
+		}
 		formData += "&cpcust=" + $("#cucode").val();
+		formData += "&biaya_clean=" + $("#biaya_clean").val();
+		formData += "&biaya_lolo=" + $("#biaya_lolo").val();
+		formData += "&cleaning_type=" + $("#cleaning_type").val();
 		$.ajax({
 			url: "<?php echo site_url('prain/appv1_update_container')?>",
 			type: "POST",
@@ -637,6 +701,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message_body+'</div>'
 					});
+					loadTableContainerAppv1($("#prcode").val());
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -727,6 +792,12 @@ $(document).ready(function() {
         window.open("<?php echo site_url('prain/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
+	$('#proformaPrintOrder').on("click", function(e){
+		e.preventDefault();
+		var praid = $(this).data("praid");
+        window.open("<?php echo site_url('prain/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	});
+
 	$('[data-toggle="tab"]').on('click', function(){
 	    var $this = $(this),
 	        loadurl = $this.attr('href'),
@@ -751,6 +822,17 @@ function loadTableContainer(praid) {
 	$('#detTable tbody').html("");
 	$.ajax({
 		url: "<?=site_url('prain/get_container_by_praid/')?>"+praid,
+		dataType: "json",
+		success: function(json) {
+			$('#detTable tbody').html(json);
+		}
+	});
+}
+
+function loadTableContainerAppv1(praid) {
+	$('#detTable tbody').html("");
+	$.ajax({
+		url: "<?=site_url('prain/appv1_containers/')?>"+praid,
 		dataType: "json",
 		success: function(json) {
 			$('#detTable tbody').html(json);

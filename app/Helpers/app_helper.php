@@ -353,7 +353,7 @@ function port_dropdown($varname="",$selected="")
 	$option .= '<select name="'.$varname.'" id="'.$varname.'" class="select-port">';
 	$option .= '<option value="">-select-</option>';
 	foreach($port as $p) {
-		$option .= "<option value='".$p['poport'] ."'". ((isset($selected) && $selected==$p['poport']) ? ' selected' : '').">".$p['poport']." - ".$p['cncode']."</option>";
+		$option .= "<option value='".$p['poport'] ."'". ((isset($selected) && $selected==$p['poport']) ? ' selected' : '').">".$p['podesc']."</option>";
 	}
 	$option .="</select>";
 	return $option; 

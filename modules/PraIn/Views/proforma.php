@@ -35,7 +35,7 @@
 										</div>									
 									</div>
 								</div>
-<?php /*								
+								
 								<div class="form-group">
 									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
 									<div class="col-sm-7">
@@ -51,7 +51,7 @@
 										<input type="text" name="cpdepo" class="form-control" id="cpdepo" value="<?=$data['cpdepo']?>" readOnly>
 									</div>
 								</div>	
-*/?>								
+							
 								<h2>&nbsp;</h2>
 
 							
@@ -86,7 +86,7 @@
 									</div>
 									<!-- <label class="col-sm-2 control-label">hh:mm:ss</label> -->
 								</div>
-<?php /*																
+															
 								<div class="form-group">
 									<label for="cpives" class="col-sm-4 control-label text-right">Vessel</label>
 									<div class="col-sm-6">
@@ -107,7 +107,7 @@
 										<input type="text" name="cpopr" class="form-control" id="cpopr" readonly value="<?=$data['cpopr']?>" readonly>
 									</div>
 								</div>
-*/?>								
+								
 								<div class="form-group">
 									<label for="cpicargo" class="col-sm-4 control-label text-right">Ex Cargo</label>
 									<div class="col-sm-6">
@@ -130,104 +130,23 @@
 
 				<div class="row">
 					<div class="col-sm-12">
-						<legend>Lift On : </legend>
+						<legend></legend>
 					</div>
-					<div class="col-sm-6">
+					
+					<?php 
+						if(isset($data['files'])&&(array_search('1', array_column($data['files'], 'flag'))!==false)) {
+							echo array_search('1', array_column($data['files'], 'flag'));
+						
+					} else { ?>
 
-<table class="tbl-form" width="100%">
-	<tbody>
-		<tr>
-			<td></td><td colspan="5"><b>STD</b></td>
-		</tr>
-		<tr>
-			<td width="90" class="text-right">20"</td>
-			<td><input type="text" name="std20" class="form-control" id="std20" value="<?=$std20?>" readonly></td>	
-			<td>x</td>	
-			<td><input type="text" name="lonstd20" class="form-control" value="<?=number_format($lon20,2);?>"></td>	
-			<td>=</td>	
-			<td><input type="text" name="lon20" class="form-control" value="<?=number_format($lon_std20,2);?>"></td>	
-		</tr>
-		<tr>
-			<td class="text-right">40"</td>
-			<td><input type="text" name="std40" class="form-control" id="std40" value="<?=$std40?>" readonly></td>
-			<td>x</td>
-			<td><input type="text" name="lonstd40" class="form-control" value="<?=number_format($lon40,2);?>"></td>
-			<td>=</td>
-			<td><input type="text" name="lon40" class="form-control" value="<?=number_format($lon_std40,2);?>"></td>
-		</tr>	
-		<tr>
-			<td></td><td colspan="5"><b>HC</b></td>
-		</tr>			
-		<tr>
-			<td class="text-right">20"</td>
-			<td><input type="text" name="hc20" class="form-control" id="hc20" value="<?=$hc20?>" readonly></td>
-			<td>x</td>
-			<td><input type="text" name="lonhc20" class="form-control" value="<?=number_format($lon20,2);?>"></td>
-			<td>=</td>
-			<td><input type="text" name="totlonhc20" class="form-control" value="<?=number_format($lon_hc20,2);?>"></td>
-		</tr>		
-		<tr>
-			<td class="text-right">40"</td>
-			<td><input type="text" name="hc40" class="form-control" id="hc40" value="<?=$hc40?>" readonly></td>
-			<td>x</td>
-			<td><input type="text" name="lonhc40" class="form-control" value="<?=number_format($lon40,2);?>"></td>
-			<td>=</td>
-			<td><input type="text" name="lonhc40" class="form-control" value="<?=number_format($lon_hc40,2);?>"></td>
-		</tr>		
-		<tr>
-			<td class="text-right">45"</td>
-			<td><input type="text" name="hc45" class="form-control" id="hc45" value="<?=$hc45?>" readonly></td>
-			<td>x</td>
-			<td><input type="text" name="lonhc45" class="form-control" value="<?=number_format($lon45,2);?>"></td>
-			<td>=</td>
-			<td><input type="text" name="lon45" class="form-control" value="<?=number_format($lon_hc45,2);?>"></td>
-		</tr>	
-		<tr><td></td></tr>	
-		<tr>
-			<td></td>
-			<td class="text-right" colspan="2">Cleaning</td>
-			<td><label class="control-inline fancy-radio custom-color-green">
-				<input type="radio" name="coadmm" id="coadmm" value="1" checked>
-				<span><i></i><?=$coadmm;?></span></label></td>
-			<td></td>
-			<td></td>
-		</tr>		
-		<tr>
-			<td></td>
-			<td class="text-right" colspan="2">Pajak</td>
-			<td colspan="2"><input type="text" name="" value="IDR" class="form-control" readonly></td>
-			<td><input type="text" name="" value="<?=number_format($pajak,2);?>" class="form-control" readonly></td>
-		</tr>		
-		<tr>
-			<td></td>
-			<td class="text-right" colspan="2">Adm Tarif</td>
-			<td colspan="2"><input type="text" name="" value="IDR" class="form-control" readonly></td>
-			<td><input type="text" name="" value="<?=number_format($adm_tarif,2);?>" class="form-control" readonly></td>
-		</tr>	
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<td class="text-right" colspan="2">Materai</td>
-			<td><input type="text" name="" value="" class="form-control" readonly></td>
-		</tr>			
-		<tr>
-			<td></td>
-			<td></td>
-			<td></td>
-			<th class="text-right" colspan="2">Total Charge</th>
-			<td><input type="text" name="" value="<?=number_format($totalcharge,2)?>" class="form-control" readonly></td>
-		</tr>
-	</tbody>
-</table>
-		
-					</div>
 					<div class="col-sm-6">
 						<div class="alert alert-danger text-center">
 							<p class="lead">Segera lakukan Pembayaran sejumlah<br>
 							<b>Rp. <?=number_format($totalcharge,2)?>.</b><br>
 							ke Rekening : 1230985 (BANK MANDIRI)</p>
 						</div>		
+					</div>
+					<div class="col-sm-6">
 
 						<!-- BUKTI BAYAR -->
 						<div class="widget widget-table">
@@ -271,6 +190,9 @@
 							</div>
 						</div>									
 					</div>
+
+					<?php } ?>
+
 				</div>
 
 <?php endif; ?>						
@@ -295,10 +217,10 @@
 									<th>Type</th>
 									<th>Length</th>
 									<th>Height</th>
-									<th>F/E</th>
-									<th>Hold/Release</th>
-									<th>Remark</th>
-									<th>GateIn Date</th>
+									<th>Principal</th>
+									<th>Lift Off</th>
+									<th>Deposit</th>
+									<th>Subtotal</th>
 								</tr>
 							</thead>
 							
@@ -307,7 +229,14 @@
 									<tr><td colspan="11"><p class="alert alert-warning">Data not found.</p></td></tr>
 								<?php else: ?>
 
-									<?php $i=1; foreach($data['orderPraContainers'] as $row): ?>
+									<?php 
+									$i=1; 
+									$subtotal = 0;
+									$total_lolo = 0;
+									$total = 0;
+									foreach($data['orderPraContainers'] as $row): 
+										$subtotal = @$row['biaya_lolo']+@$row['biaya_clean'];
+									?>
 										<tr>
 											<td><?=$i;?></td>
 											<td><?=$row['crno'];?></td>
@@ -315,17 +244,60 @@
 											<td><?=$row['ctcode']?></td>
 											<td><?=$row['cclength']?></td>
 											<td><?=$row['ccheight']?></td>
-											<td><?=((isset($row['cpife'])&&$row['cpife']==1)?"Full":"Empty");?></td>
-											<td><?=((isset($row['cpishold'])&&$row['cpishold']==1)?"Hold":"Release")?></td>
-											<td><?=$row['cpiremark']?></td>
-											<td></td>
+											<td><?=$row['cpopr'];?></td>
+											<td><?=@$row['biaya_lolo'];?></td>
+											<td><?=@$row['biaya_clean'];?></td>											
+											<td class="text-right"><?=$subtotal;?></td>
 										</tr>
-									<?php $i++; endforeach; ?>
+									
+									<?php 
+									
+									$i++; 
+									$total_lolo = $total_lolo+@$row['biaya_lolo'];
+									$total = $total+$subtotal;
+									
+									endforeach; 
+
+
+									?>
+
+									<tr><th colspan="9" class="text-right">TOTAL</th><th><?=$total?></th></tr>
+
 								<?php endif; ?>
+							</tbody>
+						</table>
+						<table class="tbl-form" width="100%">
+							<tbody>
+								<?php
+								if($total_lolo > 5000000) {
+									$biaya_materai = $materai;
+								} else {
+									$biaya_materai = 0;
+								}
+								$total_pajak = $pajak*$total;
+								$grand_total = $total+$total_pajak+$biaya_materai+$adm_tarif;
+								?>	
+								<tr>
+									<td class="text-right" colspan="9">Pajak</td>
+									<td width="200"><input type="text" name="" value="<?=$total_pajak;?>" class="form-control" readonly></td>
+								</tr>		
+								<tr>
+									<td class="text-right" colspan="9">Adm Tarif</td>
+									<td width="200"><input type="text" name="" value="<?=number_format($adm_tarif,2);?>" class="form-control" readonly></td>
+								</tr>	
+								<tr>
+									<td class="text-right" colspan="9">Materai</td>
+									<td width="200"><input type="text" name="" value="<?=number_format($biaya_materai,2);?>" class="form-control" readonly></td>
+								</tr>			
+								<tr>
+									<th class="text-right" colspan="9">Total Charge</th>
+									<td width="200"><input type="text" name="" value="<?=number_format($grand_total,2);?>" class="form-control" readonly></td>
+								</tr>
 							</tbody>
 						</table>						
 					</div>
 					<div class="widget-footer text-center">
+					<a href="#" class="btn btn-primary" id="proformaPrintOrder" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak</a>
 					<a href="<?=site_url('prain')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Kembali</a>
 					</div>					
 				</div>

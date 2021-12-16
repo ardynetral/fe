@@ -7,8 +7,9 @@
 			<th>Type</th>
 			<th>Length</th>
 			<th>Height</th>
+			<th>Principal</th>
 			<th>F/E</th>
-			<th>Hold/Release</th>
+			<th>Hold</th>
 			<th>Remark</th>
 			<th>GateIn Date</th>
 			<th></th>
@@ -28,8 +29,9 @@
 					<td><?=$row['ctcode']?></td>
 					<td><?=$row['cclength']?></td>
 					<td><?=$row['ccheight']?></td>
-					<td><?=((isset($row['cpife'])&&$row['cpife']==1)?"Full":"Empty");?></td>
-					<td><?=((isset($row['cpishold'])&&$row['cpishold']==1)?"Hold":"Release")?></td>
+					<td></td>
+					<td><?=((isset($row['cpife'])&&$row['cpife']==1)?'Full':'Empty')?></td>
+					<td><?=((isset($row['cpishold'])&&$row['cpishold']==1)?'Hold':'Release')?></td>
 					<td><?=$row['cpiremark']?></td>
 					<td></td>
 					<td><a href="#" id="editContainer" class="btn btn-xs btn-primary edit" data-crid="<?=$row['pracrnoid']?>">edit</a></td>
@@ -38,3 +40,6 @@
 		<?php endif; ?>
 	</tbody>
 </table>
+<p class="text-center">
+	<a href="<?=site_url('prain')?>" class="btn btn-default">&nbsp;<i class="fa fa-refresh"></i>&nbsp;BACK&nbsp;</a>
+</p>

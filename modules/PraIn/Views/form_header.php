@@ -58,19 +58,19 @@ $group_id = $token['groupId'];
 						</div>									
 					</div>
 				</div>
-				<div class="form-group">
+				<div class="form-group" style="display:none;">
 					<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
 					<div class="col-sm-7">
 						<label class="control-inline fancy-checkbox custom-color-green">
-							<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="0">
+							<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="1" checked>
 							<span></span>
 						</label>
 					</div>
 				</div>
-				<div class="form-group">
+				<div class="form-group" class="form-group" style="display:none;">
 					<label for="cpdepo" class="col-sm-5 control-label text-right">Depot</label>
 					<div class="col-sm-7">
-						<?=depo_dropdown();?>
+						<?=depo_dropdown("000");?>
 					</div>
 				</div>	
 				<h2>&nbsp;</h2>
@@ -149,7 +149,8 @@ $group_id = $token['groupId'];
 						<input type="text" name="cpijam" class="form-control" id="cpijam" required readonly value="<?=date('H:i:s');?>">
 					</div>
 					<!-- <label class="col-sm-2 control-label">hh:mm:ss</label> -->
-				</div>								
+				</div>		
+<?php /*										
 				<div class="form-group">
 					<label for="cpives" class="col-sm-4 control-label text-right">Vessel</label>
 					<div class="col-sm-6">
@@ -170,18 +171,19 @@ $group_id = $token['groupId'];
 						<input type="text" name="cpopr" class="form-control" id="cpopr" readonly>
 					</div>
 				</div>
+*/?>
 				<div class="form-group">
 					<label for="cpicargo" class="col-sm-4 control-label text-right">Ex Cargo</label>
 					<div class="col-sm-6">
 						<input type="text" name="cpicargo" class="form-control" id="cpicargo" required>
 					</div>
 				</div>
-				<div class="form-group">
+<!-- 				<div class="form-group">
 					<label for="cpideliver" class="col-sm-4 control-label text-right">Redeliverer</label>
 					<div class="col-sm-6">
 						<input type="text" name="cpideliver" class="form-control" id="cpideliver" required>
 					</div>
-				</div>
+				</div> -->
 				<div class="form-group">
 					<label for="cpideliver" class="col-sm-4 control-label text-right">File Upload</label>
 					<div class="col-sm-6">
@@ -193,8 +195,7 @@ $group_id = $token['groupId'];
 		<div class="form-footer">
 			<div class="form-group text-center">
 				<button type="submit" id="save" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
-				<button type="button" id="update" class="btn btn-primary" style="display:none;"><i class="fa fa-check-circle"></i> Update</button>&nbsp;
-				<a href="<?=site_url('prain')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+				<button type="button" id="update" class="btn btn-primary" style="display:none;"><i class="fa fa-check-circle"></i> Update</button>
 			</div>	
 		</div>
 	</form>

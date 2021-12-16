@@ -16,7 +16,7 @@
 			<div class="widget-content">
 <!-- FORM HEADER -->
 				<div class="row">
-					<form id="fEditPraIn" class="form-horizontal" role="form" method="post">
+					<form id="fEditPraIn" class="form-horizontal" role="form" method="post" enctype="multipart/form-data">
 						<?= csrf_field() ?>
 						<input type="hidden" name="praid" id="praid" value="<?=$data['praid']?>">
 						<fieldset>
@@ -59,7 +59,7 @@
 										</div>									
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
@@ -68,7 +68,7 @@
 										</label>
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="cpdepo" class="col-sm-5 control-label text-right">Depot</label>
 									<div class="col-sm-7">
 										<?=depo_dropdown($data['cpdepo']);?>
@@ -153,13 +153,13 @@
 									</div>
 									<!-- <label class="col-sm-2 control-label">hh:mm:ss</label> -->
 								</div>								
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="cpives" class="col-sm-4 control-label text-right">Vessel</label>
 									<div class="col-sm-6">
 										<?=vessel_dropdown($data['cpives']);?>
 									</div>
 								</div>															
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="cpivoyid" class="col-sm-4 control-label text-right">Voyage</label>
 									<div class="col-sm-6">
 										<!-- <input type="text" name="name" class="form-control" id="name"> -->
@@ -167,7 +167,7 @@
 										<input type="text" id="cpivoyid" name="cpivoyid" class="form-control" value="<?=$data['cpivoyid']?>">
 									</div>
 								</div>								
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="cpopr" class="col-sm-4 control-label text-right">Vessel Operator</label>
 									<div class="col-sm-6">
 										<input type="text" name="cpopr" class="form-control" id="cpopr" readonly value="<?=$data['cpopr']?>">
@@ -188,7 +188,7 @@
 								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">File Upload</label>
 									<div class="col-sm-6">
-										<input type="file" name="files[]" class="form-control" id="files" multiple="true" accept="image/*">
+										<input type="file" name="files[]" class="form-control" id="files" multiple="true">
 									</div>
 								</div>	
 								<div class="form-group">
@@ -199,13 +199,21 @@
 												echo "No files found.";
 											else: ?>
 												
-												<?php foreach($data['files'] as $key=>$val):?>
-													<ul>
+												<div class="" style="word-wrap: break-word;">
+													<ul class="list-unstyled activity-list">
+													<?php $no=1; foreach($data['files'] as $key=>$val):?>
 														<li>
-															<?=$data['files'][$key]['url'];?>
+															<i class="fa fa-file-pdf-o activity-icon pull-left"></i>
+															<p>
+																<a href="<?=$data['files'][$key]['url'];?>" target="_blank">
+																File <?=$no;?>
+																</a>
+																<span class="timestamp"><?=date("d/m/Y",strtotime($data['files'][$key]['file_time_upload']));?></span>
+															</p>
 														</li>
+													<?php  $no++; endforeach;?>
 													</ul>
-												<?php endforeach; ?>
+												</div>
 												
 											<?php endif;?>
 

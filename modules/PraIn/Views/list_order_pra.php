@@ -15,6 +15,7 @@
 					<th>Date</th>
 					<th>Vessel</th>
 					<th>Voyage</th>
+					<th>Ref in No.</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -27,17 +28,18 @@
 						<td><?=$row['cpipratgl']?></td>
 						<td><?=$row['cpives']?></td>
 						<td><?=$row['cpivoyid']?></td>
+						<td><?=$row['cpirefin']?></td>
 						<td>
 						<?php if($row['appv']==0): ?>
 
 							<a href="<?=site_url('prain/edit/'.$row['praid']);?>" id="editPraIn" class="btn btn-xs btn-warning">edit</a>
 
+							<?php if($group_id!=1): ?>
 							<a href="<?=site_url('prain/approve_order/'.$row['praid']);?>" id="" class="btn btn-xs btn-primary" data-praid="<?=$row['praid'];?>">Approval</a>
-							
-							<?php if(has_delete==true): ?>
-								<a href="#" id="" class="btn btn-xs btn-danger delete" data-kode="<?=$row['praid']?>">delete</a>
-							<?php endif; ?>	
-
+							<?php endif; ?>
+								
+							<a href="#" id="" class="btn btn-xs btn-danger delete" data-kode="<?=$row['praid']?>">delete</a>
+								
 						<?php elseif($row['appv']==1): ?>
 
 							<a href="<?=site_url('prain/proforma/'.$row['praid']);?>" id="" class="btn btn-xs btn-primary" data-praid="<?=$row['praid'];?>">Proforma</a>

@@ -37,7 +37,7 @@
 										</div>									
 									</div>
 								</div>
-<?php /*								
+								
 								<div class="form-group">
 									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
 									<div class="col-sm-7">
@@ -53,7 +53,7 @@
 										<input type="text" value="<?=$data['cpdepo']?>" class="form-control" readonly="">
 									</div>
 								</div>	
-*/?>
+
 								<h2>&nbsp;</h2>
 								<div class="row">
 									<div class="col-sm-8 col-sm-offset-4">
@@ -104,8 +104,8 @@
 										
 									</div>
 								</div>
-							</div>
 
+							</div>
 							<div class="col-sm-6">
 								<div class="form-group">
 									<label for="cpiorderno" class="col-sm-4 control-label text-right">Pra In No</label>
@@ -168,12 +168,7 @@
 									</div>
 								</div>
 							</div>	
-						</fieldset>
-						<div class="form-footer">
-							<div class="form-group text-center">
-								<a href="<?=site_url('prain/edit/'.$data['praid']);?>" class="btn btn-primary"><i class="fa fa-pencil"></i> Edit</a>&nbsp;
-							</div>	
-						</div>						
+						</fieldset>			
 					</form>
 				</div>
 
@@ -273,7 +268,7 @@
 									</label>				
 								</div>	
 							</div>					
-							<div class="form-group">
+							<div class="form-group" style="display: none;">
 								<label class="col-sm-4 control-label text-right">Hold</label>
 								<div class="col-sm-8">
 									<label class="control-inline fancy-checkbox custom-color-green">
@@ -281,7 +276,42 @@
 										<span></span>
 									</label>
 								</div>	
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label text-right">Deposit</label>
+								<div class="col-sm-2">
+									<label class="fancy-checkbox custom-color-green">
+										<p></p>
+										<input type="checkbox" name="deposit" id="deposit" value="0">
+										<span></span>
+									</label>
+								</div>
+								<div class="col-sm-6">
+									<input type="text" name="biaya_clean" id="biaya_clean" class="form-control" value="0" readonly>
+								</div>
 							</div>	
+							<div class="form-group">
+								<label class="col-sm-4 control-label text-right">Lift Off</label>
+								<div class="col-sm-8">
+									<input type="text" name="biaya_lolo" id="biaya_lolo" value="0" class="form-control">
+								</div>	
+							</div>	
+							<div class="form-group">
+								<label class="col-sm-4 control-label text-right">Cleaning Type</label>
+								<div class="col-sm-8">
+									<label class="control-inline fancy-checkbox custom-color-green">
+										<select name="cleaning_type" id="cleaning_type" class="form-control">
+											<option value="Water Wash" selected>Water Wash</option>
+											<option value="Steam Wash">Steam Wash</option>
+											<option value="Meat Bone">Meat Bone</option>
+											<option value="Debrish Remove">Debrish Remove</option>
+											<option value="Mark Remove">Mark Remove</option>
+											<option value="Chemical Clean">Chemical Clean</option>
+											<option value="Sweeping">Sweeping</option>
+										</select>
+									</label>
+								</div>	
+							</div>																							
 							<div class="form-group">
 								<label class="col-sm-4 control-label text-right">Remark</label>
 								<div class="col-sm-8">
@@ -314,10 +344,10 @@
 									<th>Type</th>
 									<th>Length</th>
 									<th>Height</th>
-									<th>F/E</th>
-									<th>Hold/Release</th>
+									<th>Principal</th>
+									<th>Lift Off</th>
+									<th>Deposit</th>
 									<th>Remark</th>
-									<th>GateIn Date</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -327,7 +357,15 @@
 									<tr><td colspan="11"><p class="alert alert-warning">Data not found.</p></td></tr>
 								<?php else: ?>
 
-									<?php $i=1; foreach($data['orderPraContainers'] as $row): ?>
+									<?php 
+									$i=1; 
+									$subtotal = 0;
+									$total_lolo = 0;
+									$total_cleaning = 0;
+									$total = 0;
+									foreach($orderPraContainers as $row): 
+										$subtotal = $row['biaya_lolo']+$row['biaya_clean'];
+									?>
 										<tr>
 											<td><?=$i;?></td>
 											<td><?=$row['crno'];?></td>
@@ -335,16 +373,56 @@
 											<td><?=$row['ctcode']?></td>
 											<td><?=$row['cclength']?></td>
 											<td><?=$row['ccheight']?></td>
-											<td><?=((isset($row['cpife'])&&$row['cpife']==1)?"Full":"Empty");?></td>
-											<td><?=((isset($row['cpishold'])&&$row['cpishold']==1)?"Hold":"Release")?></td>
+											<td><?=$row['cpopr'];?></td>
+											<td><?=$row['biaya_lolo'];?></td>
+											<td><?=$row['biaya_clean'];?></td>
 											<td><?=$row['cpiremark']?></td>
-											<td></td>
 											<td><a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a></td>
 										</tr>
-									<?php $i++; endforeach; ?>
+									<?php 
+									$i++; 
+									$total_lolo = $total_lolo+$row['biaya_lolo'];
+									$total_cleaning = $total_cleaning+$row['biaya_clean'];
+									$total = $total+$subtotal;									
+									endforeach; 
+									?>
 								<?php endif; ?>
 							</tbody>
-						</table>	
+						</table>
+
+						<input type="hidden" name="total_lolo" id="total_lolo" value="<?=$total_lolo?>">
+						<input type="hidden" name="total_cleaning" id="total_cleaning" value="<?=$total_cleaning?>">
+						<input type="hidden" name="subtotal_bill" id="subtotal_bill" value="<?=$total?>">
+
+<!-- 						<table class="tbl-form" width="100%">
+							<tbody>
+								<?php
+								// if($total_lolo > 5000000) {
+								// 	$biaya_materai = $materai;
+								// } else {
+								// 	$biaya_materai = 0;
+								// }
+								// $total_pajak = $pajak*$total;
+								// $grand_total = $total+$total_pajak+$biaya_materai+$adm_tarif;
+								?>	
+								<tr>
+									<td class="text-right">Pajak</td>
+									<td width="200"><input type="text" name="" value="" class="form-control" readonly></td>
+								</tr>		
+								<tr>
+									<td class="text-right">Adm Tarif</td>
+									<td width="200"><input type="text" name="" value="" class="form-control" readonly></td>
+								</tr>	
+								<tr>
+									<td class="text-right">Materai</td>
+									<td width="200"><input type="text" name="" value="" class="form-control" readonly></td>
+								</tr>			
+								<tr>
+									<th class="text-right">Total Charge</th>
+									<td width="200"><input type="text" name="" value="" class="form-control" readonly></td>
+								</tr>
+							</tbody>
+						</table>	 -->						
 					</div>
 				</div>
 			</div>

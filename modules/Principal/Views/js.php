@@ -2,6 +2,12 @@
 $(document).ready(function() {
 	// SELECT2
 	$('.select-cncode').select2();
+
+	$(".tanggal").datepicker({
+		format: 'dd-mm-yyyy',
+		autoclose:true,
+	});
+	
 	// DATATABLE
 	$("#ctTable").DataTable({
 	    select: {
@@ -11,12 +17,7 @@ $(document).ready(function() {
 
 	$("#saveData").click(function(e){
 		e.preventDefault();
-		var formData = "prcode=" + $("#prcode").val();
-		formData += "&cucode=" + $("#cucode").val();
-		formData += "&prname=" + $("#prname").val();
-		formData += "&praddr=" + $("#praddr").val();
-		formData += "&prremark=" + $("#prremark").val();
-		formData += "&cncode=" + $("#cncode").val();
+		var formData = $("form#fPrincipal").serialize();
 		console.log(formData);
 		$.ajax({
 			url: "<?php echo site_url('principal/add'); ?>",
@@ -45,12 +46,7 @@ $(document).ready(function() {
 	// EDIT DATA
 	$("#updateData").click(function(e){
 		e.preventDefault();
-		var formData = "prcode=" + $("#prcode").val();
-		formData += "&cucode=" + $("#cucode").val();
-		formData += "&prname=" + $("#prname").val();
-		formData += "&praddr=" + $("#praddr").val();
-		formData += "&prremark=" + $("#prremark").val();
-		formData += "&cncode=" + $("#cncode").val();
+		var formData = $("form#fPrincipal").serialize();
 		console.log(formData);
 		$.ajax({
 			url: "<?php echo site_url('principal/edit/'); ?>"+$("#prcode").val(),

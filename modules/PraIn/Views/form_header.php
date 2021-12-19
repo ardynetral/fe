@@ -53,7 +53,7 @@ $group_id = $token['groupId'];
 					<label for="cpidisdat" class="col-sm-5 control-label text-right">Discharge Date</label>
 					<div class="col-sm-7">
 						<div class="input-group">
-							<input type="text" name="cpidisdat" id="cpidisdat" class="form-control tanggal"  value="<?=date('d/m/Y')?>">
+							<input type="text" name="cpidisdat" id="cpidisdat" class="form-control tanggal">
 							<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 						</div>									
 					</div>

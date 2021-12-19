@@ -9,7 +9,6 @@
 			<th>Height</th>
 			<th>Principal</th>
 			<th>F/E</th>
-			<th>Hold</th>
 			<th>Remark</th>
 			<th>GateIn Date</th>
 			<th></th>
@@ -31,10 +30,15 @@
 					<td><?=$row['ccheight']?></td>
 					<td></td>
 					<td><?=((isset($row['cpife'])&&$row['cpife']==1)?'Full':'Empty')?></td>
-					<td><?=((isset($row['cpishold'])&&$row['cpishold']==1)?'Hold':'Release')?></td>
 					<td><?=$row['cpiremark']?></td>
 					<td></td>
-					<td><a href="#" id="editContainer" class="btn btn-xs btn-primary edit" data-crid="<?=$row['pracrnoid']?>">edit</a></td>
+					<td>
+						<?php if(isset($act)&&($act=='add')):?>
+						<a href="#" id="viewContainer" class="btn btn-xs btn-primary view" data-crid="<?=$row['pracrnoid']?>">view</a>
+						<?php else:?>
+						<a href="#" id="editContainer" class="btn btn-xs btn-primary edit" data-crid="<?=$row['pracrnoid']?>">edit</a>
+						<?php endif; ?>
+					</td>
 				</tr>
 			<?php $i++; endforeach; ?>
 		<?php endif; ?>

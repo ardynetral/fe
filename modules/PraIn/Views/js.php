@@ -21,11 +21,14 @@ $(document).ready(function() {
 	// datePicker
 	$(".tanggal").datepicker({
 		autoclose:true,
-		format:'yy-mm-dd',
+		format:'dd-mm-yyyy',
 		startDate: '-5y'
 	});
 
 	// $("#cpipratgl").datepicker("disable");
+	if($("#liftoffcharge").val("1")) {
+		$("#liftoffcharge").prop('checked',true);
+	}
 
 	$("#addOrder").on('click', function(e){
 		e.preventDefault();
@@ -237,7 +240,11 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.msgdata+'</div>'
 					});
-					window.location.href = "<?php echo site_url('prain'); ?>";
+
+					if($("#appv1_update").length<1){
+						window.location.href = "<?php echo site_url('prain'); ?>";
+					}
+
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -428,8 +435,7 @@ $(document).ready(function() {
 						$("#deposit").removeAttr("disabled");
 						$("#deposit").prop('checked',true);
 						$("#deposit").val("1");						
-						// $("#biaya_clean").val(json.biaya_clean);
-						$("#biaya_clean").val("100000");
+						$("#biaya_clean").val(json.biaya_clean);
 					} else {
 						$("#deposit").attr("disabled","disabled");
 					}
@@ -456,7 +462,7 @@ $(document).ready(function() {
 					  html: '<div class="text-danger">'+json.message+'</div>'
 					});		
 				} else {
-					$("#cpopr").val(json.data.vesopr);
+					$("#vesopr").val(json.data.vesopr);
 				}
 			}
 		});		
@@ -563,8 +569,48 @@ $(document).ready(function() {
 					$("#cclength").val(json.cr.cclength);
 					$("#ccheight").val(json.cr.ccheight);
 
-				    $("#saveDetail").hide();
-				    $("#updateDetail").show();
+				    if(json.cr.cpife=="1") {
+				        cpife.filter('[value=1]').prop('checked', true);
+				    }else if(json.cr.cpife=="0"){
+				        cpife.filter('[value=0]').prop('checked', true);
+					}
+
+					if(json.cr.cpishold==1) {
+						$("#cpishold").prop('checked',true);
+						$("#cpishold").val(json.cr.cpishold);
+					}
+					if(json.cr.cpopr=="ONES") {
+						$("#deposit").prop("checked",true);
+					}					
+					$("#cpiremark").val(json.cr.cpiremark);
+					$("#cleaning_type").val(json.cr.cleaning_type);
+					$("#biaya_clean").val(json.cr.biaya_clean);
+					$("#biaya_lolo").val(json.cr.biaya_lolo);
+				}
+			}		
+		})
+	});
+
+	$('#detTable tbody').on('click', '.view', function(e){
+		e.preventDefault();
+		$("#formDetail").trigger("reset");
+		var crid = $(this).data("crid");
+	    var cpife = $('input:radio[name=cpife]');
+		$.ajax({
+			url:"<?=site_url('prain/get_one_container/');?>"+crid,
+			type:"POST",
+			data: "crid="+crid,
+			dataType:"JSON",
+			success: function(json){	
+				if(json.message=="success") {
+					$("#prcode").select2().select2('val',json.cr.cpopr);
+					$("#cucode").val(json.cr.cpcust);
+					$("#pracrnoid").val(json.cr.pracrnoid);
+					$("#crno").val(json.cr.crno);
+					$("#ccode").select2().select2('val',json.cr.cccode);
+					$("#ctcode").val(json.cr.ctcode);
+					$("#cclength").val(json.cr.cclength);
+					$("#ccheight").val(json.cr.ccheight);
 
 				    if(json.cr.cpife=="1") {
 				        cpife.filter('[value=1]').prop('checked', true);
@@ -583,7 +629,6 @@ $(document).ready(function() {
 					$("#cleaning_type").val(json.cr.cleaning_type);
 					$("#biaya_clean").val(json.cr.biaya_clean);
 					$("#biaya_lolo").val(json.cr.biaya_lolo);
-					console.log(json.cr.deposit);
 				}
 			}		
 		})
@@ -701,7 +746,11 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message_body+'</div>'
 					});
-					loadTableContainerAppv1($("#prcode").val());
+					$("#formDetail").trigger("reset");
+					$("#ccode").select2().select2('val',"");					
+					$("#prcode").select2().select2('val',"");
+					$("#pracrnoid").val("");					
+					loadTableContainerAppv1($("#praid").val());
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -743,10 +792,11 @@ $(document).ready(function() {
 	});
 
 	// Print Kitir
-	$("#cetak_kitir").on("click", function(e){
+	$("#detTable tbody").on('click','.cetak_kitir', function(e){
 		e.preventDefault();
 		var crno = $(this).attr('data-crno');
-		window.open("<?php echo site_url('prain/cetak_kitir/'); ?>" + crno, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+		var cpiorderno = $(this).attr('data-cpiorderno');
+		window.open("<?php echo site_url('prain/cetak_kitir/'); ?>" + crno + "/" + cpiorderno, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	$("#crno").on("keyup", function(){
@@ -759,6 +809,12 @@ $(document).ready(function() {
 			dataType:"JSON",
 			success: function(json){
 
+				// $("#formDetail").trigger("reset");
+				// $("#ccode").select2().select2('val',"");
+				$("#ccode").select2().select2('val','');
+				$("#ctcode").val("");
+				$("#cclength").val("");
+				$("#ccheight").val("");
 				if(json.status=="Failled") {
 
 					$(".err-crno").show();
@@ -772,9 +828,8 @@ $(document).ready(function() {
 					$(".err-crno").hide();
 					$("#crno").css("background", "#fff!important");
 					$("#crno").css("border-color", "#ccc");
-					console.log(json.data);
-					if(json.data!=null) {
 
+					if(json.data!=null) {
 						$("#ccode").select2().select2('val',json.data.cccode);
 						$("#ctcode").val(json.data.container_code.ctcode);
 						$("#cclength").val(json.data.container_code.cclength);
@@ -792,10 +847,16 @@ $(document).ready(function() {
         window.open("<?php echo site_url('prain/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
-	$('#proformaPrintOrder').on("click", function(e){
+	$('#proformaPrintInvoice1').on("click", function(e){
 		e.preventDefault();
 		var praid = $(this).data("praid");
-        window.open("<?php echo site_url('prain/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+        window.open("<?php echo site_url('prain/print_invoice1/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	});
+
+	$('#proformaPrintInvoice2').on("click", function(e){
+		e.preventDefault();
+		var praid = $(this).data("praid");
+        window.open("<?php echo site_url('prain/print_invoice2/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	$('[data-toggle="tab"]').on('click', function(){

@@ -48,11 +48,60 @@
 								<div class="form-group">
 									<label for="cpdepo" class="col-sm-5 control-label text-right">Depot</label>
 									<div class="col-sm-7">
-										<input type="text" name="cpdepo" class="form-control" id="cpdepo" value="<?=$data['cpdepo']?>" readOnly>
+										<input type="text" name="cpdepo" class="form-control" id="cpdepo" value="<?=$depo['dpname']?>" readOnly>
 									</div>
 								</div>	
 							
 								<h2>&nbsp;</h2>
+								<div class="row">
+									<div class="col-sm-8 col-sm-offset-4">
+
+										<div class="row">
+											<legend>Quantity : </legend>
+										</div>
+										<div class="row">
+											<div class="col-sm-6">
+												<label class="col-sm-offset-4"><b>STD</b></label>
+												<div class="form-group">
+													<label for="std20" class="col-sm-2 control-label text-right">20"</label>
+													<div class="col-sm-8">
+														<input type="text" name="std20" class="form-control" id="std20" value="<?=$std20?>" readonly>
+													</div>
+												</div>								
+												<div class="form-group">
+													<label for="std40" class="col-sm-2 control-label text-right">40"</label>
+													<div class="col-sm-8">
+														<input type="text" name="std40" class="form-control" id="std40" value="<?=$std40?>" readonly>
+													</div>
+												</div>												
+											</div>
+
+											<div class="col-sm-6">
+												<label  class="col-sm-offset-4"><b>HC</b></label>
+												<div class="form-group">
+													<label for="hc20" class="col-sm-2 control-label text-right">20"</label>
+													<div class="col-sm-8">
+														<input type="text" name="hc20" class="form-control" id="hc20" value="<?=$hc20?>" readonly>
+													</div>
+												</div>								
+												<div class="form-group">
+													<label for="hc40" class="col-sm-2 control-label text-right">40"</label>
+													<div class="col-sm-8">
+														<input type="text" name="hc40" class="form-control" id="hc40" value="<?=$hc40?>" readonly>
+													</div>
+												</div>
+												<div class="form-group">
+													<label for="hc45" class="col-sm-2 control-label text-right">45"</label>
+													<div class="col-sm-8">
+														<input type="text" name="hc45" class="form-control" id="hc45" value="<?=$hc45?>" readonly>
+													</div>
+												</div>											
+											</div>	
+
+										</div>									
+										
+									</div>
+								</div>
 
 							
 							</div>
@@ -102,9 +151,9 @@
 									</div>
 								</div>								
 								<div class="form-group">
-									<label for="cpopr" class="col-sm-4 control-label text-right">Vessel Operator</label>
+									<label for="vesopr" class="col-sm-4 control-label text-right">Vessel Operator</label>
 									<div class="col-sm-6">
-										<input type="text" name="cpopr" class="form-control" id="cpopr" readonly value="<?=$data['cpopr']?>" readonly>
+										<input type="text" name="vesopr" class="form-control" id="vesopr" readonly value="<?=$data['vessels']['vesopr']?>" readonly>
 									</div>
 								</div>
 								
@@ -124,25 +173,62 @@
 
 						</fieldset>
 					</form>
-				</div>
-
-<?php if($coadmm=="By Container"):?>								
+				</div>							
 
 				<div class="row">
-					<div class="col-sm-12">
-						<legend></legend>
-					</div>
-					
-					<?php 
-						if(isset($data['files'])&&(array_search('1', array_column($data['files'], 'flag'))!==false)) {
-							echo array_search('1', array_column($data['files'], 'flag'));
+					<?php if($bukti_bayar!="") {?>
+							
+					<div class="col-sm-6">	
+						<!-- BUKTI BAYAR -->
+										
+						<div class="widget widget-table">
 						
-					} else { ?>
+							<input type="hidden" name="praid" class="form-control" id="praid" value="<?=$data['praid']?>">
+							
+							<div class="widget-header">
+								<h3><i class="fa fa-warning yellow-font"></i>Bukti Pembayaran</h3>
+							</div>
+							<div class="widget-content">
+
+								<form class="form-horizontal">
+								<fieldset>
+								<div class="form-group">
+									<label for="cpideliver" class="col-sm-4 control-label text-right">Ref Transfer No</label>
+									<div class="col-sm-6">
+										<input type="text" class="form-control" value="<?=$bukti_bayar['cpireceptno']?>"readonly>
+									</div>
+								</div>
+								<div class="form-group">
+									<label for="cpicurr" class="col-sm-2 col-sm-offset-2 control-label text-right">Currency</label>
+									<div class="col-sm-2">
+										<input type="text" class="form-control" value="IDR" readonly="">
+									</div>
+
+									<label for="cpirate" class="col-sm-2 control-label text-right">Rate</label>
+									<div class="col-sm-2">
+										<input type="text" class="form-control" value="1" readonly="">
+									</div>
+								</div>
+								</fieldset>
+								</form>	
+								
+								<p class="text-right"><b>Bukti Transfer</b><br>
+									<?php foreach($bukti_bayar['files'] as $file):?>
+									<img src="<?=$file['url']; ?>" style="width:200px;">
+									<?php endforeach; ?>
+								</p>
+
+							</div>						
+
+						</div>									
+					</div>
+
+					<?php } else { ?>
 
 					<div class="col-sm-6">
 						<div class="alert alert-danger text-center">
 							<p class="lead">Segera lakukan Pembayaran sejumlah<br>
-							<b>Rp. <?=number_format($totalcharge,2)?>.</b><br>
+							<b>Rp. <?=number_format($recept['total_tagihan'],2)?>.</b><br>
 							ke Rekening : 1230985 (BANK MANDIRI)</p>
 						</div>		
 					</div>
@@ -152,14 +238,22 @@
 						<div class="widget widget-table">
 							<div class="widget-header">
 								<h3><i class="fa fa-warning yellow-font"></i>Upload Bukti Pembayaran</h3>
+								<?php ?>
 							</div>
 							<div class="widget-content">							
-								<form class="form-horizontal" id="fBuktiBayar" enctype="multypart/form-data">
+								<form class="form-horizontal" id="fBuktiBayar" enctype="multipart/form-data">
 								<fieldset>
 								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">Ref Transfer No</label>
 									<div class="col-sm-6">
 										<input type="hidden" name="praid" class="form-control" id="praid" value="<?=$data['praid']?>">
+										<input type="hidden" name="prareceptid" class="form-control" id="prareceptid" value="<?=$recept['prareceptid'];?>">
+										<input type="hidden" name="biaya_cleaning" class="form-control" id="biaya_cleaning" value="<?=$recept['biaya_cleaning'];?>">
+										<input type="hidden" name="tot_lolo" class="form-control" id="tot_lolo" value="<?=$recept['tot_lolo'];?>">
+										<input type="hidden" name="biaya_adm" class="form-control" id="biaya_adm" value="<?=$recept['biaya_adm'];?>">
+										<input type="hidden" name="total_pajak" class="form-control" id="total_pajak" value="<?=$recept['total_pajak'];?>">
+										<input type="hidden" name="materai" class="form-control" id="materai" value="<?=$recept['materai'];?>">
+										<input type="hidden" name="total_tagihan" class="form-control" id="total_tagihan" value="<?=$recept['total_tagihan'];?>">
 										<input type="text" name="cpireceptno" class="form-control" id="cpireceptno" required="">
 									</div>
 								</div>
@@ -193,9 +287,7 @@
 
 					<?php } ?>
 
-				</div>
-
-<?php endif; ?>						
+				</div>					
 
 			</div>
 		</div>	
@@ -245,9 +337,9 @@
 											<td><?=$row['cclength']?></td>
 											<td><?=$row['ccheight']?></td>
 											<td><?=$row['cpopr'];?></td>
-											<td><?=@$row['biaya_lolo'];?></td>
-											<td><?=@$row['biaya_clean'];?></td>											
-											<td class="text-right"><?=$subtotal;?></td>
+											<td class="text-right"><?=number_format($row['biaya_lolo'],2);?></td>
+											<td class="text-right"><?=number_format($row['biaya_clean'],2);?></td>											
+											<td class="text-right"><?=number_format($subtotal,2);?></td>
 										</tr>
 									
 									<?php 
@@ -258,10 +350,9 @@
 									
 									endforeach; 
 
-
 									?>
 
-									<tr><th colspan="9" class="text-right">TOTAL</th><th><?=$total?></th></tr>
+									<tr><th colspan="9" class="text-right">TOTAL</th><th><?=number_format($total,2)?></th></tr>
 
 								<?php endif; ?>
 							</tbody>
@@ -279,7 +370,7 @@
 								?>	
 								<tr>
 									<td class="text-right" colspan="9">Pajak</td>
-									<td width="200"><input type="text" name="" value="<?=$total_pajak;?>" class="form-control" readonly></td>
+									<td width="200"><input type="text" name="" value="<?=number_format($total_pajak,2);?>" class="form-control" readonly></td>
 								</tr>		
 								<tr>
 									<td class="text-right" colspan="9">Adm Tarif</td>
@@ -296,8 +387,9 @@
 							</tbody>
 						</table>						
 					</div>
-					<div class="widget-footer text-center">
-					<a href="#" class="btn btn-primary" id="proformaPrintOrder" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak</a>
+					<div class="widget-footer text-center" style="padding:15px 0;">
+					<a href="#" class="btn btn-primary" id="proformaPrintInvoice1" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak Invoice</a>
+					<a href="#" class="btn btn-primary" id="proformaPrintInvoice2" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak Invoice (Deposit)</a>
 					<a href="<?=site_url('prain')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Kembali</a>
 					</div>					
 				</div>

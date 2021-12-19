@@ -4,14 +4,14 @@
 <?php $data = $data; ?>
 <div class="content">
 	<div class="main-header">
-		<h2>Approval-2</h2>
+		<h2>Cetak Kitir</h2>
 		<em>Pra In</em>
 	</div>
 	<div class="main-content">
 
 		<div class="widget widget-table" id="OrderPra">
 			<div class="widget-header">
-				<h3><i class="fa fa-table"></i> Approval-2 Order Pra In</h3>
+				<h3><i class="fa fa-table"></i> Cetak Kitir Order Pra In</h3>
 			</div>
 			<div class="widget-content">
 <!-- FORM HEADER -->
@@ -47,11 +47,34 @@
 									</div>
 								</div>
 								<div class="form-group">
+									<label for="Type" class="col-sm-5 control-label text-right">Type</label>
+									<div class="col-sm-7">
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="1" <?=(isset($data['typedo'])&&($data['typedo']==1)?'':'checked');?>>
+											<span>Free Use</span>
+										</label>										
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="2" <?=(isset($data['typedo'])&&($data['typedo']==3)?'':'checked');?>>
+											<span>COC</span>
+										</label>
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="3" <?=(isset($data['typedo'])&&($data['typedo']==3)?'':'checked');?>>
+											<span>SOC</span>
+										</label>											
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="4" <?=(isset($data['typedo'])&&($data['typedo']==4)?'':'checked');?>>
+											<span>ex Import</span>
+										</label>
+
+									</div>
+								</div>									
+								<div class="form-group">
 									<label for="cpdepo" class="col-sm-5 control-label text-right">Depot</label>
 									<div class="col-sm-7">
-										<input type="text" id="cpdepo" value="<?=$data['cpdepo']?>" class="form-control" readonly="">
+										<input type="text" id="" value="<?=$depo['dpname']?>" class="form-control" readonly="">
 									</div>
 								</div>	
+
 								<h2>&nbsp;</h2>
 								<div class="row">
 									<div class="col-sm-8 col-sm-offset-4">
@@ -184,7 +207,9 @@
 							<th>Length</th>
 							<th>Height</th>
 							<th>F/E</th>
-							<th>Hold/Release</th>
+							<th>Principal</th>
+							<th>Lift Off</th>
+							<th>Deposit</th>
 							<th>Remark</th>
 							<th>GateIn Date</th>
 							<th></th>
@@ -210,11 +235,14 @@
 									<td><?=((isset($row['cpife'])&&$row['cpife']==1)?"Full":"Empty");?>
 										<input type="hidden" name="cpife" id="cpife" value="<?=$row['cpife'];?>">
 									</td>
-									<td><?=((isset($row['cpishold'])&&$row['cpishold']==1)?"Hold":"Release")?>
-										<input type="hidden" name="cpishold" id="cpishold" value="<?=$row['cpishold'];?>">
-									</td>
+									<td><?=$row['cpopr']?></td>
+									<td><?=number_format($row['biaya_lolo'],2);?></td>
+									<td><?=number_format($row['biaya_clean'],2);?></td>									
 									<td><?=$row['cpiremark']?></td>
-									<td><a class="btn btn-xs btn-primary" href="#" id="cetak_kitir" data-crno="<?=$row['crno']; ?>">Cetak Kitir</a></td>
+									<td></td>
+									<td>
+										<a class="btn btn-xs btn-primary cetak_kitir" href="#" id="" data-crno="<?=$row['crno']; ?>" data-cpiorderno="<?=$data['cpiorderno']?>">Cetak Kitir</a>
+									</td>
 								</tr>
 							<?php $i++; endforeach; ?>
 						<?php endif; ?>

@@ -35,7 +35,7 @@
 										</div>									
 									</div>
 								</div>
-<?php /*								
+								
 								<div class="form-group">
 									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
 									<div class="col-sm-7">
@@ -46,14 +46,35 @@
 									</div>
 								</div>
 								<div class="form-group">
+									<label for="Type" class="col-sm-5 control-label text-right">Type</label>
+									<div class="col-sm-7">
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="1" <?=(isset($data['typedo'])&&($data['typedo']==1)?'':'checked');?>>
+											<span>Free Use</span>
+										</label>										
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="2" <?=(isset($data['typedo'])&&($data['typedo']==3)?'':'checked');?>>
+											<span>COC</span>
+										</label>
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="3" <?=(isset($data['typedo'])&&($data['typedo']==3)?'':'checked');?>>
+											<span>SOC</span>
+										</label>											
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="4" <?=(isset($data['typedo'])&&($data['typedo']==4)?'':'checked');?>>
+											<span>ex Import</span>
+										</label>
+
+									</div>
+								</div>									
+								<div class="form-group">
 									<label for="cpdepo" class="col-sm-5 control-label text-right">Depot</label>
 									<div class="col-sm-7">
-										<input type="text" name="cpdepo" class="form-control" id="cpdepo" value="<?=$data['cpdepo']?>" readOnly>
+										<input type="text" name="cpdepo" class="form-control" id="cpdepo" value="<?=$depo['dpname']?>" readOnly>
 									</div>
 								</div>	
-*/?>								
+								
 								<h2>&nbsp;</h2>
-
 							
 							</div>
 
@@ -86,7 +107,7 @@
 									</div>
 									<!-- <label class="col-sm-2 control-label">hh:mm:ss</label> -->
 								</div>		
-<?php /*														
+														
 								<div class="form-group">
 									<label for="cpives" class="col-sm-4 control-label text-right">Vessel</label>
 									<div class="col-sm-6">
@@ -102,12 +123,12 @@
 									</div>
 								</div>								
 								<div class="form-group">
-									<label for="cpopr" class="col-sm-4 control-label text-right">Vessel Operator</label>
+									<label for="vesopr" class="col-sm-4 control-label text-right">Vessel Operator</label>
 									<div class="col-sm-6">
-										<input type="text" name="cpopr" class="form-control" id="cpopr" readonly value="<?=$data['cpopr']?>" readonly>
+										<input type="text" name="vesopr" class="form-control" id="vesopr" readonly value="<?=$data['vessels']['vesopr']?>" readonly>
 									</div>
 								</div>
-*/?>								
+								
 								<div class="form-group">
 									<label for="cpicargo" class="col-sm-4 control-label text-right">Ex Cargo</label>
 									<div class="col-sm-6">
@@ -126,175 +147,108 @@
 					</form>
 				</div>
 
-<?php if($coadmm=="By Container"):?>								
-
 				<div class="row">
-					<div class="col-sm-12">
-						<legend>Lift On : </legend>
-					</div>
 					<div class="col-sm-6">
-<!-- 
-						<table class="tbl-form" width="100%">
-							<tbody>
-								<tr>
-									<td></td><td colspan="5"><b>STD</b></td>
-								</tr>
-								<tr>
-									<td width="90" class="text-right">20"</td>
-									<td><input type="text" name="std20" class="form-control" id="std20" value="<?=$std20?>" readonly></td>	
-									<td>x</td>	
-									<td><input type="text" name="lonstd20" class="form-control" value="<?=number_format($lon20,2);?>"></td>	
-									<td>=</td>	
-									<td><input type="text" name="lon20" class="form-control" value="<?=number_format($lon_std20,2);?>"></td>	
-								</tr>
-								<tr>
-									<td class="text-right">40"</td>
-									<td><input type="text" name="std40" class="form-control" id="std40" value="<?=$std40?>" readonly></td>
-									<td>x</td>
-									<td><input type="text" name="lonstd40" class="form-control" value="<?=number_format($lon40,2);?>"></td>
-									<td>=</td>
-									<td><input type="text" name="lon40" class="form-control" value="<?=number_format($lon_std40,2);?>"></td>
-								</tr>	
-								<tr>
-									<td></td><td colspan="5"><b>HC</b></td>
-								</tr>			
-								<tr>
-									<td class="text-right">20"</td>
-									<td><input type="text" name="hc20" class="form-control" id="hc20" value="<?=$hc20?>" readonly></td>
-									<td>x</td>
-									<td><input type="text" name="lonhc20" class="form-control" value="<?=number_format($lon20,2);?>"></td>
-									<td>=</td>
-									<td><input type="text" name="totlonhc20" class="form-control" value="<?=number_format($lon_hc20,2);?>"></td>
-								</tr>		
-								<tr>
-									<td class="text-right">40"</td>
-									<td><input type="text" name="hc40" class="form-control" id="hc40" value="<?=$hc40?>" readonly></td>
-									<td>x</td>
-									<td><input type="text" name="lonhc40" class="form-control" value="<?=number_format($lon40,2);?>"></td>
-									<td>=</td>
-									<td><input type="text" name="lonhc40" class="form-control" value="<?=number_format($lon_hc40,2);?>"></td>
-								</tr>		
-								<tr>
-									<td class="text-right">45"</td>
-									<td><input type="text" name="hc45" class="form-control" id="hc45" value="<?=$hc45?>" readonly></td>
-									<td>x</td>
-									<td><input type="text" name="lonhc45" class="form-control" value="<?=number_format($lon45,2);?>"></td>
-									<td>=</td>
-									<td><input type="text" name="lon45" class="form-control" value="<?=number_format($lon_hc45,2);?>"></td>
-								</tr>	
-								<tr><td></td></tr>	
-								<tr>
-									<td></td>
-									<td class="text-right" colspan="2">Cleaning</td>
-									<td><label class="control-inline fancy-radio custom-color-green">
-										<input type="radio" name="coadmm" id="coadmm" value="1" checked>
-										<span><i></i><?=$coadmm;?></span></label></td>
-									<td></td>
-									<td></td>
-								</tr>		
-								<tr>
-									<td></td>
-									<td class="text-right" colspan="2">Pajak</td>
-									<td colspan="2"><input type="text" name="" value="IDR" class="form-control" readonly></td>
-									<td><input type="text" name="" value="<?=number_format($pajak,2);?>" class="form-control" readonly></td>
-								</tr>		
-								<tr>
-									<td></td>
-									<td class="text-right" colspan="2">Adm Tarif</td>
-									<td colspan="2"><input type="text" name="" value="IDR" class="form-control" readonly></td>
-									<td><input type="text" name="" value="<?=number_format($adm_tarif,2);?>" class="form-control" readonly></td>
-								</tr>	
-								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<td class="text-right" colspan="2">Materai</td>
-									<td><input type="text" name="" value="" class="form-control" readonly></td>
-								</tr>			
-								<tr>
-									<td></td>
-									<td></td>
-									<td></td>
-									<th class="text-right" colspan="2">Total Charge</th>
-									<td><input type="text" name="" value="<?=number_format($totalcharge,2)?>" class="form-control" readonly></td>
-								</tr>
-							</tbody>
-						</table>
-		 -->
-					</div>
-					<div class="col-sm-6">	
-						<!-- BUKTI BAYAR -->
 						<div class="widget widget-table">
 						
-						<input type="hidden" name="praid" class="form-control" id="praid" value="<?=$data['praid']?>">
+							<input type="hidden" name="praid" class="form-control" id="praid" value="<?=$data['praid']?>">
+							
+							<div class="widget-header">
+								<h3><i class="fa fa-info green-font"></i>Quantity</h3>
+							</div>
+							<div class="widget-content">						
+								<div class="form-horizontal">
+								<fieldset>
+								<div class="row">
+									<div class="col-sm-6">
+										<label class="col-sm-offset-4"><b>STD</b></label>
+										<div class="form-group">
+											<label for="std20" class="col-sm-2 control-label text-right">20"</label>
+											<div class="col-sm-8">
+												<input type="text" name="std20" class="form-control" id="std20" value="<?=$std20?>" readonly>
+											</div>
+										</div>								
+										<div class="form-group">
+											<label for="std40" class="col-sm-2 control-label text-right">40"</label>
+											<div class="col-sm-8">
+												<input type="text" name="std40" class="form-control" id="std40" value="<?=$std40?>" readonly>
+											</div>
+										</div>												
+									</div>
 
-						<?php if(isset($data['files'])&&(array_search('1', array_column($data['files'], 'flag'))!==false)):?>
+									<div class="col-sm-6">
+										<label  class="col-sm-offset-4"><b>HC</b></label>
+										<div class="form-group">
+											<label for="hc20" class="col-sm-2 control-label text-right">20"</label>
+											<div class="col-sm-8">
+												<input type="text" name="hc20" class="form-control" id="hc20" value="<?=$hc20?>" readonly>
+											</div>
+										</div>								
+										<div class="form-group">
+											<label for="hc40" class="col-sm-2 control-label text-right">40"</label>
+											<div class="col-sm-8">
+												<input type="text" name="hc40" class="form-control" id="hc40" value="<?=$hc40?>" readonly>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="hc45" class="col-sm-2 control-label text-right">45"</label>
+											<div class="col-sm-8">
+												<input type="text" name="hc45" class="form-control" id="hc45" value="<?=$hc45?>" readonly>
+											</div>
+										</div>											
+									</div>
+								</div>
+								</fieldset>
+								</div>								
+							</div>
+						</div>
+					</div>
+
+					<div class="col-sm-6">	
+						<!-- BUKTI BAYAR -->
+										
+						<div class="widget widget-table">
+						
+							<input type="hidden" name="praid" class="form-control" id="praid" value="<?=$data['praid']?>">
 							
 							<div class="widget-header">
 								<h3><i class="fa fa-warning yellow-font"></i>Bukti Pembayaran</h3>
 							</div>
 							<div class="widget-content">
-								<p>
-									<?php foreach($data['files'] as $file):?>
-									<img src="<?=$file['url']; ?>" style="width:200px;">
-									<?php endforeach; ?>
-								</p>
-							</div>
 
-						<?php else: ?>
-
-							<div class="widget-header">
-								<h3><i class="fa fa-warning yellow-font"></i>Upload Bukti Pembayaran</h3>
-							</div>
-							<div class="widget-content">	
-
-								<div class="alert alert-danger text-center">
-								<p class="lead">Segera lakukan Pembayaran sejumlah<br>
-								<b>Rp. <?=number_format($totalcharge,2)?>.</b><br>
-								ke Rekening : 1230985 (BANK MANDIRI)</p>
-								</div>		
-
-								<form class="form-horizontal" id="fBuktiBayar" enctype="multypart/form-data">
+								<form class="form-horizontal">
 								<fieldset>
 								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">Ref Transfer No</label>
 									<div class="col-sm-6">
-										<input type="text" name="cpireceptno" class="form-control" id="cpireceptno" required="">
+										<input type="text" class="form-control" value="<?=$bukti_bayar['cpireceptno']?>"readonly>
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="cpicurr" class="col-sm-2 col-sm-offset-2 control-label text-right">Currency</label>
 									<div class="col-sm-2">
-										<input type="text" name="cpicurr" class="form-control" id="cpicurr" value="IDR" readonly="">
+										<input type="text" class="form-control" value="IDR" readonly="">
 									</div>
 
 									<label for="cpirate" class="col-sm-2 control-label text-right">Rate</label>
 									<div class="col-sm-2">
-										<input type="text" name="cpirate" class="form-control" id="cpirate" value="1" readonly="">
-									</div>
-								</div>
-								<div class="form-group">
-									<label for="cpideliver" class="col-sm-4 control-label text-right">Bukti Transfer</label>
-									<div class="col-sm-6">
-										<input type="file" name="files" class="form-control" id="files" accept="image/*">
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-sm-offset-4 col-sm-6">
-										<button type="submit" id="saveBuktiBayar" class="btn btn-primary"><i class="fa fa-save"></i> Submit</button>&nbsp;
+										<input type="text" class="form-control" value="1" readonly="">
 									</div>
 								</div>
 								</fieldset>
 								</form>	
-							</div>
+								
+								<p class="text-right"><b>Bukti Transfer</b><br>
+									<?php foreach($bukti_bayar['files'] as $file):?>
+									<img src="<?=$file['url']; ?>" style="width:200px;">
+									<?php endforeach; ?>
+								</p>
 
-						<?php endif; ?>
+							</div>						
 
 						</div>									
 					</div>
-				</div>
-
-<?php endif; ?>						
+				</div>					
 
 			</div>
 		</div>	
@@ -338,8 +292,8 @@
 											<td><?=$row['cclength']?></td>
 											<td><?=$row['ccheight']?></td>
 											<td><?=$row['cpopr'];?></td>
-											<td></td>
-											<td></td>
+											<td><?=$row['biaya_lolo'];?></td>
+											<td><?=$row['biaya_clean'];?></td>
 											<td><?=$row['cpiremark']?></td>
 											<td></td>
 										</tr>
@@ -358,7 +312,18 @@
 		
 	</div>
 </div>
-
+						<!-- 
+						prareceptid => integer 2
+						praid => integer 4
+						cpireceptno => string (1) "-"
+						cpicurr => string (3) "IDR"
+						cpirate => string (4) "1.00"
+						tot_lolo => string (9) "300000.00"
+						biaya_cleaning => string (9) "200000.00"
+						biaya_adm => string (8) "10000.00"
+						total_pajak => string (8) "50000.00"
+						materai => string (4) "0.00"
+						total_tagihan => string (9) "560000.00" -->
 <?= $this->endSection();?>
 
 <!-- JS -->

@@ -330,7 +330,18 @@ if(isset($data) && ($data!='')) {
 							<td></td>
 							<td></td>						
 							<td></td>						
-						</tr>												
+						</tr>
+						<tr>
+							<td class="text-right" width="130"><label for="deposit" class="text-right">Deposit :</label></td>
+							<td><input type="text" name="deposit" class="form-control" id="deposit" value="<?=@$data['deposit']?>"></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>						
+							<td></td>						
+						</tr>																		
 						<tr>
 							<td></td>
 							<td colspan="8">

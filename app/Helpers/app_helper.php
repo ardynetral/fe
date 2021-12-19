@@ -518,3 +518,44 @@ function currency_dropdown2($varname="",$selected="")
 	return $option; 
 	die();
 }
+
+function check_bukti_bayar($praid) 
+{
+	$api = api_connect();
+	$response = $api->request('GET','orderPras/printOrderByPraOrderId',[
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		],
+		'query' => [
+			'praid' => $praid,
+		]
+	]);
+
+	$result = json_decode($response->getBody()->getContents(), true);
+	$datapra = $result['data']['datas'][0];
+
+	// bukti_bayar
+	if(isset($datapra['orderPraRecept'][1])){
+		$recept_files = $datapra['orderPraRecept'][1];
+		$response_bukti = $api->request('GET','orderPraRecepts/getDetailData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json' => [
+				'prareceptid' => $recept_files['prareceptid']
+			]
+		]);			
+		$result_bukti = json_decode($response_bukti->getBody()->getContents(), true);
+		$bukti_bayar = $result_bukti['data'];
+
+		if($bukti_bayar != "") {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+	return false;
+}

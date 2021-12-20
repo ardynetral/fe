@@ -49,8 +49,7 @@ $(document).ready(function() {
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
-					});	
-					console.log(json.post);						
+					});						
 					window.location.href = "<?php echo site_url('contract'); ?>";
 				} else {
 					Swal.fire({

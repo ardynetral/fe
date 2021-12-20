@@ -54,7 +54,7 @@
 									<label for="cpidisdat" class="col-sm-5 control-label text-right">Discharge Date</label>
 									<div class="col-sm-7">
 										<div class="input-group">
-											<input type="text" name="cpidisdat" id="cpidisdat" class="form-control tanggal" value="<?=$data['cpidisdat']?>">
+											<input type="text" name="cpidisdat" id="cpidisdat" class="form-control tanggal" value="<?=date('d-m-Y', strtotime($data['cpidisdat']))?>">
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>									
 									</div>
@@ -135,7 +135,7 @@
 									<label for="cpipratgl" class="col-sm-4 control-label text-right">Pra In Date</label>
 									<div class="col-sm-6">
 										<div class="input-group">
-											<input type="text" name="cpipratgl" id="cpipratgl" class="form-control" required readonly value="<?=$data['cpipratgl'];?>">
+											<input type="text" name="cpipratgl" id="cpipratgl" class="form-control" required readonly value="<?=date('d-m-Y', strtotime($data['cpipratgl']));?>">
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>	
 									</div>

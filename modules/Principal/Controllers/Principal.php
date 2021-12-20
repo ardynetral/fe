@@ -12,8 +12,19 @@ class Principal extends \CodeIgniter\Controller
 
 	public function index()
 	{
+		check_exp_time();
 		$module = service('uri')->getSegment(1);
-		has_privilege($module, "_view"); 
+		has_privilege($module, "_view");
+		define("has_insert", has_privilege_check($module, '_insert'));
+		define("has_approval", has_privilege_check($module, '_approval'));
+		define("has_edit", has_privilege_check($module, '_update'));
+		define("has_delete", has_privilege_check($module, '_delete'));
+		define("has_print", has_privilege_check($module, '_printpdf'));
+
+		$token = get_token_item();
+		$user_id = $token['id'];
+		$group_id = $token['groupId'];
+
 		$data = [];
 		$response = $this->client->request('GET','principals/list',[
 			'headers' => [
@@ -29,6 +40,19 @@ class Principal extends \CodeIgniter\Controller
 
 	public function view($code)
 	{
+		check_exp_time();
+		$module = service('uri')->getSegment(1);
+		has_privilege($module, "_view");
+		define("has_insert", has_privilege_check($module, '_insert'));
+		define("has_approval", has_privilege_check($module, '_approval'));
+		define("has_edit", has_privilege_check($module, '_update'));
+		define("has_delete", has_privilege_check($module, '_delete'));
+		define("has_print", has_privilege_check($module, '_printpdf'));
+
+		$token = get_token_item();
+		$user_id = $token['id'];
+		$group_id = $token['groupId'];
+
 		$response = $this->client->request('GET','principals/listOne',[
 			'headers' => [
 				'Accept' => 'application/json',
@@ -46,17 +70,23 @@ class Principal extends \CodeIgniter\Controller
 
 	public function add()
 	{
+		check_exp_time();
+		$module = service('uri')->getSegment(1);
+		has_privilege($module, "_view");
+		define("has_insert", has_privilege_check($module, '_insert'));
+		define("has_approval", has_privilege_check($module, '_approval'));
+		define("has_edit", has_privilege_check($module, '_update'));
+		define("has_delete", has_privilege_check($module, '_delete'));
+		define("has_print", has_privilege_check($module, '_printpdf'));
+
+		$token = get_token_item();
+		$user_id = $token['id'];
+		$group_id = $token['groupId'];
+
 		$data = [];
 
 		if ($this->request->isAJAX()) 
 		{
-	    	$prcode = $this->request->getPost('prcode');
-	    	$cucode = $this->request->getPost('cucode');
-	    	$cncode = $this->request->getPost('cncode');
-	    	$prname = $this->request->getPost('prname');
-	    	$prremark = $this->request->getPost('prremark');
-	    	$praddr = $this->request->getPost('praddr');
-
 			$validate = $this->validate([
 	            'prcode' 	=> 'required',
 	            'cucode'  => 'required',
@@ -64,8 +94,14 @@ class Principal extends \CodeIgniter\Controller
 	            'prname'  => 'required',
 	            'prremark'  => 'required',
 	            'praddr'  => 'required',
-	        ]);			
-		
+	        ]);	
+
+			$form_params = [];
+			$format_date = [
+				'prexp' => date('Y-m-d',strtotime($_POST['prexp']))  
+			];
+			$form_params = array_replace($_POST,$format_date);
+			// echo var_dump($form_params);die();
 		    if ($this->request->getMethod() === 'post' && $validate)
 		    {
 
@@ -75,14 +111,8 @@ class Principal extends \CodeIgniter\Controller
 						'Authorization' => session()->get('login_token')
 					],
 					'form_params' => [
-						'prCode' =>$prcode,
-						'dset' => [
-							'cucode' =>$cucode,
-							'cncode' =>$cncode,
-							'prname' =>$prname,
-							'prremark' =>$prremark,
-							'praddr' =>$praddr,
-						]
+						'prCode' =>$_POST['prcode'],
+						'dset' => $form_params
 					]
 
 				]);
@@ -106,23 +136,29 @@ class Principal extends \CodeIgniter\Controller
 		    	echo json_encode($data);die();			
 			}			
 		}		
-		$data['country_dropdown'] = $this->country_dropdown($selected='');
+		$data['act'] = "add";
 		return view('Modules\Principal\Views\add',$data);		
 	}	
 
 	public function edit($code)
 	{
+		check_exp_time();
+		$module = service('uri')->getSegment(1);
+		has_privilege($module, "_view");
+		define("has_insert", has_privilege_check($module, '_insert'));
+		define("has_approval", has_privilege_check($module, '_approval'));
+		define("has_edit", has_privilege_check($module, '_update'));
+		define("has_delete", has_privilege_check($module, '_delete'));
+		define("has_print", has_privilege_check($module, '_printpdf'));
+
+		$token = get_token_item();
+		$user_id = $token['id'];
+		$group_id = $token['groupId'];
+
 		$data = [];
 
 		if ($this->request->isAJAX()) 
 		{
-	    	$prcode = $this->request->getPost('prcode');
-	    	$cucode = $this->request->getPost('cucode');
-	    	$cncode = $this->request->getPost('cncode');
-	    	$prname = $this->request->getPost('prname');
-	    	$prremark = $this->request->getPost('prremark');
-	    	$praddr = $this->request->getPost('praddr');
-
 			$validate = $this->validate([
 	            'prcode' 	=> 'required',
 	            'cucode'  => 'required',
@@ -131,24 +167,22 @@ class Principal extends \CodeIgniter\Controller
 	            'prremark'  => 'required',
 	            'praddr'  => 'required',
 	        ]);				
-		
+			$form_params = [];
+			$format_date = [
+				'prexp' => date('Y-m-d',strtotime($_POST['prexp']))  
+			];
+
 		    if ($this->request->getMethod() === 'post' && $validate)
 		    {
-
+		    	$form_params = array_replace($_POST,$format_date);
 				$response = $this->client->request('POST','principals/update',[
 					'headers' => [
 						'Accept' => 'application/json',
 						'Authorization' => session()->get('login_token')
 					],
 					'form_params' => [
-						'id' =>$prcode,
-						'dset' => [
-							'cucode' =>$cucode,
-							'cncode' =>$cncode,
-							'prname' =>$prname,
-							'prremark' =>$prremark,
-							'praddr' =>$praddr,
-						]
+						'id' =>$_POST['prcode'],
+						'dset' => $form_params
 					]
 				]);
 
@@ -183,13 +217,26 @@ class Principal extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);	
+		$data['act'] = "edit";
 		$data['data'] = isset($result['data'])?$result['data']:"";
-		$data['country_dropdown'] = $this->country_dropdown($result['data']['cncode']);
-		return view('Modules\Principal\Views\edit',$data);		
+		return view('Modules\Principal\Views\add',$data);		
 	}	
 
 	public function delete($code)
 	{
+		check_exp_time();
+		$module = service('uri')->getSegment(1);
+		has_privilege($module, "_view");
+		define("has_insert", has_privilege_check($module, '_insert'));
+		define("has_approval", has_privilege_check($module, '_approval'));
+		define("has_edit", has_privilege_check($module, '_update'));
+		define("has_delete", has_privilege_check($module, '_delete'));
+		define("has_print", has_privilege_check($module, '_printpdf'));
+
+		$token = get_token_item();
+		$user_id = $token['id'];
+		$group_id = $token['groupId'];
+				
 		if ($this->request->isAJAX()) 
 		{		
 			$response = $this->client->request('DELETE','principals/delete',[

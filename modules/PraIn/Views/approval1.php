@@ -16,7 +16,7 @@
 			<div class="widget-content">
 <!-- FORM HEADER -->
 				<div class="row">
-					<form id="form1" class="form-horizontal" role="form">
+					<form id="fEditPraIn" class="form-horizontal" role="form" enctype="multipart/form-data">
 						<?= csrf_field() ?>
 						<input type="hidden" name="praid" id="praid" value="<?=$data['praid']?>">
 						<fieldset>
@@ -47,10 +47,37 @@
 										</label>
 									</div>
 								</div>
+
+								<div class="form-group">
+									<label for="Type" class="col-sm-5 control-label text-right">Type</label>
+									<div class="col-sm-7">
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="1" <?=(isset($data['typedo'])&&($data['typedo']==1)?'':'checked');?>>
+											<span>Free Use</span>
+										</label>										
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="2" <?=(isset($data['typedo'])&&($data['typedo']==3)?'':'checked');?>>
+											<span>COC</span>
+										</label>
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="3" <?=(isset($data['typedo'])&&($data['typedo']==3)?'':'checked');?>>
+											<span>SOC</span>
+										</label>											
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="4" <?=(isset($data['typedo'])&&($data['typedo']==4)?'':'checked');?>>
+											<span>ex Import</span>
+										</label>
+
+									</div>
+								</div>									
+
 								<div class="form-group">
 									<label for="cpdepo" class="col-sm-5 control-label text-right">Depot</label>
 									<div class="col-sm-7">
-										<input type="text" value="<?=$data['cpdepo']?>" class="form-control" readonly="">
+										<input type="text" value="<?=$depo['dpname'];?>" class="form-control" readonly="">
+										<div style="display:none;">
+											<?=depo_dropdown($depo['dpcode']);?>
+										</div>
 									</div>
 								</div>	
 
@@ -135,26 +162,28 @@
 									</div>
 									<!-- <label class="col-sm-2 control-label">hh:mm:ss</label> -->
 								</div>					
-<?php /*											
+											
 								<div class="form-group">
 									<label for="cpives" class="col-sm-4 control-label text-right">Vessel</label>
 									<div class="col-sm-6">
-										<input type="text" id="cpives" name="cpives" class="form-control" value="<?=$data['cpives']?>" readonly="">
+										<?=vessel_dropdown($data['cpives']);?>
 									</div>
 								</div>															
 								<div class="form-group">
 									<label for="cpivoyid" class="col-sm-4 control-label text-right">Voyage</label>
 									<div class="col-sm-6">
-										<input type="text" id="cpivoyid" name="cpivoyid" class="form-control" value="<?=$data['cpivoyid']?>" readonly="">
+										<!-- <input type="text" name="name" class="form-control" id="name"> -->
+										<!-- <?=voyage_dropdown(); ?> -->
+										<input type="text" id="cpivoyid" name="cpivoyid" class="form-control" value="<?=$data['cpivoyid']?>">
 									</div>
 								</div>								
 								<div class="form-group">
-									<label for="cpopr" class="col-sm-4 control-label text-right">Vessel Operator</label>
+									<label for="vesopr" class="col-sm-4 control-label text-right">Vessel Operator</label>
 									<div class="col-sm-6">
-										<input type="text" name="cpopr" class="form-control" id="cpopr" value="<?=$data['cpopr']?>" readonly="">
+										<input type="text" name="vesopr" class="form-control" id="vesopr" value="<?=@$data['vessels']['vesopr'];?>" readonly>
 									</div>
 								</div>
-*/?>								
+								
 								<div class="form-group">
 									<label for="cpicargo" class="col-sm-4 control-label text-right">Ex Cargo</label>
 									<div class="col-sm-6">
@@ -167,8 +196,20 @@
 										<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=$data['cpideliver']?>" readonly="">
 									</div>
 								</div>
+								<div class="form-group" style="display:none;">
+									<label for="cpideliver" class="col-sm-4 control-label text-right">File Upload</label>
+									<div class="col-sm-6">
+										<input type="file" name="files[]" class="form-control" id="files" multiple="true">
+									</div>
+								</div>								
 							</div>	
-						</fieldset>			
+							<input type="hidden" name="appv1_update" class="form-control" id="appv1_update" value="<?=(isset($act)&&($act=='approval1')?'1':'0')?>" readonly="">
+						</fieldset>
+						<div class="form-footer">
+							<div class="form-group text-center">
+								<button type="sumbit" id="update" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update </button>&nbsp;
+							</div>	
+						</div>
 					</form>
 				</div>
 
@@ -315,7 +356,7 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label text-right">Remark</label>
 								<div class="col-sm-8">
-									<input type="text" name="cpiremark" id="cpiremark" class="form-control" readonly="" >
+									<input type="text" name="cpiremark" id="cpiremark" class="form-control">
 								</div>	
 							</div>								
 							<div class="form-group">
@@ -394,55 +435,23 @@
 						<input type="hidden" name="total_cleaning" id="total_cleaning" value="<?=$total_cleaning?>">
 						<input type="hidden" name="subtotal_bill" id="subtotal_bill" value="<?=$total?>">
 
-<!-- 						<table class="tbl-form" width="100%">
-							<tbody>
-								<?php
-								// if($total_lolo > 5000000) {
-								// 	$biaya_materai = $materai;
-								// } else {
-								// 	$biaya_materai = 0;
-								// }
-								// $total_pajak = $pajak*$total;
-								// $grand_total = $total+$total_pajak+$biaya_materai+$adm_tarif;
-								?>	
-								<tr>
-									<td class="text-right">Pajak</td>
-									<td width="200"><input type="text" name="" value="" class="form-control" readonly></td>
-								</tr>		
-								<tr>
-									<td class="text-right">Adm Tarif</td>
-									<td width="200"><input type="text" name="" value="" class="form-control" readonly></td>
-								</tr>	
-								<tr>
-									<td class="text-right">Materai</td>
-									<td width="200"><input type="text" name="" value="" class="form-control" readonly></td>
-								</tr>			
-								<tr>
-									<th class="text-right">Total Charge</th>
-									<td width="200"><input type="text" name="" value="" class="form-control" readonly></td>
-								</tr>
-							</tbody>
-						</table>	 -->						
 					</div>
+
+					<div class="widget-content text-center">
+						<?php if((isset($act)&&$act=="approval1")&&($data['orderPraContainers']!=null)):?>
+
+							<button type="button" id="ApprovalOrder" class="btn btn-danger"><i class="fa fa-check-circle"></i> Approve Order</button>
+
+						<?php endif; ?>
+						<a href="<?=site_url('prain');?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Back</a>	
+					</div>
+
 				</div>
 			</div>
 		</div>	
 		<div class="row">
 			<div class="col-md-12">
-				<div class="widget widget-table">
-					<div class="widget-content text-center">
-
-					<?php if((isset($act)&&$act=="approval1")&&($data['orderPraContainers']!=null)):?>
-
-						<button type="button" id="ApprovalOrder" class="btn btn-danger"><i class="fa fa-check-circle"></i> Approve Order</button>
-
-					<?php endif; ?>
-					<a href="<?=site_url('prain');?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>	
-					</div>
-
-
-
-				</div>				
+			
 			</div>
 		</div>	
 

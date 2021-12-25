@@ -7,10 +7,12 @@ $(document).ready(function() {
 	$('.select-pr').select2();
 	$('.select-port').select2();
 	$('.select-depo').select2();
+	$('.select-city').select2();
 	$('.select-vessel').select2();
 	$('.select-voyage').select2();
 	$('.select-ccode').select2();
 	$('.selects').select2();
+	$('#rebilltype').select2();
 	// DATATABLE
 	// $("#ctTable").DataTable({
  //        "paging": false,
@@ -19,32 +21,20 @@ $(document).ready(function() {
 	// datePicker
 	$(".tanggal").datepicker({
 		autoclose:true,
+		format:'dd-mm-yyyy',
+		startDate: '-5y'
 	});
 
-	$("#saveData").click(function(e){
+	$("form#formOrderRepo").on("submit", function(e){
 		e.preventDefault();																														
 		// window.scrollTo(xCoord, yCoord);
-		var formData = "cpiorderno=" + $("#cpiorderno").val();
-		formData += "&cpiopr=" + $("#prcode").val();
-		formData += "&cpicust=" + $("#cucode").val();
-		formData += "&cpidish=" + $("#cpidish").val();
-		formData += "&cpidisdat=" + $("#cpidisdat").val();
-		formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		formData += "&cpdepo=" + $("#cpdepo").val();
-		formData += "&cpipratgl=" + $("#cpipratgl").val();
-		formData += "&cpirefin=" + $("#cpirefin").val();
-		formData += "&cpijam=" + $("#cpijam").val();
-		formData += "&cpives=" + $("#cpives").val();
-		formData += "&cpivoyid=" + $("#cpivoyid").val();
-		formData += "&cpicargo=" + $("#cpicargo").val();
-		formData += "&cpideliver=" + $("#cpideliver").val();
-		// alert(formData);
-		// console.log("data="+formData);
-
 		$.ajax({
-			url: "<?php echo site_url('prain/add'); ?>",
+			url: "<?php echo site_url('repoin/add'); ?>",
 			type: "POST",
-			data: formData,
+			data:  new FormData(this),
+            processData: false,
+            contentType: false,
+            cache: false,			
 			dataType: 'json',
 			success: function(json) {
 				if(json.message == "success") {
@@ -52,12 +42,7 @@ $(document).ready(function() {
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
-					});							
-					// window.location.href = "<?php echo site_url('prain'); ?>";
-					$("#navItem3").removeClass("disabled");
-					$("#navLink3").attr("data-toggle","tab");
-					$("#navLink3").trigger("click");	
-					$("#praid").val(json.praid);				
+					});		
 					$("#saveData").prop('disabled', true);
 				} else {
 					Swal.fire({
@@ -155,11 +140,11 @@ $(document).ready(function() {
 
 	// STEP 1 :
 	$("#prcode").on("change", function(){
-		var prcode = $(this).val();
+		var cpopr = $(this).val();
 		$.ajax({
-			url:"<?=site_url('prain/ajax_prcode_listOne/');?>"+prcode,
+			url:"<?=site_url('repoin/ajax_prcode_listOne/');?>"+cpopr,
 			type:"POST",
-			data: "prcode="+prcode,
+			data: "cpopr="+cpopr,
 			dataType:"JSON",
 			success: function(json){
 				if(json.status=="Failled") {
@@ -169,7 +154,7 @@ $(document).ready(function() {
 					  html: '<div class="text-danger">'+json.message+'</div>'
 					});		
 				} else {
-					$("#cucode").val(json.data.cucode);
+					$("#cpcust").val(json.data.cucode);
 				}
 			}
 		});
@@ -298,84 +283,135 @@ $(document).ready(function() {
 	//repo type
 	$("#fromDepoBlok").children().attr('disabled', true);
 	$("#fromPortBlok").children().attr('disabled', true);
+	$("#fromCityBlok").children().attr('disabled', true);
 
 	$("#toPortBlok").children().attr('disabled', true);
 	$("#toDepoBlok").children().attr('disabled', true);
+	$("#toCityBlok").children().attr('disabled', true);
 
-	$("#repoType").on("change", function(){
+	$("#retype").on("change", function(){
 		let val = $(this).val();
-		console.log(val);
-		// let type;
-		// switch(val) {
-		// 	case 'DTDOUT':
-		// 		type = '1';
-		// 		break;
-		// 	case 'DTP':
-		// 		type = '2';
-		// 		break;
-		// 	case 'DTI':
-		// 		type = '3';
-		// 		break;
-		// 	case 'DTDIN':
-		// 		type = '4';
-		// 		break;
-		// 	case 'PTD':
-		// 		type = '3';
-		// 		break;
-		// 	case 'ITD':
-		// 		type = '4';
-		// 		break;
-		// 	default:
-		// 	type = '0';
-		// } 
-		if (val == 'DTDOUT' || val == 'DTDOUT') {
+		// DEPO TO DEPO OUT
+		if (val == '11' || val == '11') {
 			$('#fromDepoBlok').removeClass('hideBlock');
 			$("#fromDepoBlok").children().attr('disabled', false);
-			$('#toDepoBlok').removeClass('hideBlock');
-			$("#toDepoBlok").children().attr('disabled', false);
-
 			$('#fromPortBlok').addClass('hideBlock');
 			$("#fromPortBlok").children().attr('disabled', true);
+			$('#fromCityBlok').addClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', true);
+
+			$('#toDepoBlok').removeClass('hideBlock');
+			$("#toDepoBlok").children().attr('disabled', false);
 			$('#toPortBlok').addClass('hideBlock');
 			$("#toPortBlok").children().attr('disabled', true);
-		} else if(val == 'DTP') {
+			$('#toCityBlok').addClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', true);
+		
+		// DEPO TO PORT
+		} else if(val == '12') {
 			$('#fromDepoBlok').removeClass('hideBlock');
 			$("#fromDepoBlok").children().attr('disabled', false);
 			$('#toPortBlok').removeClass('hideBlock');
 			$("#toPortBlok").children().attr('disabled', false);
+			$('#fromCityBlok').addClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', true);
 
 			$("#toDepoBlok").addClass('hideBlock');
 			$("#toDepoBlok").children().attr('disabled', true);
 			$('#fromPortBlok').addClass('hideBlock');
 			$("#fromPortBlok").children().attr('disabled', true);
-		}  else if(val == 'PTD'){
+			$('#toCityBlok').addClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', true);
+
+		// DEPO TO INTERCITY
+		}  else if(val == '13'){
 			$('#fromDepoBlok').removeClass('hideBlock');
 			$("#fromDepoBlok").children().attr('disabled', false);
-			$('#fromPortBlok').removeClass('hideBlock');
-			$("#fromPortBlok").children().attr('disabled', false);
+			$('#fromPortBlok').addClass('hideBlock');
+			$("#fromPortBlok").children().attr('disabled', true);
+			$('#fromCityBlok').addClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', true);
 
 			$('#toPortBlok').addClass('hideBlock');
 			$("#toPortBlok").children().attr('disabled', true);
 			$('#toDepoBlok').addClass('hideBlock');
 			$("#toDepoBlok").children().attr('disabled', true);
-		} else {
+			$('#toCityBlok').removeClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', false);
+
+		// DEPO TO DEPO IN
+		} else if(val == '21'){
+			$('#fromDepoBlok').removeClass('hideBlock');
+			$("#fromDepoBlok").children().attr('disabled', false);
+			$('#fromPortBlok').addClass('hideBlock');
+			$("#fromPortBlok").children().attr('disabled', true);
+			$('#fromCityBlok').addClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', true);
+
+			$('#toDepoBlok').removeClass('hideBlock');
+			$("#toDepoBlok").children().attr('disabled', false);
+			$('#toPortBlok').addClass('hideBlock');
+			$("#toPortBlok").children().attr('disabled', true);
+			$('#toCityBlok').addClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', true);
+
+		// PORT TO DEPO
+		}  else if(val == '22'){
+			$('#fromDepoBlok').addClass('hideBlock');
+			$("#fromDepoBlok").children().attr('disabled', true);
+			$('#fromPortBlok').removeClass('hideBlock');
+			$("#fromPortBlok").children().attr('disabled', false);
+			$('#fromCityBlok').addClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', true);	
+
+			$('#toPortBlok').addClass('hideBlock');
+			$("#toPortBlok").children().attr('disabled', true);
+			$('#toDepoBlok').removeClass('hideBlock');
+			$("#toDepoBlok").children().attr('disabled', false);
+			$('#toCityBlok').addClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', true);	
+
+		// INTRCITY TO DEPO
+		}   else if(val == '23'){
 			$('#fromDepoBlok').addClass('hideBlock');
 			$("#fromDepoBlok").children().attr('disabled', true);
 			$('#fromPortBlok').addClass('hideBlock');
 			$("#fromPortBlok").children().attr('disabled', true);
+			$('#fromCityBlok').removeClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', false);			
+
+			$('#toPortBlok').addClass('hideBlock');
+			$("#toPortBlok").children().attr('disabled', true);
+			$('#toDepoBlok').removeClass('hideBlock');
+			$("#toDepoBlok").children().attr('disabled', false);
+			$('#toCityBlok').addClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', true);			
+
+		} else {
+			$('#fromDepoBlok').addClass('hideBlock');
+			$("#fromDepoBlok").children().attr('disabled', true);
+			$('#fromPortBlok').addClass('hideBlock');
+			$("#fromPortBlok").children().attr('disabled', true);			
+			$('#fromCityBlok').addClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', true);
 
 			$('#toPortBlok').addClass('hideBlock');
 			$("#toPortBlok").children().attr('disabled', true);
 			$('#toDepoBlok').addClass('hideBlock');
 			$("#toDepoBlok").children().attr('disabled', true);
+			$('#toCityBlok').addClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', true);
 		}
 	});
 
-	$("#billType").on("change", function(){
-		if ($(this).val() == 'B') {
-			$(".breakdownBill").removeClass('hideBlock');
+	$("#rebilltype").on("change", function(){
+		var billType = $(this).val();
+		if (billType==='1') {
+			showBreakDown();
+		} else if (billType==='2'){
+			showPackage();
 		} else {
-			$(".breakdownBill").addClass('hideBlock');
+			$("#breakDownBill").html("");
 		}
 	});
 
@@ -401,6 +437,160 @@ $(document).ready(function() {
     $('.DTTT').css('display','none');
 
 });
+
+function showBreakDown() {
+	$("#breakDownBill").html(
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Lift On Adm</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+				
+			'<div class="col-sm-4">'+
+				'<input type="text" name="revlift" class="form-control" id="revlift" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Doc Fee</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="revdoc" class="form-control" id="revdoc" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Haulage 20"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="re20" class="form-control" id="re20" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Total Haulage 20"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="retot20" class="form-control" id="retot20" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Haulage 40"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="re40" class="form-control" id="re40" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Total Haulage 40"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="retot40" class="form-control" id="retot40" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Haulage 45"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="re45" class="form-control" id="re45" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Total Haulage 45"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="retot45" class="form-control" id="retot45" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right" style="color:blue;">Sub Total 1</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="SUBTOT" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="subtotbreak" class="form-control" id="subtotbreak" required>'+
+			'</div>'+
+		'</div>'
+	);
+}
+
+function showPackage() {
+	$("#breakDownBill").html(
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">20"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="revpack20" class="form-control" id="revpack20" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Total 20"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="revpacktot20" class="form-control" id="revpacktot20" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">40"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="revpack40" class="form-control" id="revpack40" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Total 40"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="revpacktot40" class="form-control" id="revpacktot40" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">45"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="revpack45" class="form-control" id="revpack45" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Total45"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="revpacktot45" class="form-control" id="revpacktot45" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right" style="color:blue;">Sub Total 1</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="SUBTOT" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="subtotpack" class="form-control" id="subtotpack" required>'+
+			'</div>'+
+		'</div>'
+	);
+}
 
 function runDataTables() {		
     $.fn.dataTable.pipeline = function ( opts ) { 

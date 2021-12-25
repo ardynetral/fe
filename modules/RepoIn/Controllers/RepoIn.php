@@ -21,7 +21,7 @@ class RepoIn extends \CodeIgniter\Controller
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
         // $sort_dir = $this->get_sort_dir();		
 		// PULL data from API
-		$response = $this->client->request('GET','dataListReports/listAllRepoIns',[
+		$response = $this->client->request('GET','orderContainerRepos/getAllData',[
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
@@ -33,11 +33,11 @@ class RepoIn extends \CodeIgniter\Controller
 			]);
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		
+		print_r($result);die();
         $output = array(
             "draw" => $this->request->getPost('draw'),
-            "recordsTotal" => @$result['data']['Total'],
-            "recordsFiltered" => @$result['data']['Total'],
+            "recordsTotal" => @$result['data']['count'],
+            "recordsFiltered" => @$result['data']['count'],
             "data" => array()
         );
 		$no = ($offset !=0)?$offset+1 :1;
@@ -45,15 +45,15 @@ class RepoIn extends \CodeIgniter\Controller
 			$btn_list="";
             $record = array(); 
             $record[] = $no;
-            $record[] = $v['CPIPRANO'];
-            $record[] = $v['CPIPRATGL'];
-            $record[] = $v['CPOPR'];
-            $record[] = $v['VESID'];
-            $record[] = $v['CPIVOY'];
+            $record[] = $v['reorderno'];
+            $record[] = $v['redate'];
+            $record[] = $v['cpopr'];
+            $record[] = $v['voyages']['vesid'];
+            $record[] = $v['voyages']['voyid'];
 			
 			$btn_list .= '<a href="#" id="deleteRepoIn" class="btn btn-xs btn-primary btn-tbl">View</a>';	
-			$btn_list .= '<a href="#" data-repoid="'.$v['CPID'].'" class="btn btn-xs btn-info print_order btn-tbl">Print</a>';
-			$btn_list .= '<a href="#" id="deleteRepoIn" class="btn btn-xs btn-danger btn-tbl">Delete</a>';
+			$btn_list .= '<a href="#" data-repoid="'.$v['repoid'].'" class="btn btn-xs btn-info print_order btn-tbl">Print</a>';
+			$btn_list .= '<a href="#" id="" class="btn btn-xs btn-danger btn-tbl delete">Delete</a>';
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
 
@@ -118,7 +118,7 @@ class RepoIn extends \CodeIgniter\Controller
 	public function add()
 	{
 		check_exp_time();
-		// $data = [];
+
 		$offset=0;
 		$limit=100;		
 		$token = get_token_item();
@@ -128,43 +128,27 @@ class RepoIn extends \CodeIgniter\Controller
 		if ($this->request->isAJAX()) 
 		{
 			// echo var_dump($_POST);die();
-			$cpidisdat = date_format(date_create($_POST['cpidisdat']),"Y-m-d");
-			$cpipratgl = date_format(date_create($_POST['cpipratgl']),"Y-m-d");
 
-			$form_params = [
-				'cpiorderno' => $_POST['cpiorderno'],
-				'cpopr' => $_POST['cpiopr'],
-				'cpcust' => $_POST['cpicust'],
-				'cpidish' => $_POST['cpidish'],
-				'cpidisdat' => $cpidisdat,
-				'liftoffcharge' => $_POST['liftoffcharge'],
-				'cpdepo' => $_POST['cpdepo'],
-				'cpipratgl' => $cpipratgl,
-				'cpirefin' => $_POST['cpirefin'],
-				'cpijam' => $_POST['cpijam'],
-				'cpives' => $_POST['cpives'],
-				'cpivoyid' => $_POST['cpivoyid'],
-				'cpicargo' => $_POST['cpicargo'],
-				'cpideliver' => $_POST['cpideliver'],
+			$reformat = [
+				'reorderno' => $this->get_repoin_number(),
+				'cpopr'		=> $_POST['prcode'],
+				'redate' => date('Y-m-d',strtotime($_POST['redate'])),
+				'redline' => date('Y-m-d',strtotime($_POST['redline']))  
 			];
-
-			$validate = $this->validate([
-	            'cpiorderno' 	=> 'required',
-	            'cpiopr' 	=> 'required',
-	            'cpicust' 	=> 'required',
-	            'cpives' 	=> 'required',
-	            'cpivoyid' 	=> 'required',
-	        ]);			
+			
+			// $form_params = [
+			// 	'cpiorderno' => $_POST['cpiorderno'],
+			// ];		
 		
-		    if ($this->request->getMethod() === 'post' && $validate)
+		    if ($this->request->getMethod() === 'post')
 		    {
 
-				$response = $this->client->request('POST','orderPras/createNewData',[
+				$response = $this->client->request('POST','orderContainerRepos/createNewData',[
 					'headers' => [
 						'Accept' => 'application/json',
 						'Authorization' => session()->get('login_token')
 					],
-					'form_params' => $form_params,
+					'form_params' => array_replace($_POST,$reformat),
 				]);
 
 				$result = json_decode($response->getBody()->getContents(), true);	
@@ -175,21 +159,21 @@ class RepoIn extends \CodeIgniter\Controller
 					echo json_encode($data);die();				
 				}
 
-				session()->setFlashdata('sukses','Success, Order Pra Saved.');
+				session()->setFlashdata('sukses','Success, Order Repo Saved.');
 				$data['message'] = "success";
-				$data['praid'] = $result['data']['praid'];
+				// $data['praid'] = $result['data']['praid'];
 				echo json_encode($data);die();
 
 			}
 			else 
 			{
-		    	$data['message'] = \Config\Services::validation()->listErrors();
+		    	$data['message'] = "Lengkapi form";
 		    	echo json_encode($data);die();			
 			}			
 		}
 
 		// order pra container
-		$response2 = $this->client->request('GET','orderRepoContainer/getAllData',[
+		$response2 = $this->client->request('GET','orderContainerRepos/getAllData',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
@@ -496,10 +480,13 @@ class RepoIn extends \CodeIgniter\Controller
 	public function get_repoin_number()
 	{
 		$data = [];
-		$response = $this->client->request('GET','orderRepo/createOrderRepoNo',[
+		$response = $this->client->request('GET','orderContainerRepos/createOrderRepoNumber',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'repoCode' =>'RI'
 			]
 		]);
 

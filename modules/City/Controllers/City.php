@@ -25,7 +25,7 @@ class City extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody()->getContents(),true);	
-		$data['data'] = isset($result['data'])?$result['data']:"";
+		$data['data'] = isset($result['data']['datas'])?$result['data']['datas']:"";
 		return view('Modules\City\Views\index',$data);
 	}
 

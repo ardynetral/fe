@@ -177,7 +177,62 @@
 
 				<div class="row">
 					<?php if($bukti_bayar!="") {?>
+					<div class="col-sm-6">
+						<div class="widget widget-table">
+						
+							<input type="hidden" name="praid" class="form-control" id="praid" value="<?=$data['praid']?>">
 							
+							<div class="widget-header">
+								<h3><i class="fa fa-info green-font"></i>Quantity</h3>
+							</div>
+							<div class="widget-content">						
+								<div class="form-horizontal">
+								<fieldset>
+								<div class="row">
+									<div class="col-sm-6">
+										<label class="col-sm-offset-4"><b>STD</b></label>
+										<div class="form-group">
+											<label for="std20" class="col-sm-2 control-label text-right">20"</label>
+											<div class="col-sm-8">
+												<input type="text" name="std20" class="form-control" id="std20" value="<?=$std20?>" readonly>
+											</div>
+										</div>								
+										<div class="form-group">
+											<label for="std40" class="col-sm-2 control-label text-right">40"</label>
+											<div class="col-sm-8">
+												<input type="text" name="std40" class="form-control" id="std40" value="<?=$std40?>" readonly>
+											</div>
+										</div>												
+									</div>
+
+									<div class="col-sm-6">
+										<label  class="col-sm-offset-4"><b>HC</b></label>
+										<div class="form-group">
+											<label for="hc20" class="col-sm-2 control-label text-right">20"</label>
+											<div class="col-sm-8">
+												<input type="text" name="hc20" class="form-control" id="hc20" value="<?=$hc20?>" readonly>
+											</div>
+										</div>								
+										<div class="form-group">
+											<label for="hc40" class="col-sm-2 control-label text-right">40"</label>
+											<div class="col-sm-8">
+												<input type="text" name="hc40" class="form-control" id="hc40" value="<?=$hc40?>" readonly>
+											</div>
+										</div>
+										<div class="form-group">
+											<label for="hc45" class="col-sm-2 control-label text-right">45"</label>
+											<div class="col-sm-8">
+												<input type="text" name="hc45" class="form-control" id="hc45" value="<?=$hc45?>" readonly>
+											</div>
+										</div>											
+									</div>
+								</div>
+								</fieldset>
+								</div>								
+							</div>
+						</div>
+					</div>
+
 					<div class="col-sm-6">	
 						<!-- BUKTI BAYAR -->
 										
@@ -327,7 +382,7 @@
 									$total_lolo = 0;
 									$total = 0;
 									foreach($data['orderPraContainers'] as $row): 
-										$subtotal = @$row['biaya_lolo']+@$row['biaya_clean'];
+										$subtotal = @$row['biaya_lolo'];
 									?>
 										<tr>
 											<td><?=$i;?></td>
@@ -352,7 +407,7 @@
 
 									?>
 
-									<tr><th colspan="9" class="text-right">TOTAL</th><th><?=number_format($total,2)?></th></tr>
+									<tr><th colspan="9" class="text-right">TOTAL LOLO</th><th class="text-right"><?=number_format($total,2)?></th></tr>
 
 								<?php endif; ?>
 							</tbody>

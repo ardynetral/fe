@@ -794,9 +794,10 @@ $(document).ready(function() {
 	// Print Kitir
 	$("#detTable tbody").on('click','.cetak_kitir', function(e){
 		e.preventDefault();
+		var praid = $(this).attr('data-praid');
 		var crno = $(this).attr('data-crno');
 		var cpiorderno = $(this).attr('data-cpiorderno');
-		window.open("<?php echo site_url('prain/cetak_kitir/'); ?>" + crno + "/" + cpiorderno, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+		window.open("<?php echo site_url('prain/cetak_kitir/'); ?>" + crno + "/" + cpiorderno + "/" + praid, '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	$("#crno").on("keyup", function(){

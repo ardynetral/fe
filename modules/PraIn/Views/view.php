@@ -75,8 +75,8 @@
 							<td class="t-left">&nbsp;:&nbsp;<?=$header[0]['voyages']['voyno'];?> </td>
 						</tr>
 						<tr>
-							<td class="t-right">&nbsp;</td>
-							<td class="t-left">&nbsp;</td>
+							<td class="t-right">Invoice</td>
+							<td class="t-left">&nbsp;:&nbsp;<?=$invoice_number;?></td>
 							<td class="t-right">Vessel Operator</td>
 							<td class="t-left">&nbsp;:&nbsp;<?=$header[0]['vessels']['vesopr'];?> </td>
 						</tr>
@@ -91,7 +91,8 @@
 							<td>&nbsp;</td>
 							<td class="t-right">Redeliverer</td>
 							<td class="t-left">&nbsp;:&nbsp;<?=$header[0]['cpideliver'];?> </td>
-						</tr>							
+						</tr>	
+
 					</tbody>
 				</table>
 

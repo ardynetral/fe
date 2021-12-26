@@ -283,7 +283,14 @@
 									<tr><td colspan="11"><p class="alert alert-warning">Data not found.</p></td></tr>
 								<?php else: ?>
 
-									<?php $i=1; foreach($data['orderPraContainers'] as $row): ?>
+									<?php 
+									$i=1;
+									$subtotal = 0;
+									$total_lolo = 0;
+									$total = 0;
+									foreach($data['orderPraContainers'] as $row):
+										$subtotal = @$row['biaya_lolo']; 
+									?>
 										<tr>
 											<td><?=$i;?></td>
 											<td><?=$row['crno'];?></td>
@@ -297,10 +304,46 @@
 											<td><?=$row['cpiremark']?></td>
 											<td></td>
 										</tr>
-									<?php $i++; endforeach; ?>
+									<?php 
+									$i++;
+									$total_lolo = $total_lolo+@$row['biaya_lolo'];
+									$total = $total+$subtotal;	
+									endforeach; ?>
 								<?php endif; ?>
+
+								<tr><th colspan="10" class="text-right">TOTAL LOLO</th><th class="text-right"><?=number_format($total,2)?></th></tr>
+
 							</tbody>
-						</table>						
+						</table>
+						<table class="tbl-form" width="100%">
+							<tbody>
+								<?php
+								if($total_lolo > 5000000) {
+									$biaya_materai = $materai;
+								} else {
+									$biaya_materai = 0;
+								}
+								$total_pajak = $pajak*$total;
+								$grand_total = $total+$total_pajak+$biaya_materai+$adm_tarif;
+								?>	
+								<tr>
+									<td class="text-right" colspan="9">Pajak</td>
+									<td width="200"><input type="text" name="" value="<?=number_format($total_pajak,2);?>" class="form-control" readonly></td>
+								</tr>		
+								<tr>
+									<td class="text-right" colspan="9">Adm Tarif</td>
+									<td width="200"><input type="text" name="" value="<?=number_format($adm_tarif,2);?>" class="form-control" readonly></td>
+								</tr>	
+								<tr>
+									<td class="text-right" colspan="9">Materai</td>
+									<td width="200"><input type="text" name="" value="<?=number_format($biaya_materai,2);?>" class="form-control" readonly></td>
+								</tr>			
+								<tr>
+									<th class="text-right" colspan="9">Total Charge</th>
+									<td width="200"><input type="text" name="" value="<?=number_format($grand_total,2);?>" class="form-control" readonly></td>
+								</tr>
+							</tbody>
+						</table>
 					</div>
 					<div class="widget-footer text-center">
 					<button type="button" id="approval2" class="btn btn-success"><i class="fa fa-check"></i> Approve</button>

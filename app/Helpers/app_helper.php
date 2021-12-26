@@ -292,6 +292,33 @@ function country_dropdown($selected="")
 	die();
 }	
 
+function city_dropdown($varname,$selected="") 
+{
+	$client = api_connect();
+	$response = $client->request('GET','city/list',[
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		],
+		'json'=>[
+			'start'=>0,
+			'rows'=>10
+		]
+	]);
+
+	$result = json_decode($response->getBody()->getContents(),true);	
+	$data = $result['data']['datas'];
+	$option = "";
+	$option .= '<select name="'.$varname.'" id="'.$varname.'" class="select-city">';
+	$option .= '<option value="">-select-</option>';
+	foreach($data as $r) {
+		$option .= "<option value='".$r['city_id'] ."'". ((isset($selected) && $selected==$r['city_id']) ? ' selected' : '').">".$r['city_name']."</option>"; 
+	}
+	$option .="</select>";
+	return $option; 
+	die();		
+}
+
 function principal_dropdown($selected="")
 {
 	$api = api_connect();
@@ -376,7 +403,30 @@ function depo_dropdown($selected="")
 	$option .= '<select name="cpdepo" id="cpdepo" class="select-depo">';
 	$option .= '<option value="">-select-</option>';
 	foreach($depo as $p) {
-		$option .= "<option value='".$p['dpcode'] ."'". ((isset($selected) && $selected==$p['dpcode']) ? ' selected' : '').">".$p['dpcode']." - ".$p['dpname']."</option>";
+		$option .= "<option value='".$p['dpcode'] ."'". ((isset($selected) && $selected==$p['dpcode']) ? ' selected' : '').">".$p['dpname']."</option>";
+	}
+	$option .="</select>";
+	return $option; 
+	die();			
+}
+
+function depo_dropdown2($varname="",$selected="")
+{
+	$api = api_connect();
+	$response = $api->request('GET','depos/getAllData',[
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		]
+	]);
+
+	$result = json_decode($response->getBody()->getContents(),true);	
+	$depo = $result['data']['datas'];
+	$option = "";
+	$option .= '<select name="'.$varname.'" id="'.$varname.'" class="select-depo">';
+	$option .= '<option value="">-select-</option>';
+	foreach($depo as $p) {
+		$option .= "<option value='".$p['dpcode'] ."'". ((isset($selected) && $selected==$p['dpcode']) ? ' selected' : '').">".$p['dpname']."</option>";
 	}
 	$option .="</select>";
 	return $option; 
@@ -559,3 +609,48 @@ function check_bukti_bayar($praid)
 	}
 	return false;
 }
+
+function recept_by_praid($praid) 
+{
+	$api = api_connect();
+	$data_recept = "";
+	$pra_order = $api->request('GET','orderPras/printOrderByPraOrderId',[
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		],
+		'query'=>[
+			'praid' => $praid,
+		]
+	]);
+
+	$result_order = json_decode($pra_order->getBody()->getContents(),true);
+	$dt_order = $result_order['data']['datas'][0];
+	if(isset($dt_order['orderPraRecept'][1]['prareceptid'])) {
+		// $prareceptid = $dt_order['orderPraRecept'][1]['prareceptid'];
+		$prareceptid = $dt_order['orderPraRecept'][1]['prareceptid'];
+
+		$response_bukti = $api->request('GET','orderPraRecepts/getDetailData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json' => [
+				'prareceptid' => $prareceptid
+			]
+		]);			
+		$result_recept = json_decode($response_bukti->getBody()->getContents(), true);
+		$data_recept = $result_recept['data'];
+	}
+
+	return $data_recept;
+}
+
+// function invoice_number($praid)
+// {
+// 	$recept = recept_by_praid($praid);
+// 	if( $recept!= "") {
+// 		$invoice_num
+// 	}
+// 	return $invoice_number;
+// }

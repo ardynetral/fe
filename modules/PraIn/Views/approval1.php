@@ -405,7 +405,7 @@
 									$total_cleaning = 0;
 									$total = 0;
 									foreach($orderPraContainers as $row): 
-										$subtotal = $row['biaya_lolo']+$row['biaya_clean'];
+										$subtotal = $row['biaya_lolo'];
 									?>
 										<tr>
 											<td><?=$i;?></td>

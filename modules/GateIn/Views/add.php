@@ -45,7 +45,10 @@ if(isset($data) && ($data!='')) {
 					<tbody>
 						<tr>
 							<td class="text-right" width="130">Container No :</td>
-							<td><input type="text" name="crno" class="form-control" id="crno" value="<?='';?>"></td>
+							<td>
+								<input type="text" name="crno" class="form-control" id="crno" value="<?='';?>">
+								<div class="err-crno" style="display:none;padding-top:5px;color:red;"></div>
+							</td>
 							<td ></td>
 							<td ></td>
 							<td class="text-right">PraIn No :</td>
@@ -63,25 +66,25 @@ if(isset($data) && ($data!='')) {
 							<td class="text-right" width="130">Customer :</td>
 							<td><input type="text" name="cpcust" class="form-control" id="cpcust" value="<?='';?>"></td>
 							<td class="text-right">ID Code :</td>
-							<td ><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
+							<td ><input type="text" name="cccode" class="form-control" id="cccode" value="<?='';?>"></td>
 							<td class="text-right">Ref In No # :</td>
-							<td colspan="3"><input type="text" name="cpiefin" id="cpiefin" class="form-control" value="<?='';?>"></td>
+							<td colspan="3"><input type="text" name="cpirefin" id="cpirefin" class="form-control" value="<?='';?>"></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Length :</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
+							<td><input type="text" name="cclength" class="form-control" id="cclength" value="<?='';?>"></td>
 							<td class="text-right">Height :</td>
-							<td ><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
+							<td ><input type="text" name="ccheight" class="form-control" id="ccheight" value="<?='';?>"></td>
 							<td class="text-right">Date In :</td>
-							<td colspan="3"><input type="text" name="cpitgl" id="cpitgl" class="form-control" value="<?='';?>"></td>
+							<td colspan="3"><input type="text" name="cpipratgl" id="cpipratgl" class="form-control" value="<?='';?>"></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Type :</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
+							<td><input type="text" name="ctcode" class="form-control" id="ctcode" value="<?='';?>"></td>
 							<td class="text-right">Term :</td>
-							<td ><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
+							<td ><input type="text" name="cpiterm" class="form-control" id="cpiterm" value="<?='';?>"></td>
 							<td class="text-right">Time In</td>
-							<td colspan="3"><input type="text" name="" id="" class="form-control" value="<?='';?>"></td>
+							<td colspan="3"><input type="text" name="cpijam" id="cpijam" class="form-control" value="<?='';?>"></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130"></td>
@@ -91,7 +94,7 @@ if(isset($data) && ($data!='')) {
 							<td class="text-right">Lift Off Charge :</td>
 							<td width="60">
 								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="" id="" value="0">
+								<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="0">
 								<span></span></label>
 							</td>
 							<td width="80" class="text-right">Paid :</td>
@@ -111,7 +114,7 @@ if(isset($data) && ($data!='')) {
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Depot :</td>
-							<td><?=depo_dropdown();?></td>
+							<td><?=depo_dropdown("cpdepo","");?></td>
 							<td ></td>
 							<td ></td>
 							<td class="text-right">F/E :</td>
@@ -128,7 +131,7 @@ if(isset($data) && ($data!='')) {
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Sub Depot :</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
+							<td><input type="text" name="spdepo" class="form-control" id="spdepo" value="<?='';?>"></td>
 							<td ></td>
 							<td ></td>
 							<td class="text-right">Ex Cargo :</td>
@@ -140,7 +143,7 @@ if(isset($data) && ($data!='')) {
 							<td ></td>
 							<td ></td>
 							<td class="text-right">Ex Vessel :</td>
-							<td colspan="3"><input type="text" name="" id="" class="form-control" value="<?='';?>"></td>
+							<td colspan="3"><input type="text" name="vesid" id="vesid" class="form-control" value="<?='';?>"></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130"></td>
@@ -148,7 +151,10 @@ if(isset($data) && ($data!='')) {
 							<td ></td>
 							<td ></td>
 							<td class="text-right">Voyage :</td>
-							<td colspan="3"><input type="text" name="" id="" class="form-control" value="<?='';?>"></td>
+							<td colspan="3">
+								<input type="text" name="voyno" id="voyno" class="form-control" value="<?='';?>">
+								<input type="hidden" name="cpivoy" id="cpivoy" class="form-control" value="<?='';?>">
+							</td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130"></td>
@@ -156,11 +162,11 @@ if(isset($data) && ($data!='')) {
 							<td ></td>
 							<td ></td>
 							<td class="text-right">Vessel Operator :</td>
-							<td colspan="3"><input type="text" name="" id="" class="form-control" value="<?='';?>"></td>
+							<td colspan="3"><input type="text" name="vesopr" id="vesopr" class="form-control" value="<?='';?>"></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Origin Port :</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
+							<td><input type="text" name="poport" class="form-control" id="poport" value="<?='';?>"></td>
 							<td ></td>
 							<td ></td>
 							<td class="text-right">Redeliverer :</td>
@@ -168,7 +174,7 @@ if(isset($data) && ($data!='')) {
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Discharge Date :</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
+							<td><input type="text" name="cpidisdat" class="form-control" id="cpidisdat" value="<?='';?>"></td>
 							<td ></td>
 							<td ></td>
 							<td ></td>
@@ -191,7 +197,7 @@ if(isset($data) && ($data!='')) {
 							<td ></td>
 							<td ></td>
 							<td class="text-right">Condition :</td>
-							<td colspan="3"><input type="text" name="condition" id="condition" class="form-control" value="<?='';?>"></td>
+							<td colspan="3"><input type="text" name="crlastcond" id="crlastcond" class="form-control" value="<?='';?>"></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Driver :</td>
@@ -211,21 +217,21 @@ if(isset($data) && ($data!='')) {
 							<td ></td>
 							<td ></td>
 						</tr>
-						<tr>
-							<td></td>
-							<td colspan="5">
-								<?php if(isset($act)&&($act=='view')):?>
-								<!-- <button type="button" id="updateData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp; -->
-								<a href="<?=site_url('gatein')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
-								<?php else: ?>
-								<button type="submit" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
-								<a href="<?=site_url('gatein')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>								
-								<?php endif; ?>
-							</td>
-						</tr>						
+
 					</tbody>
 				</table>
 			</fieldset>
+			<div class="row">
+				<div class="col-sm-12 text-center">
+					<?php if(isset($act)&&($act=='view')):?>
+					<!-- <button type="button" id="updateData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp; -->
+					<a href="<?=site_url('gatein')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+					<?php else: ?>
+					<button type="submit" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
+					<a href="<?=site_url('gatein')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>								
+					<?php endif; ?>						
+				</div>	
+			</div>
 		</form>
 	</div>
 </div>

@@ -37,54 +37,37 @@ $(document).ready(function() {
 
 	$("form#fGateIns").on("submit", function(e){
 		e.preventDefault();													
-		// window.scrollTo(xCoord, yCoord);
-		// var formData = "cpiorderno=" + $("#cpiorderno").val();
-		// formData += "&cpiopr=" + $("#prcode").val();
-		// formData += "&cpicust=" + $("#cucode").val();
-		// formData += "&cpidish=" + $("#cpidish").val();
-		// formData += "&cpidisdat=" + $("#cpidisdat").val();
-		// formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		// formData += "&cpdepo=" + $("#cpdepo").val();
-		// formData += "&cpipratgl=" + $("#cpipratgl").val();
-		// formData += "&cpirefin=" + $("#cpirefin").val();
-		// formData += "&cpijam=" + $("#cpijam").val();
-		// formData += "&cpives=" + $("#cpives").val();
-		// formData += "&cpivoyid=" + $("#cpivoyid").val();
-		// formData += "&cpicargo=" + $("#cpicargo").val();
-		// formData += "&cpideliver=" + $("#cpideliver").val();
-		// alert(formData);
-		// console.log("data="+formData);
+		Swal.fire({
+		  icon: 'error',
+		  title: "Development process..",
+		  html: '<div class="text-success"></div>'
+		});			
 
-		$.ajax({
-			url: "<?php echo site_url('gatein/add'); ?>",
-			type: "POST",
-			data: new FormData(this),
-            processData: false,
-            contentType: false,
-            cache: false,				
-			dataType: 'json',
-			success: function(json) {
-				if(json.message == "success") {
-					Swal.fire({
-					  icon: 'success',
-					  title: "Success",
-					  html: '<div class="text-success">'+json.message+'</div>'
-					});							
-					window.location.href = "<?php echo site_url('gatein'); ?>";
-					// $("#navItem3").removeClass("disabled");
-					// $("#navLink3").attr("data-toggle","tab");
-					// $("#navLink3").trigger("click");	
-					// $("#praid").val(json.praid);				
-					// $("#saveData").prop('disabled', true);
-				} else {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
-				}
-			}
-		});
+		// $.ajax({
+		// 	url: "<?php echo site_url('gatein/add'); ?>",
+		// 	type: "POST",
+		// 	data: new FormData(this),
+  //           processData: false,
+  //           contentType: false,
+  //           cache: false,				
+		// 	dataType: 'json',
+		// 	success: function(json) {
+		// 		if(json.message == "success") {
+		// 			Swal.fire({
+		// 			  icon: 'success',
+		// 			  title: "Success",
+		// 			  html: '<div class="text-success">'+json.message+'</div>'
+		// 			});							
+		// 			window.location.href = "<?php echo site_url('gatein'); ?>";
+		// 		} else {
+		// 			Swal.fire({
+		// 			  icon: 'error',
+		// 			  title: "Error",
+		// 			  html: '<div class="text-danger">'+json.message+'</div>'
+		// 			});						
+		// 		}
+		// 	}
+		// });
 	});
 
 	$("#liftoffcharge").on("change", function(){
@@ -542,22 +525,53 @@ $(document).ready(function() {
 	$("#crno").on("keyup", function(){
 		var crno = $("#crno").val();
 		var status = "";
+		$("#fGateIns").trigger("reset");
+		$("#crno").val(crno);			
 		$.ajax({
-			url:"<?=site_url('prain/checkContainerNumber');?>",
+			url:"<?=site_url('gatein/get_data_gatein');?>",
 			type:"POST",
-			data: "ccode="+crno,
+			data: "crno="+crno,
 			dataType:"JSON",
 			success: function(json){
 				if(json.status=="Failled") {
 					$(".err-crno").show();
 					$(".err-crno").html(json.message);
 					$("#crno").css("background", "#ffbfbf!important");
-					$("#crno").css("border-color", "#ea2525");					
+					$("#crno").css("border-color", "#ea2525");	
 				} else {
 					$(".err-crno").html("");
 					$(".err-crno").hide();
 					$("#crno").css("background", "#fff!important");
 					$("#crno").css("border-color", "#ccc");
+
+					$("#cpopr").val(json.data.cpopr);
+					$("#cpcust").val(json.data.cpcust);
+					$("#cccode").val(json.data.cccode);
+					$("#cclength").val(json.data.cclength);
+					$("#ccheight").val(json.data.ccheight);
+					$("#ctcode").val(json.data.ctcode);
+					$("#cpiterm").val(json.data.cpiterm);
+					$("#cpdepo").select2().select2('val',json.data.cpdepo);
+					$("#spdepo").val(json.data.spdepo);
+					$("#poport").val(json.data.poport);
+					$("#cpidisdat").val(json.data.cpidisdat);
+					$("#cpidriver").val(json.data.cpidriver);
+					$("#cpinopol").val(json.data.cpinopol);
+					$("#cpiorderno").val(json.data.cpiorderno);
+					$("#cpieir").val(json.data.cpieir);
+					$("#cpirefin").val(json.data.cpirefin);
+					$("#cpipratgl").val(json.data.cpipratgl);
+					$("#cpijam").val(json.data.cpijam);
+					$("#cpireceptno").val(json.data.cpireceptno);
+					// Lift Off charge -> nama_variabelnya apa?
+					$("#liftoffcharge").prop("checked", true);
+					$("#cpife").val(json.data.cpife);
+					$("#cpicargo").val(json.data.cpicargo);
+					$("#vesid").val(json.data.vesid);
+					$("#voyno").val(json.data.voyno);
+					$("#vesopr").val(json.data.vesopr);
+					$("#cpideliver").val(json.data.cpideliver);
+					$("#crlastcond").val(json.data.crlastcond);
 				}
 			}
 		});

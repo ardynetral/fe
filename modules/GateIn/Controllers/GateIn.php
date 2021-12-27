@@ -161,6 +161,48 @@ class GateIn extends \CodeIgniter\Controller
 		return view('Modules\GateIn\Views\add',$data);
 	}
 
+	public function get_data_gatein() 
+	{
+		if($this->request->isAjax()) {
+			$uri_query = [
+				"cpife1" => 1,
+				"cpife2" => 0,
+				"retype1" => 21,
+				"retype2" => 22,
+				"retype3" => 23,
+				"crlastact1" => 'od',
+				"crlastact2" => 'bi',
+				"crno" => $_POST['crno']		
+			];
+
+			$response = $this->client->request('GET','containerProcess/getDataGateIN',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'query' => $uri_query,
+			]);
+			
+			$result = json_decode($response->getBody()->getContents(), true);	
+			if(isset($result['status']) && ($result['status']=="Failled"))
+			{
+				$data['status'] = "Failled";
+				$data['message'] = $result['message'];
+				echo json_encode($data);die();						
+			}
+
+			if(isset($result['data']) &&($result['data']==null)) {
+				$data['status'] = "Failled";
+				$data['message'] = "Data Container tidak ditemukan.";
+				echo json_encode($data);die();					
+			}
+
+			$data['message'] = 'success';
+			$data['data'] = $result['data'][0];
+			echo json_encode($data);die();				
+		}
+	}
+
 	// Chack Container Number
 	public function checkContainerNumber() 
 	{

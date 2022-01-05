@@ -30,55 +30,31 @@ class GateIn extends \CodeIgniter\Controller
 		$offset=0;
 		$limit=100;
 		// order pra
-		if($group_id == 4) {
-			$response1 = $this->client->request('GET','orderPras/getAllData',[
-				'headers' => [
-					'Accept' => 'application/json',
-					'Authorization' => session()->get('login_token')
-				],
-				'query' => [
-					'offset' => $offset,
-					'limit'	=> $limit
-				]
-			]);
+		$form_params = [
+			"cpife1"=>1,
+			"cpife2"=>0,
+			"retype1"=>21,
+			"retype2"=>22,
+			"retype3"=>23,
+			"crlastact1"=>"od",
+			"crlastact2"=>"bi",
+			"limit"=>100,
+			"offset"=>0
+		];
 
-			$result_pra = json_decode($response1->getBody()->getContents(),true);	
+		$response = $this->client->request('GET','containerProcess/getAllDataGateIN',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				$form_params
+			]
+		]);
 
-			$data['data'] = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
-		} else {
-			$response1 = $this->client->request('GET','orderPras/getAllData',[
-				'headers' => [
-					'Accept' => 'application/json',
-					'Authorization' => session()->get('login_token')
-				],
-				'query' => [
-					'offset' => $offset,
-					'limit'	=> $limit,
-					// 'userId'	=> $user_id
-				]
-			]);		
-			$result_pra = json_decode($response1->getBody()->getContents(),true);	
-			$datas = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
+		$result = json_decode($response->getBody()->getContents(),true);	
 
-			// Jika EMKL (User_group==1)
-			$data_pra = array();
-			if(($datas !="") && ($group_id==1)) {
-				foreach($datas as $dt) {
-					if($user_id==$dt['crtby']) {
-						$data_pra[] = $dt;
-					}
-				}
-			// jika Principal
-			} else if(($datas !="") && ($group_id==2)) {
-				foreach($datas as $dt) {
-					if($prcode==$dt['cpopr']) {
-						$data_pra[] = $dt;
-					}
-				}
-			}	
-
-			$data['data'] = $data_pra;
-		}
+		$data['data'] = isset($result['data']['datas'])?$result['data']['datas']:"";
 
 		// $data['prcode'] = $prcode;
 		// $data['cucode'] = $prcode;
@@ -87,6 +63,65 @@ class GateIn extends \CodeIgniter\Controller
 		$data['page_title'] = "Gate In";
 		$data['page_subtitle'] = "Gate In Page";
 		return view('Modules\GateIn\Views\index',$data);
+	}
+
+	function list_data(){		
+		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+        $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
+        $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
+        	
+		// PULL data from API
+		$form_params = [
+
+		];		
+		$response = $this->client->request('GET','containerProcess/getAllDataGateIN',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'cpife1'=>1,
+				'cpife2'=>0,
+				'retype1'=>21,
+				'retype2'=>22,
+				'retype3'=>23,
+				'crlastact1'=>'od',
+				'crlastact2'=>'bi',
+				'limit'=>$limit,
+				'offset'=>$offset
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		// print_r($result);
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => @$result['data']['Total'],
+            "recordsFiltered" => @$result['data']['Total'],
+            "data" => array()
+        );
+		$no = ($offset !=0)?$offset+1 :1;
+		foreach ($result['data']['datas'] as $k=>$v) {
+			$btn_list="";
+            $record = array(); 
+            $record[] = $no;
+            $record[] = $v['crno'];
+            $record[] = $v['cpitgl'];
+            $record[] = $v['cpopr'];
+            $record[] = $v['cpiorderno'];
+			$record[] = $v['cpieir'];
+			
+			$btn_list .='<a href="#" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>';						
+			$btn_list .='<a href="#" id="editPraIn" class="btn btn-xs btn-success btn-table">edit</a>';
+			$btn_list .='<a href="#" class="btn btn-xs btn-info btn-table" data-praid="">print</a>';	
+			$btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table">delete</a>';			
+            $record[] = '<div>'.$btn_list.'</div>';
+            $no++;
+
+            $output['data'][] = $record;
+        } 
+        echo json_encode($output);
+		
 	}
 
 	public function add()
@@ -121,8 +156,8 @@ class GateIn extends \CodeIgniter\Controller
 			$form_params = [
 			    "cpdepo" => "000",
 			    "spdepo" => "000",
-			    "cpitgl" => $_POST['cpitgl'],
-			    "cpiefin" => $_POST['cpiefin'],
+			    "cpitgl" => $_POST['cpipratgl'],
+			    "cpiefin" => "1",
 			    "cpichrgbb" => "1",
 			    "cpipaidbb" => "1",
 			    "cpieir" => $_POST['cpieir'],
@@ -254,53 +289,5 @@ class GateIn extends \CodeIgniter\Controller
 		}
 	}
 
-	function list_data(){		
-		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
-        $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
-        $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
-        	
-		// PULL data from API
-		$response = $this->client->request('GET','dataListReports/listAllGateOuts',
-			[
-				'headers' => [
-				'Accept' => 'application/json',
-				'Authorization' => session()->get('login_token')
-			],
-				'query' => [
-				'offset' => $offset,
-				'limit'	=> $limit
-			]
-		]);
-
-		$result = json_decode($response->getBody()->getContents(), true);
 		
-        $output = array(
-            "draw" => $this->request->getPost('draw'),
-            "recordsTotal" => @$result['data']['Total'],
-            "recordsFiltered" => @$result['data']['Total'],
-            "data" => array()
-        );
-		$no = ($offset !=0)?$offset+1 :1;
-		foreach ($result['data']['datas'] as $k=>$v) {
-			$btn_list="";
-            $record = array(); 
-            $record[] = $no;
-            $record[] = $v['CRNO'];
-            $record[] = $v['CPOTGL'];
-            $record[] = $v['CPOPR1'];
-            $record[] = $v['CPOORDERNO'];
-			$record[] = $v['CPOEIR'];
-			
-			$btn_list .='<a href="#" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>';						
-			$btn_list .='<a href="#" id="editPraIn" class="btn btn-xs btn-success btn-table">edit</a>';
-			$btn_list .='<a href="#" class="btn btn-xs btn-info btn-table" data-praid="">print</a>';	
-			$btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table">delete</a>';			
-            $record[] = '<div>'.$btn_list.'</div>';
-            $no++;
-
-            $output['data'][] = $record;
-        } 
-        echo json_encode($output);
-		
-	}		
 }

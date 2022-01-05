@@ -441,42 +441,20 @@ $(document).ready(function() {
 
 	});
 
-	$('#detTable tbody').on('click', '.edit', function(e){
+	$('#ctTable').on('click', '.edit', function(e){
 		e.preventDefault();
-		var crid = $(this).data("crid");
-	    var cpife = $('input:radio[name=cpife]');
-		$.ajax({
-			url:"<?=site_url('prain/get_one_container/');?>"+crid,
-			type:"POST",
-			data: "crid="+crid,
-			dataType:"JSON",
-			success: function(json){	
-				if(json.message=="success") {
-					$("#pracrnoid").val(json.cr.pracrnoid);
-					$("#crno").val(json.cr.crno);
-					$("#ccode").select2().select2('val',json.cr.cccode);
-					$("#ctcode").val(json.cr.ctcode);
-					$("#cclength").val(json.cr.cclength);
-					$("#ccheight").val(json.cr.ccheight);
+		var crno = $(this).data("crno");
+	 //    var cpife = $('input:radio[name=cpife]');
+		// $.ajax({
+		// 	url:"<?=site_url('gatein/edit/');?>"+crno,
+		// 	type:"POST",
+		// 	data: "crno="+crno,
+		// 	dataType:"JSON",
+		// 	success: function(json){	
 
-				    $("#saveDetail").hide();
-				    $("#updateDetail").show();
-
-				    if(json.cr.cpife=="1") {
-				        cpife.filter('[value=1]').prop('checked', true);
-				    }else if(json.cr.cpife=="0"){
-				        cpife.filter('[value=0]').prop('checked', true);
-					}
-
-					if(json.cr.cpishold==1) {
-						$("#cpishold").prop('checked',true);
-						$("#cpishold").val(json.cr.cpishold);
-					}					
-					$("#cpiremark").val(json.cr.cpiremark);
-
-				}
-			}		
-		})
+		// 	}		
+		// });
+		window.location.href = "<?=site_url('gatein/edit/');?>"+crno;
 	});
 
 	$("#updateDetail").on("click", function(e){

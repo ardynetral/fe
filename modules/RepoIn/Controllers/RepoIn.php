@@ -1,10 +1,10 @@
 <?php
 namespace Modules\RepoIn\Controllers;
 
-//require_once ROOTPATH . 'vendor/autoload.php';
-//use \Mpdf\Mpdf;
-
-use App\Libraries\MyPaging;
+use App\Libraries\Ciqrcode;
+use function bin2hex;
+use function file_exists;
+use function mkdir;
 
 class RepoIn extends \CodeIgniter\Controller
 {
@@ -50,9 +50,9 @@ class RepoIn extends \CodeIgniter\Controller
             $record[] = date('d-m-Y', strtotime($v['redate']));
             $record[] = $v['cpopr'];
 			
-			// $btn_list .= '<a href="'.site_url().'/repoin/view/'.$reorderno.'" class="btn btn-xs btn-primary btn-tbl">View</a>';	
-			$btn_list .= '<a href="#" class="btn btn-xs btn-primary btn-tbl">View</a>';	
-			// $btn_list .= '<a href="#" data-repoid="'.$v['reorderno'].'" class="btn btn-xs btn-info print_order btn-tbl">Print</a>';
+			$btn_list .= '<a href="'.site_url().'/repoin/view/'.$reorderno.'" class="btn btn-xs btn-primary btn-tbl">View</a>';	
+			$btn_list .= '<a href="'.site_url().'/repoin/edit/'.$reorderno.'" class="btn btn-xs btn-success btn-tbl">Edit</a>';	
+			// $btn_list .= '<a href="#" data-repoid="'.$v['reorderno'].'" class="btn btn-xs btn-info print_order btn-tbl">Print Kitir</a>';
 			$btn_list .= '<a href="#" id="" class="btn btn-xs btn-danger btn-tbl delete" data-kode="'.$reorderno.'">Delete</a>';
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
@@ -86,39 +86,27 @@ class RepoIn extends \CodeIgniter\Controller
 		return view('Modules\RepoIn\Views\index',$data);
 	}
 
-	public function view($code)
+	public function view($reorderno)
 	{
 		check_exp_time();
-		$data['status'] = "";
-		$data['message'] = "";
 
-		$response = $this->client->request('GET','orderContainerRepos/getDetailData',[
-			'headers' => [
-				'Accept' => 'application/json',
-				'Authorization' => session()->get('login_token')
-			],
-			'form_params' => [
-				'RI000D100000001' => $code,
-			]
-		]);
-
-		$result = json_decode($response->getBody()->getContents(), true);	
-
-		if(isset($result['status']) && ($result['status']=="Failled"))
-		{
-			$data['data'] = "";
-			// echo json_encode($data);die();				
-		}
-
-		$data['containers'] = $this->getRepoContainers($result['data']['repoid']);
-
-		$data['data'] = $result['data']['datas'];
-		return view('Modules\RepoIn\Views\view',$data);
+		$datarepo = $this->getOneRepo($reorderno);
+		$data['data'] = $datarepo['data'];
+		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
+		$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
+		return view('Modules\RepoIn\Views\view',$data);		
 	}	
 
 	public function add()
 	{
 		check_exp_time();
+		$module = service('uri')->getSegment(1);
+		has_privilege($module, "_view");
+		define("has_insert", has_privilege_check($module, '_insert'));
+		define("has_approval", has_privilege_check($module, '_approval'));
+		define("has_edit", has_privilege_check($module, '_update'));
+		define("has_delete", has_privilege_check($module, '_delete'));
+		define("has_print", has_privilege_check($module, '_printpdf'));
 
 		$offset=0;
 		$limit=100;		
@@ -280,33 +268,55 @@ class RepoIn extends \CodeIgniter\Controller
 			}			
 		}		
 	}	
-
-	public function getRepoContainers($repoid) {
-		// get OrderPraContainer
-		$response = $this->client->request('GET','orderRepoContainer/getAllData',[
-			'headers' => [
-				'Accept' => 'application/json',
-				'Authorization' => session()->get('login_token')
-			],
-			'query' => [
-				'repoid' => $repoid,
-				'offset' => 0,
-				'limit' => 100,
-			]
-		]);
-
-		$result= json_decode($response->getBody()->getContents(), true);
-		if($result['data']['count']==0) {
-			$datas = "";
-		} else {
-			$datas = $result['data']['datas'];		
-		}
-		return $datas;
-	}
-
-	public function edit($code)
+	
+	public function edit($reorderno)
 	{
+		check_exp_time();
+
+		if ($this->request->isAJAX()) 
+		{
+			// echo var_dump($_POST);die();
+
+			$reformat = [
+				'redate' => date('Y-m-d',strtotime($_POST['redate'])),
+				'redline' => date('Y-m-d',strtotime($_POST['redline']))  
+			];
 		
+		    if ($this->request->getMethod() === 'post')
+		    {
+
+				$response = $this->client->request('PUT','orderContainerRepos/updateData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'form_params' => array_replace($_POST,$reformat),
+				]);
+
+				$result = json_decode($response->getBody()->getContents(), true);	
+				if(isset($result['status']) && ($result['status']=="Failled"))
+				{
+					$data['message'] = $result['message'];
+					echo json_encode($data);die();				
+				}
+				session()->setFlashdata('sukses','Success, Order Repo Updated.');
+				$data['message'] = "success";
+				// $data['repoid'] = $result['data']['datas']['repoid']; 
+				echo json_encode($data);die();
+
+			}
+			else 
+			{
+		    	$data['message'] = "Lengkapi form";
+		    	echo json_encode($data);die();			
+			}			
+		}
+
+		$datarepo = $this->getOneRepo($reorderno);
+		$data['data'] = $datarepo['data'];
+		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
+		$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
+		return view('Modules\RepoIn\Views\edit',$data);		
 	}	
 
 	public function delete($code)
@@ -336,6 +346,52 @@ class RepoIn extends \CodeIgniter\Controller
 			echo json_encode($data);die();
 		}
 	}		
+
+	public function getOneRepo($reorderno) {
+		$response = $this->client->request('GET','orderContainerRepos/getDetailData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'form_params' => [
+				'reorderno' => $reorderno,
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);	
+
+		if(isset($result['status']) && ($result['status']=="Failled"))
+		{
+			$data['data'] = "";		
+		}
+
+		$data['data'] = $result['data'];
+
+		return $data;
+	}
+
+	public function getRepoContainers($repoid) {
+		// get OrderPraContainer
+		$response = $this->client->request('GET','orderRepoContainer/getAllData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'repoid' => $repoid,
+				'offset' => 0,
+				'limit' => 100,
+			]
+		]);
+
+		$result= json_decode($response->getBody()->getContents(), true);
+		if($result['data']['count']==0) {
+			$datas = "";
+		} else {
+			$datas = $result['data']['datas'];		
+		}
+		return $datas;
+	}
 
 	public function ajax_country() 
 	{
@@ -641,181 +697,6 @@ class RepoIn extends \CodeIgniter\Controller
 		die();
 	}
 
-	// Print detail order
-	public function print_order($id) {
-		check_exp_time();
-		//$mpdf = new Mpdf();
-
-		$data = [];
-		$response = $this->client->request('GET','orderPras/printOrderByPraOrderId',[
-			'headers' => [
-				'Accept' => 'application/json',
-				'Authorization' => session()->get('login_token')
-			],
-			'query'=>[
-				'praid' => $id,
-			]
-		]);
-
-		$result = json_decode($response->getBody()->getContents(),true);
-		
-		$header = $result['data']['datas'];
-		$detail = $header[0]['orderPraContainers'];
-
-		if(isset($result['status']) && ($result['status']=="Failled"))
-		{
-			$data['status'] = "Failled";
-			$data['message'] = $result['message'];
-			echo json_encode($data);die();				
-		}
-		
-		$html = '';
-
-		$html .= '
-		<html>
-			<head>
-				<title>Order PraIn</title>
-
-				<style>
-					body{font-family: Arial;font-size:12px;}
-					.page-header{display:block;border-bottom:2px solid #aaa;padding:0;min-height:30px;margin-bottom:30px;}
-					.head-left{float:left;width:200px;padding:0px;}
-					.head-right{float:left;padding:0px;margin-left:200px;text-align: right;}
-
-					.tbl_head_prain, .tbl_det_prain{border-spacing: 0;border-collapse: collapse;}
-					.tbl_head_prain td{border-collapse: collapse;}
-					.t-right{text-align:right;}
-					.t-left{text-align:left;}
-
-					.tbl_det_prain th,.tbl_det_prain td {
-						border:1px solid #666666!important;
-						border-spacing: 0;
-						border-collapse: collapse;
-						padding:5px;
-
-					}
-					.line-space{border-bottom:1px solid #dddddd;margin:30px 0;}
-				</style>
-			</head>
-		';
-
-		$html .= '<body>
-			<div class="page-header">
-				<div class="head-left">
-					<h4>PT. CONTINDO RAYA</h4>
-				</div>
-				<div class="head-right">
-					<p>PADANG, '.date('d/m/Y').'</p>		
-				</div>
-			</div>
-		';
-		$html .='
-			<table class="tbl_head_prain" width="100%">
-				<tbody>
-					<tr>
-						<td class="t-right" width="180">Principal</td>
-						<td width="200">&nbsp;:&nbsp;'.$header[0]['cpopr'].'</td>
-						<td class="t-right" width="120">Pra In Reff</td>
-						<td>&nbsp;:&nbsp;'.$header[0]['cpiorderno'].'</td>
-					</tr>
-					<tr>
-						<td class="t-right">Customer</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header[0]['cpcust'].' </td>
-						<td class="t-right">Pra In Date</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header[0]['cpipratgl'].' </td>
-					</tr>
-					<tr>
-						<td class="t-right">Discharge Port</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header[0]['cpidish'].'  </td>
-						<td class="t-right">Ref In N0 #</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header[0]['cpirefin'].'  </td>
-					</tr>
-					<tr>
-						<td class="t-right">Discharge Date</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header[0]['cpidisdat'].'  </td>
-						<td class="t-right">Time In</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header[0]['cpijam'].'  </td>
-					</tr>
-					<tr>
-						<td class="t-right">LiftOff Charges In Depot</td>
-						<td class="t-left">&nbsp;:&nbsp; '.((isset($header[0]['liftoffcharge'])&&$header[0]['liftoffcharge']==1)?"yes" : "no").'</td>
-						<td class="t-right">Vessel</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header[0]['cpives'].' </td>
-					</tr>
-					<tr>
-						<td class="t-right">Depot</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header[0]['cpdepo'].' </td>
-						<td class="t-right">Voyage</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header[0]['voyages']['voyno'].' </td>
-					</tr>
-					<tr>
-						<td class="t-right">&nbsp;</td>
-						<td class="t-left">&nbsp;</td>
-						<td class="t-right">Vessel Operator</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header[0]['cpives'].' </td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td class="t-right">Ex Cargo</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header[0]['cpicargo'].' </td>
-					</tr>	
-					<tr>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td class="t-right">Redeliverer</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header[0]['cpideliver'].' </td>
-					</tr>							
-				</tbody>
-			</table>
-		';
-
-		$html .='
-			<div class="line-space"></div>
-			<h4>Detail Container</h4>
-			<table class="tbl_det_prain">
-				<thead>
-					<tr>
-						<th>NO</th>
-						<th>Container No.</th>
-						<th>ID Code</th>
-						<th>Type</th>
-						<th>Length</th>
-						<th>Height</th>
-						<th>F/E</th>
-						<th>Gate In Date</th>
-					</tr>
-				</thead>
-				<tbody>';
-				$no=1;
-				foreach($detail as $row){
-					$html .='
-					<tr>
-						<td>'.$no.'</td>
-						<td>'.$row['crno'].'</td>
-						<td>'.$row['cccode'].'</td>
-						<td>'.$row['ctcode'].'</td>
-						<td>'.$row['cclength'].'</td>
-						<td>'.$row['ccheight'].'</td>
-						<td>'.((isset($row['cpife'])&&$row['cpife']==1) ? "full" : "Empty").'</td>
-						<td>'.$row['cpigatedate'].'</td>
-					</tr>';
-
-					$no++;
-				}
-		$html .='
-				</tbody>
-			</table>
-
-		</body>
-		</html>
-		';
-		// $mpdf->WriteHTML($html);
-		// $mpdf->Output();
-		echo $html;
-		die();		
-	}
-
 	public function get_container($crno) {
 		$response = $this->client->request('GET','containers/listOne',[
 			'headers' => [
@@ -850,5 +731,254 @@ class RepoIn extends \CodeIgniter\Controller
 			$status = 1;
 		}
 		return $status;
-	}	
+	}
+
+	public function cetak_kitir($crno="",$reorderno="",$praid="")
+	{
+
+		$generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80,236]]);
+		// $mpdf->showImageErrors = true;
+		$query_params = [
+			"crno" => $crno,
+			"cpiorderno" => $reorderno
+		];
+
+		$response = $this->client->request('GET','containerProcess/getByCpiorderno',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => $query_params,
+		]);
+		
+		$result = json_decode($response->getBody()->getContents(),true);
+		// $recept = recept_by_praid($praid);
+		// print_r($result);die();
+		if(isset($result['data'][0])&&(count($result['data'][0])) > 0){
+			$qrcode = $this->generate_qrcode($result['data'][0]['cpid']);
+			$CRNO = $result['data'][0]['crno'];
+			$REFIN = $result['data'][0]['cpirefin'];
+			$CPID = $result['data'][0]['cpid'];
+			$LENGTH = $result['data'][0]['cclength'];
+			$HEIGHT = $result['data'][0]['ccheight'];
+			$CPIORDERNO = $result['data'][0]['cpiorderno'];
+			$TYPE = $result['data'][0]['cccode'];
+			$CODE = $result['data'][0]['ctcode'];
+			$PRINCIPAL = $result['data'][0]['prcode'];
+			$SHIPPER = $result['data'][0]['cpideliver'];
+			$VESSEL = $result['data'][0]['vesid'];
+			$VOY = $result['data'][0]['cpivoy'];
+			$DATE = $result['data'][0]['cpidisdat'];
+			$DESTINATION = "";
+			$REMARK = $result['data'][0]['cpiremark'];
+			$NOPOL = $result['data'][0]['cpinopol'];
+			$QRCODE_IMG = ROOTPATH .'/public/media/qrcode/'.$qrcode['content'] . '.png';
+			$CPIRECEPTNO = $result['data'][0]['cpireceptno'];
+			// $QRCODE_CONTENT = $qrcode['content'];
+		} else {
+			$CRNO = "";
+			$CODE ="";
+			$CPID = "";
+			$REFIN = "";
+			$LENGTH = "";
+			$HEIGHT = "";
+			$CPIORDERNO = "";
+			$TYPE = "";
+			$PRINCIPAL = "";
+			$SHIPPER = "";
+			$VESSEL = "";
+			$VOY = "";
+			$DATE = "";
+			$DESTINATION = "";
+			$REMARK = "";
+			$NOPOL = "";	
+			$QRCODE_IMG = "";
+			$QRCODE_CONTENT = ""; 
+			$CPIRECEPTNO = "";
+		}
+
+		$result = json_decode($response->getBody()->getContents(), true);
+			
+		$barcode = $generator->getBarcode($crno, $generator::TYPE_CODE_128);		
+		
+		$html = '';
+
+		$html .= '
+		<html>
+			<head>
+				<title>Order PraIn | Print Kitir</title>
+				<link href="'.base_url().'/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+				<style>			
+					.page-header{display:block;margin-bottom:20px;line-height:0.3;}
+					table{line-height:1.75;display:block;}
+					table td{font-weight:bold;}
+					.t-right{text-align:right;}
+					.t-left{text-align:left;}
+					.t-center{text-align:center;}
+					.bordered {
+						border:1px solid #666666;
+						padding:3px;
+					}
+					.kotak1{border:1px solid #000000;padding:3px;width:20%;text-align:center;}
+					.kotak2{border:1px solid #ffffff;padding:3px;width:20%;text-align:center;}
+					.kotak3{border:1px solid #000000;padding:3px;width:20%;text-align:center;}
+			        @media print {
+			            @page {
+			                margin: 0 auto;
+			                sheet-size: 300px 250mm;
+			            }
+			            html {
+			                direction: rtl;
+			            }
+			            html,body{margin:0;padding:0}
+			            .wrapper {
+			                width: 250px;
+			                margin: auto;
+			                text-align: justify;
+			            }
+			           .t-center{text-align: center;}
+			           .t-right{text-align: right;}
+			        }						
+				</style>
+			</head>
+		';
+		$html .= '<body onload="window.print()">
+			<div class="wrapper">
+
+			<div class="page-header t-center">
+				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR BONGKAR</h3>
+				<h4 style="text-decoration: underline;line-height:0.5;">'.$REFIN.'</h3>
+				<img src="' . $QRCODE_IMG . '" style="height:120px;">
+				<h5 style="text-decoration: underline;line-height:0.5;">'.$CPID.'</h4>
+			</div>
+		';		
+		$html .='
+			<table border-spacing: 0; border-collapse: collapse; width="100%">	
+				<tr>
+					<td colspan="2" style="font-weight:normal;">NO. '.$CPIORDERNO.'
+					</td>
+					<td colspan="2" style="font-weight:normal;text-align:right;">( '.date("d/m/Y").' )</td>
+				</tr>
+				<tr>
+					<td style="width:40%;">CONTAINER NO.</td>
+					<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">'.$CRNO.'</h5></td>
+				</tr>
+				<tr>
+					<td>PRINCIPAL</td>
+					<td colspan="3">'.$PRINCIPAL.'</td>
+				</tr>
+				<tr>
+					<td>L/OFF RECEIPT</td>
+					<td colspan="3">'.$CPIRECEPTNO.'</td>
+				</tr>
+				<tr>
+					<td>DET RECEIPT</td>
+					<td colspan="3"></td>
+				</tr>
+				<tr>
+					<td>SIZE</td>
+					<td colspan="3">'.$CODE.' '.$LENGTH.'/'.$HEIGHT.'</td>
+				</tr>
+				<tr>
+					<td>DELIVERER</td>
+					<td colspan="3"></td>
+				</tr>
+				<tr>
+					<td colspan="4" style="padding-bottom:10px;"><h5 style="font-weight:normal;">PT. CONTINDO RAYA</h5></td>
+				</tr>
+				<tr>
+					<td style="width:40%;">PARTY</td>
+					
+					<td class="kotak1">20</td>
+					<td class="kotak1">40</td>
+					<td class="kotak1">45</td>
+					
+				</tr>
+				<tr>
+					<td>GP STD</td>
+					<td class="kotak2"></td>
+					<td class="kotak2"></td>
+					<td class="kotak2"></td>					
+				</tr>
+				<tr>
+					<td>GP HC</td>
+					<td class="kotak2"></td>
+					<td class="kotak2"></td>
+					<td class="kotak2"></td>	
+				</tr>
+				<tr>
+					<td>NON GP STD</td>
+					<td class="kotak2"></td>
+					<td class="kotak2"></td>
+					<td class="kotak2"></td>	
+				</tr>
+				<tr>
+					<td>NON GP HC</td>
+					<td class="kotak2"></td>
+					<td class="kotak2"></td>
+					<td class="kotak2"></td>	
+				</tr>
+			</table>
+			<br>
+			<table style="border-spacing: 3px; border-collapse: separate;" width="100%">
+				<tr>
+					<td width="40%">CONDITION</td>
+					<td class="kotak3">AC</td>
+					<td class="kotak3">AU</td>
+					<td class="kotak3">DN</td>
+				</tr>
+				<tr>
+					<td>CLEANING</td>
+					<td class="kotak3">WW</td>
+					<td class="kotak3">SC</td>
+					<td class="kotak3">CC</td>
+				</tr>
+				<tr>
+					<td>REPAIR</td>
+					<td class="kotak3">Y</td>
+					<td class="kotak3">N</td>
+					<td class="">&nbsp;</td>
+				</tr>
+				<tr>
+					<td>VESSEL</td>
+					<td colspan="3">'.$VESSEL.'</td>
+				</tr>
+				<tr>
+					<td>EXPIRED</td>
+					<td colspan="3"></td>
+				</tr>
+				<tr>
+					<td>REMARK</td>
+					<td colspan="3">'.$REMARK.'</td>
+				</tr>
+				<tr>
+					<td>TRUCK ID</td>
+					<td colspan="3"></td>
+				</tr>		
+			</table>
+			<table width="100%">	
+				<tr>
+					<td width="33%">SURVEYOR</td>
+					<td width="33%" class="t-center">YARDMAN</td>
+					<td width="33%">INVENTORY</td>
+				</tr>
+				<tr><td colspan="3" height="15" width="100%"></td></tr>
+				<tr>
+					<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+					<td class="t-center">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+					<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+				</tr>	
+			</table>
+			</div>
+		';		
+		$html .='
+		</body>
+		</html>
+		';
+		$mpdf->WriteHTML($html);
+		$mpdf->Output();
+		// echo $html;
+		die();			
+	}		
 }

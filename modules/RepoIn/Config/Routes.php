@@ -16,6 +16,6 @@ $routes->add('/repoin/ajax_ccode_listOne/(:alphanum)', '\Modules\RepoIn\Controll
 $routes->add('/repoin/ajax_prcode_listOne/(:alphanum)', '\Modules\RepoIn\Controllers\RepoIn::ajax_prcode_listOne/$1', ['filter' => 'login']);
 $routes->add('/repoin/ajax_vessel_listOne/(:any)', '\Modules\RepoIn\Controllers\RepoIn::ajax_vessel_listOne/$1', ['filter' => 'login']);
 $routes->add('/repoin/ajax_voyage_list', '\Modules\RepoIn\Controllers\RepoIn::ajax_voyage_list', ['filter' => 'login']);
-$routes->add('/repoin/print_order/(:alphanum)', '\Modules\RepoIn\Controllers\RepoIn::print_order/$1', ['filter' => 'login']);
+$routes->add('/repoin/cetak_kitir/(:alphanum)/(:alphanum)/(:alphanum)', '\Modules\RepoIn\Controllers\RepoIn::cetak_kitir/$1/$2/$3', ['filter' => 'login']);
 $routes->add('/repoin/list_data', '\Modules\RepoIn\Controllers\RepoIn::list_data', ['filter' => 'login']);
 

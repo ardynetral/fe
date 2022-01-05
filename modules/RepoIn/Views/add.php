@@ -29,8 +29,8 @@
 					<?= $this->include('\Modules\RepoIn\Views\list_order_pracontainer');?>
 					<?= $this->include('\Modules\RepoIn\Views\form_detail_header');?>						
 					</div>
-					<div class="widget-footer">
-						<a href="#" class="btn btn-danger" id="updateNewData">Save Repo In</a>
+					<div class="widget-footer text-center">
+						<a href="#" class="btn btn-danger" id="updateNewData"><i class="fa fa-save"></i> Save All</a>
 					</div>
 				</div>
 			</div>

@@ -11,8 +11,7 @@ class RepoIn extends \CodeIgniter\Controller
 	private $client;
 	public function __construct()
 	{
-		helper(['url','form','app']);
-		helper(['Modules\Repoin\Helpers\repoin']);
+		helper(['url','form','app','repoin']);
 		$this->client = api_connect();
 	}
 

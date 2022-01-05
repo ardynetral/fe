@@ -104,6 +104,34 @@ $(document).ready(function() {
 		});		
 	});
 
+	$("form#fUpdateOrderRepo").on("submit", function(e){
+		e.preventDefault();	
+		$.ajax({
+			url: "<?php echo site_url('repoin/edit/'); ?>"+$("#reorderno").val(),
+			type: "POST",
+			data:  new FormData(this),
+            processData: false,
+            contentType: false,
+            cache: false,			
+			dataType: 'json',
+			success: function(json) {
+				if(json.message == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});		
+					window.location.href = "<?php echo site_url('repoin'); ?>";
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});						
+				}
+			}
+		});
+	});
 
 	$("#liftoffcharge").on("change", function(){
 		var val = this.checked ? '1' : '0';
@@ -576,6 +604,16 @@ $(document).ready(function() {
 		}
 	});
 
+	// Print Kitir
+	$("#rcTable tbody").on('click','.cetak_kitir', function(e){
+		e.preventDefault();
+		var repoid = $(this).attr('data-repoid');
+		var crno = $(this).attr('data-crno');
+		var reorderno = $(this).attr('data-reorderno');
+		window.open("<?php echo site_url('repoin/cetak_kitir/'); ?>" + crno + "/" + reorderno + "/" + repoid, '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	});
+
+	// Datatable
 	runDataTables();
 	var table = $('#ctTable').DataTable({
         "processing": true,

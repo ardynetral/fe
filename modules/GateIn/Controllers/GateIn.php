@@ -111,10 +111,10 @@ class GateIn extends \CodeIgniter\Controller
             $record[] = $v['cpiorderno'];
 			$record[] = $v['cpieir'];
 			
-			$btn_list .='<a href="#" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>';						
-			$btn_list .='<a href="#" id="editPraIn" class="btn btn-xs btn-success btn-table">edit</a>';
+			// $btn_list .='<a href="#" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>';						
+			$btn_list .='<a href="#" id="editPraIn" class="btn btn-xs btn-success btn-table edit" data-crno="'.$v['crno'].'">edit</a>&nbsp;';
 			$btn_list .='<a href="#" class="btn btn-xs btn-info btn-table" data-praid="">print</a>';	
-			$btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table">delete</a>';			
+			// $btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table">delete</a>';			
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
 
@@ -196,6 +196,78 @@ class GateIn extends \CodeIgniter\Controller
 		return view('Modules\GateIn\Views\add',$data);
 	}
 
+	public function edit($crno)
+	{
+/*
+"cpdepo": 1,
+"spdepo": "1",
+"cpitgl": "2021-11-11",
+"cpiefin": "1",
+"cpichrgbb": "1",
+"cpipaidbb": "1",
+"cpieir": "1",
+"cpinopol": "1",
+"cpidriver": "1",
+"cpicargo": "1",
+"cpiseal": "1",
+"cpiremark": "1",
+"cpiremark1": "1",
+"cpidpp": "1",
+"cpireceptno": "1",
+"cpideliver": "1",
+"cpitruck": "1",
+"cpiorderno": "PI000D100000031"
+*/		
+		$data = [];
+		$form_params = [];
+		$data['act'] = "Edit";
+		$data['page_title'] = "Gate In";
+		$data['page_subtitle'] = "Gate In Page";
+
+		if($this->request->isAjax()) {
+			$form_params = [
+			    "cpdepo" => "000",
+			    "spdepo" => "000",
+			    "cpitgl" => $_POST['cpipratgl'],
+			    "cpiefin" => "1",
+			    "cpichrgbb" => "1",
+			    "cpipaidbb" => "1",
+			    "cpieir" => $_POST['cpieir'],
+			    "cpinopol" => $_POST['cpinopol'],
+			    "cpidriver" => $_POST['cpidriver'],
+			    "cpicargo" => $_POST['cpicargo'],
+			    "cpiseal" => "1",
+			    "cpiremark" => "1",
+			    "cpiremark1" => "1",
+			    "cpidpp" => "1",
+			    "cpireceptno" => $_POST['cpireceptno'],
+			    "cpideliver" => $_POST['cpideliver'],
+			    "cpitruck" => "1",
+			    "cpiorderno" => $_POST['cpiorderno']			
+			];			
+			$response = $this->client->request('POST','containerProcess/gateIns',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'form_params' => $form_params,
+			]);
+			
+			$result = json_decode($response->getBody()->getContents(), true);	
+			if(isset($result['status']) && ($result['status']=="Failled"))
+			{
+				$data['message'] = $result['message'];
+				echo json_encode($data);die();				
+			}
+
+			// echo var_dump($form_params);
+			$data['message'] = "success";
+			echo json_encode($data);die();
+		}	
+		$data['data'] = $this->get_data_gatein2($crno);
+		return view('Modules\GateIn\Views\edit',$data);
+	}
+
 	public function get_data_gatein() 
 	{
 		if($this->request->isAjax()) {
@@ -236,6 +308,45 @@ class GateIn extends \CodeIgniter\Controller
 			$data['data'] = $result['data'][0];
 			echo json_encode($data);die();				
 		}
+	}
+
+	public function get_data_gatein2($crno) 
+	{
+		$uri_query = [
+			"cpife1" => 1,
+			"cpife2" => 0,
+			"retype1" => 21,
+			"retype2" => 22,
+			"retype3" => 23,
+			"crlastact1" => 'od',
+			"crlastact2" => 'bi',
+			"crno" => $crno		
+		];
+
+		$response = $this->client->request('GET','containerProcess/getDataGateIN',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => $uri_query,
+		]);
+		
+		$result = json_decode($response->getBody()->getContents(), true);	
+		if(isset($result['status']) && ($result['status']=="Failled"))
+		{
+			$data['status'] = "Failled";
+			$data['message'] = $result['message'];
+			echo json_encode($data);die();						
+		}
+
+		if(isset($result['data']) &&($result['data']==null)) {
+			$data['status'] = "Failled";
+			$data['message'] = "Data Container tidak ditemukan.";
+			echo json_encode($data);die();					
+		}
+
+		$data['message'] = 'success';
+		return $result['data'][0];
 	}
 
 	// Chack Container Number

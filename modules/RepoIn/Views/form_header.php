@@ -441,7 +441,7 @@
 
 		<div class="form-footer">
 			<div class="form-group text-center">
-				<button type="submit" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Next</button>&nbsp;
+				<button type="submit" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
 				<!-- <button type="button" id="cancel" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</button> -->
 			</div>	
 		</div>

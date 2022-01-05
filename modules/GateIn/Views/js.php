@@ -37,37 +37,32 @@ $(document).ready(function() {
 
 	$("form#fGateIns").on("submit", function(e){
 		e.preventDefault();													
-		Swal.fire({
-		  icon: 'error',
-		  title: "Development process..",
-		  html: '<div class="text-success"></div>'
-		});			
 
-		// $.ajax({
-		// 	url: "<?php echo site_url('gatein/add'); ?>",
-		// 	type: "POST",
-		// 	data: new FormData(this),
-  //           processData: false,
-  //           contentType: false,
-  //           cache: false,				
-		// 	dataType: 'json',
-		// 	success: function(json) {
-		// 		if(json.message == "success") {
-		// 			Swal.fire({
-		// 			  icon: 'success',
-		// 			  title: "Success",
-		// 			  html: '<div class="text-success">'+json.message+'</div>'
-		// 			});							
-		// 			window.location.href = "<?php echo site_url('gatein'); ?>";
-		// 		} else {
-		// 			Swal.fire({
-		// 			  icon: 'error',
-		// 			  title: "Error",
-		// 			  html: '<div class="text-danger">'+json.message+'</div>'
-		// 			});						
-		// 		}
-		// 	}
-		// });
+		$.ajax({
+			url: "<?php echo site_url('gatein/add'); ?>",
+			type: "POST",
+			data: new FormData(this),
+            processData: false,
+            contentType: false,
+            cache: false,				
+			dataType: 'json',
+			success: function(json) {
+				if(json.message == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});							
+					window.location.href = "<?php echo site_url('gatein'); ?>";
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});						
+				}
+			}
+		});
 	});
 
 	$("#liftoffcharge").on("change", function(){

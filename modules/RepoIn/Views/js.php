@@ -13,6 +13,7 @@ $(document).ready(function() {
 	$('.select-ccode').select2();
 	$('.selects').select2();
 	$('#rebilltype').select2();
+	$('#retype').select2().prop('disabled', true);
 	// DATATABLE
 	// $("#ctTable").DataTable({
  //        "paging": false,
@@ -43,6 +44,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});		
+					$("#repoid").val(json.repoid);
 					$("#saveData").prop('disabled', true);
 				} else {
 					Swal.fire({
@@ -55,6 +57,54 @@ $(document).ready(function() {
 		});
 	});
 
+	$("#updateNewData").on("click", function(e){
+		e.preventDefault();
+		var fomData = "reorderno=" + $("#reorderno").val();
+		fomData += "&revlift=" + parseInt($("#revlift").val());
+		fomData += "&revdoc=" + parseInt($("#revdoc").val());
+		fomData += "&re20=" + parseInt($("#re20").val());
+		fomData += "&retot20=" + parseInt($("#retot20").val());
+		fomData += "&re40=" + parseInt($("#re40").val());
+		fomData += "&retot40=" + parseInt($("#retot40").val());
+		fomData += "&re45=" + parseInt($("#re45").val());
+		fomData += "&retot45=" + parseInt($("#retot45").val());
+		fomData += "&subtotbreak=" + parseInt($("#subtotbreak").val());
+		fomData += "&subtotpack=" + parseInt($("#subtotpack").val());
+		fomData += "&totpack=" + parseInt($("#totpack").val());
+		fomData += "&totbreak=" + parseInt($("#totbreak").val());
+		fomData += "&revpack20=" + parseInt($("#revpack20").val());
+		fomData += "&revpacktot20=" + parseInt($("#revpacktot20").val());
+		fomData += "&revpack40=" + parseInt($("#revpack40").val());
+		fomData += "&revpacktot40=" + parseInt($("#revpacktot40").val());
+		fomData += "&revpack45=" + parseInt($("#revpack45").val());
+		fomData += "&revpacktot45=" + parseInt($("#revpacktot45").val());
+		fomData += "&reother1=" + parseInt($("#reother1").val());
+		fomData += "&reother2="	+ parseInt($("#reother2").val());
+		$.ajax({
+			url: "<?php echo site_url('repoin/update_new_data'); ?>",
+			type: "POST",
+			data:  fomData,			
+			dataType: 'json',
+			success: function(json) {
+				if(json.message == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});		
+					window.location.href = "<?php echo site_url('repoin'); ?>";
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});						
+				}
+			}
+		});		
+	});
+
+
 	$("#liftoffcharge").on("change", function(){
 		var val = this.checked ? '1' : '0';
 		return $(this).val(val);
@@ -65,6 +115,11 @@ $(document).ready(function() {
 		return $(this).val(val);
 	});
 
+	// $("#revlift").on("keyup",function(){
+	// 	// console.log("hitung...");
+	// 	// $("#hitung_subtotal1").trigger('click');
+	// 	alert("hahaha");
+	// });
 	// EDIT DATA
 	$("#updateData").click(function(e){
 		e.preventDefault();
@@ -116,7 +171,7 @@ $(document).ready(function() {
 
 	function delete_data(code) {
 		$.ajax({
-			url: "<?php echo site_url('city/delete/'); ?>"+code,
+			url: "<?php echo site_url('repoin/delete/'); ?>"+code,
 			type: "POST",
 			dataType: 'json',
 			success: function(json) {
@@ -126,7 +181,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					window.location.href = "<?php echo site_url('city'); ?>";
+					window.location.href = "<?php echo site_url('repoin'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -140,6 +195,7 @@ $(document).ready(function() {
 
 	// STEP 1 :
 	$("#prcode").on("change", function(){
+		$('#retype').select2().prop('disabled', false);
 		var cpopr = $(this).val();
 		$.ajax({
 			url:"<?=site_url('repoin/ajax_prcode_listOne/');?>"+cpopr,
@@ -209,21 +265,40 @@ $(document).ready(function() {
 		});
 	});
 
+	$("#reother1").on("keyup", function(){
+		var subtotbreak = parseInt($("#subtotbreak").val());
+		var totbreak = subtotbreak + parseInt($(this).val()) + parseInt($("#reother2").val());
+		$("#totbreak").val(totbreak);
 
+		var subtotpack = parseInt($("#subtotpack").val());
+		var totpack = subtotpack + parseInt($(this).val()) + parseInt($("#reother2").val());
+		$("#totpack").val(totpack);
+	});
+
+	$("#reother2").on("keyup", function(){
+		var subtotbreak = parseInt($("#subtotbreak").val());
+		var totbreak = subtotbreak + parseInt($(this).val()) + parseInt($("#reother1").val());
+		$("#totbreak").val(totbreak);
+
+		var subtotpack = parseInt($("#subtotpack").val());
+		var totpack = subtotpack + parseInt($(this).val()) + parseInt($("#reother1").val());
+		$("#totpack").val(totpack);
+	});	
 	// save detailContainer
 	$("#saveDetail").on("click", function(e){
 		e.preventDefault();
-		var formData = "praid=" + $("#praid").val();
+		var formData = "repoid=" + $("#repoid").val();
 		formData += "&crno=" + $("#crno").val();
 		formData += "&ccode=" + $("#ccode").val();
 		formData += "&ctcode=" + $("#ctcode").val();
 		formData += "&cclength=" + $("#cclength").val();
+		formData += "&ccheight=" + $("#ccheight").val();
 		formData += "&cpife=" + $("#cpife").val();
 		formData += "&cpishold=" + $("#cpishold").val();
-		formData += "&cpiremark=" + $("#cpiremark").val();
+		formData += "&reporemark=" + $("#reporemark").val();
 		
 		$.ajax({
-			url: "<?php echo site_url('prain/addcontainer'); ?>",
+			url: "<?php echo site_url('repoin/addcontainer'); ?>",
 			type: "POST",
 			data: formData,
 			dataType: 'json',
@@ -233,10 +308,53 @@ $(document).ready(function() {
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
-					});							
-					// window.location.href = "<?php echo site_url('prain/view/'); ?>"+json.praid;
-					window.location.href = "<?php echo site_url('prain'); ?>";
-					// getDetailOrder(json.praid);
+					});	
+					$("#formDetail").trigger("reset");
+					$("#ccode").select2().select2('val','');
+					// insert value quantity
+					$("#std20").val(json.QTY.std20);
+					$("#std40").val(json.QTY.std40);
+					$("#hc20").val(json.QTY.hc20);
+					$("#hc40").val(json.QTY.hc40);
+					$("#hc45").val(json.QTY.hc45);
+
+					var reother1 = parseInt($("#reother1").val());
+					var reother2 = parseInt($("#reother2").val());
+
+					// breakdown
+					var revlift = parseInt($("#revlift").val());
+					var revdoc = parseInt($("#revdoc").val());
+					var re20 = parseInt($("#re20").val());
+					var re40 = parseInt($("#re40").val());
+					var re45 = parseInt($("#re45").val());
+					var retot20 = parseInt(json.QTY.std20) * re20; 
+					var retot40 = parseInt(json.QTY.std40) * re40; 
+					var retot45 = parseInt(json.QTY.std45) * re45; 
+					$("#retot20").val(retot20);
+					$("#retot40").val(retot40);
+					$("#retot45").val(retot45);
+					var subtotbreak = revlift+revdoc+retot20+retot40+retot45;
+					$("#subtotbreak").val(subtotbreak);
+					var totbreak = subtotbreak+reother1+reother2;
+					$("#totbreak").val(totbreak);
+
+					// pack
+					var revpack20 = parseInt($("#revpack20").val());
+					var revpack40 = parseInt($("#revpack40").val());
+					var revpack45 = parseInt($("#revpack45").val());
+					var revpacktot20 = parseInt(json.QTY.hc20) * revpack20; 
+					var revpacktot40 = parseInt(json.QTY.hc40) * revpack40; 
+					var revpacktot45 = parseInt(json.QTY.hc45) * revpack45; 					
+					$("#revpacktot20").val(revpacktot20);
+					$("#revpacktot40").val(revpacktot40);
+					$("#revpacktot45").val(revpacktot45);
+					var subtotpack = revpacktot20+revpacktot40+revpacktot45;
+					$("#subtotpack").val(subtotpack);
+					var totpack = subtotpack+reother1+reother2;
+					$("#totpack").val(totpack);
+
+					loadTableContainer($("#repoid").val());
+
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -291,6 +409,7 @@ $(document).ready(function() {
 
 	$("#retype").on("change", function(){
 		let val = $(this).val();
+		let prcode = $("#prcode").val();
 		// DEPO TO DEPO OUT
 		if (val == '11' || val == '11') {
 			$('#fromDepoBlok').removeClass('hideBlock');
@@ -402,16 +521,58 @@ $(document).ready(function() {
 			$('#toCityBlok').addClass('hideBlock');
 			$("#toCityBlok").children().attr('disabled', true);
 		}
+
+		$.ajax({
+			url:"<?=site_url('repoin/get_repo_tariff_detail');?>",
+			type:"POST",
+			data: {'prcode':prcode,'retype':val},
+			dataType:"JSON",
+			success: function(json){
+				if(json.status=="Failled") {
+					// breakdown
+					$("#revlift").val("0");
+					$("#revdoc").val("0");
+					$("#re20").val("0");
+					$("#re40").val("0");
+					$("#re45").val("0");
+					// package
+					$("#revpack20").val("0");
+					$("#revpack40").val("0");
+					$("#revpack45").val("0");
+				} else {
+					console.log(json.data);
+					// breakdown
+					$("#revlift").val(json.contract.coadmv);
+					$("#revdoc").val(json.data.rtdocv);
+					$("#re20").val(json.data.rthaulv20);
+					$("#re40").val(json.data.rthaulv40);
+					$("#re45").val(json.data.rthaulv45);
+					// package
+					$("#revpack20").val(json.data.rtpackv20);
+					$("#revpack40").val(json.data.rtpackv40);
+					$("#revpack45").val(json.data.rtpackv45);
+				}
+			}
+		});
+
 	});
 
 	$("#rebilltype").on("change", function(){
 		var billType = $(this).val();
 		if (billType==='1') {
-			showBreakDown();
+			// showBreakDown();
+			$("#breakDown").show();			
+			$("#Package").hide();			
+			$("#totpack").hide();			
+			$("#totbreak").show();			
 		} else if (billType==='2'){
-			showPackage();
+			$("#breakDown").hide();			
+			$("#Package").show();
+			$("#totpack").show();			
+			$("#totbreak").hide();				
 		} else {
-			$("#breakDownBill").html("");
+			$("#breakDown").hide();			
+			$("#Package").hide();			
 		}
 	});
 
@@ -438,6 +599,19 @@ $(document).ready(function() {
 
 });
 
+function loadTableContainer(repoid) {
+	$('#rcTable tbody').html("");
+	$.ajax({
+		url: "<?=site_url('repoin/ajax_repo_containers')?>",
+		type:"POST",
+		data: "repoid="+repoid,
+		dataType: "json",
+		success: function(json) {
+			$('#rcTable tbody').html(json);
+		}
+	});
+}
+
 function showBreakDown() {
 	$("#breakDownBill").html(
 		'<div class="form-group">'+
@@ -446,7 +620,7 @@ function showBreakDown() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+				
 			'<div class="col-sm-4">'+
-				'<input type="text" name="revlift" class="form-control" id="revlift" required>'+
+				'<input type="text" name="revlift" class="form-control" id="revlift" value="<?=@$_SESSION['revlift'];?>" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -455,7 +629,7 @@ function showBreakDown() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="revdoc" class="form-control" id="revdoc" required>'+
+				'<input type="text" name="revdoc" class="form-control" id="revdoc" value="<?=@$_SESSION['revdoc'];?>" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -464,7 +638,7 @@ function showBreakDown() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="re20" class="form-control" id="re20" required>'+
+				'<input type="text" name="re20" class="form-control" id="re20" value="<?=@$_SESSION['rthaulv20'];?>" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -473,7 +647,7 @@ function showBreakDown() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="retot20" class="form-control" id="retot20" required>'+
+				'<input type="text" name="retot20" class="form-control" id="retot20" value="0" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -482,7 +656,7 @@ function showBreakDown() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="re40" class="form-control" id="re40" required>'+
+				'<input type="text" name="re40" class="form-control" id="re40" value="<?=@$_SESSION['rthaulv40'];?>" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -491,7 +665,7 @@ function showBreakDown() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="retot40" class="form-control" id="retot40" required>'+
+				'<input type="text" name="retot40" class="form-control" id="retot40" value="0" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -500,7 +674,7 @@ function showBreakDown() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="re45" class="form-control" id="re45" required>'+
+				'<input type="text" name="re45" class="form-control" id="re45" value="<?=@$_SESSION['rthaulv45'];?>" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -509,7 +683,7 @@ function showBreakDown() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="retot45" class="form-control" id="retot45" required>'+
+				'<input type="text" name="retot45" class="form-control" id="retot45" value="0" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -518,10 +692,11 @@ function showBreakDown() {
 				'<input type="text" name="" class="form-control" id="" value="SUBTOT" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="subtotbreak" class="form-control" id="subtotbreak" required>'+
+				'<input type="text" name="subtotbreak" class="form-control" id="subtotbreak" value="0" required readonly>'+
 			'</div>'+
 		'</div>'
 	);
+
 }
 
 function showPackage() {
@@ -532,7 +707,7 @@ function showPackage() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="revpack20" class="form-control" id="revpack20" required>'+
+				'<input type="text" name="revpack20" class="form-control" id="revpack20" value="<?=@$_SESSION['rtpackv20'];?>" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -541,7 +716,7 @@ function showPackage() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="revpacktot20" class="form-control" id="revpacktot20" required>'+
+				'<input type="text" name="revpacktot20" class="form-control" id="revpacktot20" value="0" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -550,7 +725,7 @@ function showPackage() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="revpack40" class="form-control" id="revpack40" required>'+
+				'<input type="text" name="revpack40" class="form-control" id="revpack40" value="<?=@$_SESSION['rtpackv40'];?>" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -559,7 +734,7 @@ function showPackage() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="revpacktot40" class="form-control" id="revpacktot40" required>'+
+				'<input type="text" name="revpacktot40" class="form-control" id="revpacktot40" value="0" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -568,7 +743,7 @@ function showPackage() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="revpack45" class="form-control" id="revpack45" required>'+
+				'<input type="text" name="revpack45" class="form-control" id="revpack45" value="<?=@$_SESSION['rtpackv45'];?>" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -577,7 +752,7 @@ function showPackage() {
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="revpacktot45" class="form-control" id="revpacktot45" required>'+
+				'<input type="text" name="revpacktot45" class="form-control" id="revpacktot45" value="0" required>'+
 			'</div>'+
 		'</div>'+
 		'<div class="form-group">'+
@@ -586,10 +761,18 @@ function showPackage() {
 				'<input type="text" name="" class="form-control" id="" value="SUBTOT" readonly>'+
 			'</div>'+			
 			'<div class="col-sm-4">'+
-				'<input type="text" name="subtotpack" class="form-control" id="subtotpack" required>'+
+				'<input type="text" name="subtotpack" class="form-control" id="subtotpack" value="0" readonly required>'+
 			'</div>'+
 		'</div>'
 	);
+}
+
+function totalBreak() {
+	
+}
+function totalPack() {
+	var totpack = subtotpack+reother1+reother2;
+	$("#totpack").val(totpack);
 }
 
 function runDataTables() {		

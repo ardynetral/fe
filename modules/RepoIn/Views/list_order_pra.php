@@ -14,12 +14,11 @@
 					<th>Repo In Ref.</th>
 					<th>Date</th>
 					<th>Principal</th>
-					<th>Vessel</th>
-					<th>Voyage</th>
 					<th></th>
 				</tr>
 			</thead>
-			
+			<tbody>
+			</tbody>
 			
 		</table>
 	</div>		

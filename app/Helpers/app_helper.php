@@ -40,7 +40,7 @@ function get_token_item()
 
 function check_exp_time()
 {
-	if(session()->get('login_token')!=NULL) {
+	if(session()->get('login_token')!="") {
 		// $token = get_token_item();
 		// $exp = $token['exp'];
 		// $date = new DateTime();
@@ -51,7 +51,7 @@ function check_exp_time()
 		 if($now>=$exp_time) {
 		 	if(session()->destroy()) {
 			 	session()->setFlashdata('session_expired','Your Login Session has Expired. Please re-Login');	
-			 	return redirect()->to('login');
+			 	return redirect()->to(site_url('logout'));
 		 	}
 		 }	
 	}

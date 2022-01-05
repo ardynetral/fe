@@ -29,10 +29,10 @@
 						<div class="col-sm-7">
 							<select name="retype" id="retype" class="selects">
 								<option value="">- select -</option>
-								<option value="11">DEPOT to DEPOT (OUT)</option>
+<!-- 								<option value="11">DEPOT to DEPOT (OUT)</option>
 								<option value="12">DEPOT to PORT</option>
-								<option value="13">DEPOT to INTERCITY</option>
-								<option value="21">DEPOT to DEPOT (IN)</option>
+								<option value="13">DEPOT to INTERCITY</option> -->
+								<option value="21">DEPOT to DEPOT</option>
 								<option value="22">PORT to DEPOT</option>
 								<option value="23">INTERCITY to DEPOT</option>
 							</select>
@@ -82,7 +82,7 @@
 					<div class="form-group">
 						<label for="readdr" class="col-sm-5 control-label text-right">Address</label>
 						<div class="col-sm-7">
-							<textarea class="form-control" style="resize: none;" rows="5" cols="32" name="readdr" id="readdr"></textarea>
+							<textarea class="form-control" style="resize: none;" rows="3" cols="32" name="readdr" id="readdr"></textarea>
 						</div>
 					</div>
 					<div class="form-group">
@@ -100,6 +100,15 @@
 							</div>									
 						</div>
 					</div>
+					<div class="form-group" style="">
+						<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
+						<div class="col-sm-7">
+							<label class="control-inline fancy-checkbox custom-color-green">
+								<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="1" checked>
+								<span></span>
+							</label>
+						</div>
+					</div>					
 					<div class="form-group">
 						<label for="repoves" class="col-sm-5 control-label text-right">Ex Vessel</label>
 						<div class="col-sm-7">
@@ -173,7 +182,156 @@
 							</select>
 						</div>
 					</div>
-					<div id="breakDownBill"></div>
+
+					<div id="breakDown" style="display:none;">
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Lift On Adm</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>		
+							<div class="col-sm-4">
+								<input type="text" name="revlift" class="form-control" id="revlift" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Doc Fee</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="revdoc" class="form-control" id="revdoc" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Haulage 20"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="re20" class="form-control" id="re20" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Total Haulage 20"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="retot20" class="form-control" id="retot20" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Haulage 40"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>
+							<div class="col-sm-4">
+								<input type="text" name="re40" class="form-control" id="re40" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Total Haulage 40"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="retot40" class="form-control" id="retot40" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Haulage 45"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="re45" class="form-control" id="re45" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Total Haulage 45"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="retot45" class="form-control" id="retot45" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right" style="color:blue;">Sub Total 1</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="SUBTOT" readonly>
+							</div>
+							<div class="col-sm-4">
+								<input type="text" name="subtotbreak" class="form-control" id="subtotbreak" value="0" requirereadonly>
+							</div>
+						</div>				
+					</div>
+
+					<div id="Package" style="display:none;">
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">20"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="revpack20" class="form-control" id="revpack20" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Total 20"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>
+							<div class="col-sm-4">
+								<input type="text" name="revpacktot20" class="form-control" id="revpacktot20" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">40"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="revpack40" class="form-control" id="revpack40" value="0">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Total 40"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>			
+							<div class="col-sm-4">
+								<input type="text" name="revpacktot40" class="form-control" id="revpacktot40" value="0" >
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">45"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>			
+							<div class="col-sm-4">
+								<input type="text" name="revpack45" class="form-control" id="revpack45" value="0">
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Total45"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="revpacktot45" class="form-control" id="revpacktot45" value="0" >
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right" style="color:blue;">Sub Total 1</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="SUBTOT" readonly>
+							</div>'		
+							<div class="col-sm-4">
+								<input type="text" name="subtotpack" class="form-control" id="subtotpack" value="0" readonly required>
+							</div>
+						</div>						
+					</div>
 
 				</div>	
 			</div>
@@ -188,13 +346,13 @@
 								<div class="form-group">
 									<label for="code" class="col-sm-2 control-label text-right">20"</label>
 									<div class="col-sm-8">
-										<input type="text" name="name" class="form-control" id="name">
+										<input type="text" name="std20" class="form-control" id="std20" value="<?=@$QTY['std20']?>">
 									</div>
 								</div>								
 								<div class="form-group">
 									<label for="code" class="col-sm-2 control-label text-right">40"</label>
 									<div class="col-sm-8">
-										<input type="text" name="name" class="form-control" id="name">
+										<input type="text" name="std40" class="form-control" id="std40" value="<?=@$QTY['std40']?>">
 									</div>
 								</div>												
 							</div>
@@ -203,19 +361,19 @@
 								<div class="form-group">
 									<label for="code" class="col-sm-2 control-label text-right">20"</label>
 									<div class="col-sm-8">
-										<input type="text" name="name" class="form-control" id="name">
+										<input type="text" name="hc20" class="form-control" id="hc20" value="<?=@$QTY['hc20']?>">
 									</div>
 								</div>								
 								<div class="form-group">
 									<label for="code" class="col-sm-2 control-label text-right">40"</label>
 									<div class="col-sm-8">
-										<input type="text" name="name" class="form-control" id="name">
+										<input type="text" name="hc40" class="form-control" id="hc40" value="<?=@$QTY['hc40']?>">
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="code" class="col-sm-2 control-label text-right">45"</label>
 									<div class="col-sm-8">
-										<input type="text" name="name" class="form-control" id="name">
+										<input type="text" name="hc45" class="form-control" id="hc45" value="<?=@$QTY['hc45']?>">
 									</div>
 								</div>											
 							</div>										
@@ -231,7 +389,7 @@
 									<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 								</div>								
 								<div class="col-sm-4">
-									<input type="text" name="reother1" class="form-control" id="reother1" required>
+									<input type="text" name="reother1" class="form-control" id="reother1" value="0" required>
 								</div>
 							</div>
 							<div class="form-group">
@@ -240,7 +398,7 @@
 									<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 								</div>								
 								<div class="col-sm-4">
-									<input type="text" name="reother2" class="form-control" id="reother2" required>
+									<input type="text" name="reother2" class="form-control" id="reother2"  value="0" required>
 								</div>
 							</div>						
 							<div class="form-group">
@@ -267,25 +425,24 @@
 									<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 								</div>								
 								<div class="col-sm-4">
-									<input type="text" name="totpack" class="form-control" id="totpack" required>
+									<input type="text" name="totpack" class="form-control" id="totpack" value="0"  style="display:none;" required>
+									<input type="text" name="totbreak" class="form-control" id="totbreak" value="0" required>
 								</div>
-							</div>	
-							<div class="form-group">
-								<label class="col-sm-4 control-label text-right">&nbsp;</label>
-								<div class="col-sm-2">&nbsp;</div>								
-								<div class="col-sm-4">
-									<input type="text" name="totbreak" class="form-control" id="totbreak" required>
-								</div>
-							</div>																							
+							</div>																						
 						</div>									
 					</div>
 				</div>
 			</div>
+
+		<div class="row">
+		</div>
 		</fieldset>
+
+
 		<div class="form-footer">
 			<div class="form-group text-center">
-				<button type="submit" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
-				<button type="button" id="cancel" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</button>
+				<button type="submit" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Next</button>&nbsp;
+				<!-- <button type="button" id="cancel" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</button> -->
 			</div>	
 		</div>
 	</form>

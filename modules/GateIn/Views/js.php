@@ -550,11 +550,11 @@ $(document).ready(function() {
 		});
 	});
 
-	// End Step 2
-	$('#ctTable tbody').on("click",".print_order", function(e){
+
+	$('#ctTable').on("click",".print_eir", function(e){
 		e.preventDefault();
-		var praid = $(this).data("praid");
-        window.open("<?php echo site_url('prain/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+		var crno = $(this).data("crno");
+        window.open("<?php echo site_url('gatein/print_eir/'); ?>" + crno, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	$('[data-toggle="tab"]').on('click', function(){

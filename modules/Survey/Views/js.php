@@ -34,53 +34,46 @@ $(document).ready(function() {
 		window.location.href = "#OrderPra";
 	});
 
-	$("#save").click(function(e){
-		e.preventDefault();													
-		// window.scrollTo(xCoord, yCoord);
-		var formData = "cpiorderno=" + $("#cpiorderno").val();
-		formData += "&cpiopr=" + $("#prcode").val();
-		formData += "&cpicust=" + $("#cucode").val();
-		formData += "&cpidish=" + $("#cpidish").val();
-		formData += "&cpidisdat=" + $("#cpidisdat").val();
-		formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		formData += "&cpdepo=" + $("#cpdepo").val();
-		formData += "&cpipratgl=" + $("#cpipratgl").val();
-		formData += "&cpirefin=" + $("#cpirefin").val();
-		formData += "&cpijam=" + $("#cpijam").val();
-		formData += "&cpives=" + $("#cpives").val();
-		formData += "&cpivoyid=" + $("#cpivoyid").val();
-		formData += "&cpicargo=" + $("#cpicargo").val();
-		formData += "&cpideliver=" + $("#cpideliver").val();
-		// alert(formData);
-		// console.log("data="+formData);
+	var alReadyClicked = false;
+	$("#saveData").click(function(){
+		if (alReadyClicked == false) {
+			$('#saveData').prop('disabled','disabled');
+			formData = $('#form_input').serializeArray();
+			$.ajax({
+				url: "<?php echo site_url('survey/save'); ?>",
+				type: "POST",
+				data: formData,
+				dataType: 'json',
+				beforeSend: function(){
+					$('#saveData').prop('disabled',true);
+					$('#cancel').prop('disabled',true);
+				},
+				success: function(res) {
+					console.log(res)
+					$('#saveData').prop('disabled',false);
+					$('#cancel').prop('disabled',false);
+					if(res.message == "success") {
+						Swal.fire({
+						  icon: 'success',
+						  title: "Success",
+						  html: '<div class="text-success">'+res.message+'</div>'
+						});							
+						window.location.href = "<?php echo site_url('survey'); ?>";
 
-		$.ajax({
-			url: "<?php echo site_url('prain/add'); ?>",
-			type: "POST",
-			data: formData,
-			dataType: 'json',
-			success: function(json) {
-				if(json.message == "success") {
-					Swal.fire({
-					  icon: 'success',
-					  title: "Success",
-					  html: '<div class="text-success">'+json.message+'</div>'
-					});							
-					window.location.href = "#formDetail";
-					// $("#navItem3").removeClass("disabled");
-					// $("#navLink3").attr("data-toggle","tab");
-					// $("#navLink3").trigger("click");	
-					$("#praid").val(json.praid);				
-					$("#saveData").prop('disabled', true);
-				} else {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
+					} else {
+						Swal.fire({
+						  icon: 'error',
+						  title: "Error",
+						  html: '<div class="text-danger">'+res.message+'</div>'
+						});						
+					}
 				}
-			}
-		});
+			});
+
+		} else {
+			return false;
+		}
+		var alReadyClicked = true;
 	});
 
 	$("#liftoffcharge").on("change", function(){
@@ -130,47 +123,7 @@ $(document).ready(function() {
 		$("#cancel").show();
 	});
 
-	$("#update").click(function(e){
-		e.preventDefault();
-		var formData = "cpiorderno=" + $("#cpiorderno").val();
-		formData += "&praid=" + $("#praid").val();
-		formData += "&cpiopr=" + $("#prcode").val();
-		formData += "&cpicust=" + $("#cucode").val();
-		formData += "&cpidish=" + $("#cpidish").val();
-		formData += "&cpidisdat=" + $("#cpidisdat").val();
-		formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		formData += "&cpdepo=" + $("#cpdepo").val();
-		formData += "&cpipratgl=" + $("#cpipratgl").val();
-		formData += "&cpirefin=" + $("#cpirefin").val();
-		formData += "&cpijam=" + $("#cpijam").val();
-		formData += "&cpives=" + $("#cpives").val();
-		formData += "&cpivoyid=" + $("#cpivoyid").val();
-		formData += "&cpicargo=" + $("#cpicargo").val();
-		formData += "&cpideliver=" + $("#cpideliver").val();
-		// console.log(formData);
-		$.ajax({
-			url: "<?php echo site_url('prain/edit/'); ?>"+$("#praid").val(),
-			type: "POST",
-			data: formData,
-			dataType: 'json',
-			success: function(json) {
-				console.log(json.message);
-				if(json.message == "success") {
-					Swal.fire({
-					  icon: 'success',
-					  title: "Success",
-					  html: '<div class="text-success">'+json.msgdata+'</div>'
-					});							
-				} else {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
-				}
-			}
-		});
-	});	
+	
 
 
 // BTN View click
@@ -242,71 +195,10 @@ $(document).ready(function() {
 		});			
 	});
 
-	$("#ctTable tbody").on("click",".approve", function(e){
-		e.preventDefault();
-		var praid = $(this).data('praid');
-		var formData = "cpiorderno=" + $("#cpiorderno").val();
-		formData += "&praid=" + praid;
-		// console.log(formData);
-		$.ajax({
-			url: "<?php echo site_url('prain/approve_order/'); ?>"+praid,
-			type: "POST",
-			data: formData,
-			dataType: 'json',
-			success: function(json) {
-				console.log(json.message);
-				if(json.message == "success") {
-					Swal.fire({
-					  icon: 'success',
-					  title: "Success",
-					  html: '<div class="text-success">Order Approved</div>'
-					});	
-					window.location.href = "<?php echo site_url('prain'); ?>";
-				} else {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
-				}
-			}
-		});
-	});	
-
-	function list_container(item, index, arr) {
-		var num = index+1;
-		var cpishold = "";
-		var cpife = "";
-		if(item.cpife==1) {
-			cpife="Full";
-		}else {
-			cpife="Empty";
-		}
-
-		if(item.cpishold==1) {
-			cpishold = "Hold";
-		} else {
-			cpishold = "Release";
-		}
-
-		arr[index] = "<tr>"+
-		"<td>"+num+"</td>"+
-		"<td>"+item.crno+"</td>"+
-		"<td>"+item.cccode+"</td>"+
-		"<td>"+item.ctcode+"</td>"+
-		"<td>"+item.cclength+"</td>"+
-		"<td>"+item.ccheight+"</td>"+
-		"<td>"+cpife+"</td>"+
-		"<td>"+cpishold+"</td>"+
-		"<td>"+item.cpiremark+"</td>"+
-		"<td></td>"+
-		"<td><a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='"+item.pracrnoid+"'>edit</a><a href='#' id='deleteContainer' class='btn btn-xs btn-danger'>delete</a></td>"+
-		"</tr>";
-	}
-
-	$('#ctTable tbody').on('click', '.delete', function(e){
-		e.preventDefault();	
-		var code = $(this).data('kode');
+	$('#ctTable').on('click', 'tbody .delete_btn', function(){
+		let crno = $(this).attr('crno');
+		let cpiorderno = $(this).attr('cpiorderno');
+		console.log(crno)
 		Swal.fire({
 		  title: 'Are you sure?',
 		  icon: 'warning',
@@ -316,155 +208,80 @@ $(document).ready(function() {
 		  confirmButtonText: 'Yes, delete it!'
 		}).then((result) => {
 		  if (result.isConfirmed) {
-		  	delete_data(code);
+		  	delete_data(crno,cpiorderno);
 		  }
 		});		
 		
 	});
 
-	function delete_data(code) {
+	function delete_data(crno,cpiorderno) {
 		$.ajax({
-			url: "<?php echo site_url('city/delete/'); ?>"+code,
+			url: "<?php echo site_url('city/delete/'); ?>"+crno+"/"+cpiorderno,
 			type: "POST",
 			dataType: 'json',
-			success: function(json) {
-				if(json.message == "success") {
+			success: function(res) {
+				if(res.message == "success") {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
-					  html: '<div class="text-success">'+json.message+'</div>'
+					  html: '<div class="text-success">'+res.message+'</div>'
 					});							
 					window.location.href = "<?php echo site_url('city'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
+					  html: '<div class="text-danger">'+res.message+'</div>'
 					});						
 				}
 			}
 		});		
 	}
 
-	// STEP 1 :
-	$("#prcode").on("change", function(){
-		var prcode = $(this).val();
-		$.ajax({
-			url:"<?=site_url('prain/ajax_prcode_listOne/');?>"+prcode,
-			type:"POST",
-			data: "prcode="+prcode,
-			dataType:"JSON",
-			success: function(json){
-				if(json.status=="Failled") {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});		
-				} else {
-					$("#cucode").val(json.data.cucode);
-				}
-			}
-		});
-	}) ;
-
-	// Vessel dropdown change
-	$("#cpives").on("change", function(){
-		var vesid = $(this).val();
-		$.ajax({
-			url:"<?=site_url('prain/ajax_vessel_listOne/');?>"+vesid,
-			type:"POST",
-			data: "vesid="+vesid,
-			dataType:"JSON",
-			success: function(json){
-				if(json.status=="Failled") {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});		
-				} else {
-					$("#cpopr").val(json.data.vesopr);
-				}
-			}
-		});		
-	});
-
-
-	// STEP 2 : 
-	//Get Container Code detail
-	$("#ccode").on("change", function(){
-		var cccode  = $(this).val();
-		$.ajax({
-			url:"<?=site_url('prain/ajax_ccode_listOne/');?>"+cccode,
-			type:"POST",
-			data: "ccode="+ccode,
-			dataType:"JSON",
-			success: function(json){
-				if(json.status=="Failled") {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});		
-				} else {
-					$("#ctcode").val(json.data.ctcode);
-					$("#cclength").val(json.data.cclength);
-					$("#ccheight").val(json.data.ccheight);
-				}
-
-			}
-		});
-	});
-
-
 	// save detailContainer
-	$("#saveDetail").on("click", function(e){
-		e.preventDefault();
-		var cpife = $("input:radio[name=cpife]:checked").val();
-		var formData = "praid=" + $("#praid").val();
-		formData += "&crno=" + $("#crno").val();
-		formData += "&ccode=" + $("#ccode").val();
-		formData += "&ctcode=" + $("#ctcode").val();
-		formData += "&cclength=" + $("#cclength").val();
-		formData += "&ccheight=" + $("#ccheight").val();
-		formData += "&cpife=" + cpife;
-		formData += "&cpishold=" + $("#cpishold").val();
-		formData += "&cpiremark=" + $("#cpiremark").val();
-		
-		$.ajax({
-			url: "<?php echo site_url('prain/addcontainer'); ?>",
-			type: "POST",
-			data: formData,
-			dataType: 'json',
-			success: function(json) {
-				if(json.message == "success") {
-					Swal.fire({
-					  icon: 'success',
-					  title: "Success",
-					  html: '<div class="text-success">'+json.message+'</div>'
-					});							
-					// window.location.href = "<?php echo site_url('prain/view/'); ?>"+json.praid;
-					window.location.href = "<?php echo site_url('prain'); ?>";
-					// getDetailOrder(json.praid);
-				} else {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
-				}
-			}
-		});	
+	// $("#saveData").on("click", function(e){
+	// 	formData = $("#form_input").serialize();
+	// 	console.log(formData);
+	// 	$.ajax({
+	// 		url: "<?php echo site_url('survey/save'); ?>",
+	// 		type: "POST",
+	// 		data: formData,
+	// 		dataType: 'json',
+	// 		beforeSend:function(){
+	// 			$('#saveData').prop('disabled',true);
+	// 			$('#cancel').prop('disabled',true);
+	// 		},
+	// 		success: function(res) {
+	// 			console.log(res.api);
+	// 			$('#saveData').prop('disabled',false);
+	// 			$('#cancel').prop('disabled',false);
+	// 			if(res.err == false) {
+	// 				Swal.fire({
+	// 				  icon: 'success',
+	// 				  title: "Success",
+	// 				  html: '<div class="text-success">'+res.message+'</div>'
+	// 				});							
+	// 				// window.location.href = "<?php echo site_url('prain/view/'); ?>"+json.praid;
+	// 				window.location.href = "<?php echo site_url('survey'); ?>";
+	// 				// getDetailOrder(json.praid);
+	// 			} else {
+	// 				Swal.fire({
+	// 				  icon: 'error',
+	// 				  title: "Error",
+	// 				  html: '<div class="text-danger">'+res.message+'</div>'
+	// 				});						
+	// 			}
+	// 		}
+	// 	});	
 
-	});
+	// });
 
 	$('#detTable tbody').on('click', '.edit', function(e){
 		e.preventDefault();
 		var crid = $(this).data("crid");
 	    var cpife = $('input:radio[name=cpife]');
 		$.ajax({
-			url:"<?=site_url('prain/get_one_container/');?>"+crid,
+			url:"<?=site_url('survery/get_one/');?>"+crid,
 			type:"POST",
 			data: "crid="+crid,
 			dataType:"JSON",
@@ -497,67 +314,7 @@ $(document).ready(function() {
 		})
 	});
 
-	$("#updateDetail").on("click", function(e){
-		e.preventDefault();
-		var cpife = $("input:radio[name=cpife]:checked").val();
-		var formData = "praid=" + $("#praid").val();
-		formData += "&pracrnoid=" + $("#pracrnoid").val();
-		formData += "&crno=" + $("#crno").val();
-		formData += "&ccode=" + $("#ccode").val();
-		formData += "&ctcode=" + $("#ctcode").val();
-		formData += "&cclength=" + $("#cclength").val();
-		formData += "&ccheight=" + $("#ccheight").val();
-		formData += "&cpife=" + cpife;
-		formData += "&cpishold=" + $("#cpishold").val();
-		formData += "&cpiremark=" + $("#cpiremark").val();
-		
-		$.ajax({
-			url: "<?php echo site_url('prain/edit_container'); ?>",
-			type: "POST",
-			data: formData,
-			dataType: 'json',
-			success: function(json) {
-				if(json.message == "success") {
-					Swal.fire({
-					  icon: 'success',
-					  title: "Success",
-					  html: '<div class="text-success">'+json.message+'</div>'
-					});
-				} else {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
-				}
-			}
-		});	
-
-	});
-
-	$("#crno").on("keyup", function(){
-		var crno = $("#crno").val();
-		var status = "";
-		$.ajax({
-			url:"<?=site_url('prain/checkContainerNumber');?>",
-			type:"POST",
-			data: "ccode="+crno,
-			dataType:"JSON",
-			success: function(json){
-				if(json.status=="Failled") {
-					$(".err-crno").show();
-					$(".err-crno").html(json.message);
-					$("#crno").css("background", "#ffbfbf!important");
-					$("#crno").css("border-color", "#ea2525");					
-				} else {
-					$(".err-crno").html("");
-					$(".err-crno").hide();
-					$("#crno").css("background", "#fff!important");
-					$("#crno").css("border-color", "#ccc");
-				}
-			}
-		});
-	});
+	
 
 	// End Step 2
 	$('#ctTable tbody').on("click",".print_order", function(e){
@@ -707,5 +464,43 @@ function runDataTables() {
             }
         }
     } 	   
+
+
+    $('#CRNO').keyup(function() {
+    	crno = $(this).val();
+    	if (crno.length == 11) {
+	    	$.ajax({
+				url:"<?=site_url('survey/checkValid');?>",
+				type:"POST",
+				data: "CRNO="+crno,
+				dataType:"JSON",
+				success: function(res){
+					if (res.err == false) {
+						for (const [key, value] of Object.entries(res.data)) {
+							if (key == 'cpife' || key == 'cpiterm' ) {
+								$("input[name="+key.toUpperCase()+"][value='"+value+"']").prop("checked",true);
+							}else if( key=='cpichrgbb' || key=='cpipaidbb' || key=='crcdp' || key=='cracep' || key=='crcsc'){
+								const checked = (value == 1? true:false);
+								$(`#${key.toUpperCase()}`).prop("checked", checked);
+							} else {
+								$(`#${key.toUpperCase()}`).val(value)
+							}
+						}
+						$('#LECONTRACTNO').val(res.data.prcode)
+						$('#CPIPRANO').val(res.data.cpiorderno)
+					} else {
+						$('#form_input')[0].reset();
+						Swal.fire({
+						  icon: 'error',
+						  title: "Error",
+						  html: '<div class="text-danger"> Container Number is '+res.status.toUpperCase()+'</div>'
+						});	
+					}
+				}
+			});
+    	} else if(crno.length == 0){
+			$('#form_input')[0].reset();
+    	}
+	});
 }
 </script>

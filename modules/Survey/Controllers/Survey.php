@@ -48,6 +48,8 @@ class Survey extends \CodeIgniter\Controller
             $record[] = $v['CPITGL'];
             $record[] = $v['SVSURDAT'];
             $record[] = $v['SVCOND'];
+
+			$btn_list .= '<a href="'.site_url().'/survey/view/'.$v['CRNO'].'" class="btn btn-xs btn-info btn-tbl">View</a>';
 			if(has_privilege_check($module, '_update')==true): 
 				$btn_list .= '<a href="'.site_url().'/survey/add/'.$v['CRNO'].'" class="btn btn-xs btn-success btn-tbl">Edit</a>';
 			endif;
@@ -58,7 +60,7 @@ class Survey extends \CodeIgniter\Controller
 
 			if(has_privilege_check($module, '_delete')==true):
 				// $btn_list .= '<button type="button" id="delete" onclick="delete_data(`'.$v['CRNO'].'`,`'.@$v['CPIORDERNO'].'`)" class="btn btn-xs btn-danger btn-tbl">delete</button>';
-				$btn_list .= '<button type="button" crno="'.$v['CRNO'].'" cpiorderno="'.@$v['CPIORDERNO'].'" class="btn btn-xs btn-danger btn-tbl delete_btn">delete</button>';
+				$btn_list .= '<button type="button" crno="'.$v['CRNO'].'" cpiorderno="'.@$v['CPIORDERNO'].'" svid="'.@$v['SVID'].'" bid="'.@$v['bid'].'" rpid="'.@$v['rpid'].'" class="btn btn-xs btn-danger btn-tbl delete_btn">delete</button>';
 			endif;
 			
             $record[] = '<div>'.$btn_list.'</div>';
@@ -140,7 +142,7 @@ class Survey extends \CodeIgniter\Controller
 		$request = \Config\Services::request();
 		$token = get_token_item();
 		$data = [];
-		$data['act'] = "Add";
+		$data['act'] = ($crno =='')?"Add":"Update";
 		$data['page_title'] = "Survey";
 		$data['page_subtitle'] = "Survey Page";		
 		$data['uname'] = $token['username'];
@@ -164,41 +166,27 @@ class Survey extends \CodeIgniter\Controller
 		return view('Modules\Survey\Views\add',$data);
 	}
 
-	// public function edit($crno)
-	// {
-	// 	check_exp_time();
-	// 	$data = [];
-	// 	$response = $this->client->request('GET','survey/getDetail',[
-	// 		'headers' => [
-	// 			'Accept' => 'application/json',
-	// 			'Authorization' => session()->get('login_token')
-	// 		],
-	// 		'form_params' => [
-	// 			'CRNO' => $crno,
-	// 		]
-	// 	]);
-
-	// 	$result = json_decode($response->getBody()->getContents(), true);	
-	// 	$data['detail'] = $result['data'];
-	// 	return view('Modules\Container\Views\edit',$data);
-	// }
-
 	public function view($crno)
 	{
 		check_exp_time();
+		$data['act'] = "View";
+		$data['page_title'] = "Survey";
+		$data['page_subtitle'] = "Survey Page";	
 		$response = $this->client->request('GET','survey/getDetail',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
 			],
-			'form_params' => [
+			'query' => [
 				'CRNO' => $crno,
 			]
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);	
-		$data['survey'] = isset($result['data']) ? $result['data'] : '';
-		return view('Modules\Survey\Views\add',$data);
+		$data['details'] = isset($result['data']) ? $result['data'] : '';
+		$data['crno'] = $crno;
+
+		return view('Modules\Survey\Views\view',$data);
 	}	
 
 	public function save()
@@ -300,19 +288,28 @@ class Survey extends \CodeIgniter\Controller
 		echo json_encode($resp);
 	}
 
-	public function delete($cpid,$crno,$cpiorderno){
+	public function delete(){
 		$response = $this->client->request('DELETE','survey/deleteData',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
 			],
 			'query' => [
-					'CRNO' => $crno,
-					'CPIORDERNO' => $cpiorderno,
+					'CRNO' => $this->request->getPost('CRNO'),
+					'CPIPRANO' => $this->request->getPost('CPIORDERNO'),
+					'RPID'=>$this->request->getPost('RPID'),
+					'SVID'=>$this->request->getPost('SVID'),
+					'BID'=>$this->request->getPost('BID')
 				],
 		]);
 		$result = json_decode($response->getBody()->getContents(), true);
-
-		echo json_encode(array('message'=>$msg, 'status'=> $status));
+		if ($result['message'] == 'Success Delete Data') {
+			$msg='success delete'; 
+			$err=false;
+		} else {
+			$msg='failed delete'; 
+			$err=true;
+		}
+		echo json_encode(array('message'=>$msg, 'err'=> $err));
 	}
 }

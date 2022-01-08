@@ -198,7 +198,10 @@ $(document).ready(function() {
 	$('#ctTable').on('click', 'tbody .delete_btn', function(){
 		let crno = $(this).attr('crno');
 		let cpiorderno = $(this).attr('cpiorderno');
-		console.log(crno)
+		let rpid = $(this).attr('rpid');
+		let svid = $(this).attr('svid');
+		let bid = $(this).attr('bid');
+		// console.log(crno)
 		Swal.fire({
 		  title: 'Are you sure?',
 		  icon: 'warning',
@@ -208,25 +211,27 @@ $(document).ready(function() {
 		  confirmButtonText: 'Yes, delete it!'
 		}).then((result) => {
 		  if (result.isConfirmed) {
-		  	delete_data(crno,cpiorderno);
+		  	delete_data(crno,cpiorderno,bid,rpid,svid);
 		  }
 		});		
 		
 	});
 
-	function delete_data(crno,cpiorderno) {
+	function delete_data(crno,cpiorderno,bid,rpid,svid) {
+		dataSend = {CRNO:crno, CPIORDERNO:cpiorderno, BID:bid, SVID:svid, RPID:rpid};
 		$.ajax({
-			url: "<?php echo site_url('city/delete/'); ?>"+crno+"/"+cpiorderno,
+			url: "<?php echo site_url('survey/delete'); ?>",
 			type: "POST",
+			data: dataSend,
 			dataType: 'json',
 			success: function(res) {
-				if(res.message == "success") {
+				if(res.err == false) {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+res.message+'</div>'
 					});							
-					window.location.href = "<?php echo site_url('city'); ?>";
+					table.ajax.reload();
 				} else {
 					Swal.fire({
 					  icon: 'error',

@@ -52,7 +52,7 @@
 							<td ></td>
 							<td ></td>
 							<td class="text-right">PraIn No :</td>
-							<td colspan="3"><input type="text" name="cpiorderno" id="cpiorderno" class="form-control" value="<?=$data['cpiorderno'];?>"></td>
+							<td colspan="3"><input type="text" name="cpiorderno" id="cpiorderno" class="form-control" value="<?=$data['cpiorderno'];?>" readonly></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Principal :</td>
@@ -84,7 +84,7 @@
 							<td class="text-right">Term :</td>
 							<td ><input type="text" name="cpiterm" class="form-control" id="cpiterm" value="<?=$data['cpiterm'];?>"></td>
 							<td class="text-right">Time In</td>
-							<td colspan="3"><input type="text" name="cpijam" id="cpijam" class="form-control" value="<?=$data['cpijam'];?>"></td>
+							<td colspan="3"><input type="text" name="cpijam" id="cpijam" class="form-control" value="<?=date('H:i:s', strtotime($data['cpijam']));?>"></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130"></td>
@@ -94,13 +94,13 @@
 							<td class="text-right">Lift Off Charge :</td>
 							<td width="60">
 								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="0">
+								<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="0" checked>
 								<span></span></label>
 							</td>
 							<td width="80" class="text-right">Paid :</td>
 							<td >
 								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="" id="" value="0">
+								<input type="checkbox" name="cpipaidbb" id="cpipaidbb" value="<?=$data['cpipaidbb']?>" <?=((isset($data['cpipaidbb']))&&($data['cpipaidbb']=="1")?"checked":"")?>>
 								<span></span></label>								
 							</td>							
 						</tr>
@@ -114,7 +114,7 @@
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Depot :</td>
-							<td><?=depo_dropdown("cpdepo",$data['cpdepo']);?></td>
+							<td><?=depo_dropdown("000");?></td>
 							<td ></td>
 							<td ></td>
 							<td class="text-right">F/E :</td>
@@ -124,14 +124,16 @@
 								<span><i></i>Full</span>
 								</label>
 								<label class="control-inline fancy-radio custom-bgcolor-green">
-								<input type="radio" name="cpife" id="cpife" value="0">
+								<input type="radio" name="cpife" id="cpife" value="0" checked>
 								<span><i></i>Empty</span>
 								</label>								
 							</td>
 						</tr>
 						<tr>
-							<td class="text-right" width="130">Sub Depot :</td>
-							<td><input type="text" name="spdepo" class="form-control" id="spdepo" value="<?=$data['spdepo'];?>"></td>
+							<td class="text-right" width="130" style="display:none;">Sub Depot :</td>
+							<td style="display:none;"><input type="text" name="spdepo" class="form-control" id="spdepo" value="<?=$data['spdepo'];?>"></td>
+							<td ></td>
+							<td ></td>
 							<td ></td>
 							<td ></td>
 							<td class="text-right">Ex Cargo :</td>

@@ -151,7 +151,7 @@ class GateIn extends \CodeIgniter\Controller
 		$data['act'] = "Add";
 		$data['page_title'] = "Gate In";
 		$data['page_subtitle'] = "Gate In Page";
-
+		// echo var_dump($_POST);die();
 		if($this->request->isAjax()) {
 			$form_params = [
 			    "cpdepo" => "000",
@@ -159,8 +159,8 @@ class GateIn extends \CodeIgniter\Controller
 			    "cpitgl" => $_POST['cpipratgl'],
 			    "cpiefin" => "1",
 			    "cpichrgbb" => "1",
-			    "cpipaidbb" => "1",
-			    "cpieir" => $_POST['cpieir'],
+			    "cpipaidbb" => (isset($_POST['cpipaidbb'])?$_POST['cpipaidbb']:'0'),
+			    "cpieir" => (int)(isset($_POST['cpieir'])?$_POST['cpieir']:'0'),
 			    "cpinopol" => $_POST['cpinopol'],
 			    "cpidriver" => $_POST['cpidriver'],
 			    "cpicargo" => $_POST['cpicargo'],
@@ -231,7 +231,7 @@ class GateIn extends \CodeIgniter\Controller
 			    "cpitgl" => $_POST['cpipratgl'],
 			    "cpiefin" => "1",
 			    "cpichrgbb" => "1",
-			    "cpipaidbb" => "1",
+			    "cpipaidbb" => $_POST['cpipaidbb'],
 			    "cpieir" => $_POST['cpieir'],
 			    "cpinopol" => $_POST['cpinopol'],
 			    "cpidriver" => $_POST['cpidriver'],

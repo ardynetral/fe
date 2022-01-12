@@ -52,7 +52,7 @@ if(isset($data) && ($data!='')) {
 							<td ></td>
 							<td ></td>
 							<td class="text-right">PraIn No :</td>
-							<td colspan="3"><input type="text" name="cpiorderno" id="cpiorderno" class="form-control" value="<?='';?>"></td>
+							<td colspan="3"><input type="text" name="cpiorderno" id="cpiorderno" class="form-control" value="<?='';?>" readonly></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Principal :</td>
@@ -100,7 +100,7 @@ if(isset($data) && ($data!='')) {
 							<td width="80" class="text-right">Paid :</td>
 							<td >
 								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="" id="" value="0">
+								<input type="checkbox" name="cpipaidbb" id="cpipaidbb">
 								<span></span></label>								
 							</td>							
 						</tr>

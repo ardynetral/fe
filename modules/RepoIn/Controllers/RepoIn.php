@@ -50,8 +50,10 @@ class RepoIn extends \CodeIgniter\Controller
             $record[] = date('d-m-Y', strtotime($v['redate']));
             $record[] = $v['cpopr'];
 			
-			$btn_list .= '<a href="'.site_url().'/repoin/view/'.$reorderno.'" class="btn btn-xs btn-primary btn-tbl">View</a>';	
+			$btn_list .= '<a href="'.site_url().'/repoin/view/'.$reorderno.'" class="btn btn-xs btn-primary btn-tbl">Cetak kitir</a>';	
 			$btn_list .= '<a href="'.site_url().'/repoin/edit/'.$reorderno.'" class="btn btn-xs btn-success btn-tbl">Edit</a>';	
+			$btn_list .= '<a href="'.site_url().'/repoin/edit/'.$reorderno.'" class="btn btn-xs btn-success btn-tbl">Proforma</a>';	
+			$btn_list .= '<a href="'.site_url().'/repoin/edit/'.$reorderno.'" class="btn btn-xs btn-success btn-tbl">Invoice</a>';	
 			// $btn_list .= '<a href="#" data-repoid="'.$v['reorderno'].'" class="btn btn-xs btn-info print_order btn-tbl">Print Kitir</a>';
 			$btn_list .= '<a href="#" id="" class="btn btn-xs btn-danger btn-tbl delete" data-kode="'.$reorderno.'">Delete</a>';
             $record[] = '<div>'.$btn_list.'</div>';
@@ -93,6 +95,7 @@ class RepoIn extends \CodeIgniter\Controller
 		$datarepo = $this->getOneRepo($reorderno);
 		$data['data'] = $datarepo['data'];
 		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
+		// echo var_dump($data['containers']);die();
 		$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
 		return view('Modules\RepoIn\Views\view',$data);		
 	}	
@@ -112,27 +115,21 @@ class RepoIn extends \CodeIgniter\Controller
 		$limit=100;		
 		$token = get_token_item();
 		$group_id = $token['groupId'];
-		$prcode = $token['prcode'];
 
 		if ($this->request->isAJAX()) 
 		{
-			// echo var_dump($_POST);die();
-
 			$reformat = [
-				'reorderno' => $this->get_repoin_number(),
-				'cpopr'		=> $_POST['prcode'],
+				'repocode' => "RI",
+				'cpopr' => $_POST['cpopr'],
 				'redate' => date('Y-m-d',strtotime($_POST['redate'])),
 				'redline' => date('Y-m-d',strtotime($_POST['redline']))  
 			];
+			// echo var_dump($_POST);die();
 			
-			// $form_params = [
-			// 	'cpiorderno' => $_POST['cpiorderno'],
-			// ];		
-		
 		    if ($this->request->getMethod() === 'post')
 		    {
 
-				$response = $this->client->request('POST','orderContainerRepos/createNewData',[
+				$response = $this->client->request('POST','repoin/insertDataRepoIn',[
 					'headers' => [
 						'Accept' => 'application/json',
 						'Authorization' => session()->get('login_token')
@@ -146,10 +143,11 @@ class RepoIn extends \CodeIgniter\Controller
 					$data['message'] = $result['message'];
 					echo json_encode($data);die();				
 				}
-				// echo var_dump($result);die();
+				$datarepo = $result['data']['succes created order Container Repo'];
+				$data_process = $result['data']['succes created container process'];
 				session()->setFlashdata('sukses','Success, Order Repo Saved.');
 				$data['message'] = "success";
-				$data['repoid'] = $result['data']['repoid']; 
+				$data['repoid'] = $datarepo['repoid']; 
 				echo json_encode($data);die();
 
 			}
@@ -173,8 +171,6 @@ class RepoIn extends \CodeIgniter\Controller
 		]);
 
 		$data['act'] = "add";
-		$data['prcode'] = $prcode;
-		$data['cucode'] = $prcode;
 		$data['repoin_no'] = $this->get_repoin_number();
 		$result_container = json_decode($response2->getBody()->getContents(),true);	
 		// $data['data_container'] = isset($result_container['data']['datas'])?$result_container['data']['datas']:"";
@@ -216,13 +212,37 @@ class RepoIn extends \CodeIgniter\Controller
 		$group_id = $token['groupId'];
 		$prcode = $token['prcode'];
 
+		// echo var_dump( $_POST);die();
 		if ($this->request->isAJAX()) 
 		{
+		// var formData = "repoid=" + $("#repoid").val();
+		// formData += "&cpiorderno=" + $("#reorderno").val();
+		// formData += "&cpopr=" + $("#cpopr").val();
+		// formData += "&cpcust=" + $("#cpcust").val();
+		// // formData += "&cpidish=" + $("#cpidish").val();
+		// formData += "&cpdepo=" + $("#cpdepo").val();
+		// formData += "&cpichrgbb=" + $("#cpichrgbb").val();
+		// formData += "&cpipratgl=" + $("#redate").val();
+		// formData += "&cpijam=" + $("#repojam").val();
+		// formData += "&cpives=" + $("#cpives").val();
+		// formData += "&cpiremark=" + $("#cpiremark").val();
+		// formData += "&cpideliver=" + $("#cpideliver").val();
+		// formData += "&cpivoyid=" + $("#repovoyid").val();
+		// formData += "&cpivoy=" + $("#cpivoy").val();
+		// // detail
+		// formData += "&crno=" + $("#crno").val();
+		// formData += "&cccode=" + $("#cccode").val();
+		// formData += "&ctcode=" + $("#ctcode").val();
+		// formData += "&cclength=" + $("#cclength").val();
+		// formData += "&ccheight=" + $("#ccheight").val();
+		// formData += "&cpife=" + $("#cpife").val();
+		// formData += "&cpishold=" + $("#cpishold").val();
+		// formData += "&reporemark=" + $("#reporemark").val();			
 			$form_params = [
-				// repoid belum ditambahkan diendpoint orderContainerRepos/*
+				// detail
 				'repoid' => $_POST['repoid'],
 				'crno' => $_POST['crno'],
-				'cccode' => $_POST['ccode'],
+				'cccode' => $_POST['cccode'],
 				'ctcode' => $_POST['ctcode'],
 				'cclength' => $_POST['cclength'],
 				'ccheight' => $_POST['ccheight'],
@@ -231,6 +251,8 @@ class RepoIn extends \CodeIgniter\Controller
 				'reporemark' => $_POST['reporemark']
 			];
 
+			// echo var_dump($_POST);die();
+
 			$validate = $this->validate([
 	            'crno' 	=> 'required'
 	        ]);	
@@ -238,26 +260,38 @@ class RepoIn extends \CodeIgniter\Controller
 		    if ($this->request->getMethod() === 'post' && $validate)
 		    {
 
-				$response = $this->client->request('POST','orderRepoContainer/createNewData',[
+				$response = $this->client->request('POST','repoin/insertDataPraRepoInDetails',[
 					'headers' => [
 						'Accept' => 'application/json',
 						'Authorization' => session()->get('login_token')
 					],
-					'form_params' => $form_params,
+					'form_params' => $_POST,
 				]);
 
 				$result = json_decode($response->getBody()->getContents(), true);	
-
+				// echo var_dump($result);die();
 				if(isset($result['status']) && ($result['status']=="Failled"))
 				{
+					$data['status'] = "Failled";
 					$data['message'] = $result['message'];
 					echo json_encode($data);die();				
 				}
+				// "message": "Data available!"
+				if(isset($result['message']) && ($result['message']=="Data available!"))
+				{
+					$data['status'] = "Failled";
+					$data['message'] = $result['message'];
+					echo json_encode($data);die();				
+				}				
 
 				session()->setFlashdata('sukses','Success, Containers Saved.');
-				$data['message'] = "success";
-				// $data['praid'] = $result['data']['praid'];
-				$data['QTY'] = hitungHCSTD($this->getRepoContainers($_POST['repoid']));
+				$data['status'] = "success";
+				$data['message'] = $result['message'];
+				$datarepo = $this->getOneRepo($_POST['cpiorderno']);
+				// echo var_dump($datarepo);die();
+				$data['data'] = $datarepo['data'];
+				$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
+				$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
 				echo json_encode($data);die();
 
 			}
@@ -480,6 +514,8 @@ class RepoIn extends \CodeIgniter\Controller
 
 				$data['status'] = "Success";
 				$data['message'] = $result['message'];
+				$data['data'] = $result['data']['rows'][0];
+				$data['container_code'] = $data['data']['container_code'];
 				echo json_encode($data);die();
 
 		    } else {
@@ -774,6 +810,7 @@ class RepoIn extends \CodeIgniter\Controller
 			$REMARK = $result['data'][0]['cpiremark'];
 			$NOPOL = $result['data'][0]['cpinopol'];
 			$QRCODE_IMG = ROOTPATH .'/public/media/qrcode/'.$qrcode['content'] . '.png';
+			$CPIPRATGL = $result['data'][0]['cpipratgl'];
 			$CPIRECEPTNO = $result['data'][0]['cpireceptno'];
 			// $QRCODE_CONTENT = $qrcode['content'];
 		} else {
@@ -796,6 +833,7 @@ class RepoIn extends \CodeIgniter\Controller
 			$QRCODE_IMG = "";
 			$QRCODE_CONTENT = ""; 
 			$CPIRECEPTNO = "";
+			$CPIPRATGL = "";
 		}
 
 		$result = json_decode($response->getBody()->getContents(), true);
@@ -858,7 +896,7 @@ class RepoIn extends \CodeIgniter\Controller
 				<tr>
 					<td colspan="2" style="font-weight:normal;">NO. '.$CPIORDERNO.'
 					</td>
-					<td colspan="2" style="font-weight:normal;text-align:right;">( '.date("d/m/Y").' )</td>
+					<td colspan="2" style="font-weight:normal;text-align:right;">( '.date("d/m/Y",strtotime($CPIPRATGL)).' )</td>
 				</tr>
 				<tr>
 					<td style="width:40%;">CONTAINER NO.</td>
@@ -981,4 +1019,44 @@ class RepoIn extends \CodeIgniter\Controller
 		// echo $html;
 		die();			
 	}		
+
+    public function generate_qrcode($data)
+    {
+        /* Load QR Code Library */
+        // $this->load->library('ciqrcode');
+        $ciQrcode = new Ciqrcode();
+
+        /* Data */
+        $hex_data   = bin2hex($data);
+        $save_name  = $data . '.png';
+
+        /* QR Code File Directory Initialize */
+        $dir = 'public/media/qrcode/';
+        if (! file_exists($dir)) {
+            mkdir($dir, 0775, true);
+        }
+
+        /* QR Configuration  */
+        $config['cacheable']    = true;
+        $config['imagedir']     = $dir;
+        $config['quality']      = true;
+        $config['size']         = '1024';
+        $config['black']        = [255, 255, 255];
+        $config['white']        = [255, 255, 255];
+        $ciQrcode->initialize($config);
+
+        /* QR Data  */
+        $params['data']     = $data;
+        $params['level']    = 'L';
+        $params['size']     = 10;
+        $params['savename'] = FCPATH . $config['imagedir'] . $save_name;
+
+        $ciQrcode->generate($params);
+
+        /* Return Data */
+        return [
+            'content' => $data,
+            'file'    => $dir . $save_name,
+        ];
+    }	
 }

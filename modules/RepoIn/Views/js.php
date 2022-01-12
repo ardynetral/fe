@@ -37,6 +37,10 @@ $(document).ready(function() {
             contentType: false,
             cache: false,			
 			dataType: 'json',
+            beforeSend: function () {
+				$("#saveData").prop('disabled', true);
+                $(".block-loading").addClass("loading"); 
+            },			
 			success: function(json) {
 				if(json.message == "success") {
 					Swal.fire({
@@ -45,15 +49,30 @@ $(document).ready(function() {
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});		
 					$("#repoid").val(json.repoid);
+					// $("#cpiorderno").val(json.reorderno);
+					// $("#cpopr").select2().select2('val',json.cpopr);
+					// $("#cpcust").select2().select2('val',json.cpcust);
+					// $("#cpdepo").val(json.cpdepo);
+					// $("#cpipratgl").val(json.redate);
+					// $("#cpijam").val(json.cpijam);
+					// $("#cpives").val(json.cpives);
+					// $("#cpiremark").val(json.cpiremark);
+					// $("#cpideliver").val(json.cpideliver);
+					// $("#cpivoyid").val(json.cpivoyid);
+					// $("#cpivoy").val(json.cpivoy);
 					$("#saveData").prop('disabled', true);
 				} else {
+					$("#saveData").prop('disabled', false);
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
 					  html: '<div class="text-danger">'+json.message+'</div>'
 					});						
 				}
-			}
+			},
+            complete: function () {
+                $(".block-loading").removeClass("loading");
+            },			
 		});
 	});
 
@@ -222,7 +241,7 @@ $(document).ready(function() {
 	}
 
 	// STEP 1 :
-	$("#prcode").on("change", function(){
+	$("#cpopr").on("change", function(){
 		$('#retype').select2().prop('disabled', false);
 		var cpopr = $(this).val();
 		$.ajax({
@@ -245,26 +264,26 @@ $(document).ready(function() {
 	}) ;
 
 	// Vessel dropdown change
-	$("#cpives").on("change", function(){
-		var vesid = $(this).val();
-		$.ajax({
-			url:"<?=site_url('prain/ajax_vessel_listOne/');?>"+vesid,
-			type:"POST",
-			data: "vesid="+vesid,
-			dataType:"JSON",
-			success: function(json){
-				if(json.status=="Failled") {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});		
-				} else {
-					$("#cpopr").val(json.data.vesopr);
-				}
-			}
-		});		
-	});
+	// $("#cpives").on("change", function(){
+	// 	var vesid = $(this).val();
+	// 	$.ajax({
+	// 		url:"<?=site_url('prain/ajax_vessel_listOne/');?>"+vesid,
+	// 		type:"POST",
+	// 		data: "vesid="+vesid,
+	// 		dataType:"JSON",
+	// 		success: function(json){
+	// 			if(json.status=="Failled") {
+	// 				Swal.fire({
+	// 				  icon: 'error',
+	// 				  title: "Error",
+	// 				  html: '<div class="text-danger">'+json.message+'</div>'
+	// 				});		
+	// 			} else {
+	// 				$("#repoves").val(json.data.vesopr);
+	// 			}
+	// 		}
+	// 	});		
+	// });
 
 
 	// STEP 2 : 
@@ -315,9 +334,24 @@ $(document).ready(function() {
 	// save detailContainer
 	$("#saveDetail").on("click", function(e){
 		e.preventDefault();
+		// header
 		var formData = "repoid=" + $("#repoid").val();
+		formData += "&cpiorderno=" + $("#reorderno").val();
+		formData += "&cpopr=" + $("#cpopr").val();
+		formData += "&cpcust=" + $("#cpcust").val();
+		formData += "&cpidish=" + $("#repodish").val();
+		formData += "&cpdepo=" + $("#cpdepo").val();
+		formData += "&cpichrgbb=" + 0;
+		formData += "&cpipratgl=" + $("#redate").val();
+		formData += "&cpijam=" + $("#repojam").val();
+		formData += "&cpives=" + $("#vesid").val();
+		formData += "&cpiremark=" + $("#cpiremark").val();
+		formData += "&cpideliver=" + $("#cpideliver").val();
+		formData += "&cpivoyid=" + $("#voyid").val();
+		formData += "&cpivoy=" + $("#voyno").val();
+		// detail
 		formData += "&crno=" + $("#crno").val();
-		formData += "&ccode=" + $("#ccode").val();
+		formData += "&cccode=" + $("#cccode").val();
 		formData += "&ctcode=" + $("#ctcode").val();
 		formData += "&cclength=" + $("#cclength").val();
 		formData += "&ccheight=" + $("#ccheight").val();
@@ -331,7 +365,7 @@ $(document).ready(function() {
 			data: formData,
 			dataType: 'json',
 			success: function(json) {
-				if(json.message == "success") {
+				if(json.status == "success") {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
@@ -399,7 +433,7 @@ $(document).ready(function() {
 		var crno = $("#crno").val();
 		var status = "";
 		$.ajax({
-			url:"<?=site_url('prain/checkContainerNumber');?>",
+			url:"<?=site_url('repoin/checkContainerNumber');?>",
 			type:"POST",
 			data: "ccode="+crno,
 			dataType:"JSON",
@@ -414,6 +448,12 @@ $(document).ready(function() {
 					$(".err-crno").hide();
 					$("#crno").css("background", "#fff!important");
 					$("#crno").css("border-color", "#ccc");
+					// load data
+					$("#cccode").val(json.container_code.cccode);
+					$("#ctcode").val(json.container_code.ctcode);
+					$("#cclength").val(json.container_code.cclength);
+					$("#ccheight").val(json.container_code.ccheight);
+					$("input:radio[name=cpife]").filter('[value=0]').prop('checked', true);		
 				}
 			}
 		});
@@ -437,7 +477,7 @@ $(document).ready(function() {
 
 	$("#retype").on("change", function(){
 		let val = $(this).val();
-		let prcode = $("#prcode").val();
+		let prcode = $("#cpopr").val();
 		// DEPO TO DEPO OUT
 		if (val == '11' || val == '11') {
 			$('#fromDepoBlok').removeClass('hideBlock');
@@ -590,17 +630,22 @@ $(document).ready(function() {
 		if (billType==='1') {
 			// showBreakDown();
 			$("#breakDown").show();			
+			$("#blockReother1").show();			
+			$("#totbreak").show();			
+			$("#blockReother2").hide();			
 			$("#Package").hide();			
 			$("#totpack").hide();			
-			$("#totbreak").show();			
 		} else if (billType==='2'){
-			$("#breakDown").hide();			
 			$("#Package").show();
+			$("#blockReother2").show();			
 			$("#totpack").show();			
+			$("#breakDown").hide();			
+			$("#blockReother1").hide();			
 			$("#totbreak").hide();				
 		} else {
 			$("#breakDown").hide();			
-			$("#Package").hide();			
+			$("#Package").hide();	
+
 		}
 	});
 
@@ -653,7 +698,7 @@ function loadTableContainer(repoid) {
 function showBreakDown() {
 	$("#breakDownBill").html(
 		'<div class="form-group">'+
-			'<label class="col-sm-4 control-label text-right">Lift On Adm</label>'+
+			'<label class="col-sm-4 control-label text-right">Admv</label>'+
 			'<div class="col-sm-2">'+
 				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
 			'</div>'+				

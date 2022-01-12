@@ -80,7 +80,7 @@
 										</div>
 									</div>
 
-									<div class="form-group">
+									<div class="form-group" style="display:none;">
 										<label for="repodish " class="col-sm-5 control-label text-right">Origin Port</label>
 										<div class="col-sm-4">
 											<?=port_dropdown("repodish","");?>
@@ -117,7 +117,7 @@
 											</div>									
 										</div>
 									</div>
-									<div class="form-group" style="">
+									<div class="form-group" style="display: none;">
 										<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
 										<div class="col-sm-7">
 											<label class="control-inline fancy-checkbox custom-color-green">
@@ -140,7 +140,7 @@
 											<input type="text" class="form-control" id="repovoyid" name="repovoyid">
 										</div>
 									</div>		
-									<div class="form-group">
+									<div class="form-group" style="display:none;">
 										<label for="cpdepo" class="col-sm-5 control-label text-right">Depot</label>
 										<div class="col-sm-7">
 											<?=depo_dropdown("000");?>

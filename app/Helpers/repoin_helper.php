@@ -93,3 +93,54 @@ function get_contract($id) {
 
 	return $data;
 }
+
+function cpopr_dropdown($selected="")
+{
+	$api = api_connect();
+	$response = $api->request('GET','principals/list',[
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		]
+	]);
+
+	$result = json_decode($response->getBody()->getContents(),true);
+	$option = "";
+	$option .= '<select name="cpopr" id="cpopr" class="select-pr">';
+	$option .= '<option value="">-select-</option>';	
+	foreach ($result['data']['datas'] as $row) {
+		$option .= "<option value='".$row['prcode'] ."'". ((isset($selected) && $selected==$row['prcode']) ? ' selected' : '').">".strtoupper($row['prname'])."</option>"; 
+	}		
+	$option .="</select>";
+	return $option; 
+	die();	
+}
+
+function repoves_dropdown($selected="")
+{
+	$api = api_connect();
+	$response = $api->request('GET','vessels/list',[
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		],
+		'json' => [
+			'start' => 0,
+          	'rows'  => 100,
+          	'search'=> "",
+          	'orderColumn' => "vesid",
+          	'orderType' => "ASC"
+		]
+	]);
+	$result = json_decode($response->getBody()->getContents(),true);	
+	$vessel = $result['data']['datas'];
+	$option = "";
+	$option .= '<select name="vesid" id="vesid" class="select-vessel">';
+	$option .= '<option value="">-select-</option>';
+	foreach($vessel as $v) {
+		$option .= "<option value='".$v['vesid'] ."'". ((isset($selected) && $selected==$v['vesid']) ? ' selected' : '').">".$v['vesid']."</option>";
+	}
+	$option .="</select>";
+	return $option; 
+	die();			
+}

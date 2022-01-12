@@ -4,8 +4,8 @@
 
 <div class="content">
 	<div class="main-header">
-		<h2><?=$page_title;?></h2>
-		<em><?=$page_subtitle;?></em>
+		<h2>Pra Out</h2>
+		<em>Pra-Out page</em>
 	</div>
 
 	<?php if(session()->getFlashdata('sukses')):?>
@@ -19,19 +19,19 @@
 
 		<div class="widget widget-table">
 			<div class="widget-header">
-				<h3><i class="fa fa-table"></i> <?=$page_title?></h3>
+				<h3><i class="fa fa-table"></i> Pra Out</h3>
 			</div>
 
 			<div class="widget-content">
 				<div class="row">
 					<div class="col-md-12">
 						<?php if(has_insert==true): ?>
-						<a href="#" class="btn btn-primary" id=""><i class="fa fa-plus-square"></i>&nbsp;Add New</a>
-						<?php endif;?>
+						<a href="<?=site_url('praout/add');?>" class="btn btn-primary" id=""><i class="fa fa-plus-square"></i>&nbsp;Add New</a>
+						<?php endif; ?>
 					</div>
 				</div><br>	
 
-				<?= $this->include('\Modules\PraOut\Views\index_data');?>
+				<?= $this->include('\Modules\PraOut\Views\list_order_pra');?>			
 
 			</div>		
 		</div>		

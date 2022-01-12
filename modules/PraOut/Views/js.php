@@ -21,9 +21,14 @@ $(document).ready(function() {
 	// datePicker
 	$(".tanggal").datepicker({
 		autoclose:true,
+		format:'dd-mm-yyyy',
+		startDate: '-5y'
 	});
 
 	// $("#cpipratgl").datepicker("disable");
+	if($("#liftoffcharge").val("1")) {
+		$("#liftoffcharge").prop('checked',true);
+	}
 
 	$("#addOrder").on('click', function(e){
 		e.preventDefault();
@@ -35,44 +40,107 @@ $(document).ready(function() {
 		window.location.href = "#OrderPra";
 	});
 
-	$("#save").click(function(e){
-		e.preventDefault();													
+	// Preview Upload files
+	// function imagesPreview(input, locationPreview) {
+ //        if (input.files) {
+ //            var filesAmount = input.files.length;
+ //            var alink = [];
+ //            for (i = 0; i < filesAmount; i++) {
+ //                var reader = new FileReader();
+ //                var no_file = i+1;
+ //                reader.onload = function(event) {
+ //                	// alink[i] = event.target.result;
+ //                	$("a").attr('href', event.target.result)
+ //                }
+ //                $($.parseHTML(no_file+'.&nbsp;<a href="" target="_blank">'+input.files[i].name+'</a><br>')).appendTo(locationPreview);
+ //                reader.readAsDataURL(input.files[i]);
+ //            }
+ //        }
+ //    }   
+ //    $("#files").on("change", function(){
+ //    	$("div.imgPreview").html("");
+ // 		imagesPreview(this, 'div.imgPreview');
+ //    });
+
+	$("form#fPraInOrder").on("submit", function(e){
+		e.preventDefault();			
+		// console.log($('input#files')[0].files[]);
 		// window.scrollTo(xCoord, yCoord);
-		var formData = "cpiorderno=" + $("#cpiorderno").val();
-		formData += "&cpiopr=" + $("#prcode").val();
-		formData += "&cpicust=" + $("#cucode").val();
-		formData += "&cpidish=" + $("#cpidish").val();
-		formData += "&cpidisdat=" + $("#cpidisdat").val();
-		formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		formData += "&cpdepo=" + $("#cpdepo").val();
-		formData += "&cpipratgl=" + $("#cpipratgl").val();
-		formData += "&cpirefin=" + $("#cpirefin").val();
-		formData += "&cpijam=" + $("#cpijam").val();
-		formData += "&cpives=" + $("#cpives").val();
-		formData += "&cpivoyid=" + $("#cpivoyid").val();
-		formData += "&cpicargo=" + $("#cpicargo").val();
-		formData += "&cpideliver=" + $("#cpideliver").val();
-		// alert(formData);
-		// console.log("data="+formData);
+		// var files = $("#files")[0].files;
+		// var formData = "cpiorderno=" + $("#cpiorderno").val();
+		// formData += "&cpiopr=" + $("#prcode").val();
+		// formData += "&cpicust=" + $("#cucode").val();
+
+		// formData += "&cpidish=" + $("#cpidish").val();
+		// formData += "&cpidisdat=" + $("#cpidisdat").val();
+		// formData += "&liftoffcharge=" + $("#liftoffcharge").val();
+		// formData += "&cpdepo=" + $("#cpdepo").val();
+		// formData += "&cpipratgl=" + $("#cpipratgl").val();
+		// formData += "&cpirefin=" + $("#cpirefin").val();
+		// formData += "&cpijam=" + $("#cpijam").val();
+		// formData += "&cpives=" + $("#cpives").val();
+		// formData += "&cpivoyid=" + $("#cpivoyid").val();
+		// formData += "&cpicargo=" + $("#cpicargo").val();
+		// formData += "&cpideliver=" + $("#cpideliver").val();
+		// formData += "&files=" + files;
+
+		// console.log(files);
 
 		$.ajax({
-			url: "<?php echo site_url('prain/add'); ?>",
+			url: "<?php echo site_url('praout/add'); ?>",
 			type: "POST",
-			data: formData,
+			data: new FormData(this),
+            processData: false,
+            contentType: false,
+            cache: false,			
 			dataType: 'json',
 			success: function(json) {
-				if(json.message == "success") {
+				if(json.status == "success") {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
 					window.location.href = "#formDetail";
+					$("#crno").focus();
+					// window.location.href = "<?php echo site_url('praout'); ?>";
 					// $("#navItem3").removeClass("disabled");
 					// $("#navLink3").attr("data-toggle","tab");
 					// $("#navLink3").trigger("click");	
-					$("#praid").val(json.praid);				
+					$("#praid").val(json.praid);			
+					$("#save").prop('disabled', true);
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message_body+'</div>'
+					});						
+				}
+			}
+		});
+	});
+
+	// upload Bukti Bayar
+	$("form#fBuktiBayar").on("submit", function(e){
+		e.preventDefault();	
+
+		$.ajax({
+			url: "<?php echo site_url('praout/bukti_bayar'); ?>",
+			type: "POST",
+			data: new FormData(this),
+            processData: false,
+            contentType: false,
+            cache: false,			
+			dataType: 'json',
+			success: function(json) {
+				if(json.status == "1") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});									
 					$("#saveData").prop('disabled', true);
+					window.location.href = "<?php echo site_url('praout'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -81,7 +149,7 @@ $(document).ready(function() {
 					});						
 				}
 			}
-		});
+		});	
 	});
 
 	$("#liftoffcharge").on("change", function(){
@@ -94,9 +162,16 @@ $(document).ready(function() {
 		return $(this).val(val);
 	});
 
+	$("#deposit").on("change", function(){
+		var val = this.checked ? '1' : '0';
+		if(val=='0'){
+			$("#biaya_clean").val("0");
+		}
+		return $(this).val(val);
+	});
 	// EDIT DATA ORDER
 	function enableFormOrder() {
-		$("#prcode").select2('enable');
+		// $("#prcode").select2('enable');
 		$("#cpidish").select2('enable');
 		$("#cpidisdat").attr('readonly', false);
 		$("#liftoffcharge").attr('readonly', false);
@@ -112,7 +187,7 @@ $(document).ready(function() {
 
 	function disableFormOrder() {
 		$("#save")
-		$("#prcode").select2('disable');
+		// $("#prcode").select2('disable');
 		$("#cpidish").select2('disable');
 		$("#cpidisdat").attr('readonly', true);
 		$("#liftoffcharge").attr('readonly', true);
@@ -131,28 +206,31 @@ $(document).ready(function() {
 		$("#cancel").show();
 	});
 
-	$("#update").click(function(e){
+	$("form#fEditPraIn").on("submit",function(e){
 		e.preventDefault();
-		var formData = "cpiorderno=" + $("#cpiorderno").val();
-		formData += "&praid=" + $("#praid").val();
-		formData += "&cpiopr=" + $("#prcode").val();
-		formData += "&cpicust=" + $("#cucode").val();
-		formData += "&cpidish=" + $("#cpidish").val();
-		formData += "&cpidisdat=" + $("#cpidisdat").val();
-		formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		formData += "&cpdepo=" + $("#cpdepo").val();
-		formData += "&cpipratgl=" + $("#cpipratgl").val();
-		formData += "&cpirefin=" + $("#cpirefin").val();
-		formData += "&cpijam=" + $("#cpijam").val();
-		formData += "&cpives=" + $("#cpives").val();
-		formData += "&cpivoyid=" + $("#cpivoyid").val();
-		formData += "&cpicargo=" + $("#cpicargo").val();
-		formData += "&cpideliver=" + $("#cpideliver").val();
+		// var formData = "cpiorderno=" + $("#cpiorderno").val();
+		// formData += "&praid=" + $("#praid").val();
+		// formData += "&cpiopr=" + $("#prcode").val();
+		// formData += "&cpicust=" + $("#cucode").val();
+		// formData += "&cpidish=" + $("#cpidish").val();
+		// formData += "&cpidisdat=" + $("#cpidisdat").val();
+		// formData += "&liftoffcharge=" + $("#liftoffcharge").val();
+		// formData += "&cpdepo=" + $("#cpdepo").val();
+		// formData += "&cpipratgl=" + $("#cpipratgl").val();
+		// formData += "&cpirefin=" + $("#cpirefin").val();
+		// formData += "&cpijam=" + $("#cpijam").val();
+		// formData += "&cpives=" + $("#cpives").val();
+		// formData += "&cpivoyid=" + $("#cpivoyid").val();
+		// formData += "&cpicargo=" + $("#cpicargo").val();
+		// formData += "&cpideliver=" + $("#cpideliver").val();
 		// console.log(formData);
 		$.ajax({
-			url: "<?php echo site_url('prain/edit/'); ?>"+$("#praid").val(),
+			url: "<?php echo site_url('praout/edit/'); ?>"+$("#praid").val(),
 			type: "POST",
-			data: formData,
+			data: new FormData(this),
+            processData: false,
+            contentType: false,
+            cache: false,				
 			dataType: 'json',
 			success: function(json) {
 				console.log(json.message);
@@ -161,7 +239,12 @@ $(document).ready(function() {
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.msgdata+'</div>'
-					});							
+					});
+
+					if($("#appv1_update").length<1){
+						window.location.href = "<?php echo site_url('praout'); ?>";
+					}
+
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -184,7 +267,7 @@ $(document).ready(function() {
 		$("#editOrderFrame").show();
 		disableFormOrder();
 		$.ajax({
-			url: "<?php echo site_url('prain/ajax_view/'); ?>"+praid,
+			url: "<?php echo site_url('praout/ajax_view/'); ?>"+praid,
 			type: "POST",
 			dataType: 'json',
 			// data:"praid="+praid,
@@ -243,37 +326,6 @@ $(document).ready(function() {
 		});			
 	});
 
-	$("#ctTable tbody").on("click",".approve", function(e){
-		e.preventDefault();
-		var praid = $(this).data('praid');
-		var formData = "cpiorderno=" + $("#cpiorderno").val();
-		formData += "&praid=" + praid;
-		// console.log(formData);
-		$.ajax({
-			url: "<?php echo site_url('prain/approve_order/'); ?>"+praid,
-			type: "POST",
-			data: formData,
-			dataType: 'json',
-			success: function(json) {
-				console.log(json.message);
-				if(json.message == "success") {
-					Swal.fire({
-					  icon: 'success',
-					  title: "Success",
-					  html: '<div class="text-success">Order Approved</div>'
-					});	
-					window.location.href = "<?php echo site_url('prain'); ?>";
-				} else {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
-				}
-			}
-		});
-	});	
-
 	function list_container(item, index, arr) {
 		var num = index+1;
 		var cpishold = "";
@@ -325,7 +377,7 @@ $(document).ready(function() {
 
 	function delete_data(code) {
 		$.ajax({
-			url: "<?php echo site_url('city/delete/'); ?>"+code,
+			url: "<?php echo site_url('praout/delete/'); ?>"+code,
 			type: "POST",
 			dataType: 'json',
 			success: function(json) {
@@ -335,7 +387,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					window.location.href = "<?php echo site_url('city'); ?>";
+					window.location.href = "<?php echo site_url('praout'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -349,11 +401,24 @@ $(document).ready(function() {
 
 	// STEP 1 :
 	$("#prcode").on("change", function(){
+		$("#deposit").prop('checked',false);
+		$("#deposit").val("0");		
+		$("#cleaning_type").val("Water Wash");	
 		var prcode = $(this).val();
+		var pracrnoid = $("#pracrnoid").val();
+		
+		if(pracrnoid=="") {
+			Swal.fire({
+			  icon: 'error',
+			  title: "Container belum dipilih",
+			  html: '<div class="text-danger">Klik view pada tabel Container</div>'
+			});	
+		}
+
 		$.ajax({
-			url:"<?=site_url('prain/ajax_prcode_listOne/');?>"+prcode,
+			url:"<?=site_url('praout/ajax_prcode_listOne/');?>"+prcode,
 			type:"POST",
-			data: "prcode="+prcode,
+			data: {"prcode":prcode,"pracrnoid":pracrnoid},
 			dataType:"JSON",
 			success: function(json){
 				if(json.status=="Failled") {
@@ -363,7 +428,19 @@ $(document).ready(function() {
 					  html: '<div class="text-danger">'+json.message+'</div>'
 					});		
 				} else {
+					
 					$("#cucode").val(json.data.cucode);
+
+					if(json.data.prcode==="ONES") {
+						$("#deposit").removeAttr("disabled");
+						$("#deposit").prop('checked',true);
+						$("#deposit").val("1");						
+						$("#biaya_clean").val(json.biaya_clean);
+					} else {
+						$("#deposit").attr("disabled","disabled");
+					}
+					
+					$("#biaya_lolo").val(json.biaya_lolo);
 				}
 			}
 		});
@@ -373,7 +450,7 @@ $(document).ready(function() {
 	$("#cpives").on("change", function(){
 		var vesid = $(this).val();
 		$.ajax({
-			url:"<?=site_url('prain/ajax_vessel_listOne/');?>"+vesid,
+			url:"<?=site_url('praout/ajax_vessel_listOne/');?>"+vesid,
 			type:"POST",
 			data: "vesid="+vesid,
 			dataType:"JSON",
@@ -385,7 +462,7 @@ $(document).ready(function() {
 					  html: '<div class="text-danger">'+json.message+'</div>'
 					});		
 				} else {
-					$("#cpopr").val(json.data.vesopr);
+					$("#vesopr").val(json.data.vesopr);
 				}
 			}
 		});		
@@ -395,9 +472,12 @@ $(document).ready(function() {
 	// STEP 2 : 
 	//Get Container Code detail
 	$("#ccode").on("change", function(){
+		$("#ctcode").val("");
+		$("#cclength").val("");
+		$("#ccheight").val("");		
 		var cccode  = $(this).val();
 		$.ajax({
-			url:"<?=site_url('prain/ajax_ccode_listOne/');?>"+cccode,
+			url:"<?=site_url('praout/ajax_ccode_listOne/');?>"+cccode,
 			type:"POST",
 			data: "ccode="+ccode,
 			dataType:"JSON",
@@ -424,6 +504,8 @@ $(document).ready(function() {
 		e.preventDefault();
 		var cpife = $("input:radio[name=cpife]:checked").val();
 		var formData = "praid=" + $("#praid").val();
+		formData += "&cpopr=" + $("#prcode").val();
+		formData += "&cpcust=" + $("#cucode").val();		
 		formData += "&crno=" + $("#crno").val();
 		formData += "&ccode=" + $("#ccode").val();
 		formData += "&ctcode=" + $("#ctcode").val();
@@ -432,23 +514,29 @@ $(document).ready(function() {
 		formData += "&cpife=" + cpife;
 		formData += "&cpishold=" + $("#cpishold").val();
 		formData += "&cpiremark=" + $("#cpiremark").val();
-		
+		formData += "&cleaning_type=" + $("#cleaning_type").val();
+
 		$.ajax({
-			url: "<?php echo site_url('prain/addcontainer'); ?>",
+			url: "<?php echo site_url('praout/addcontainer'); ?>",
 			type: "POST",
 			data: formData,
 			dataType: 'json',
 			success: function(json) {
+				
 				if(json.message == "success") {
+
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
-					});							
-					// window.location.href = "<?php echo site_url('prain/view/'); ?>"+json.praid;
-					window.location.href = "<?php echo site_url('prain'); ?>";
-					// getDetailOrder(json.praid);
+					});	
+					
+					$("#formDetail").trigger("reset");
+					$("#ccode").select2().select2('val',"");					
+					loadTableContainer($("#praid").val());
+
 				} else {
+
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
@@ -462,24 +550,24 @@ $(document).ready(function() {
 
 	$('#detTable tbody').on('click', '.edit', function(e){
 		e.preventDefault();
+		$("#formDetail").trigger("reset");
 		var crid = $(this).data("crid");
 	    var cpife = $('input:radio[name=cpife]');
 		$.ajax({
-			url:"<?=site_url('prain/get_one_container/');?>"+crid,
+			url:"<?=site_url('praout/get_one_container/');?>"+crid,
 			type:"POST",
 			data: "crid="+crid,
 			dataType:"JSON",
 			success: function(json){	
 				if(json.message=="success") {
+					$("#prcode").select2().select2('val',json.cr.cpopr);
+					$("#cucode").val(json.cr.cpcust);
 					$("#pracrnoid").val(json.cr.pracrnoid);
 					$("#crno").val(json.cr.crno);
 					$("#ccode").select2().select2('val',json.cr.cccode);
 					$("#ctcode").val(json.cr.ctcode);
 					$("#cclength").val(json.cr.cclength);
 					$("#ccheight").val(json.cr.ccheight);
-
-				    $("#saveDetail").hide();
-				    $("#updateDetail").show();
 
 				    if(json.cr.cpife=="1") {
 				        cpife.filter('[value=1]').prop('checked', true);
@@ -490,9 +578,57 @@ $(document).ready(function() {
 					if(json.cr.cpishold==1) {
 						$("#cpishold").prop('checked',true);
 						$("#cpishold").val(json.cr.cpishold);
+					}
+					if(json.cr.cpopr=="ONES") {
+						$("#deposit").prop("checked",true);
 					}					
 					$("#cpiremark").val(json.cr.cpiremark);
+					$("#cleaning_type").val(json.cr.cleaning_type);
+					$("#biaya_clean").val(json.cr.biaya_clean);
+					$("#biaya_lolo").val(json.cr.biaya_lolo);
+				}
+			}		
+		})
+	});
 
+	$('#detTable tbody').on('click', '.view', function(e){
+		e.preventDefault();
+		$("#formDetail").trigger("reset");
+		var crid = $(this).data("crid");
+	    var cpife = $('input:radio[name=cpife]');
+		$.ajax({
+			url:"<?=site_url('praout/get_one_container/');?>"+crid,
+			type:"POST",
+			data: "crid="+crid,
+			dataType:"JSON",
+			success: function(json){	
+				if(json.message=="success") {
+					$("#prcode").select2().select2('val',json.cr.cpopr);
+					$("#cucode").val(json.cr.cpcust);
+					$("#pracrnoid").val(json.cr.pracrnoid);
+					$("#crno").val(json.cr.crno);
+					$("#ccode").select2().select2('val',json.cr.cccode);
+					$("#ctcode").val(json.cr.ctcode);
+					$("#cclength").val(json.cr.cclength);
+					$("#ccheight").val(json.cr.ccheight);
+
+				    if(json.cr.cpife=="1") {
+				        cpife.filter('[value=1]').prop('checked', true);
+				    }else if(json.cr.cpife=="0"){
+				        cpife.filter('[value=0]').prop('checked', true);
+					}
+
+					if(json.cr.cpishold==1) {
+						$("#cpishold").prop('checked',true);
+						$("#cpishold").val(json.cr.cpishold);
+					}
+					if(json.cr.cpopr=="ONES") {
+						$("#deposit").prop("checked",true);
+					}					
+					$("#cpiremark").val(json.cr.cpiremark);
+					$("#cleaning_type").val(json.cr.cleaning_type);
+					$("#biaya_clean").val(json.cr.biaya_clean);
+					$("#biaya_lolo").val(json.cr.biaya_lolo);
 				}
 			}		
 		})
@@ -502,6 +638,8 @@ $(document).ready(function() {
 		e.preventDefault();
 		var cpife = $("input:radio[name=cpife]:checked").val();
 		var formData = "praid=" + $("#praid").val();
+		formData += "&cpopr=''";
+		formData += "&cpcust=''";
 		formData += "&pracrnoid=" + $("#pracrnoid").val();
 		formData += "&crno=" + $("#crno").val();
 		formData += "&ccode=" + $("#ccode").val();
@@ -513,7 +651,7 @@ $(document).ready(function() {
 		formData += "&cpiremark=" + $("#cpiremark").val();
 		
 		$.ajax({
-			url: "<?php echo site_url('prain/edit_container'); ?>",
+			url: "<?php echo site_url('praout/edit_container'); ?>",
 			type: "POST",
 			data: formData,
 			dataType: 'json',
@@ -536,25 +674,167 @@ $(document).ready(function() {
 
 	});
 
+
+	$("#ApprovalOrder").on("click", function(e){
+		e.preventDefault();
+		var cpife = $("input:radio[name=cpife]:checked").val();
+		var formData = "praid=" + $("#praid").val();
+		formData += "&pracrnoid=" + $("#pracrnoid").val();
+		formData += "&cpiorderno=" + $("#cpiorderno").val();
+		formData += "&crno=" + $("#crno").val();
+		formData += "&ccode=" + $("#ccode").val();
+		formData += "&ctcode=" + $("#ctcode").val();
+		formData += "&cclength=" + $("#cclength").val();
+		formData += "&ccheight=" + $("#ccheight").val();
+		formData += "&cpife=" + cpife;
+		formData += "&cpishold=" + $("#cpishold").val();
+		formData += "&cpiremark=" + $("#cpiremark").val();
+		formData += "&cpopr=" + $("#prcode").val();
+		formData += "&cpcust=" + $("#cucode").val();
+		formData += "&total_lolo=" + $("#total_lolo").val();
+		formData += "&total_cleaning=" + $("#total_cleaning").val();
+		formData += "&subtotal_bill=" + $("#subtotal_bill").val();
+		
+		$.ajax({
+			url: "<?php echo site_url('praout/approve_order/'); ?>"+$("#praid").val(),
+			type: "POST",
+			data: formData,
+			dataType: 'json',
+			success: function(json) {
+				if(json.message == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});
+					window.location.href = "<?php echo site_url('praout'); ?>";
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message_body+'</div>'
+					});						
+				}
+			}
+		});	
+
+	});
+
+	// update OrderPraContainer page Approval1
+	$("#apvUpdateContainer").on("click",function(){
+		formData = "&pracrnoid=" + $("#pracrnoid").val();
+		formData += "&cpopr=" + $("#prcode").val();
+		if($("#prcode").val()=="ONES") {
+			formData += "&deposit=" + $("#deposit").val("1");
+		} else {
+			formData += "&deposit=" + $("#deposit").val("0");
+		}
+		formData += "&cpcust=" + $("#cucode").val();
+		formData += "&biaya_clean=" + $("#biaya_clean").val();
+		formData += "&biaya_lolo=" + $("#biaya_lolo").val();
+		formData += "&cleaning_type=" + $("#cleaning_type").val();
+		$.ajax({
+			url: "<?php echo site_url('praout/appv1_update_container')?>",
+			type: "POST",
+			data: formData,
+			dataType: 'json',
+			success: function(json) {
+				if(json.message == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message_body+'</div>'
+					});
+					$("#formDetail").trigger("reset");
+					$("#ccode").select2().select2('val',"");					
+					$("#prcode").select2().select2('val',"");
+					$("#pracrnoid").val("");					
+					loadTableContainerAppv1($("#praid").val());
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});						
+				}
+			}
+		});
+	});
+
+	// Approve2
+	$('#approval2').on('click', function(e){
+		e.preventDefault();
+		var praid = $("#praid").val();
+		$.ajax({
+			url:"<?=site_url('praout/approval2/');?>"+praid,
+			type: "POST",
+			// data: formData,
+			dataType: 'json',
+			success: function(json) {
+				if(json.message == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});
+					$(this).hide();
+					window.location.href = "<?php echo site_url('praout'); ?>";
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});						
+				}
+			}			
+		});
+	});
+
+	// Print Kitir
+	$("#detTable tbody").on('click','.cetak_kitir', function(e){
+		e.preventDefault();
+		var praid = $(this).attr('data-praid');
+		var crno = $(this).attr('data-crno');
+		var cpiorderno = $(this).attr('data-cpiorderno');
+		window.open("<?php echo site_url('praout/cetak_kitir/'); ?>" + crno + "/" + cpiorderno + "/" + praid, '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	});
+
 	$("#crno").on("keyup", function(){
 		var crno = $("#crno").val();
 		var status = "";
 		$.ajax({
-			url:"<?=site_url('prain/checkContainerNumber');?>",
+			url:"<?=site_url('praout/checkContainerNumber');?>",
 			type:"POST",
 			data: "ccode="+crno,
 			dataType:"JSON",
 			success: function(json){
+
+				// $("#formDetail").trigger("reset");
+				// $("#ccode").select2().select2('val',"");
+				$("#ccode").select2().select2('val','');
+				$("#ctcode").val("");
+				$("#cclength").val("");
+				$("#ccheight").val("");
 				if(json.status=="Failled") {
+
 					$(".err-crno").show();
 					$(".err-crno").html(json.message);
 					$("#crno").css("background", "#ffbfbf!important");
 					$("#crno").css("border-color", "#ea2525");					
+
 				} else {
+
 					$(".err-crno").html("");
 					$(".err-crno").hide();
 					$("#crno").css("background", "#fff!important");
 					$("#crno").css("border-color", "#ccc");
+
+					if(json.data!=null) {
+						$("#ccode").select2().select2('val',json.data.cccode);
+						$("#ctcode").val(json.data.container_code.ctcode);
+						$("#cclength").val(json.data.container_code.cclength);
+						$("#ccheight").val(json.data.container_code.ccheight);
+					}
 				}
 			}
 		});
@@ -564,7 +844,19 @@ $(document).ready(function() {
 	$('#ctTable tbody').on("click",".print_order", function(e){
 		e.preventDefault();
 		var praid = $(this).data("praid");
-        window.open("<?php echo site_url('prain/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+        window.open("<?php echo site_url('praout/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	});
+
+	$('#proformaPrintInvoice1').on("click", function(e){
+		e.preventDefault();
+		var praid = $(this).data("praid");
+        window.open("<?php echo site_url('praout/print_invoice1/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	});
+
+	$('#proformaPrintInvoice2').on("click", function(e){
+		e.preventDefault();
+		var praid = $(this).data("praid");
+        window.open("<?php echo site_url('praout/print_invoice2/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	$('[data-toggle="tab"]').on('click', function(){
@@ -580,5 +872,132 @@ $(document).ready(function() {
 	    return false;
 	});
 
+	$("button.cancel").on("click", function(e){
+		e.preventDefault();
+		window.location.href = "<?php echo site_url('praout'); ?>";
+	});
+
 });
+
+function loadTableContainer(praid) {
+	$('#detTable tbody').html("");
+	$.ajax({
+		url: "<?=site_url('praout/get_container_by_praid/')?>"+praid,
+		dataType: "json",
+		success: function(json) {
+			$('#detTable tbody').html(json);
+		}
+	});
+}
+
+function loadTableContainerAppv1(praid) {
+	$('#detTable tbody').html("");
+	$.ajax({
+		url: "<?=site_url('praout/appv1_containers/')?>"+praid,
+		dataType: "json",
+		success: function(json) {
+			$('#detTable tbody').html(json);
+		}
+	});
+}
+
+function runDataTables() {		
+    $.fn.dataTable.pipeline = function ( opts ) { 
+        var conf = $.extend({
+            pages: 5,      
+            url: '',      
+            data: null,    
+            method: 'POST'  
+        }, opts);
+
+        var cacheLower = -1;
+        var cacheUpper = null;
+        var cacheLastRequest = null;
+        var cacheLastJson = null;
+
+        return function (request, drawCallback, settings) {
+            
+			var ajax = true;
+            var requestStart = request.start;
+            var drawStart = request.start;
+            var requestLength = request.length;
+            var requestEnd = requestStart + requestLength;
+
+            if (settings.clearCache) { 
+                ajax = true;
+                settings.clearCache = false;
+            }
+            else if (cacheLower < 0 || requestStart < cacheLower || requestEnd > cacheUpper) { 
+                ajax = true;
+            }
+            else if (JSON.stringify(request.order) !== JSON.stringify(cacheLastRequest.order) ||
+                JSON.stringify(request.columns) !== JSON.stringify(cacheLastRequest.columns) ||
+                JSON.stringify(request.search) !== JSON.stringify(cacheLastRequest.search)
+        ) { 
+                ajax = true;
+            }
+
+            cacheLastRequest = $.extend(true, {}, request);
+
+            if (ajax) { 
+
+                cacheLower = requestStart;
+                cacheUpper = requestStart + (requestLength * conf.pages);
+
+                request.start = requestStart;
+                request.length = requestLength * conf.pages;
+                request.startdate = $("#startdate").val();
+                request.enddate = $("#enddate").val();
+                request.rows = requestLength;
+
+                if ($.isFunction(conf.data)) {
+                   
+                    var d = conf.data(request);
+                    if (d) {
+                        $.extend(request, d);
+                    }
+                }
+                else if ($.isPlainObject(conf.data)) { 
+                    $.extend(request, conf.data);
+                }
+
+                settings.jqXHR = $.ajax({
+                    "type": conf.method,
+                    "url": conf.url,
+                    "data": request,
+                    "dataType": "json",
+                    "cache": false,
+					"beforeSend": function(){
+						$('#ctTable > tbody').html(
+				            '<tr class="odd">' +
+				              '<td valign="top" colspan="6" class="dataTables_empty">Loading&hellip; <i class="fa fa-gear fa-1x fa-spin"></i></td>' +
+				            '</tr>'
+				          );
+					},
+                    "success": function (json) {
+						$("#spinner").hide();
+						$(".fa-spin").remove();
+						$("#SearchSC").removeAttr("disabled");
+                        cacheLastJson = $.extend(true, {}, json);
+
+                        if (cacheLower != drawStart) {
+                            json.data.splice(0, drawStart - cacheLower);
+                        }
+                        json.data.splice(requestLength, json.data.length);
+
+                        drawCallback(json);
+                    }
+                });
+            }
+            else {
+                json = $.extend(true, {}, cacheLastJson);
+                json.draw = request.draw;  
+                json.data.splice(0, requestStart - cacheLower);
+                json.data.splice(requestLength, json.data.length);
+
+                drawCallback(json);
+            }
+        }
+    } 	   
+}
 </script>

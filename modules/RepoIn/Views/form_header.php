@@ -15,7 +15,7 @@
 					<div class="form-group">
 						<label for="cpopr " class="col-sm-5 control-label text-right">Principal</label>
 						<div class="col-sm-4">
-							<?=principal_dropdown("");?>
+							<?=cpopr_dropdown();?>
 						</div>
 					</div>
 					<div class="form-group">
@@ -63,7 +63,7 @@
 						</div>
 					</div>
 
-					<div class="form-group">
+					<div class="form-group" style="display:none;">
 						<label for="repodish " class="col-sm-5 control-label text-right">Origin Port</label>
 						<div class="col-sm-4">
 							<?=port_dropdown("repodish","");?>
@@ -100,7 +100,7 @@
 							</div>									
 						</div>
 					</div>
-					<div class="form-group" style="">
+					<div class="form-group" style="display: none;">
 						<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
 						<div class="col-sm-7">
 							<label class="control-inline fancy-checkbox custom-color-green">
@@ -108,22 +108,22 @@
 								<span></span>
 							</label>
 						</div>
-					</div>					
+					</div>	
+
 					<div class="form-group">
 						<label for="repoves" class="col-sm-5 control-label text-right">Ex Vessel</label>
 						<div class="col-sm-7">
-							<?=vessel_dropdown("repoves","");?>
+							<?=repoves_dropdown();?>
 						</div>
 					</div>		
 					<div class="form-group">
 						<label for="repovoyid" class="col-sm-5 control-label text-right">Voyage</label>
 						<div class="col-sm-7">
-							<!-- <input type="text" name="name" class="form-control" id="name"> -->
-							<!-- <?=voyage_dropdown(); ?> -->
-							<input type="text" class="form-control" id="repovoyid" name="repovoyid">
+							<input type="text" class="form-control" id="voyid" name="voyid">
+							<input type="hidden" class="form-control" id="voyno" name="voyno" value="0">
 						</div>
 					</div>		
-					<div class="form-group">
+					<div class="form-group" style="display:none">
 						<label for="cpdepo" class="col-sm-5 control-label text-right">Depot</label>
 						<div class="col-sm-7">
 							<?=depo_dropdown("000");?>
@@ -383,7 +383,7 @@
 						
 						<legend><center>Additional Charges </center></legend>
 						<div class="row">
-							<div class="form-group">
+							<div class="form-group" id="blockReother1">
 								<label class="col-sm-4 control-label text-right" style="color:blue;">Sub Total 2</label>
 								<div class="col-sm-2">
 									<input type="text" name="" class="form-control" id="" value="IDR" readonly>
@@ -392,13 +392,13 @@
 									<input type="text" name="reother1" class="form-control" id="reother1" value="0" required>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class="form-group" id="blockReother2" style="display:none;">
 								<label class="col-sm-4 control-label text-right" style="color:blue;">Sub Total 2</label>
 								<div class="col-sm-2">
 									<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 								</div>								
 								<div class="col-sm-4">
-									<input type="text" name="reother2" class="form-control" id="reother2"  value="0" required>
+									<input type="text" name="reother2" class="form-control" id="reother2"  value="0" required >
 								</div>
 							</div>						
 							<div class="form-group">
@@ -442,6 +442,7 @@
 		<div class="form-footer">
 			<div class="form-group text-center">
 				<button type="submit" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
+				<span class="block-loading"></span>
 				<!-- <button type="button" id="cancel" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</button> -->
 			</div>	
 		</div>

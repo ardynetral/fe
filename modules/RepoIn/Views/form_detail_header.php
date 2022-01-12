@@ -21,7 +21,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label text-right">ID Code </label>
 						<div class="col-sm-7">
-							<?=ccode_dropdown();?>
+							<input type="text" id="cccode" class="form-control" readonly="">							
 						</div>
 					</div>
 					<div class="form-group">
@@ -56,7 +56,7 @@
 							</label>				
 						</div>	
 					</div>					
-					<div class="form-group">
+					<div class="form-group" style="display:none;">
 						<label class="col-sm-3 control-label text-right">Hold</label>
 						<div class="col-sm-7">
 							<label class="control-inline fancy-checkbox custom-color-green">
@@ -68,7 +68,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label text-right">Remark</label>
 						<div class="col-sm-7">
-							<input type="text" name="reporemark" id="reporemark" class="form-control" >
+							<textarea name="reporemark" id="reporemark" class="form-control" ></textarea>
 						</div>	
 					</div>		
 				</fieldset>

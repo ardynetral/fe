@@ -70,6 +70,11 @@ $(document).ready(function() {
 		return $(this).val(val);
 	});
 
+	$("#cpipaidbb").on("change", function(){
+		var val = this.checked ? '1' : '0';
+		return $(this).val(val);
+	});
+
 	$("#cpishold").on("change", function(){
 		var val = this.checked ? '1' : '0';
 		return $(this).val(val);

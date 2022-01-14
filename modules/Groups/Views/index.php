@@ -34,7 +34,7 @@
 									<td><?=$ug['description'];?></td>
 									<td>
 										<a href="<?=site_url('groups/set_privilege/' . $ug['group_id']);?>" class="btn btn-primary btn-xs">Set Privilege</a>
-										<a href="<?=site_url('group/edit/' . $ug['group_id']);?>" class="btn btn-success btn-xs">Edit</a>
+										<!-- <a href="<?=site_url('group/edit/' . $ug['group_id']);?>" class="btn btn-success btn-xs">Edit</a> -->
 										<a href="#" class="btn btn-danger btn-xs">Delete</a>
 									</td>
 								</tr>

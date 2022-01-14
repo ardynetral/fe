@@ -283,7 +283,7 @@
 					<div class="col-sm-6">
 						<div class="alert alert-danger text-center">
 							<p class="lead">Segera lakukan Pembayaran sejumlah<br>
-							<b>Rp. <?=number_format($recept['total_tagihan'],2)?>.</b><br>
+							<b>Rp. <?=number_format($totalcharge,2)?>.</b><br>
 							ke Rekening : 1230985 (BANK MANDIRI)</p>
 						</div>		
 					</div>

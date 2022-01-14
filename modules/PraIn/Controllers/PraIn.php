@@ -1234,7 +1234,6 @@ class PraIn extends \CodeIgniter\Controller
 		$data['pajak'] = $pajak;
 		$data['adm_tarif'] = $adm_tarif;
 		$data['materai'] = $materai;
-		$data['totalcharge'] = $totalcharge;
 
 		$data['message'] = "success";
 		$data['data'] = $dt_order['data']['datas'][0];
@@ -1242,9 +1241,42 @@ class PraIn extends \CodeIgniter\Controller
 		$data['bukti_bayar'] = $bukti_bayar;
 		$data['contract'] = $dt_order['data']['datas'][0];
 		$data['depo'] = $this->get_depo($data['data']['cpdepo']);
+		$total_charge = $this->hitungTotalCharge($data['data']['orderPraContainers']);
+		$data['totalcharge'] = $total_charge['GRAND_TOTAL'];
 		// dd($data);
 		return view('Modules\PraIn\Views\proforma',$data);		
 	}
+
+	// TOTAL CHARGE
+	public function hitungTotalCharge($data) 
+	{
+		$subtotal = 0;
+		$total_lolo = 0;
+		$total = 0;
+
+		foreach($data as $row) {
+			$total_lolo = $total_lolo+$row['biaya_lolo'];
+		}
+
+
+		$contract = $this->get_contract($data[0]['cpopr']);
+		$tax = (isset($contract['cotax'])?$contract['cotax']:0);
+		$pajak = $tax/100;		
+		$total_pajak = $pajak*$total_lolo;
+		$adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
+		$materai = $contract['comaterai'];
+		if($total_lolo > 5000000) {
+			$biaya_materai = $materai;
+		} else {
+			$biaya_materai = 0;
+		}
+		$grand_total = $total_lolo+$total_pajak+$biaya_materai+$adm_tarif;		
+		$data['TOTAL_LOLO'] = $total_lolo;
+		$data['TOTAL_PAJAK'] = $total_pajak;
+		$data['MATERAI'] = $biaya_materai;
+		$data['GRAND_TOTAL'] = $grand_total;
+		return $data;
+	}	
 
 	// Page siap cetak kitir order 
 	public function final_order($id)

@@ -11,3 +11,4 @@ $routes->add('/users/delete/(:alphanum)', '\Modules\User\Controllers\User::delet
 $routes->add('/users/send_email/(:alphanum)', '\Modules\User\Controllers\User::send_email/$1', ['filter' => 'login']);
 $routes->add('/users/ajax_pr_dropdown', '\Modules\User\Controllers\User::ajax_pr_dropdown', ['filter' => 'login']);
 $routes->add('/users/ajax_debitur_dropdown', '\Modules\User\Controllers\User::ajax_debitur_dropdown', ['filter' => 'login']);
+$routes->add('/users/ajax_emkl_dropdown', '\Modules\User\Controllers\User::ajax_emkl_dropdown', ['filter' => 'login']);

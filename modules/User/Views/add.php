@@ -77,9 +77,9 @@
 								
 							</div>
 						</div>	
-						<div class="form-group" id="input_debitur">
+						<div class="form-group" id="input_emkl">
 							<label for="cucode" class="col-sm-2 control-label text-right">EMKL</label>
-							<div class="col-sm-4" id="debitur-dropdown">
+							<div class="col-sm-4" id="emkl-dropdown">
 								
 							</div>
 						</div>													

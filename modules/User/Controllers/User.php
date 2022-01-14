@@ -397,6 +397,36 @@ class User extends \CodeIgniter\Controller
 		}
 
 	}	
+
+	public function ajax_emkl_dropdown($selected="")
+	{
+		$data = [];
+		if ($this->request->isAJAX()) 
+		{
+			$response = $this->client->request('GET','debiturs/listCutype',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'query' => [
+					'cutype' =>1,
+				]
+			]);
+			$result = json_decode($response->getBody()->getContents(),true);	
+			$debitur = $result['data']['datas'];
+			$option = "";
+			$option .= '<select name="prcode" id="prcode" class="select-emkl">';
+			$option .= '<option vlue="">-select-</option>';
+			foreach($debitur as $cu) {
+				$option .= "<option value='".$cu['cucode'] ."'". ((isset($selected) && $selected==$cu['cucode']) ? ' selected' : '').">".$cu['cuname']."</option>";
+			}
+			$option .="</select>";
+			return $option; 
+			die();					
+		}
+
+	}	
+
 	public function cek_cccode() 
 	{
 		if ($this->request->isAJAX()) {

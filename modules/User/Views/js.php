@@ -60,7 +60,7 @@ $(document).ready(function() {
 
 	$("#group_id").on("change", function(){
 		if($(this).val()==2) {
-			$("#input_debitur").hide();
+			$("#input_emkl").hide();
 			$("#input_principal").show();
 			$.ajax({
 				url:"<?=site_url('users/ajax_pr_dropdown');?>",
@@ -73,21 +73,21 @@ $(document).ready(function() {
 			});
 		} else if ($(this).val()==1) {
 			$("#input_principal").hide();
-			$("#input_debitur").show();
+			$("#input_emkl").show();
 			$.ajax({
-				url:"<?=site_url('users/ajax_debitur_dropdown');?>",
+				url:"<?=site_url('users/ajax_emkl_dropdown');?>",
 				type:"POST",
 				dataType:"HTML",
 				success: function(html) {
-					$("#debitur-dropdown").html(html);
-					$('.select-debitur').select2();
+					$("#emkl-dropdown").html(html);
+					$('.select-emkl').select2();
 				}
 			});
 		} else {
 
 		    $("#prcode").val('');
 			$("#input_principal").hide();
-			$("#input_debitur").hide();
+			$("#input_emkl").hide();
 		}
 	});
 
@@ -156,15 +156,16 @@ $(document).ready(function() {
 
 	function check_group() {
 		if($("#group_id").val()==1) {
-			$("#input_debitur").show();
+			$("#input_emkl").show();
 			$("#input_principal").hide();
 			$('.select-debitur').select2();
+			$('.select-emkl').select2();
 		} else if($("#group_id").val()==2) {
 			$("#input_principal").show();
-			$("#input_debitur").hide();	
+			$("#input_emkl").hide();	
 			$('.select-pr').select2();			
 		} else {
-			$("#input_debitur").hide();			
+			$("#input_emkl").hide();			
 			$("#input_principal").hide();
 		}
 		// console.log($("#group_id").val());

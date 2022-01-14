@@ -495,7 +495,7 @@ class PraIn extends \CodeIgniter\Controller
 			}			
 		}	
 		
-		$response = $this->client->request('GET','orderPras/getDetailData',[
+		$get_order = $this->client->request('GET','orderPras/printOrderByPraOrderId',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
@@ -503,18 +503,35 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => ['praid' => $id],
 		]);
 
-		$data['act'] = "edit";
+		$dt_order = json_decode($get_order->getBody()->getContents(), true);
+		// dd($dt_order);
+		$data['hc20'] = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['hc20'] : 0);
+		$data['hc40'] = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['hc40'] : 0);
+		$data['hc45'] = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['hc45'] : 0);
+		$data['std20'] = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['std20'] : 0);
+		$data['std40'] = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['std40'] : 0);	
+
+		// get OrderPraContainer
+		$reqPraContainer = $this->client->request('GET','orderPraContainers/getAllData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'praid' => $id,
+				'offset' => 0,
+				'limit' => 100,
+			]
+		]);
+
+		$resPraContainer= json_decode($reqPraContainer->getBody()->getContents(), true);		
+		$orderPraContainers = $resPraContainer['data']['datas'];
+
+		$data['act'] = "approval1";
 		$data['group_id'] = $group_id;
-		$result = json_decode($response->getBody()->getContents(), true);
-		$data['data'] = $result['data'];
-		$data['contract'] = $this->get_contract($data['data']['cpopr']);	
-
-		$data['hc20'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['hc20'] : 0);
-		$data['hc40'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['hc40'] : 0);
-		$data['hc45'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['hc45'] : 0);
-		$data['std20'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['std20'] : 0);
-		$data['std40'] = ((isset($data['data']['orderPraContainers'])&&($data['data']['orderPraContainers']!=null)) ? $this->hitungHCSTD($data['data']['orderPraContainers'])['std40'] : 0);	
-
+		$data['data'] = $dt_order['data']['datas'][0];
+		$data['orderPraContainers'] = $orderPraContainers;
+		$data['depo'] = $this->get_depo($data['data']['cpdepo']);
 		return view('Modules\PraIn\Views\edit',$data);		
 	}	
 	
@@ -1652,6 +1669,7 @@ class PraIn extends \CodeIgniter\Controller
 			$REMARK = $result['data'][0]['cpiremark'];
 			$NOPOL = $result['data'][0]['cpinopol'];
 			$QRCODE_IMG = ROOTPATH .'/public/media/qrcode/'.$qrcode['content'] . '.png';
+			$CPIPRATGL = $result['data'][0]['cpipratgl'];
 			$CPIRECEPTNO = $recept['cpireceptno'];
 			// $QRCODE_CONTENT = $qrcode['content'];
 		} else {
@@ -1673,6 +1691,7 @@ class PraIn extends \CodeIgniter\Controller
 			$QRCODE_IMG = "";
 			$QRCODE_CONTENT = ""; 
 			$CPIRECEPTNO = "";
+			$CPIPRATGL = "";
 		}
 
 		$result = json_decode($response->getBody()->getContents(), true);
@@ -1735,7 +1754,7 @@ class PraIn extends \CodeIgniter\Controller
 				<tr>
 					<td colspan="2" style="font-weight:normal;">NO. '.$CPIORDERNO.'
 					</td>
-					<td colspan="2" style="font-weight:normal;text-align:right;">( '.date("d/m/Y").' )</td>
+					<td colspan="2" style="font-weight:normal;text-align:right;">( '.date("d/m/Y",strtotime($CPIPRATGL)).' )</td>
 				</tr>
 				<tr>
 					<td style="width:40%;">CONTAINER NO.</td>
@@ -2513,6 +2532,9 @@ class PraIn extends \CodeIgniter\Controller
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
+			],
+			'form_params' => [
+				'pracode' => 'PI'
 			]
 		]);
 

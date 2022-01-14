@@ -154,6 +154,7 @@ class GateIn extends \CodeIgniter\Controller
 		// echo var_dump($_POST);die();
 		if($this->request->isAjax()) {
 			$form_params = [
+				"crno" => $_POST['crno'],
 			    "cpdepo" => "000",
 			    "spdepo" => "000",
 			    "cpitgl" => $_POST['cpipratgl'],

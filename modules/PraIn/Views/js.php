@@ -638,8 +638,8 @@ $(document).ready(function() {
 		e.preventDefault();
 		var cpife = $("input:radio[name=cpife]:checked").val();
 		var formData = "praid=" + $("#praid").val();
-		formData += "&cpopr=" + $("#prcode").val();
-		formData += "&cpcust=" + $("#cucode").val();
+		formData += "&cpopr=''";
+		formData += "&cpcust=''";
 		formData += "&pracrnoid=" + $("#pracrnoid").val();
 		formData += "&crno=" + $("#crno").val();
 		formData += "&ccode=" + $("#ccode").val();
@@ -662,7 +662,6 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});
-					window.location.href = "<?php echo site_url('prain'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',

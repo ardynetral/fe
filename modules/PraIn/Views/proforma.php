@@ -443,8 +443,8 @@
 						</table>						
 					</div>
 					<div class="widget-footer text-center" style="padding:15px 0;">
-					<a href="#" class="btn btn-primary" id="proformaPrintInvoice1" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak Invoice</a>
-					<a href="#" class="btn btn-primary" id="proformaPrintInvoice2" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak Invoice (Deposit)</a>
+<!-- 					<a href="#" class="btn btn-primary" id="proformaPrintInvoice1" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak Invoice</a>
+					<a href="#" class="btn btn-primary" id="proformaPrintInvoice2" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak Invoice (Deposit)</a> -->
 					<a href="<?=site_url('prain')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Kembali</a>
 					</div>					
 				</div>

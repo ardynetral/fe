@@ -130,7 +130,7 @@ class PraIn extends \CodeIgniter\Controller
 
 		$pratgl = $data['header'][0]['cpipratgl'];
 		$recept = recept_by_praid($data['header'][0]['praid']);
-		$invoice_number = "INV." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
+		$invoice_number = "KW." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
 		$data['prcode'] = $prcode;
 		$data['cucode'] = $prcode;
 		// $data['data'] = $result['data']['datas'];
@@ -1935,7 +1935,7 @@ class PraIn extends \CodeIgniter\Controller
 		if($recept==""){
 			$invoice_number ="-";	
 		} else {
-			$invoice_number = "INV." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
+			$invoice_number = "KW." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
 		}
 
 		$det_container = $header['orderPraContainers'];
@@ -2169,7 +2169,7 @@ class PraIn extends \CodeIgniter\Controller
 		if($recept==""){
 			$invoice_number ="-";	
 		} else {
-			$invoice_number = "INV." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
+			$invoice_number = "KD." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
 		}
 				
 		$detail = $header['orderPraContainers'];
@@ -2318,7 +2318,7 @@ class PraIn extends \CodeIgniter\Controller
 							<td>'.((isset($row['cpife'])&&$row['cpife']==1) ? "full" : "Empty").'</td>
 							<td>'.$row['cpigatedate'].'</td>
 							<td>'.$row['cpopr'].'</td>
-							<td>'.$row['biaya_clean'].'</td>
+							<td>'.number_format($row['biaya_clean'],2).'</td>
 						</tr>';
 	
 						$no++;
@@ -2326,7 +2326,7 @@ class PraIn extends \CodeIgniter\Controller
 					}
 				}
 
-				$html .='<tr><th colspan="9" class="t-right">Total</th><th>'.$total_deposit.'</th></tr>';
+				$html .='<tr><th colspan="9" class="t-right">Total</th><th>'.number_format($total_deposit,2).'</th></tr>';
 
 		$html .='
 				</tbody>

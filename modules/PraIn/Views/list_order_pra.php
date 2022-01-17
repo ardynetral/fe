@@ -15,14 +15,13 @@
 					<th>Date</th>
 					<th>Vessel</th>
 					<th>Voyage</th>
-					<th>Ref in No.</th>
+					<th>DO Number</th>
 					<th></th>
 				</tr>
 			</thead>
 			
 			<tbody>
 				<?php $i=1; foreach($data_pra as $row): ?>
-				<?php if(substr($row['cpiorderno'],0,2)=="PI"): ?>
 					<tr>
 						<td><?=$i;?></td>
 						<td><?=$row['cpiorderno'];?></td>
@@ -56,7 +55,7 @@
 						<?php endif; ?>
 					</td>
 					</tr>
-				<?php $i++; endif; ?>
+				<?php $i++;?>
 				<?php endforeach; ?>
 			</tbody>
 		</table>

@@ -24,7 +24,7 @@
 								<div class="form-group">
 									<label for="cpidish " class="col-sm-5 control-label text-right">Origin Port</label>
 									<div class="col-sm-4">
-										<input type="text" name="cpidish" id="cpidish" class="form-control" value="<?=$data['cpidish']?>" readonly="">
+										<input type="text" name="cpidish" id="cpidish" class="form-control" value="<?=$data['cpidish']?>">
 									</div>
 									<label class="col-sm-3 control-label">* Port Country</label>
 								</div>	
@@ -32,13 +32,13 @@
 									<label for="cpidisdat" class="col-sm-5 control-label text-right">Discharge Date</label>
 									<div class="col-sm-7">
 										<div class="input-group">
-											<input type="text" name="cpidisdat" id="cpidisdat" class="form-control" value="<?=$data['cpidisdat']?>" readonly="">
+											<input type="text" name="cpidisdat" id="cpidisdat" class="form-control tanggal" value="<?=$data['cpidisdat']?>">
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>									
 									</div>
 								</div>
 								
-								<div class="form-group">
+								<div class="form-group" style="display: none;">
 									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
@@ -48,7 +48,7 @@
 									</div>
 								</div>
 
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="Type" class="col-sm-5 control-label text-right">Type</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
@@ -71,7 +71,7 @@
 									</div>
 								</div>									
 
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="cpdepo" class="col-sm-5 control-label text-right">Depot</label>
 									<div class="col-sm-7">
 										<input type="text" value="<?=$depo['dpname'];?>" class="form-control" readonly="">
@@ -144,25 +144,27 @@
 									<label for="cpipratgl" class="col-sm-4 control-label text-right">Pra In Date</label>
 									<div class="col-sm-6">
 										<div class="input-group">
-											<input type="text" name="cpipratgl" id="cpipratgl" class="form-control" required readonly value="<?=$data['cpipratgl'];?>">
+											<input type="text" name="cpipratgl" id="cpipratgl" class="form-control" required value="<?=$data['cpipratgl'];?>" readonly>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>	
 									</div>
 								</div>								
 								<div class="form-group">
-									<label for="cpirefin" class="col-sm-4 control-label text-right">Reff In No #</label>
+									<label for="cpirefin" class="col-sm-4 control-label text-right">DO Number #</label>
 									<div class="col-sm-6">
-										<input type="text" name="cpirefin" class="form-control" id="cpirefin" value="<?=$data['cpirefin']?>" readonly="">
+										<input type="text" name="cpirefin" class="form-control" id="cpirefin" value="<?=$data['cpirefin']?>" >
 									</div>
 								</div>								
 								<div class="form-group">
 									<label for="cpijam" class="col-sm-4 control-label text-right">Time In</label>
 									<div class="col-sm-4">
-										<input type="text" name="cpijam" class="form-control" id="cpijam" required readonly value="<?=$data['cpijam'];?>">
+										<input type="text" name="cpijam" class="form-control" id="cpijam" required value="<?=$data['cpijam'];?>" readonly>
 									</div>
 									<!-- <label class="col-sm-2 control-label">hh:mm:ss</label> -->
-								</div>					
-											
+								</div>
+
+								<?php if($group_id==4):?>	
+
 								<div class="form-group">
 									<label for="cpives" class="col-sm-4 control-label text-right">Vessel</label>
 									<div class="col-sm-6">
@@ -183,20 +185,22 @@
 										<input type="text" name="vesopr" class="form-control" id="vesopr" value="<?=@$data['vessels']['vesopr'];?>" readonly>
 									</div>
 								</div>
-								
+
+								<?php endif; ?>
+
 								<div class="form-group">
 									<label for="cpicargo" class="col-sm-4 control-label text-right">Ex Cargo</label>
 									<div class="col-sm-6">
-										<input type="text" name="cpicargo" class="form-control" id="cpicargo" value="<?=$data['cpicargo']?>" readonly="">
+										<input type="text" name="cpicargo" class="form-control" id="cpicargo" value="<?=$data['cpicargo']?>">
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">Redeliverer</label>
 									<div class="col-sm-6">
-										<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=$data['cpideliver']?>" readonly="">
+										<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=$data['cpideliver']?>">
 									</div>
 								</div>
-								<div class="form-group" style="display:none;">
+								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">File Upload</label>
 									<div class="col-sm-6">
 										<input type="file" name="files[]" class="form-control" id="files" multiple="true">
@@ -301,7 +305,7 @@
 									</label>
 								</div>	
 							</div>
-							<div class="form-group">
+<!-- 							<div class="form-group" style="display:none;">
 								<label class="col-sm-4 control-label text-right">Deposit</label>
 								<div class="col-sm-2">
 									<label class="fancy-checkbox custom-color-green">
@@ -335,7 +339,7 @@
 										</select>
 									</label>
 								</div>	
-							</div>																							
+							</div>	 -->																						
 							<div class="form-group">
 								<label class="col-sm-4 control-label text-right">Remark</label>
 								<div class="col-sm-8">

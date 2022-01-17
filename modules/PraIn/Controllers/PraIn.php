@@ -61,7 +61,7 @@ class PraIn extends \CodeIgniter\Controller
 				'query' => [
 					'offset' => $offset,
 					'limit'	=> $limit,
-					// 'userId'	=> $user_id
+					'pracode' => 'PI'
 				]
 			]);		
 			$result_pra = json_decode($response1->getBody()->getContents(),true);	
@@ -218,7 +218,6 @@ class PraIn extends \CodeIgniter\Controller
 		$token = get_token_item();
 		$group_id = $token['groupId'];
 		$prcode = $token['prcode'];
-
 		$offset=0;
 		$limit=10;
 
@@ -434,7 +433,7 @@ class PraIn extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'cpideliver',
-				'contents'	=> ''
+				'contents'	=> $_POST['cpideliver']
 			];
 			$post_arr[] = [
 				'name'		=> 'totalcharge',
@@ -530,6 +529,7 @@ class PraIn extends \CodeIgniter\Controller
 
 		$data['act'] = "approval1";
 		$data['group_id'] = $group_id;
+		$data['prcode'] = $prcode;
 		$data['data'] = $dt_order['data']['datas'][0];
 		$data['orderPraContainers'] = $orderPraContainers;
 		$data['depo'] = $this->get_depo($data['data']['cpdepo']);

@@ -94,7 +94,7 @@
 									</div>
 								</div>								
 								<div class="form-group">
-									<label for="cpirefin" class="col-sm-4 control-label text-right">Reff In No #</label>
+									<label for="cpirefin" class="col-sm-4 control-label text-right">DO Number #</label>
 									<div class="col-sm-6">
 										<input type="text" name="cpirefin" class="form-control" id="cpirefin" value="<?=$data['cpirefin']?>" readonly="">
 									</div>

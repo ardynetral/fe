@@ -138,7 +138,7 @@ $group_id = $token['groupId'];
 					</div>
 				</div>								
 				<div class="form-group">
-					<label for="cpirefin" class="col-sm-4 control-label text-right">Reff In No #</label>
+					<label for="cpirefin" class="col-sm-4 control-label text-right">DO Number #</label>
 					<div class="col-sm-6">
 						<input type="text" name="cpirefin" class="form-control" id="cpirefin" required>
 					</div>
@@ -178,12 +178,12 @@ $group_id = $token['groupId'];
 						<input type="text" name="cpicargo" class="form-control" id="cpicargo" required>
 					</div>
 				</div>
-<!-- 				<div class="form-group">
+				<div class="form-group">
 					<label for="cpideliver" class="col-sm-4 control-label text-right">Redeliverer</label>
 					<div class="col-sm-6">
-						<input type="text" name="cpideliver" class="form-control" id="cpideliver" required>
+						<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=@$prcode?>">
 					</div>
-				</div> -->
+				</div>
 				<div class="form-group">
 					<label for="cpideliver" class="col-sm-4 control-label text-right">File Upload</label>
 					<div class="col-sm-6">

@@ -44,7 +44,8 @@ class PraIn extends \CodeIgniter\Controller
 				],
 				'query' => [
 					'offset' => $offset,
-					'limit'	=> $limit
+					'limit'	=> $limit,
+					'pracode' => 'PI'
 				]
 			]);
 
@@ -1225,23 +1226,24 @@ class PraIn extends \CodeIgniter\Controller
 
 		$tax = (isset($contract['cotax'])?$contract['cotax']:0);
 		$subtotal = 0;
-		$pajak = $tax/100;
-		$adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
-		$materai = $contract['comaterai'];
-		$totalcharge = $subtotal + $pajak + $adm_tarif + $materai;
-
-		$data['subtotal_charge'] = $subtotal;
-		$data['pajak'] = $pajak;
-		$data['adm_tarif'] = $adm_tarif;
-		$data['materai'] = $materai;
+		// $pajak = $tax/100;
+		// $adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
+		// $materai = $contract['comaterai'];
+		// $totalcharge = $subtotal + $pajak + $adm_tarif + $materai;
 
 		$data['message'] = "success";
 		$data['data'] = $dt_order['data']['datas'][0];
+		$total_charge = $this->hitungTotalCharge($data['data']['orderPraContainers']);
+		$data['subtotal_charge'] = $subtotal;
+		$data['pajak'] = $total_charge['TOTAL_PAJAK'];
+		$data['adm_tarif'] = $total_charge['ADM_TARIF'];
+		$data['materai'] = $total_charge['MATERAI'];
 		$data['recept'] = $dt_order['data']['datas'][0]['orderPraRecept'][0];
 		$data['bukti_bayar'] = $bukti_bayar;
 		$data['contract'] = $dt_order['data']['datas'][0];
 		$data['depo'] = $this->get_depo($data['data']['cpdepo']);
-		$total_charge = $this->hitungTotalCharge($data['data']['orderPraContainers']);
+		$data['pph23'] = $total_charge['TOTAL_PPH23'];
+		$data['total_lolo'] = $total_charge['TOTAL_LOLO'];
 		$data['totalcharge'] = $total_charge['GRAND_TOTAL'];
 		// dd($data);
 		return view('Modules\PraIn\Views\proforma',$data);		
@@ -1263,6 +1265,10 @@ class PraIn extends \CodeIgniter\Controller
 		$tax = (isset($contract['cotax'])?$contract['cotax']:0);
 		$pajak = $tax/100;		
 		$total_pajak = $pajak*$total_lolo;
+
+		$pph23 = 10/100;		
+		$total_pph23 = $pph23*$total_lolo;
+
 		$adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
 		$materai = $contract['comaterai'];
 		if($total_lolo > 5000000) {
@@ -1270,10 +1276,12 @@ class PraIn extends \CodeIgniter\Controller
 		} else {
 			$biaya_materai = 0;
 		}
-		$grand_total = $total_lolo+$total_pajak+$biaya_materai+$adm_tarif;		
 		$data['TOTAL_LOLO'] = $total_lolo;
 		$data['TOTAL_PAJAK'] = $total_pajak;
+		$data['TOTAL_PPH23'] = $total_pph23;
+		$data['ADM_TARIF'] = $adm_tarif;
 		$data['MATERAI'] = $biaya_materai;
+		$grand_total = $total_lolo+$total_pajak+$total_pph23+$biaya_materai+$adm_tarif;		
 		$data['GRAND_TOTAL'] = $grand_total;
 		return $data;
 	}	

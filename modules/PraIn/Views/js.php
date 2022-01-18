@@ -674,6 +674,47 @@ $(document).ready(function() {
 
 	});
 
+	$('#detTable tbody').on('click', '.delete', function(e){
+		e.preventDefault();	
+		var code = $(this).data('crid');
+		Swal.fire({
+		  title: 'Are you sure?',
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+		  if (result.isConfirmed) {
+		  	delete_data_container(code);
+		  }
+		});		
+		
+	});
+
+	function delete_data_container(code) {
+		$.ajax({
+			url: "<?php echo site_url('prain/delete_container/'); ?>"+code,
+			type: "POST",
+			dataType: 'json',
+			success: function(json) {
+				if(json.message == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});							
+					loadTableContainer2($("#praid").val());
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});						
+				}
+			}
+		});		
+	}
 
 	$("#ApprovalOrder").on("click", function(e){
 		e.preventDefault();
@@ -693,6 +734,8 @@ $(document).ready(function() {
 		formData += "&cpcust=" + $("#cucode").val();
 		formData += "&total_lolo=" + $("#total_lolo").val();
 		formData += "&total_cleaning=" + $("#total_cleaning").val();
+		formData += "&total_biaya_lain=" + $("#total_biaya_lain").val();
+		formData += "&total_pph23=" + $("#total_pph23").val();
 		formData += "&subtotal_bill=" + $("#subtotal_bill").val();
 		
 		$.ajax({
@@ -733,6 +776,8 @@ $(document).ready(function() {
 		formData += "&biaya_clean=" + $("#biaya_clean").val();
 		formData += "&biaya_lolo=" + $("#biaya_lolo").val();
 		formData += "&cleaning_type=" + $("#cleaning_type").val();
+		formData += "&biaya_lain=" + $("#biaya_lain").val();
+		console.log(formData);
 		$.ajax({
 			url: "<?php echo site_url('prain/appv1_update_container')?>",
 			type: "POST",
@@ -883,6 +928,16 @@ function loadTableContainer(praid) {
 	$('#detTable tbody').html("");
 	$.ajax({
 		url: "<?=site_url('prain/get_container_by_praid/')?>"+praid,
+		dataType: "json",
+		success: function(json) {
+			$('#detTable tbody').html(json);
+		}
+	});
+}
+function loadTableContainer2(praid) {
+	$('#detTable tbody').html("");
+	$.ajax({
+		url: "<?=site_url('prain/get_container_by_praid2/')?>"+praid,
 		dataType: "json",
 		success: function(json) {
 			$('#detTable tbody').html(json);

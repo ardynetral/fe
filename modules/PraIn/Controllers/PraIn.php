@@ -843,6 +843,8 @@ class PraIn extends \CodeIgniter\Controller
 			$tax = (isset($contract['cotax'])?$contract['cotax']:0);
 			$total_lolo = (int)$_POST['total_lolo'];
 			$total_cleaning = (int)$_POST['total_cleaning'];
+			$total_biaya_lain = (int)$_POST['total_biaya_lain'];
+			$pph23 = (int)$_POST['total_pph23'];
 			$subtotal = (int)$_POST['subtotal_bill'];
 			$pajak = ($tax/100);
 			$nilai_pajak = $pajak*$subtotal;
@@ -852,15 +854,16 @@ class PraIn extends \CodeIgniter\Controller
 			} else {
 				$biaya_materai = 0;
 			}
-
 			$totalcharge = $subtotal + $nilai_pajak + $adm_tarif + $biaya_materai;
+			$grandtotal = $totalcharge-$pph23;
 
 			$data['subtotal_charge'] = $subtotal;
 			$data['pajak'] = $pajak;
 			$data['adm_tarif'] = $adm_tarif;
 			$data['materai'] = $biaya_materai;
+			$data['pph23'] = $pph23;
 			$data['totalcharge'] = $totalcharge;
-
+			$data['grandtotal'] = $grandtotal;
 			// update orer pra
 			$response_pra = $this->client->request('PUT','orderPras/updateData',[
 				'headers' => [
@@ -870,7 +873,7 @@ class PraIn extends \CodeIgniter\Controller
 				'form_params' => [
 					'praid' => $id,
 					'appv' => 1,
-					'totalcharge' => $totalcharge
+					'totalcharge' => $grandtotal
 				]
 			]);
 
@@ -884,12 +887,7 @@ class PraIn extends \CodeIgniter\Controller
 
 			// Update pra recept
 			// $recept = $dt_order['data']['datas'][0]['orderPraRecept'];
-			$response_recept = $this->client->request('POST','orderPraRecepts/createNewData',[
-				'headers' => [
-					'Accept' => 'application/json',
-					'Authorization' => session()->get('login_token')
-				],
-				'form_params' => [
+			$form_params_recept = [
 				    "praid" => $dt_order['data']['datas'][0]['praid'],
 				    "cpireceptno" => '-',
 				    "cpicurr" => "IDR",
@@ -899,8 +897,17 @@ class PraIn extends \CodeIgniter\Controller
 				    "biaya_adm" => $adm_tarif,
 				    "total_pajak" => $nilai_pajak,
 				    "materai" => $biaya_materai,
-				    "total_tagihan" => $totalcharge
-				]
+				    "totbiaya_lain" => $total_biaya_lain,
+				    "totpph23" => $pph23,
+				    "total_tagihan" => $grandtotal
+			];
+			// echo var_dump($form_params_recept);die();
+			$response_recept = $this->client->request('POST','orderPraRecepts/createNewData',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'form_params' => $form_params_recept
 			]);
 			$result_recept = json_decode($response_recept->getBody()->getContents(), true);	
 
@@ -961,9 +968,13 @@ class PraIn extends \CodeIgniter\Controller
 	{
 		check_exp_time();
 		// UPDATE CONTAINER (PRINCIPAL & CSTOMER)
+		// echo var_dump($_POST);die();
 		if ($this->request->isAJAX()) 
 		{
 			$contract = $this->get_contract($_POST['cpopr']);
+			$biaya_pph23 = $contract['copph23']/100;
+			$pph23 = ((int)$_POST['biaya_lain'] + (int)$_POST['biaya_lolo']) * $biaya_pph23;
+			// echo $biaya_lain;die();
 			$response = $this->client->request('PUT','orderPraContainers/updateData',[
 				'headers' => [
 					'Accept' => 'application/json',
@@ -975,7 +986,9 @@ class PraIn extends \CodeIgniter\Controller
 					'cpcust' => $_POST['cpcust'],
 					'biaya_clean' => $_POST['biaya_clean'],
 					'biaya_lolo' => $_POST['biaya_lolo'],
-					'cleaning_type' => $_POST['cleaning_type']
+					'cleaning_type' => $_POST['cleaning_type'],
+					'biaya_lain' => $_POST['biaya_lain'],
+					'pph23' => $pph23
 				],
 			]);	
 
@@ -1164,20 +1177,16 @@ class PraIn extends \CodeIgniter\Controller
 		$resPraContainer= json_decode($reqPraContainer->getBody()->getContents(), true);		
 		$orderPraContainers = $resPraContainer['data']['datas'];
 
-		$contract = $this->get_contract($data['data']['orderPraContainers'][0]['cpopr']);
+		// $contract = $this->get_contract($data['data']['orderPraContainers'][0]['cpopr']);
 
-		$tax = (isset($contract['cotax'])?$contract['cotax']:0);
+		// $tax = (isset($contract['cotax'])?$contract['cotax']:0);
 		$subtotal = 0;
-		$pajak = $tax/100;
-		$adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
-		$materai = $contract['comaterai'];
-		$totalcharge = $subtotal + $pajak + $adm_tarif + $materai;
-
 		$data['subtotal_charge'] = $subtotal;
-		$data['pajak'] = $pajak;
-		$data['adm_tarif'] = $adm_tarif;
-		$data['materai'] = $materai;
-		$data['totalcharge'] = $totalcharge;
+		$data['pajak'] = $recept['total_pajak'];
+		$data['pph23'] = $recept['totpph23'];
+		$data['adm_tarif'] = $recept['biaya_adm'];
+		$data['materai'] = $recept['materai'];
+		$data['totalcharge'] = $recept['total_tagihan'];
 
 		$data['message'] = "success";
 		$data['containers'] = $orderPraContainers;
@@ -1230,7 +1239,13 @@ class PraIn extends \CodeIgniter\Controller
 		// $adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
 		// $materai = $contract['comaterai'];
 		// $totalcharge = $subtotal + $pajak + $adm_tarif + $materai;
+		// echo var_dump($dt_order['data']['datas'][0]['orderPraRecept']);die();
+		if($dt_order['data']['datas'][0]['orderPraRecept']==null) {
+			session()->setFlashdata('error','Data Recept tidak ditemukan');
+			return redirect()->to('prain');
+		}
 
+		$datarecept = $dt_order['data']['datas'][0]['orderPraRecept'][0];
 		$data['message'] = "success";
 		$data['data'] = $dt_order['data']['datas'][0];
 		$total_charge = $this->hitungTotalCharge($data['data']['orderPraContainers']);
@@ -1238,14 +1253,14 @@ class PraIn extends \CodeIgniter\Controller
 		$data['pajak'] = $total_charge['TOTAL_PAJAK'];
 		$data['adm_tarif'] = $total_charge['ADM_TARIF'];
 		$data['materai'] = $total_charge['MATERAI'];
-		$data['recept'] = $dt_order['data']['datas'][0]['orderPraRecept'][0];
+		$data['recept'] = $datarecept;
 		$data['bukti_bayar'] = $bukti_bayar;
 		$data['contract'] = $dt_order['data']['datas'][0];
 		$data['depo'] = $this->get_depo($data['data']['cpdepo']);
-		$data['pph23'] = $total_charge['TOTAL_PPH23'];
-		$data['total_lolo'] = $total_charge['TOTAL_LOLO'];
-		$data['totalcharge'] = $total_charge['GRAND_TOTAL'];
-		// dd($data);
+		$data['pph23'] = $datarecept['totpph23'];
+		$data['biaya_lain'] = $datarecept['totbiaya_lain'];
+		$data['total_lolo'] = $datarecept['tot_lolo'];
+		$data['totalcharge'] = $datarecept['total_tagihan'];
 		return view('Modules\PraIn\Views\proforma',$data);		
 	}
 
@@ -1266,9 +1281,6 @@ class PraIn extends \CodeIgniter\Controller
 		$pajak = $tax/100;		
 		$total_pajak = $pajak*$total_lolo;
 
-		$pph23 = 10/100;		
-		$total_pph23 = $pph23*$total_lolo;
-
 		$adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
 		$materai = $contract['comaterai'];
 		if($total_lolo > 5000000) {
@@ -1278,10 +1290,9 @@ class PraIn extends \CodeIgniter\Controller
 		}
 		$data['TOTAL_LOLO'] = $total_lolo;
 		$data['TOTAL_PAJAK'] = $total_pajak;
-		$data['TOTAL_PPH23'] = $total_pph23;
 		$data['ADM_TARIF'] = $adm_tarif;
 		$data['MATERAI'] = $biaya_materai;
-		$grand_total = $total_lolo+$total_pajak+$total_pph23+$biaya_materai+$adm_tarif;		
+		$grand_total = $total_lolo+$total_pajak+$biaya_materai+$adm_tarif;		
 		$data['GRAND_TOTAL'] = $grand_total;
 		return $data;
 	}	
@@ -1427,20 +1438,14 @@ class PraIn extends \CodeIgniter\Controller
 			}		
 		}		
 
-		$contract = $this->get_contract($dt_order['orderPraContainers'][0]['cpopr']);
-
-		$tax = (isset($contract['cotax'])?$contract['cotax']:0);
 		$subtotal = 0;
-		$pajak = $tax/100;
-		$adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
-		$materai = $contract['comaterai'];
-		$totalcharge = $subtotal + $pajak + $adm_tarif + $materai;
 
 		$data['subtotal_charge'] = $subtotal;
-		$data['pajak'] = $pajak;
-		$data['adm_tarif'] = $adm_tarif;
-		$data['materai'] = $materai;
-		$data['totalcharge'] = $totalcharge;
+		$data['pajak'] = $recept['total_pajak'];
+		$data['pph23'] = $recept['totpph23'];
+		$data['adm_tarif'] = $recept['biaya_adm'];
+		$data['materai'] = $recept['materai'];
+		$data['totalcharge'] = $recept['total_tagihan'];
 
 		$data['data'] = $dt_order;
 		$data['bukti_bayar'] = $bukti_bayar;
@@ -1524,6 +1529,14 @@ class PraIn extends \CodeIgniter\Controller
 				'name'		=> 'materai',
 				'contents'	=> (int)$_POST['materai']
 			];
+			$post_arr[] = [
+				'name'		=> 'totbiaya_lain',
+				'contents'	=> (int)$_POST['totbiaya_lain']
+			];	
+			$post_arr[] = [
+				'name'		=> 'totpph23',
+				'contents'	=> (int)$_POST['totpph23']
+			];						
 			$post_arr[] = [
 				'name'		=> 'total_tagihan',
 				'contents'	=> (int)$_POST['total_tagihan']
@@ -1628,6 +1641,46 @@ class PraIn extends \CodeIgniter\Controller
 		die();
 	}
 
+	// Di page Edit 
+	public function get_container_by_praid2($praid) 
+	{
+		$response = $this->client->request('GET','orderPraContainers/getAllData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'praid' => $praid,
+				'offset' => 0,
+				'limit' => 100,
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);			
+		$i=1; 
+		$html="";
+		foreach($result['data']['datas'] as $row){
+			$pracrid=$row['pracrnoid'];
+			$html .= "<tr>
+				<td>".$i."</td>
+				<td>".$row['crno']."</td>
+				<td>".$row['cccode']."</td>
+				<td>".$row['ctcode']."</td>
+				<td>".$row['cclength']."</td>
+				<td>".$row['ccheight']."</td>
+				<td>".$row['cpiremark']."</td>
+				<td>";
+			$html .= "<a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$row['pracrnoid']."'>edit</a>&nbsp;";
+			$html .= "<a href='#' id='deleteContainer' class='btn btn-xs btn-danger delete' data-crid='".$row['pracrnoid']."'>delete</a>";			
+			$html .= "</td>
+				</tr>";
+			$i++; 
+		}
+
+		echo json_encode($html);
+		die();
+	}
+
 	// Get Container list Approval-1
 	public function appv1_containers($praid) 
 	{
@@ -1646,8 +1699,15 @@ class PraIn extends \CodeIgniter\Controller
 		$result = json_decode($response->getBody()->getContents(), true);
 		// echo var_dump($result);			
 		$i=1; 
+		$subtotal = 0;
+		$total_lolo = 0;
+		$total_cleaning = 0;
+		$total_biaya_lain = 0;
+		$total_pph23 = 0;
+		$total = 0;		
 		$html="";
 		foreach($result['data']['datas'] as $row){
+			$subtotal = $row['biaya_lolo'];
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
 				<td>".$i."</td>
@@ -1659,12 +1719,22 @@ class PraIn extends \CodeIgniter\Controller
 				<td>".((isset($row['cpopr'])&&$row['cpopr']!="")?$row['cpopr']:'-')."</td>
 				<td>".$row['biaya_lolo']."</td>
 				<td>".$row['biaya_clean']."</td>
+				<td>".$row['biaya_lain']."</td>
 				<td>".$row['cpiremark']."</td>
 				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."'>edit</a></td>
 				</tr>";
 			$i++; 
+			$total_lolo = $total_lolo+$row['biaya_lolo'];
+			$total_cleaning = $total_cleaning+$row['biaya_clean'];
+			$total_biaya_lain = $total_biaya_lain+$row['biaya_lain'];
+			$total_pph23 = $total_pph23+$row['pph23'];
+			$total = $total+$subtotal;				
 		}
-
+		$html .= "<input type='hidden' name='total_lolo' id='total_lolo' value='".$total_lolo."'>";
+		$html .= "<input type='hidden' name='total_cleaning' id='total_cleaning' value='".$total_cleaning."'>";
+		$html .= "<input type='hidden' name='total_biaya_lain' id='total_biaya_lain' value='".$total_biaya_lain."'>";
+		$html .= "<input type='hidden' name='total_pph23' id='total_pph23' value='".$total_pph23."'>";
+		$html .= "<input type='hidden' name='subtotal_bill' id='subtotal_bill' value='".$total."'>";
 		echo json_encode($html);
 		die();
 	}
@@ -1919,6 +1989,237 @@ class PraIn extends \CodeIgniter\Controller
 	}
 
 	// Proforma Print invoice 1
+	// public function print_invoice1($id) 
+	// {
+	// 	check_exp_time();
+	// 	$mpdf = new \Mpdf\Mpdf();
+
+	// 	$data = [];
+	// 	$response = $this->client->request('GET','orderPras/printOrderByPraOrderId',[
+	// 		'headers' => [
+	// 			'Accept' => 'application/json',
+	// 			'Authorization' => session()->get('login_token')
+	// 		],
+	// 		'query'=>[
+	// 			'praid' => $id,
+	// 		]
+	// 	]);
+
+	// 	$result = json_decode($response->getBody()->getContents(),true);
+	// 	$header = $result['data']['datas'][0];
+	// 	$pratgl = $header['cpipratgl'];
+	// 	$recept = recept_by_praid($header['praid']);
+
+	// 	if($recept==""){
+	// 		$invoice_number ="-";	
+	// 	} else {
+	// 		$invoice_number = "KW." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
+	// 	}
+
+	// 	$det_container = $header['orderPraContainers'];
+	// 	$contract = $this->get_contract($det_container[0]['cpopr']);
+	// 	$depo = $this->get_depo($header['cpdepo']);
+	// 	if(isset($result['status']) && ($result['status']=="Failled"))
+	// 	{
+	// 		$data['status'] = "Failled";
+	// 		$data['message'] = $result['message'];
+	// 		echo json_encode($data);die();				
+	// 	}
+		
+
+	// 	$html = '';
+
+	// 	$html .= '
+	// 	<html>
+	// 		<head>
+	// 			<title>Order PraIn</title>
+
+	// 			<style>
+	// 				body{font-family: Arial;font-size:12px;}
+	// 				.page-header{display:block;border-bottom:2px solid #aaa;padding:0;min-height:30px;margin-bottom:30px;}
+	// 				.head-left{float:left;width:200px;padding:0px;}
+	// 				.head-center{margin-left:200px;width:200px;padding:0px;text-align:center;}
+	// 				.head-right{float:left;padding:0px;margin-right:0px;text-align: right;}
+
+	// 				.tbl_head_prain, .tbl_det_prain{border-spacing: 0;border-collapse: collapse;}
+	// 				.tbl_head_prain td{border-collapse: collapse;}
+	// 				.t-right{text-align:right;}
+	// 				.t-left{text-align:left;}
+
+	// 				.tbl_det_prain th,.tbl_det_prain td {
+	// 					border:1px solid #666666!important;
+	// 					border-spacing: 0;
+	// 					border-collapse: collapse;
+	// 					padding:5px;
+
+	// 				}
+	// 				.line-space{border-bottom:1px solid #dddddd;margin:30px 0;}
+	// 			</style>
+	// 		</head>
+	// 	';
+
+	// 	$html .= '<body>
+	// 		<div class="page-header">
+	// 			<table width="100%">
+	// 			<tr>
+	// 			<td><h4>PT. CONTINDO RAYA</h4></td>
+	// 			<td class="t-center"><b>'.$invoice_number.'</b></td>
+	// 			<td class="t-right"><p>PADANG, '.date('d/m/Y').'</p></td>
+	// 			</tr>
+	// 			</table>
+	// 		</div>
+	// 	';
+	// 	$html .='
+	// 		<table class="tbl_head_prain" width="100%">
+	// 			<tbody>
+	// 				<tr>
+	// 					<td class="t-right" width="180">Discharge Port</td>
+	// 					<td width="200">&nbsp;:&nbsp;'.$header['cpidish'].'  </td>
+	// 					<td class="t-right" width="120">Pra In Reff</td>
+	// 					<td>&nbsp;:&nbsp;'.$header['cpiorderno'].'</td>
+	// 				</tr>
+	// 				<tr>
+	// 					<td class="t-right">Discharge Date</td>
+	// 					<td class="t-left">&nbsp;:&nbsp;'.$header['cpidisdat'].'  </td>
+	// 					<td class="t-right">Pra In Date</td>
+	// 					<td class="t-left">&nbsp;:&nbsp;'.$header['cpipratgl'].' </td>
+	// 				</tr>
+	// 				<tr>
+	// 					<td class="t-right">Lift Off Charges In Depot</td>
+	// 					<td class="t-left">&nbsp;:&nbsp; '.((isset($header['liftoffcharge'])&&$header['liftoffcharge']==1)?"yes" : "no").'</td>
+	// 					<td class="t-right">Ref In N0 #</td>
+	// 					<td class="t-left">&nbsp;:&nbsp;'.$header['cpirefin'].'  </td>
+	// 				</tr>
+	// 				<tr>
+	// 					<td class="t-right">Depot</td>
+	// 					<td class="t-left">&nbsp;:&nbsp;'.$depo['dpname'].' </td>
+	// 					<td class="t-right">Time In</td>
+	// 					<td class="t-left">&nbsp;:&nbsp;'.$header['cpijam'].'  </td>
+	// 				</tr>
+	// 				<tr>
+	// 					<td class="t-right"></td>
+	// 					<td class="t-left"></td>
+	// 					<td class="t-right">Vessel</td>
+	// 					<td class="t-left">&nbsp;:&nbsp;'.$header['cpives'].' </td>
+	// 				</tr>
+	// 				<tr>
+	// 					<td class="t-right"></td>
+	// 					<td class="t-left"></td>
+	// 					<td class="t-right">Voyage</td>
+	// 					<td class="t-left">&nbsp;:&nbsp;'.$header['voyages']['voyno'].' </td>
+	// 				</tr>
+	// 				<tr>
+	// 					<td class="t-right">&nbsp;</td>
+	// 					<td class="t-left">&nbsp;</td>
+	// 					<td class="t-right">Vessel Operator</td>
+	// 					<td class="t-left">&nbsp;:&nbsp;'.$header['vessels']['vesopr'].' </td>
+	// 				</tr>
+	// 				<tr>
+	// 					<td>&nbsp;</td>
+	// 					<td>&nbsp;</td>
+	// 					<td class="t-right">Ex Cargo</td>
+	// 					<td class="t-left">&nbsp;:&nbsp;'.$header['cpicargo'].' </td>
+	// 				</tr>	
+	// 				<tr>
+	// 					<td>&nbsp;</td>
+	// 					<td>&nbsp;</td>
+	// 					<td class="t-right">Redeliverer</td>
+	// 					<td class="t-left">&nbsp;:&nbsp;'.$header['cpideliver'].' </td>
+	// 				</tr>							
+	// 			</tbody>
+	// 		</table>
+	// 	';
+
+	// 	$html .='
+	// 		<div class="line-space"></div>
+	// 		<h4>Detail Container</h4>
+	// 		<table class="tbl_det_prain">
+	// 			<thead>
+	// 				<tr>
+	// 					<th>NO</th>
+	// 					<th>Container No.</th>
+	// 					<th>ID Code</th>
+	// 					<th>Type</th>
+	// 					<th>Length</th>
+	// 					<th>Height</th>
+	// 					<th>F/E</th>
+	// 					<th>Principal</th>
+	// 					<th>Gate In Date</th>
+	// 					<th>Lift Off</th>				
+	// 				</tr>
+	// 			</thead>
+	// 			<tbody>';
+	// 			$no=1;
+	// 			$biaya_lolo=0;
+	// 			$total_liftoff = 0;
+	// 			foreach($det_container as $row){
+	// 				$html .='
+	// 				<tr>
+	// 					<td>'.$no.'</td>
+	// 					<td>'.$row['crno'].'</td>
+	// 					<td>'.$row['cccode'].'</td>
+	// 					<td>'.$row['ctcode'].'</td>
+	// 					<td>'.$row['cclength'].'</td>
+	// 					<td>'.$row['ccheight'].'</td>
+	// 					<td>'.((isset($row['cpife'])&&$row['cpife']==1) ? "full" : "Empty").'</td>
+	// 					<td>'.$row['cpopr'].'</td>
+	// 					<td>'.$row['cpigatedate'].'</td>
+	// 					<td>'.number_format($row['biaya_lolo'],2).'</td>
+	// 				</tr>';
+
+	// 				$no++;
+	// 				$total_liftoff = $total_liftoff+$row['biaya_lolo'];
+	// 			}
+
+	// 			$tax = (isset($contract['cotax'])?$contract['cotax']:0);
+	// 			// $total_lolo = (int)$_POST['total_lolo'];
+	// 			// $total_cleaning = (int)$_POST['total_cleaning'];
+	// 			$subtotal = $total_liftoff;
+	// 			$pajak = ($tax/100);
+	// 			$nilai_pajak = $pajak*$subtotal;
+	// 			$adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
+	// 			if($subtotal > 5000000) {
+	// 				$biaya_materai = $contract['comaterai'];
+	// 			} else {
+	// 				$biaya_materai = 0;
+	// 			}
+
+	// 			$totalcharge = $subtotal + $nilai_pajak + $adm_tarif + $biaya_materai;
+
+	// 			$html .='<tr><th colspan="9" class="t-right">Total Lift Off</th><th>'.number_format($subtotal,2).'</th></tr>';
+	// 	$html .='
+	// 			</tbody>
+	// 		</table>
+	// 		<br>
+	// 		<table class="tbl-form" width="100%">
+	// 			<tbody>			
+	// 				<tr><td></td><td></td></tr>		
+	// 				<tr>
+	// 					<td class="t-right">Pajak</td>
+	// 					<td width="130">: ' . number_format($nilai_pajak,2) . '</td>
+	// 				</tr>
+	// 				<tr>
+	// 					<td class="t-right">Adm Tarif</td>
+	// 					<td width="130">: ' . number_format($adm_tarif,2) . '</td>
+	// 				</tr>	
+	// 				<tr>
+	// 					<td class="t-right">Materai</td>
+	// 					<td width="130">: ' . number_format($biaya_materai,2) . '</td>
+	// 				</tr>			
+	// 				<tr>
+	// 					<th class="t-right">Total Charge</th>
+	// 					<td width="130">: ' . number_format($totalcharge,2) . '</td>
+	// 				</tr>
+	// 			</tbody>
+	// 		</table>	
+	// 	</body>
+	// 	</html>
+	// 	';
+	// 	$mpdf->WriteHTML($html);
+	// 	$mpdf->Output();
+	// 	//echo $html;
+	// 	die();		
+	// }
 	public function print_invoice1($id) 
 	{
 		check_exp_time();
@@ -1937,6 +2238,7 @@ class PraIn extends \CodeIgniter\Controller
 
 		$result = json_decode($response->getBody()->getContents(),true);
 		$header = $result['data']['datas'][0];
+		// dd($header);
 		$pratgl = $header['cpipratgl'];
 		$recept = recept_by_praid($header['praid']);
 
@@ -1965,8 +2267,8 @@ class PraIn extends \CodeIgniter\Controller
 				<title>Order PraIn</title>
 
 				<style>
-					body{font-family: Arial;font-size:12px;}
-					.page-header{display:block;border-bottom:2px solid #aaa;padding:0;min-height:30px;margin-bottom:30px;}
+					body{font-family: Arial;}
+					.page-header{display:block;border-bottom:1px solid #333;padding:0;min-height:30px;margin-bottom:30px;}
 					.head-left{float:left;width:200px;padding:0px;}
 					.head-center{margin-left:200px;width:200px;padding:0px;text-align:center;}
 					.head-right{float:left;padding:0px;margin-right:0px;text-align: right;}
@@ -1975,6 +2277,7 @@ class PraIn extends \CodeIgniter\Controller
 					.tbl_head_prain td{border-collapse: collapse;}
 					.t-right{text-align:right;}
 					.t-left{text-align:left;}
+					.t-center{text-align:center;}
 
 					.tbl_det_prain th,.tbl_det_prain td {
 						border:1px solid #666666!important;
@@ -1983,7 +2286,7 @@ class PraIn extends \CodeIgniter\Controller
 						padding:5px;
 
 					}
-					.line-space{border-bottom:1px solid #dddddd;margin:30px 0;}
+					.line-space{border-bottom:1px solid #333;margin:30px 0;}
 				</style>
 			</head>
 		';
@@ -1993,152 +2296,65 @@ class PraIn extends \CodeIgniter\Controller
 				<table width="100%">
 				<tr>
 				<td><h4>PT. CONTINDO RAYA</h4></td>
-				<td class="t-center"><b>'.$invoice_number.'</b></td>
-				<td class="t-right"><p>PADANG, '.date('d/m/Y').'</p></td>
+				<td class="t-center"><b>KWITANSI / RECEIP</b></td>
+				<td class="t-right"><p><b>DEP-ONES/02/I/2022<br>'.$recept['cpireceptno'].'</b></p></td>
 				</tr>
 				</table>
 			</div>
 		';
 		$html .='
-			<table class="tbl_head_prain" width="100%">
-				<tbody>
-					<tr>
-						<td class="t-right" width="180">Discharge Port</td>
-						<td width="200">&nbsp;:&nbsp;'.$header['cpidish'].'  </td>
-						<td class="t-right" width="120">Pra In Reff</td>
-						<td>&nbsp;:&nbsp;'.$header['cpiorderno'].'</td>
-					</tr>
-					<tr>
-						<td class="t-right">Discharge Date</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header['cpidisdat'].'  </td>
-						<td class="t-right">Pra In Date</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header['cpipratgl'].' </td>
-					</tr>
-					<tr>
-						<td class="t-right">Lift Off Charges In Depot</td>
-						<td class="t-left">&nbsp;:&nbsp; '.((isset($header['liftoffcharge'])&&$header['liftoffcharge']==1)?"yes" : "no").'</td>
-						<td class="t-right">Ref In N0 #</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header['cpirefin'].'  </td>
-					</tr>
-					<tr>
-						<td class="t-right">Depot</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$depo['dpname'].' </td>
-						<td class="t-right">Time In</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header['cpijam'].'  </td>
-					</tr>
-					<tr>
-						<td class="t-right"></td>
-						<td class="t-left"></td>
-						<td class="t-right">Vessel</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header['cpives'].' </td>
-					</tr>
-					<tr>
-						<td class="t-right"></td>
-						<td class="t-left"></td>
-						<td class="t-right">Voyage</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header['voyages']['voyno'].' </td>
-					</tr>
-					<tr>
-						<td class="t-right">&nbsp;</td>
-						<td class="t-left">&nbsp;</td>
-						<td class="t-right">Vessel Operator</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header['vessels']['vesopr'].' </td>
-					</tr>
-					<tr>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td class="t-right">Ex Cargo</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header['cpicargo'].' </td>
-					</tr>	
-					<tr>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
-						<td class="t-right">Redeliverer</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header['cpideliver'].' </td>
-					</tr>							
-				</tbody>
-			</table>
+			SUDAH TERIMA DARI/RECEIVED FROM
+			<h4></h4>
+			OPERATOR CONTAINER : '.$header['vessels']['vesopr'].'<br>
 		';
 
 		$html .='
 			<div class="line-space"></div>
-			<h4>Detail Container</h4>
-			<table class="tbl_det_prain">
+			<table class="tbl_det_prain" width="100%">
 				<thead>
 					<tr>
 						<th>NO</th>
-						<th>Container No.</th>
-						<th>ID Code</th>
-						<th>Type</th>
-						<th>Length</th>
-						<th>Height</th>
-						<th>F/E</th>
-						<th>Principal</th>
-						<th>Gate In Date</th>
-						<th>Lift Off</th>				
+						<th>URAIAN / PEMBAYARAN</th>
+						<th>QTY</th>
+						<th>SIZE</th>
+						<th>PRICE</th>
+						<th>JUMLAH</th>			
 					</tr>
 				</thead>
-				<tbody>';
-				$no=1;
-				$biaya_lolo=0;
-				$total_liftoff = 0;
-				foreach($det_container as $row){
-					$html .='
+				<tbody>
+
 					<tr>
-						<td>'.$no.'</td>
-						<td>'.$row['crno'].'</td>
-						<td>'.$row['cccode'].'</td>
-						<td>'.$row['ctcode'].'</td>
-						<td>'.$row['cclength'].'</td>
-						<td>'.$row['ccheight'].'</td>
-						<td>'.((isset($row['cpife'])&&$row['cpife']==1) ? "full" : "Empty").'</td>
-						<td>'.$row['cpopr'].'</td>
-						<td>'.$row['cpigatedate'].'</td>
-						<td>'.number_format($row['biaya_lolo'],2).'</td>
+						<td>&nbsp;</td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
 					</tr>';
 
-					$no++;
-					$total_liftoff = $total_liftoff+$row['biaya_lolo'];
-				}
-
-				$tax = (isset($contract['cotax'])?$contract['cotax']:0);
-				// $total_lolo = (int)$_POST['total_lolo'];
-				// $total_cleaning = (int)$_POST['total_cleaning'];
-				$subtotal = $total_liftoff;
-				$pajak = ($tax/100);
-				$nilai_pajak = $pajak*$subtotal;
-				$adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
-				if($subtotal > 5000000) {
-					$biaya_materai = $contract['comaterai'];
-				} else {
-					$biaya_materai = 0;
-				}
-
-				$totalcharge = $subtotal + $nilai_pajak + $adm_tarif + $biaya_materai;
-
-				$html .='<tr><th colspan="9" class="t-right">Total Lift Off</th><th>'.number_format($subtotal,2).'</th></tr>';
+				$html .='<tr><th colspan="5" class="t-right">TOTAL</th><th></th></tr>';
 		$html .='
 				</tbody>
 			</table>
 			<br>
 			<table class="tbl-form" width="100%">
 				<tbody>			
-					<tr><td></td><td></td></tr>		
+					<tr><td></td><td width="25%"></td></tr>		
 					<tr>
-						<td class="t-right">Pajak</td>
-						<td width="130">: ' . number_format($nilai_pajak,2) . '</td>
+						<td>REMARK : </td>
+						<td class="t-center">PADANG, '.date('d-M-Y').'</td>
 					</tr>
 					<tr>
-						<td class="t-right">Adm Tarif</td>
-						<td width="130">: ' . number_format($adm_tarif,2) . '</td>
-					</tr>	
+						<td>NOTE : </td>
+						<td></td>
+					</tr>
 					<tr>
-						<td class="t-right">Materai</td>
-						<td width="130">: ' . number_format($biaya_materai,2) . '</td>
-					</tr>			
+						<td>PENARIKAN DEPOSIT HARAP MENGHUBUNGI TERLEBIH DAHULU</td>
+						<td></td>
+					</tr>
 					<tr>
-						<th class="t-right">Total Charge</th>
-						<td width="130">: ' . number_format($totalcharge,2) . '</td>
+						<td>NO TLPN : 0751-61600 EXT. 106 & 100</td>
+						<td class="t-center">( KASIR )</td>
 					</tr>
 				</tbody>
 			</table>	
@@ -2147,10 +2363,9 @@ class PraIn extends \CodeIgniter\Controller
 		';
 		$mpdf->WriteHTML($html);
 		$mpdf->Output();
-		//echo $html;
+		// echo $html;
 		die();		
 	}
-
 	// Proforma Print invoice 2 (Deposit)
 	public function print_invoice2($id) 
 	{

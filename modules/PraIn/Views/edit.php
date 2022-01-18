@@ -24,7 +24,8 @@
 								<div class="form-group">
 									<label for="cpidish " class="col-sm-5 control-label text-right">Origin Port</label>
 									<div class="col-sm-4">
-										<input type="text" name="cpidish" id="cpidish" class="form-control" value="<?=$data['cpidish']?>">
+										<!-- <input type="text" name="cpidish" id="cpidish" class="form-control" value="<?=$data['cpidish']?>"> -->
+										<?=port_dropdown("cpidish",$data['cpidish']);?>
 									</div>
 									<label class="col-sm-3 control-label">* Port Country</label>
 								</div>	
@@ -205,7 +206,20 @@
 									<div class="col-sm-6">
 										<input type="file" name="files[]" class="form-control" id="files" multiple="true">
 									</div>
-								</div>								
+								</div>
+								<?php if($data['files']!=""):?>
+								<div class="form-group">
+									<label for="cpideliver" class="col-sm-4 control-label text-right">&nbsp;</label>
+									<div class="col-sm-6 alert alert-info">
+										<b>Files uploaded:</b><br>
+										<?php $i=1; foreach($data['files'] as $f):?>
+											<a href="<?=$f['url']; ?>" target="_blank"><?=$f['url']; ?></a>
+											<hr>
+										<?php $i++;
+										endforeach;?>								
+									</div>
+								</div>	
+								<?php endif;?>															
 							</div>	
 							<input type="hidden" name="appv1_update" class="form-control" id="appv1_update" value="<?=(isset($act)&&($act=='approval1')?'1':'0')?>" readonly="">
 						</fieldset>
@@ -394,7 +408,10 @@
 											<td><?=$row['cclength']?></td>
 											<td><?=$row['ccheight']?></td>
 											<td><?=$row['cpiremark']?></td>
-											<td><a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a></td>
+											<td>
+												<a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a>
+												<a href="#" id="deleteContainer" class="btn btn-xs btn-danger delete" data-crid="<?=$row['pracrnoid']?>">delete</a>
+											</td>
 										</tr>
 									<?php 
 									$i++; 					

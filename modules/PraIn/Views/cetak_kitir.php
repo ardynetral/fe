@@ -261,6 +261,7 @@
 							<th>Principal</th>
 							<th>Lift Off</th>
 							<th>Deposit</th>
+							<th>Cleaning</th>
 							<th>Remark</th>
 							<th>GateIn Date</th>
 							<th></th>
@@ -297,6 +298,7 @@
 									<td><?=$row['cpopr']?></td>
 									<td><?=number_format($row['biaya_lolo'],2);?></td>
 									<td><?=number_format($row['biaya_clean'],2);?></td>									
+									<td><?=number_format($row['biaya_lain'],2);?></td>									
 									<td><?=$row['cpiremark']?></td>
 									<td></td>
 									<td>
@@ -315,25 +317,20 @@
 							endforeach; 
 							?>
 
-							<tr><th colspan="12" class="text-right">TOTAL LOLO</th><th class="text-right"><?=number_format($total,2)?></th></tr>							
+							<tr><th colspan="13" class="text-right">TOTAL LOLO</th><th class="text-right"><?=number_format($total,2)?></th></tr>							
 
 						<?php endif; ?>
 					</tbody>
 				</table>
 				<table class="tbl-form" width="100%">
 					<tbody>
-						<?php
-						if($total_lolo > 5000000) {
-							$biaya_materai = $materai;
-						} else {
-							$biaya_materai = 0;
-						}
-						$total_pajak = $pajak*$total;
-						$grand_total = $total+$total_pajak+$biaya_materai+$adm_tarif;
-						?>	
+						<tr>
+							<td class="text-right" colspan="9">PPH23</td>
+							<td width="200"><input type="text" name="" id="" value="<?=number_format($pph23,2);?>" class="form-control" readonly></td>
+						</tr>							
 						<tr>
 							<td class="text-right" colspan="9">Pajak</td>
-							<td width="200"><input type="text" name="" value="<?=number_format($total_pajak,2);?>" class="form-control" readonly></td>
+							<td width="200"><input type="text" name="" value="<?=number_format($pajak,2);?>" class="form-control" readonly></td>
 						</tr>		
 						<tr>
 							<td class="text-right" colspan="9">Adm Tarif</td>
@@ -341,11 +338,11 @@
 						</tr>	
 						<tr>
 							<td class="text-right" colspan="9">Materai</td>
-							<td width="200"><input type="text" name="" value="<?=number_format($biaya_materai,2);?>" class="form-control" readonly></td>
+							<td width="200"><input type="text" name="" value="<?=number_format($materai,2);?>" class="form-control" readonly></td>
 						</tr>			
 						<tr>
 							<th class="text-right" colspan="9">Total Charge</th>
-							<td width="200"><input type="text" name="" value="<?=number_format($grand_total,2);?>" class="form-control" readonly></td>
+							<th width="200"><input type="text" name="" value="<?=number_format($totalcharge,2);?>" class="form-control" readonly></th>
 						</tr>
 					</tbody>
 				</table>										

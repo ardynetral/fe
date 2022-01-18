@@ -328,7 +328,7 @@
 									</label>
 								</div>
 								<div class="col-sm-6">
-									<input type="text" name="biaya_clean" id="biaya_clean" class="form-control" value="0" readonly>
+									<input type="text" name="biaya_clean" id="biaya_clean" class="form-control"readonly>
 								</div>
 							</div>	
 							<div class="form-group">
@@ -353,7 +353,7 @@
 									</label>
 								</div>
 								<div class="col-sm-4">
-								<input type="text" name="biaya_clean" id="biaya_clean" value="0" class="form-control">	
+									<input type="text" name="biaya_lain" id="biaya_lain" class="form-control">
 								</div>
 							</div>																							
 							<div class="form-group">
@@ -391,6 +391,7 @@
 									<th>Principal</th>
 									<th>Lift Off</th>
 									<th>Deposit</th>
+									<th>Cleaning</th>
 									<th>Remark</th>
 									<th></th>
 								</tr>
@@ -406,7 +407,10 @@
 									$subtotal = 0;
 									$total_lolo = 0;
 									$total_cleaning = 0;
+									$total_biaya_lain = 0;
+									$total_pph23 = 0;
 									$total = 0;
+									// echo var_dump($orderPraContainers);die();
 									foreach($orderPraContainers as $row): 
 										$subtotal = $row['biaya_lolo'];
 									?>
@@ -420,6 +424,7 @@
 											<td><?=$row['cpopr'];?></td>
 											<td><?=$row['biaya_lolo'];?></td>
 											<td><?=$row['biaya_clean'];?></td>
+											<td><?=$row['biaya_lain'];?></td>
 											<td><?=$row['cpiremark']?></td>
 											<td><a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a></td>
 										</tr>
@@ -427,16 +432,22 @@
 									$i++; 
 									$total_lolo = $total_lolo+$row['biaya_lolo'];
 									$total_cleaning = $total_cleaning+$row['biaya_clean'];
+									$total_biaya_lain = $total_biaya_lain+$row['biaya_lain'];
+									$total_pph23 = $total_pph23+$row['pph23'];
 									$total = $total+$subtotal;									
 									endforeach; 
 									?>
 								<?php endif; ?>
+
+								<input type="hidden" name="total_lolo" id="total_lolo" value="<?=$total_lolo?>">
+								<input type="hidden" name="total_cleaning" id="total_cleaning" value="<?=$total_cleaning?>">
+								<input type="hidden" name="total_biaya_lain" id="total_biaya_lain" value="<?=$total_biaya_lain?>">
+								<input type="hidden" name="total_pph23" id="total_pph23" value="<?=$total_pph23?>">
+								<input type="hidden" name="subtotal_bill" id="subtotal_bill" value="<?=$total?>">
+								
 							</tbody>
 						</table>
 
-						<input type="hidden" name="total_lolo" id="total_lolo" value="<?=$total_lolo?>">
-						<input type="hidden" name="total_cleaning" id="total_cleaning" value="<?=$total_cleaning?>">
-						<input type="hidden" name="subtotal_bill" id="subtotal_bill" value="<?=$total?>">
 
 					</div>
 

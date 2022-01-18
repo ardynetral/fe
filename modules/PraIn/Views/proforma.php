@@ -306,6 +306,8 @@
 										<input type="hidden" name="biaya_cleaning" class="form-control" id="biaya_cleaning" value="<?=$recept['biaya_cleaning'];?>">
 										<input type="hidden" name="tot_lolo" class="form-control" id="tot_lolo" value="<?=$recept['tot_lolo'];?>">
 										<input type="hidden" name="biaya_adm" class="form-control" id="biaya_adm" value="<?=$recept['biaya_adm'];?>">
+										<input type="hidden" name="totbiaya_lain" class="form-control" id="totbiaya_lain" value="<?=$recept['totbiaya_lain'];?>">
+										<input type="hidden" name="totpph23" class="form-control" id="totpph23" value="<?=$recept['totpph23'];?>">
 										<input type="hidden" name="total_pajak" class="form-control" id="total_pajak" value="<?=$recept['total_pajak'];?>">
 										<input type="hidden" name="materai" class="form-control" id="materai" value="<?=$recept['materai'];?>">
 										<input type="hidden" name="total_tagihan" class="form-control" id="total_tagihan" value="<?=$recept['total_tagihan'];?>">
@@ -367,6 +369,7 @@
 									<th>Principal</th>
 									<th>Lift Off</th>
 									<th>Deposit</th>
+									<th>Cleaning</th>
 									<th>Subtotal</th>
 								</tr>
 							</thead>
@@ -394,6 +397,7 @@
 											<td><?=$row['cpopr'];?></td>
 											<td class="text-right"><?=number_format($row['biaya_lolo'],2);?></td>
 											<td class="text-right"><?=number_format($row['biaya_clean'],2);?></td>											
+											<td class="text-right"><?=number_format($row['biaya_lain'],2);?></td>											
 											<td class="text-right"><?=number_format($subtotal,2);?></td>
 										</tr>
 									
@@ -416,7 +420,7 @@
 							<tbody>
 								<tr>
 									<td class="text-right" colspan="9">PPH23</td>
-									<td width="200"><input type="text" name="" value="<?=number_format($pph23,2);?>" class="form-control" readonly></td>
+									<td width="200"><input type="text" name="" id="" value="<?=number_format($pph23,2);?>" class="form-control" readonly></td>
 								</tr>									
 								<tr>
 									<td class="text-right" colspan="9">Pajak</td>

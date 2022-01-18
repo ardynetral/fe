@@ -15,6 +15,13 @@
 	</div>
 	<?php endif; ?>
 
+	<?php if(session()->getFlashdata('error')):?>
+	<div class="alert alert-danger alert-dismissable">
+		<a href="" class="close">×</a>
+		<strong><?=session()->getFlashdata('error');?></strong>
+	</div>
+	<?php endif; ?>
+
 	<div class="main-content">
 
 		<div class="widget widget-table">

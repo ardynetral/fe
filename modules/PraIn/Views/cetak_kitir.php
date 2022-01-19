@@ -280,7 +280,7 @@
 							$total_clean = 0;
 							$total = 0;
 							foreach($data['orderPraContainers'] as $row): 
-								$subtotal = @$row['biaya_lolo'];
+								$subtotal = @$row['biaya_lolo']+@$row['biaya_lain'];
 							?>
 								<tr>
 									<td><?=$i;?>
@@ -317,7 +317,7 @@
 							endforeach; 
 							?>
 
-							<tr><th colspan="13" class="text-right">TOTAL LOLO</th><th class="text-right"><?=number_format($total,2)?></th></tr>							
+							<tr><th colspan="13" class="text-right">TOTAL</th><th class="text-right"><?=number_format($total,2)?></th></tr>							
 
 						<?php endif; ?>
 					</tbody>
@@ -348,9 +348,9 @@
 				</table>										
 			</div>	
 			<div class="widget-footer text-center" style="padding:15px 0;">
-			<a href="#" class="btn btn-primary" id="proformaPrintInvoice1" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak Invoice</a>
+			<a href="#" class="btn btn-primary" id="proformaPrintInvoice1" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak Kwitansi</a>
 			<?php if($total_clean>0):?>
-			<a href="#" class="btn btn-primary" id="proformaPrintInvoice2" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak Invoice (Deposit)</a>
+			<a href="#" class="btn btn-primary" id="proformaPrintInvoice2" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak Deposit</a>
 			<?php endif; ?>
 			<a href="<?=site_url('prain')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Kembali</a>
 			</div>

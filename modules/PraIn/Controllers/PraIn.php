@@ -275,7 +275,7 @@ class PraIn extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'cpideliver',
-				'contents'	=> ''
+				'contents'	=> $_POST['cpideliver']
 			];
 			$post_arr[] = [
 				'name'		=> 'totalcharge',
@@ -854,7 +854,7 @@ class PraIn extends \CodeIgniter\Controller
 			} else {
 				$biaya_materai = 0;
 			}
-			$totalcharge = $subtotal + $nilai_pajak + $adm_tarif + $biaya_materai;
+			$totalcharge = $total_lolo + $total_biaya_lain + $nilai_pajak + $adm_tarif + $biaya_materai;
 			$grandtotal = $totalcharge-$pph23;
 
 			$data['subtotal_charge'] = $subtotal;
@@ -972,8 +972,13 @@ class PraIn extends \CodeIgniter\Controller
 		if ($this->request->isAJAX()) 
 		{
 			$contract = $this->get_contract($_POST['cpopr']);
-			$biaya_pph23 = $contract['copph23']/100;
-			$pph23 = ((int)$_POST['biaya_lain'] + (int)$_POST['biaya_lolo']) * $biaya_pph23;
+			$debitur = $this->get_debitur($_POST['emkl']);
+			if($debitur['cunppkp']=='PKP') {
+				$biaya_pph23 = $contract['copph23']/100;
+				$pph23 = ((int)$_POST['biaya_lain'] + (int)$_POST['biaya_lolo']) * $biaya_pph23;
+			} else {
+				$pph23 = 0;
+			}
 			// echo $biaya_lain;die();
 			$response = $this->client->request('PUT','orderPraContainers/updateData',[
 				'headers' => [
@@ -2900,6 +2905,20 @@ class PraIn extends \CodeIgniter\Controller
 
 		return $depo; 
 		die();
+	}
+
+	public function get_debitur($cucode) {
+		$response = $this->client->request('GET','debiturs/getDetailData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'form_params' => [
+				'cucode' => $cucode,
+			]
+		]);	
+		$result = json_decode($response->getBody()->getContents(), true);	
+		return $result['data'];
 	}
 
 	public function get_container($crno) {

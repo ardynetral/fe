@@ -96,18 +96,16 @@ $(document).ready(function() {
 			dataType: 'json',
 			success: function(json) {
 				if(json.status == "success") {
+					$("#praid").val(json.praid);	
+					$("#pra_id").val(json.praid);	
+					console.log(json.praid);		
+					$("#crno").focus();
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
 					window.location.href = "#formDetail";
-					$("#crno").focus();
-					// window.location.href = "<?php echo site_url('prain'); ?>";
-					// $("#navItem3").removeClass("disabled");
-					// $("#navLink3").attr("data-toggle","tab");
-					// $("#navLink3").trigger("click");	
-					$("#praid").val(json.praid);			
 					$("#save").prop('disabled', true);
 				} else {
 					Swal.fire({
@@ -846,11 +844,12 @@ $(document).ready(function() {
 
 	$("#crno").on("keyup", function(){
 		var crno = $("#crno").val();
+		var praid = $("#pra_id").val();
 		var status = "";
 		$.ajax({
 			url:"<?=site_url('prain/checkContainerNumber');?>",
 			type:"POST",
-			data: "ccode="+crno,
+			data: {"ccode":crno,"praid":praid},
 			dataType:"JSON",
 			success: function(json){
 

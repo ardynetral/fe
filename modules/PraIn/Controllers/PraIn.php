@@ -2622,6 +2622,7 @@ class PraIn extends \CodeIgniter\Controller
 		if($this->request->isAjax()) {
 
 			$ccode = $_POST['ccode'];
+			$praid = $_POST['praid'];
 			// $ccode = "APZU";
 			$validate = $this->validate([
 	            'ccode' => 'required'
@@ -2629,6 +2630,7 @@ class PraIn extends \CodeIgniter\Controller
 		
 		    if ($this->request->getMethod() === 'post' && $validate)
 		    {
+		    	// check table Container
 				$response = $this->client->request('GET','containers/checkcCode',[
 					'headers' => [
 						'Accept' => 'application/json',
@@ -2646,6 +2648,33 @@ class PraIn extends \CodeIgniter\Controller
 					$data['status'] = "Failled";
 					$data['message'] = $result['message'];
 					echo json_encode($data);die();				
+				}
+
+		    	// check table order_pra_Container
+				$reqPraContainer = $this->client->request('GET','orderPraContainers/getAllData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'query' => [
+						'praid' => $praid,
+						'offset' => 0,
+						'limit' => 100,
+					]
+				]);
+
+				$resPraContainer= json_decode($reqPraContainer->getBody()->getContents(), true);		
+				$orderPraContainers = $resPraContainer['data']['datas'];
+				// echo var_dump($orderPraContainers);
+				if(isset($orderPraContainers) && ($orderPraContainers!=null)) {
+					foreach($orderPraContainers as $opc) {
+						$crnos[] = $opc['crno'];
+					}
+					if(in_array($ccode,$crnos)) {
+						$data['status'] = "Failled";
+						$data['message'] = "Container ini sudah diinput";
+						echo json_encode($data);die();
+					}
 				}
 
 				$data['status'] = "Success";

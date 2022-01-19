@@ -27,7 +27,7 @@ $group_id = $token['groupId'];
 			<div class="form-group">
 				<label class="col-sm-4 control-label text-right">Container No. </label>
 				<div class="col-sm-8">
-					<input type="hidden" name="praid" class="form-control" id="praid" value="<?=@$praid?>">
+					<input type="hidden" name="pra_id" class="form-control" id="pra_id">
 					<input type="text" name="crno" class="form-control" id="crno">
 					<i class="err-crno text-danger"></i>
 				</div>

@@ -196,6 +196,7 @@ $group_id = $token['groupId'];
 			<div class="form-group text-center">
 				<button type="submit" id="save" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
 				<button type="button" id="update" class="btn btn-primary" style="display:none;"><i class="fa fa-check-circle"></i> Update</button>
+				<span class="block-loading"></span>
 			</div>	
 		</div>
 	</form>

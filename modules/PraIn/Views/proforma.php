@@ -385,7 +385,7 @@
 									$total_lolo = 0;
 									$total = 0;
 									foreach($data['orderPraContainers'] as $row): 
-										$subtotal = @$row['biaya_lolo'];
+										$subtotal = @$row['biaya_lolo']+@$row['biaya_lain'];
 									?>
 										<tr>
 											<td><?=$i;?></td>
@@ -411,7 +411,7 @@
 
 									?>
 
-									<tr><th colspan="9" class="text-right">TOTAL LOLO</th><th class="text-right"><?=number_format($total_lolo,2)?></th></tr>
+									<tr><th colspan="10" class="text-right">TOTAL</th><th class="text-right"><?=number_format($total,2)?></th></tr>
 
 								<?php endif; ?>
 							</tbody>

@@ -94,6 +94,10 @@ $(document).ready(function() {
             contentType: false,
             cache: false,			
 			dataType: 'json',
+            beforeSend: function () {
+				$("#save").prop('disabled', true);
+                $(".block-loading").addClass("loading"); 
+            },				
 			success: function(json) {
 				if(json.status == "success") {
 					$("#praid").val(json.praid);	
@@ -114,7 +118,10 @@ $(document).ready(function() {
 					  html: '<div class="text-danger">'+json.message_body+'</div>'
 					});						
 				}
-			}
+			},
+            complete: function () {
+                $(".block-loading").removeClass("loading");
+            },	
 		});
 	});
 
@@ -771,6 +778,7 @@ $(document).ready(function() {
 			formData += "&deposit=" + $("#deposit").val("0");
 		}
 		formData += "&cpcust=" + $("#cucode").val();
+		formData += "&emkl=" + $("#cpideliver").val();
 		formData += "&biaya_clean=" + $("#biaya_clean").val();
 		formData += "&biaya_lolo=" + $("#biaya_lolo").val();
 		formData += "&cleaning_type=" + $("#cleaning_type").val();
@@ -846,6 +854,7 @@ $(document).ready(function() {
 		var crno = $("#crno").val();
 		var praid = $("#pra_id").val();
 		var status = "";
+		$(this).val($(this).val().toUpperCase());
 		$.ajax({
 			url:"<?=site_url('prain/checkContainerNumber');?>",
 			type:"POST",
@@ -954,6 +963,21 @@ function loadTableContainerAppv1(praid) {
 		}
 	});
 }
+
+// check file size while upload
+$('#files').bind('change', function() {
+
+  //this.files[0].size gets the size of your file.
+  if(this.files[0].size > 524288) {
+	Swal.fire({
+	  icon: 'error',
+	  title: "MAX 512 KB",
+	  html: '<div class="text-danger">File terlalu besar!</div>'
+	});
+	this.value='';
+  }
+
+});
 
 function runDataTables() {		
     $.fn.dataTable.pipeline = function ( opts ) { 

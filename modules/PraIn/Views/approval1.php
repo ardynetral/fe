@@ -353,7 +353,7 @@
 									</label>
 								</div>
 								<div class="col-sm-4">
-									<input type="text" name="biaya_lain" id="biaya_lain" class="form-control">
+									<input type="text" name="biaya_lain" id="biaya_lain" class="form-control" value="0">
 								</div>
 							</div>																							
 							<div class="form-group">

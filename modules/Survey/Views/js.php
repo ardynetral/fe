@@ -36,7 +36,8 @@ $(document).ready(function() {
 
 	var alReadyClicked = false;
 	$("#saveData").click(function(){
-		if (alReadyClicked == false) {
+		// if (alReadyClicked == false) {
+			console.log(alReadyClicked);
 			$('#saveData').prop('disabled','disabled');
 			formData = $('#form_input').serializeArray();
 			$.ajax({
@@ -49,10 +50,10 @@ $(document).ready(function() {
 					$('#cancel').prop('disabled',true);
 				},
 				success: function(res) {
-					console.log(res)
+					// console.log(JSON.stringify(res.api));
 					$('#saveData').prop('disabled',false);
 					$('#cancel').prop('disabled',false);
-					if(res.message == "success") {
+					if(res.err == false) {
 						Swal.fire({
 						  icon: 'success',
 						  title: "Success",
@@ -70,10 +71,10 @@ $(document).ready(function() {
 				}
 			});
 
-		} else {
-			return false;
-		}
-		var alReadyClicked = true;
+		// } else {
+		// 	return false;
+		// }
+		// var alReadyClicked = true;
 	});
 
 	$("#liftoffcharge").on("change", function(){
@@ -470,7 +471,6 @@ function runDataTables() {
         }
     } 	   
 
-
     $('#CRNO').keyup(function() {
     	crno = $(this).val();
     	if (crno.length == 11) {
@@ -493,6 +493,7 @@ function runDataTables() {
 						}
 						$('#LECONTRACTNO').val(res.data.prcode)
 						$('#CPIPRANO').val(res.data.cpiorderno)
+						$("#saveData").removeAttr("disabled");
 					} else {
 						$('#form_input')[0].reset();
 						Swal.fire({

@@ -210,9 +210,9 @@ class Survey extends \CodeIgniter\Controller
 		    "CPIPRANO" => $this->request->getPost('CPIPRANO'),
 		    "SVID" => $SVID,
 		    "SYID" => $this->request->getPost('SYID'),
-		    "SVCRNO" => $this->request->getPost('SVCRNO'),
+		    "SVCRNO" => $this->request->getPost('CRNO'),
 		    "SVSURDAT" => ($this->request->getPost('SVSURDAT')!=''?$this->request->getPost('SVSURDAT'):$date),
-		    "SVCOND" => $this->request->getPost('SVSURDAT'),
+		    "SVCOND" => $this->request->getPost('CRLASTCOND'),
 		    // "SVCRTON" => $this->request->getPost('SVCRTON'),
 		    "SVCRTON" => $date,
 		    // "SVCRTBY" => $this->request->getPost('SVCRTBY'),
@@ -262,28 +262,28 @@ class Survey extends \CodeIgniter\Controller
 		    "CRMANUF" => $this->request->getPost('CRMANUF'));
 
 		if ($this->request->getPost('UPDATE_ID') == '') {
-		// 	$response = $this->client->request('POST','survey/createNew',[
-		// 		'headers' => [
-		// 			'Accept' => 'application/json',
-		// 			'Authorization' => session()->get('login_token')
-		// 		],
-		// 		'json' => $form_params,
-		// 	]);
+			$response = $this->client->request('POST','survey/createNew',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'json' => $form_params,
+			]);
 			$type = 'insert';
 		} else {
-		// 	$response = $this->client->request('PUT','survey/updateData',[
-		// 		'headers' => [
-		// 			'Accept' => 'application/json',
-		// 			'Authorization' => session()->get('login_token')
-		// 		],
-		// 		'json' => $form_params,
-		// 	]);
+			$response = $this->client->request('PUT','survey/updateData',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'json' => $form_params,
+			]);
 			$type = 'update';
 		}
-		// $result = json_decode($response->getBody()->getContents(), true);
+		$result = json_decode($response->getBody()->getContents(), true);
 		
-		// $err = ($result['message']== "Success Insert Data" || $result['message'] == "Success Update Data")?:false:true;
-		$err = false;
+		$err = ($result['message']== "Success Insert Data" || $result['message'] == "Success Update Data")?false:true;
+		// $err = false;
 		$resp = array('method'=>$type, 'err'=>$err,'message'=>'Success '.$type.' Data', 'api'=>@$result);
 		echo json_encode($resp);
 	}

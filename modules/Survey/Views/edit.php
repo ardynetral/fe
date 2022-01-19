@@ -64,7 +64,7 @@ if(isset($data) && ($data!='')) {
 							<td><input type="text" name="CUCODE" class="form-control" id="CUCODE" value="<?='';?>"></td>
 							<td></td>
 							<td></td>							
-							<td class="text-right">Ref In No # :</td>
+							<td class="text-right">DO No # :</td>
 							<td ><input type="text" name="CPIREFIN" id="CPIREFIN" class="form-control" value="<?='';?>"></td>
 						</tr>
 						<tr>

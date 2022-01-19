@@ -85,8 +85,8 @@ class GateIn extends \CodeIgniter\Controller
 				'retype1'=>21,
 				'retype2'=>22,
 				'retype3'=>23,
-				'crlastact1'=>'od',
-				'crlastact2'=>'bi',
+				'crlastact1'=>'WE',
+				'crlastact2'=>'WS',
 				'limit'=>$limit,
 				'offset'=>$offset
 			]
@@ -152,6 +152,7 @@ class GateIn extends \CodeIgniter\Controller
 		$data['page_title'] = "Gate In";
 		$data['page_subtitle'] = "Gate In Page";
 		// echo var_dump($_POST);die();
+		// last act jadi WS
 		if($this->request->isAjax()) {
 			$form_params = [
 				"crno" => $_POST['crno'],

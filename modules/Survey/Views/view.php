@@ -52,7 +52,7 @@ if(isset($data) && ($data!='')) {
 							<td><input  <?php echo $readonly;?> type="text" name="CUCODE" class="form-control" id="CUCODE" value="<?=@$details['datas']['cucode'];?>"></td>
 							<td></td>
 							<td></td>							
-							<td class="text-right">Ref In No # :</td>
+							<td class="text-right">DO No # :</td>
 							<td ><input  <?php echo $readonly;?> type="text" name="CPIREFIN" id="CPIREFIN" class="form-control" value="<?=@$details['datas']['cpirefin'];?>"></td>
 						</tr>
 						<tr>
@@ -92,8 +92,8 @@ if(isset($data) && ($data!='')) {
 							<td ><input  <?php echo $readonly;?> type="text" name="CCHEIGHT" class="form-control" id="CCHEIGHT" value="<?=@$details['datas']['ccheight'];?>"></td>
 							<td ></td>
 							<td ></td>
-							<td class="text-right">Receipt No</td>
-							<td ><input  <?php echo $readonly;?> type="text" name="CPIRECEPTNO" id="CPIRECEPTNO" class="form-control" value="<?=@$details['datas']['cpireceptno'];?>"></td>
+							<!-- <td class="text-right">Receipt No</td>
+							<td ><input  <?php echo $readonly;?> type="text" name="CPIRECEPTNO" id="CPIRECEPTNO" class="form-control" value="<?=@$details['datas']['cpireceptno'];?>"></td> -->
 						</tr>
 						<tr>
 							<td class="text-right" width="">CDP :</td>
@@ -203,23 +203,23 @@ if(isset($data) && ($data!='')) {
 							<td class="text-right">Vessel Operator :</td>
 							<td ><input <?php echo $readonly;?> type="text" name="CPIVES" id="CPIVES" class="form-control" value="<?=@$details['datas']['cpives'];?>"></td>
 						</tr>
-						<tr>
+						<!-- <tr>
 							<td class="text-right" width="130">Block :</td>
 							<td><input <?php echo $readonly;?> type="text" name="CRPOS" class="form-control" id="CRPOS" value="<?=@$details['datas']['crpos'];?>"></td>
 							<td class="text-right">Bay :</td>
 							<td ><input <?php echo $readonly;?> type="text" name="CRBAY" id="CRBAY" class="form-control" value="<?=@$details['datas']['crbay'];?>"></td>
 							<td class="text-right">Redeliver :</td>
 							<td ><input <?php echo $readonly;?> type="text" name="CPIDELIVER" id="CPIDELIVER" class="form-control" value="<?=@$details['datas']['cpideliver'];?>"></td>
-						</tr>
-						<tr>
+						</tr> -->
+						<!-- <tr>
 							<td class="text-right" width="130">Row :</td>
 							<td><input <?php echo $readonly;?> type="text" name="CRROW" class="form-control" id="CRROW" value="<?=@$details['datas']['crrow'];?>"></td>
 							<td class="text-right">Tier :</td>
 							<td ><input <?php echo $readonly;?> type="text" name="CRTIER" id="CRTIER" class="form-control" value="<?=@$details['datas']['crtier'];?>"></td>
 							<td class="text-right">DPP/Non DPP :</td>
 							<td ><input <?php echo $readonly;?> type="text" name="CPIDPP" id="CPIDPP" class="form-control" value="<?=@$details['datas']['cpidpp'];?>"></td>
-						</tr>
-						<tr>
+						</tr> -->
+						<!-- <tr>
 							<td class="text-right" width="130">Condition Box :</td>
 							<td>
 								<select name="CRLASTCOND" class="input"  >
@@ -236,23 +236,23 @@ if(isset($data) && ($data!='')) {
 							<td ><input <?php echo $readonly;?> type="text" name="" id="" class="form-control" value="<?=@$details['datas']['cccode'];?>"></td>
 							<td class="text-right">Clearence No :</td>
 							<td ><input  <?php echo $readonly;?> type="text" name="LECLEARNO" id="LECLEARNO" class="form-control" value="<?=@$details['datas']['leclearno'];?>"></td>
-						</tr>
-						<tr>
+						</tr> -->
+						<!-- <tr>
 							<td class="text-right" width="130">Activity Status :</td>
 							<td><input  <?php echo $readonly;?> type="text" name="CRLASTACT" class="form-control" id="CRLASTACT" value="<?=@$details['datas']['crlastact'];?>"></td>
 							<td ></td>
 							<td ></td>
 							<td class="text-right">Contract Code :</td>
 							<td ><input  <?php echo $readonly;?> type="text" name="LECONTRACTNO" id="LECONTRACTNO" class="form-control" value="<?=@$details['datas']['prcode'];?>"></td>
-						</tr>
-						<tr>
+						</tr> -->
+						<!-- <tr>
 							<td class="text-right" width="130">Trucker :</td>
 							<td><input  <?php echo $readonly;?> type="text" name="CUTYPE" class="form-control" id="CUTYPE" value="<?=@$details['datas']['cutype'];?>"></td>
 							<td ></td>
 							<td ></td>
 							<td class="text-right">Driver :</td>
 							<td ><input  <?php echo $readonly;?> type="text" name="CPIDRIVER" id="CPIDRIVER" class="form-control" value="<?=@$details['datas']['cpidriver'];?>"></td>
-						</tr>
+						</tr> -->
 						<?php if(@$details['datas']['crlastact'] == 'WS'){?>
 						<tr>
 							<th class="text-right">Survey Result :</th>

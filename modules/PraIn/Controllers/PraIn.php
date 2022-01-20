@@ -2457,9 +2457,6 @@ class PraIn extends \CodeIgniter\Controller
 				
 
 		$qty=0;
-		// $size20 = 0;
-		// $size40 = 0;
-		// $size45 = 0;
 		(int)$qty20 = 0;
 		(int)$qty40 = 0;
 		(int)$qty45 = 0;		
@@ -2476,8 +2473,8 @@ class PraIn extends \CodeIgniter\Controller
 		
 		foreach($detail as $det) {			
 			$qty = $qty+1;
-			$price_cleaning = (int)$det['biaya_clean'];
-			$subtot_cleaning = $subtot_cleaning+(int)$det['biaya_clean'];
+			$price_cleaning = (int)$det['biaya_lain'];
+			$subtot_cleaning = $subtot_cleaning+(int)$det['biaya_lain'];
 
 			if($det['cclength']<=20) {
 				$qty20 = $qty20 + 1;  
@@ -2735,10 +2732,11 @@ class PraIn extends \CodeIgniter\Controller
 
 		$result = json_decode($response->getBody()->getContents(),true);
 		$header = $result['data']['datas'][0];
+
 		// dd($header);
 		$pratgl = $header['cpipratgl'];
 		$recept = recept_by_praid($header['praid']);
-
+		$debitur = $this->get_debitur($header['cpideliver']);
 		if($recept==""){
 			$invoice_number ="-";	
 		} else {
@@ -2746,6 +2744,46 @@ class PraIn extends \CodeIgniter\Controller
 		}
 
 		$det_container = $header['orderPraContainers'];
+		$qty=0;
+		(int)$qty20 = 0;
+		(int)$qty40 = 0;
+		(int)$qty45 = 0;		
+		(int)$price20 = 0;
+		(int)$price40 = 0;
+		(int)$price45 = 0;		
+		(int)$subtot20 = 0;
+		(int)$subtot40 = 0;
+		(int)$subtot45 = 0;		
+		(int)$price_cleaning = 0;
+		(int)$subtot_cleaning = 0;
+		(int)$subtotal = 0;
+		(int)$total = 0;		
+		foreach($det_container as $det) {
+			if($det['biaya_clean']!=0) {
+				$qty = $qty+1;
+				$price_cleaning = (int)$det['biaya_clean'];
+				$subtot_cleaning = $subtot_cleaning+(int)$det['biaya_clean'];
+
+				if($det['cclength']<=20) {
+					$qty20 = $qty20 + 1;  
+					$price20 = $det['biaya_clean'];
+					$subtot20 = $subtot20 + (int)$det['biaya_clean'];
+				} 
+				if ($det['cclength']==40) {
+					$qty40 = $qty40 + 1;
+					$price40 = $det['biaya_clean'];
+					$subtot40 = $subtot40 + (int)$det['biaya_clean'];
+				}
+				if($det['cclength']>40) {
+					$qty45 = $qty45 + 1;
+					$price45 = $det['biaya_clean'];
+					$subtot45 = $subtot45 + (int)$det['biaya_clean'];
+				}				
+			}
+		}
+
+		$total=$subtot20+$subtot40+$subtot45;
+
 		$contract = $this->get_contract($det_container[0]['cpopr']);
 		$depo = $this->get_depo($header['cpdepo']);
 		if(isset($result['status']) && ($result['status']=="Failled"))
@@ -2804,8 +2842,8 @@ class PraIn extends \CodeIgniter\Controller
 		';
 		$html .='
 			SUDAH TERIMA DARI/RECEIVED FROM
-			<h4></h4>
-			OPERATOR CONTAINER : '.$header['vessels']['vesopr'].'<br>
+			<h4>'.$debitur['cuname'].'</h4>
+			OPERATOR CONTAINER : '.$debitur['cuname'].'<br>
 		';
 
 		$html .='
@@ -2816,23 +2854,47 @@ class PraIn extends \CodeIgniter\Controller
 						<th>NO</th>
 						<th>URAIAN / PEMBAYARAN</th>
 						<th>QTY</th>
-						<th>SIZE</th>
+						<th colspan="2">SIZE</th>
 						<th>PRICE</th>
 						<th>JUMLAH</th>			
 					</tr>
 				</thead>
-				<tbody>
+				<tbody>';
+					if($qty20>0) {
+						$html .='<tr>
+							<td>001</td>
+							<td>DEPOSIT REPAIR</td>
+							<td class="t-center">'.$qty20.'</td>
+							<td class="t-center">20</td>
+							<td class="t-center">IDR</td>
+							<td class="t-right">'.number_format($price20,2).'</td>
+							<td class="t-right">'.number_format($subtot20,2).'</td>
+						</tr>';
+					}
+					if($qty40>0) {
+						$html .='<tr>
+							<td>001</td>
+							<td>DEPOSIT REPAIR</td>
+							<td class="t-center">'.$qty40.'</td>
+							<td class="t-center">40</td>
+							<td class="t-center">IDR</td>
+							<td class="t-right">'.number_format($price40,2).'</td>
+							<td class="t-right">'.number_format($subtot40,2).'</td>
+						</tr>';
+					}
+					if($qty45>0) {
+						$html .='<tr>
+							<td>001</td>
+							<td>DEPOSIT REPAIR</td>
+							<td class="t-center">'.$qty45.'</td>
+							<td class="t-center">45</td>
+							<td class="t-center">IDR</td>
+							<td class="t-right">'.number_format($price45,2).'</td>
+							<td class="t-right">'.number_format($subtot45,2).'</td>
+						</tr>';
+					}					
 
-					<tr>
-						<td>&nbsp;</td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>';
-
-				$html .='<tr><th colspan="5" class="t-right">TOTAL</th><th></th></tr>';
+				$html .='<tr><th colspan="6" class="t-right">TOTAL</th><th class="t-right">'.number_format($total,2).'</th></tr>';
 		$html .='
 				</tbody>
 			</table>
@@ -2841,7 +2903,7 @@ class PraIn extends \CodeIgniter\Controller
 				<tbody>			
 					<tr><td></td><td width="25%"></td></tr>		
 					<tr>
-						<td>REMARK : </td>
+						<td>REMARK : <b>'.$header['cpirefin'].'</b></td>
 						<td class="t-center">PADANG, '.date('d-M-Y').'</td>
 					</tr>
 					<tr>

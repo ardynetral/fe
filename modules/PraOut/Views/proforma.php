@@ -20,14 +20,14 @@
 						<fieldset>
 							<div class="col-sm-6">				
 								<div class="form-group">
-									<label for="cpidish " class="col-sm-5 control-label text-right">Origin Port</label>
+									<label for="cpidish " class="col-sm-5 control-label text-right">Destination Port</label>
 									<div class="col-sm-4">
 										<input type="text" name="cpidish" class="form-control" id="cpidish" value="<?=$data['cpidish']?>" readOnly>
 									</div>
 									<label class="col-sm-3 control-label">* Port Country</label>
 								</div>	
 								<div class="form-group">
-									<label for="cpidisdat" class="col-sm-5 control-label text-right">Discharge Date</label>
+									<label for="cpidisdat" class="col-sm-5 control-label text-right">Loading Date</label>
 									<div class="col-sm-7">
 										<div class="input-group">
 											<input type="text" name="cpidisdat" id="cpidisdat" class="form-control tanggal" value="<?=$data['cpidisdat']?>">
@@ -35,9 +35,30 @@
 										</div>									
 									</div>
 								</div>
-								
 								<div class="form-group">
-									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
+									<label for="Type" class="col-sm-5 control-label text-right">Type</label>
+									<div class="col-sm-7">
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="1" <?=(isset($data['type_do'])&&($data['type_do']==1)?'checked':'');?>>
+											<span>Free Use</span>
+										</label>										
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="2" <?=(isset($data['type_do'])&&($data['type_do']==3)?'checked':'');?>>
+											<span>COC</span>
+										</label>
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="3" <?=(isset($data['type_do'])&&($data['type_do']==3)?'checked':'');?>>
+											<span>SOC</span>
+										</label>											
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="radio" name="typedo" id="" value="4" <?=(isset($data['type_do'])&&($data['type_do']==4)?'checked':'');?>>
+											<span>ex Import</span>
+										</label>
+
+									</div>
+								</div>									
+								<div class="form-group">
+									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift On Charged in Depot</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
 											<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="<?=$data['liftoffcharge']?>" <?=(isset($data['liftoffcharge'])&&($data['liftoffcharge']==1)?'':'checked');?> readOnly>
@@ -108,13 +129,13 @@
 
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label for="cpiorderno" class="col-sm-4 control-label text-right">Pra In No</label>
+									<label for="cpiorderno" class="col-sm-4 control-label text-right">Pra Out No</label>
 									<div class="col-sm-6">
 										<input type="text" name="cpiorderno" class="form-control" id="cpiorderno" value="<?=$data['cpiorderno'];?>" readonly>
 									</div>
 								</div>								
 								<div class="form-group">
-									<label for="cpipratgl" class="col-sm-4 control-label text-right">Pra In Date</label>
+									<label for="cpipratgl" class="col-sm-4 control-label text-right">Pra Out Date</label>
 									<div class="col-sm-6">
 										<div class="input-group">
 											<input type="text" name="cpipratgl" id="cpipratgl" class="form-control" required readonly value="<?=$data['cpipratgl'];?>">
@@ -123,7 +144,7 @@
 									</div>
 								</div>								
 								<div class="form-group">
-									<label for="cpirefin" class="col-sm-4 control-label text-right">Reff In No #</label>
+									<label for="cpirefin" class="col-sm-4 control-label text-right">RO Number #</label>
 									<div class="col-sm-6">
 										<input type="text" name="cpirefin" class="form-control" id="cpirefin" value="<?=$data['cpirefin']?>" readOnly>
 									</div>
@@ -158,13 +179,13 @@
 								</div>
 								
 								<div class="form-group">
-									<label for="cpicargo" class="col-sm-4 control-label text-right">Ex Cargo</label>
+									<label for="cpicargo" class="col-sm-4 control-label text-right">Cargo</label>
 									<div class="col-sm-6">
 										<input type="text" name="cpicargo" class="form-control" id="cpicargo" value="<?=$data['cpicargo']?>" readonly>
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="cpideliver" class="col-sm-4 control-label text-right">Redeliverer</label>
+									<label for="cpideliver" class="col-sm-4 control-label text-right">Receiver</label>
 									<div class="col-sm-6">
 										<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=$data['cpideliver']?>" readonly>
 									</div>
@@ -443,8 +464,6 @@
 						</table>						
 					</div>
 					<div class="widget-footer text-center" style="padding:15px 0;">
-					<a href="#" class="btn btn-primary" id="proformaPrintInvoice1" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak Invoice</a>
-					<a href="#" class="btn btn-primary" id="proformaPrintInvoice2" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak Invoice (Deposit)</a>
 					<a href="<?=site_url('praout')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Kembali</a>
 					</div>					
 				</div>

@@ -22,14 +22,14 @@
 						<fieldset>
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label for="cpidish " class="col-sm-5 control-label text-right">Origin Port</label>
+									<label for="cpidish " class="col-sm-5 control-label text-right">Destination Port</label>
 									<div class="col-sm-4">
-										<input type="text" name="cpidish" id="cpidish" class="form-control" value="<?=$data['cpidish']?>" readonly="">
+										<?=port_dropdown("cpidish",$data['cpidish']);?>
 									</div>
 									<label class="col-sm-3 control-label">* Port Country</label>
 								</div>	
 								<div class="form-group">
-									<label for="cpidisdat" class="col-sm-5 control-label text-right">Discharge Date</label>
+									<label for="cpidisdat" class="col-sm-5 control-label text-right">Loading Date</label>
 									<div class="col-sm-7">
 										<div class="input-group">
 											<input type="text" name="cpidisdat" id="cpidisdat" class="form-control" value="<?=$data['cpidisdat']?>" readonly="">
@@ -39,7 +39,7 @@
 								</div>
 								
 								<div class="form-group">
-									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
+									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift On Charged in Depot</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
 											<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="<?=$data['liftoffcharge']?>" <?=(isset($data['liftoffcharge'])&&($data['liftoffcharge']==1)?'':'checked');?> readonly="">
@@ -52,19 +52,19 @@
 									<label for="Type" class="col-sm-5 control-label text-right">Type</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="1" <?=(isset($data['typedo'])&&($data['typedo']==1)?'':'checked');?>>
+											<input type="radio" name="typedo" id="" value="1" <?=(isset($data['type_do'])&&($data['type_do']==1)?'checked':'');?>>
 											<span>Free Use</span>
 										</label>										
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="2" <?=(isset($data['typedo'])&&($data['typedo']==3)?'':'checked');?>>
+											<input type="radio" name="typedo" id="" value="2" <?=(isset($data['type_do'])&&($data['type_do']==3)?'checked':'');?>>
 											<span>COC</span>
 										</label>
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="3" <?=(isset($data['typedo'])&&($data['typedo']==3)?'':'checked');?>>
+											<input type="radio" name="typedo" id="" value="3" <?=(isset($data['type_do'])&&($data['type_do']==3)?'checked':'');?>>
 											<span>SOC</span>
 										</label>											
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="4" <?=(isset($data['typedo'])&&($data['typedo']==4)?'':'checked');?>>
+											<input type="radio" name="typedo" id="" value="4" <?=(isset($data['type_do'])&&($data['type_do']==4)?'checked':'');?>>
 											<span>ex Import</span>
 										</label>
 
@@ -150,7 +150,7 @@
 									</div>
 								</div>								
 								<div class="form-group">
-									<label for="cpirefin" class="col-sm-4 control-label text-right">Reff In No #</label>
+									<label for="cpirefin" class="col-sm-4 control-label text-right">RO Number #</label>
 									<div class="col-sm-6">
 										<input type="text" name="cpirefin" class="form-control" id="cpirefin" value="<?=$data['cpirefin']?>" readonly="">
 									</div>
@@ -185,15 +185,15 @@
 								</div>
 								
 								<div class="form-group">
-									<label for="cpicargo" class="col-sm-4 control-label text-right">Ex Cargo</label>
+									<label for="cpicargo" class="col-sm-4 control-label text-right">Cargo</label>
 									<div class="col-sm-6">
 										<input type="text" name="cpicargo" class="form-control" id="cpicargo" value="<?=$data['cpicargo']?>" readonly="">
 									</div>
 								</div>
 								<div class="form-group">
-									<label for="cpideliver" class="col-sm-4 control-label text-right">Redeliverer</label>
+									<label for="cpideliver" class="col-sm-4 control-label text-right">Receiver</label>
 									<div class="col-sm-6">
-										<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=$data['cpideliver']?>" readonly="">
+										<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=$data['cpideliver']?>" readonly>
 									</div>
 								</div>
 								<div class="form-group" style="display:none;">
@@ -301,7 +301,7 @@
 									</label>
 								</div>	
 							</div>
-							<div class="form-group">
+							<div class="form-group" style="display: none;">
 								<label class="col-sm-4 control-label text-right">Deposit</label>
 								<div class="col-sm-2">
 									<label class="fancy-checkbox custom-color-green">
@@ -320,7 +320,7 @@
 									<input type="text" name="biaya_lolo" id="biaya_lolo" value="0" class="form-control">
 								</div>	
 							</div>	
-							<div class="form-group">
+							<div class="form-group" style="display: none;">
 								<label class="col-sm-4 control-label text-right">Cleaning Type</label>
 								<div class="col-sm-8">
 									<label class="control-inline fancy-checkbox custom-color-green">

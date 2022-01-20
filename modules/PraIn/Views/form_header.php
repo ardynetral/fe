@@ -181,7 +181,7 @@ $group_id = $token['groupId'];
 				<div class="form-group">
 					<label for="cpideliver" class="col-sm-4 control-label text-right">Redeliverer</label>
 					<div class="col-sm-6">
-						<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=@$prcode?>">
+						<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=@$prcode?>" readonly>
 					</div>
 				</div>
 				<div class="form-group">

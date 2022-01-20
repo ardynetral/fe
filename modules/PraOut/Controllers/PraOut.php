@@ -44,7 +44,8 @@ class PraOut extends \CodeIgniter\Controller
 				],
 				'query' => [
 					'offset' => $offset,
-					'limit'	=> $limit
+					'limit'	=> $limit,
+					'pracode' => 'PO'
 				]
 			]);
 
@@ -60,7 +61,7 @@ class PraOut extends \CodeIgniter\Controller
 				'query' => [
 					'offset' => $offset,
 					'limit'	=> $limit,
-					// 'userId'	=> $user_id
+					'pracode' => 'PO'
 				]
 			]);		
 			$result_pra = json_decode($response1->getBody()->getContents(),true);	
@@ -275,7 +276,7 @@ class PraOut extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'cpideliver',
-				'contents'	=> ''
+				'contents'	=>  $_POST['cpideliver']
 			];
 			$post_arr[] = [
 				'name'		=> 'totalcharge',
@@ -283,7 +284,7 @@ class PraOut extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'typedo',
-				'contents'	=> '0'
+				'contents'	=> 0
 			];
 			$post_arr[] = [
 				'name'		=> 'flag',
@@ -433,7 +434,7 @@ class PraOut extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'cpideliver',
-				'contents'	=> ''
+				'contents'	=> $_POST['cpideliver']
 			];
 			$post_arr[] = [
 				'name'		=> 'totalcharge',
@@ -441,7 +442,7 @@ class PraOut extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'typedo',
-				'contents'	=> 0
+				'contents'	=> $_POST['typedo']
 			];
 			$post_arr[] = [
 				'name'		=> 'flag',
@@ -1598,6 +1599,11 @@ class PraOut extends \CodeIgniter\Controller
 		$result = json_decode($response->getBody()->getContents(), true);
 		// echo var_dump($result);			
 		$i=1; 
+		$total_lolo = 0;
+		$total_cleaning = 0;
+		$total_biaya_lain = 0;
+		$total_pph23 = 0;
+		$total = 0;			
 		$html="";
 		foreach($result['data']['datas'] as $row){
 			$pracrid=$row['pracrnoid'];
@@ -1615,8 +1621,14 @@ class PraOut extends \CodeIgniter\Controller
 				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."'>edit</a></td>
 				</tr>";
 			$i++; 
+			$total_lolo = $total_lolo+$row['biaya_lolo'];	
 		}
-
+		$total = $total_lolo+$total_biaya_lain+$total_cleaning;				
+		$html .= "<input type='hidden' name='total_lolo' id='total_lolo' value='".$total_lolo."'>";
+		$html .= "<input type='hidden' name='total_cleaning' id='total_cleaning' value='".$total_cleaning."'>";
+		$html .= "<input type='hidden' name='total_biaya_lain' id='total_biaya_lain' value='".$total_biaya_lain."'>";
+		$html .= "<input type='hidden' name='total_pph23' id='total_pph23' value='".$total_pph23."'>";
+		$html .= "<input type='hidden' name='subtotal_bill' id='subtotal_bill' value='".$total."'>";
 		echo json_encode($html);
 		die();
 	}
@@ -1735,7 +1747,7 @@ class PraOut extends \CodeIgniter\Controller
 			<div class="wrapper">
 
 			<div class="page-header t-center">
-				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR BONGKAR</h3>
+				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR MUAT</h3>
 				<h4 style="text-decoration: underline;line-height:0.5;">'.$REFIN.'</h3>
 				<img src="' . $QRCODE_IMG . '" style="height:120px;">
 				<h5 style="text-decoration: underline;line-height:0.5;">'.$CPID.'</h4>
@@ -2359,6 +2371,7 @@ class PraOut extends \CodeIgniter\Controller
 		if($this->request->isAjax()) {
 
 			$ccode = $_POST['ccode'];
+			$praid = $_POST['praid'];
 			// $ccode = "APZU";
 			$validate = $this->validate([
 	            'ccode' => 'required'
@@ -2366,6 +2379,7 @@ class PraOut extends \CodeIgniter\Controller
 		
 		    if ($this->request->getMethod() === 'post' && $validate)
 		    {
+		    	// check table Container
 				$response = $this->client->request('GET','containers/checkcCode',[
 					'headers' => [
 						'Accept' => 'application/json',
@@ -2383,6 +2397,33 @@ class PraOut extends \CodeIgniter\Controller
 					$data['status'] = "Failled";
 					$data['message'] = $result['message'];
 					echo json_encode($data);die();				
+				}
+
+		    	// check table order_pra_Container
+				$reqPraContainer = $this->client->request('GET','orderPraContainers/getAllData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'query' => [
+						'praid' => $praid,
+						'offset' => 0,
+						'limit' => 100,
+					]
+				]);
+
+				$resPraContainer= json_decode($reqPraContainer->getBody()->getContents(), true);		
+				$orderPraContainers = $resPraContainer['data']['datas'];
+				// echo var_dump($orderPraContainers);
+				if(isset($orderPraContainers) && ($orderPraContainers!=null)) {
+					foreach($orderPraContainers as $opc) {
+						$crnos[] = $opc['crno'];
+					}
+					if(in_array($ccode,$crnos)) {
+						$data['status'] = "Failled";
+						$data['message'] = "Container ini sudah diinput";
+						echo json_encode($data);die();
+					}
 				}
 
 				$data['status'] = "Success";

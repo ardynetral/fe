@@ -412,7 +412,6 @@
 									$total = 0;
 									// echo var_dump($orderPraContainers);die();
 									foreach($orderPraContainers as $row): 
-										$subtotal = $row['biaya_lolo'];
 									?>
 										<tr>
 											<td><?=$i;?></td>
@@ -434,8 +433,8 @@
 									$total_cleaning = $total_cleaning+$row['biaya_clean'];
 									$total_biaya_lain = $total_biaya_lain+$row['biaya_lain'];
 									$total_pph23 = $total_pph23+$row['pph23'];
-									$total = $total+$subtotal;									
 									endforeach; 
+									$subtotal = $total_lolo+$total_biaya_lain;
 									?>
 								<?php endif; ?>
 
@@ -443,7 +442,7 @@
 								<input type="hidden" name="total_cleaning" id="total_cleaning" value="<?=$total_cleaning?>">
 								<input type="hidden" name="total_biaya_lain" id="total_biaya_lain" value="<?=$total_biaya_lain?>">
 								<input type="hidden" name="total_pph23" id="total_pph23" value="<?=$total_pph23?>">
-								<input type="hidden" name="subtotal_bill" id="subtotal_bill" value="<?=$total?>">
+								<input type="hidden" name="subtotal_bill" id="subtotal_bill" value="<?=$subtotal?>">
 								
 							</tbody>
 						</table>

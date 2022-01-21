@@ -52,19 +52,19 @@
 									<label for="Type" class="col-sm-5 control-label text-right">Type</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="1" <?=(isset($data['typedo'])&&($data['typedo']==1)?'':'checked');?>>
+											<input type="radio" name="typedo" id="" value="1" <?=(isset($data['type_do'])&&($data['type_do']==1)?'checked':'');?>>
 											<span>Free Use</span>
 										</label>										
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="2" <?=(isset($data['typedo'])&&($data['typedo']==3)?'':'checked');?>>
+											<input type="radio" name="typedo" id="" value="2" <?=(isset($data['type_do'])&&($data['type_do']==2)?'checked':'');?>>
 											<span>COC</span>
 										</label>
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="3" <?=(isset($data['typedo'])&&($data['typedo']==3)?'':'checked');?>>
+											<input type="radio" name="typedo" id="" value="3" <?=(isset($data['type_do'])&&($data['type_do']==3)?'checked':'');?>>
 											<span>SOC</span>
 										</label>											
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="4" <?=(isset($data['typedo'])&&($data['typedo']==4)?'':'checked');?>>
+											<input type="radio" name="typedo" id="" value="4" <?=(isset($data['type_do'])&&($data['type_do']==4)?'checked':'');?>>
 											<span>ex Import</span>
 										</label>
 
@@ -434,7 +434,7 @@
 									$total_biaya_lain = $total_biaya_lain+$row['biaya_lain'];
 									$total_pph23 = $total_pph23+$row['pph23'];
 									endforeach; 
-									$subtotal = $total_lolo+$total_biaya_lain;
+									$subtotal = $total_lolo+$total_biaya_lain+$total_cleaning;
 									?>
 								<?php endif; ?>
 

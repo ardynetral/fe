@@ -802,6 +802,7 @@ $(document).ready(function() {
 	$("#crno").on("keyup", function(){
 		var crno = $("#crno").val();
 		var status = "";
+		$(this).val($(this).val().toUpperCase());
 		$.ajax({
 			url:"<?=site_url('praout/checkContainerNumber');?>",
 			type:"POST",
@@ -900,6 +901,21 @@ function loadTableContainerAppv1(praid) {
 		}
 	});
 }
+
+// check file size while upload
+$('#files').bind('change', function() {
+
+  //this.files[0].size gets the size of your file.
+  if(this.files[0].size > 524288) {
+	Swal.fire({
+	  icon: 'error',
+	  title: "MAX 512 KB",
+	  html: '<div class="text-danger">File terlalu besar!</div>'
+	});
+	this.value='';
+  }
+
+});
 
 function runDataTables() {		
     $.fn.dataTable.pipeline = function ( opts ) { 

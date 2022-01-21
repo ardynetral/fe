@@ -15,14 +15,13 @@
 					<th>Date</th>
 					<th>Vessel</th>
 					<th>Voyage</th>
-					<th>Ref in No.</th>
+					<th>RO Number</th>
 					<th></th>
 				</tr>
 			</thead>
 			
 			<tbody>
 				<?php $i=1; foreach($data_pra as $row): ?>
-				<?php if(substr($row['cpiorderno'],0,2)=="PO"): ?>
 					<tr>
 						<td><?=$i;?></td>
 						<td><?=$row['cpiorderno'];?></td>
@@ -46,6 +45,7 @@
 							<a href="<?=site_url('praout/proforma/'.$row['praid']);?>" id="" class="btn btn-xs btn-primary" data-praid="<?=$row['praid'];?>">Proforma</a>
 							
 							<?php if((check_bukti_bayar($row['praid'])==true)&&($group_id!=1)):?>
+							<!-- <a href="<?=site_url('praout/approval2/'.$row['praid']);?>" id="" class="btn btn-xs btn-success approve" data-praid="<?=$row['praid'];?>">Approval 2</a> -->
 							<a href="<?=site_url('praout/approval2/'.$row['praid']);?>" id="" class="btn btn-xs btn-success approve" data-praid="<?=$row['praid'];?>">Approval 2</a>
 							<?php endif;?>
 
@@ -56,7 +56,7 @@
 						<?php endif; ?>
 					</td>
 					</tr>
-				<?php $i++; endif; ?>
+				<?php $i++;?>
 				<?php endforeach; ?>
 			</tbody>
 		</table>

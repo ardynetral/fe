@@ -43,14 +43,14 @@ $group_id = $token['groupId'];
 
 */ ?>
 				<div class="form-group">
-					<label for="cpidish " class="col-sm-5 control-label text-right">Origin Port</label>
+					<label for="cpidish " class="col-sm-5 control-label text-right">Destination Port</label>
 					<div class="col-sm-4">
 						<?=port_dropdown("cpidish","");?>
 					</div>
 					<label class="col-sm-3 control-label">* Port Country</label>
 				</div>	
 				<div class="form-group">
-					<label for="cpidisdat" class="col-sm-5 control-label text-right">Discharge Date</label>
+					<label for="cpidisdat" class="col-sm-5 control-label text-right">Loading Date</label>
 					<div class="col-sm-7">
 						<div class="input-group">
 							<input type="text" name="cpidisdat" id="cpidisdat" class="form-control tanggal">
@@ -59,7 +59,7 @@ $group_id = $token['groupId'];
 					</div>
 				</div>
 				<div class="form-group" style="display:none;">
-					<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
+					<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift On Charged in Depot</label>
 					<div class="col-sm-7">
 						<label class="control-inline fancy-checkbox custom-color-green">
 							<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="1" checked>
@@ -125,7 +125,7 @@ $group_id = $token['groupId'];
 				<div class="form-group">
 					<label for="cpiorderno" class="col-sm-4 control-label text-right">Pra Out No</label>
 					<div class="col-sm-6">
-						<input type="text" name="cpiorderno" class="form-control" id="cpiorderno" value="" readonly>
+						<input type="text" name="cpiorderno" class="form-control" id="cpiorderno" value="<?=@$prain_no;?>" readonly>
 					</div>
 				</div>								
 				<div class="form-group">
@@ -138,7 +138,7 @@ $group_id = $token['groupId'];
 					</div>
 				</div>								
 				<div class="form-group">
-					<label for="cpirefin" class="col-sm-4 control-label text-right">Reff In No #</label>
+					<label for="cpirefin" class="col-sm-4 control-label text-right">RO Number #</label>
 					<div class="col-sm-6">
 						<input type="text" name="cpirefin" class="form-control" id="cpirefin" required>
 					</div>
@@ -173,17 +173,17 @@ $group_id = $token['groupId'];
 				</div>
 */?>
 				<div class="form-group">
-					<label for="cpicargo" class="col-sm-4 control-label text-right">Ex Cargo</label>
+					<label for="cpicargo" class="col-sm-4 control-label text-right">Cargo</label>
 					<div class="col-sm-6">
 						<input type="text" name="cpicargo" class="form-control" id="cpicargo" required>
 					</div>
 				</div>
-<!-- 				<div class="form-group">
-					<label for="cpideliver" class="col-sm-4 control-label text-right">Redeliverer</label>
+				<div class="form-group">
+					<label for="cpideliver" class="col-sm-4 control-label text-right">Receiver</label>
 					<div class="col-sm-6">
-						<input type="text" name="cpideliver" class="form-control" id="cpideliver" required>
+						<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=@$prcode?>" readonly>
 					</div>
-				</div> -->
+				</div>
 				<div class="form-group">
 					<label for="cpideliver" class="col-sm-4 control-label text-right">File Upload</label>
 					<div class="col-sm-6">

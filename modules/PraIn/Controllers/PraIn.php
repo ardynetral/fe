@@ -441,7 +441,7 @@ class PraIn extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'typedo',
-				'contents'	=> 0
+				'contents'	=> $_POST['typedo']
 			];
 			$post_arr[] = [
 				'name'		=> 'flag',
@@ -847,7 +847,8 @@ class PraIn extends \CodeIgniter\Controller
 			$pph23 = (int)$_POST['total_pph23'];
 			$subtotal = (int)$_POST['subtotal_bill'];
 			$pajak = ($tax/100);
-			$nilai_pajak = $pajak*($subtotal-$total_cleaning);
+			$kenapajak = $total_lolo+$total_biaya_lain;
+			$nilai_pajak = $pajak*$kenapajak;
 			$adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
 			if($total_lolo > 5000000) {
 				$biaya_materai = $contract['comaterai'];
@@ -1714,7 +1715,6 @@ class PraIn extends \CodeIgniter\Controller
 		$total = 0;		
 		$html="";
 		foreach($result['data']['datas'] as $row){
-			$subtotal = $row['biaya_lolo'];
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
 				<td>".$i."</td>
@@ -1731,12 +1731,13 @@ class PraIn extends \CodeIgniter\Controller
 				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."'>edit</a></td>
 				</tr>";
 			$i++; 
+			$subtotal = $row['biaya_lolo'];
 			$total_lolo = $total_lolo+$row['biaya_lolo'];
 			$total_cleaning = $total_cleaning+$row['biaya_clean'];
 			$total_biaya_lain = $total_biaya_lain+$row['biaya_lain'];
 			$total_pph23 = $total_pph23+$row['pph23'];
-			$total = $total+$subtotal;				
 		}
+		$total = $total_lolo+$total_biaya_lain+$total_cleaning;				
 		$html .= "<input type='hidden' name='total_lolo' id='total_lolo' value='".$total_lolo."'>";
 		$html .= "<input type='hidden' name='total_cleaning' id='total_cleaning' value='".$total_cleaning."'>";
 		$html .= "<input type='hidden' name='total_biaya_lain' id='total_biaya_lain' value='".$total_biaya_lain."'>";
@@ -2619,7 +2620,7 @@ class PraIn extends \CodeIgniter\Controller
 				}
 				if($qty40>0) {
 					$html .='<tr>
-						<td>001</td>
+						<td>002</td>
 						<td>LIFT OFF - 40 FT</td>
 						<td></td>
 						<td class="t-center">'.$qty40.'</td>
@@ -2631,7 +2632,7 @@ class PraIn extends \CodeIgniter\Controller
 				}
 				if($qty45>0) {
 					$html .='<tr>
-						<td>001</td>
+						<td>003</td>
 						<td>LIFT OFF - 45 FT</td>
 						<td></td>
 						<td class="t-center">'.$qty45.'</td>
@@ -2644,7 +2645,7 @@ class PraIn extends \CodeIgniter\Controller
 
 				$html .='
 				<tr>
-					<td>002</td>
+					<td>004</td>
 					<td>CLEANING PPN</td>
 					<td></td>
 					<td class="t-center">'.$qty.'</td>
@@ -2654,7 +2655,7 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-right">'.number_format($subtot_cleaning,2).'</td>
 				</tr>	
 				<tr>
-					<td>003</td>
+					<td>005</td>
 					<td>ADMINISTRATION</td>
 					<td></td>
 					<td class="t-center">1</td>

@@ -2548,7 +2548,6 @@ class PraIn extends \CodeIgniter\Controller
 				<tr>
 				<td>
 					<h4>PT. CONTINDO RAYA</h4>
-					PADANG, '.date('d/m/Y').'
 				</td>
 				<td class="t-center" width="30%"><h2>KWITANSI / RECEIPT</h2></td>
 				<td class="t-right"><p>'.$invoice_number.'</p></td>

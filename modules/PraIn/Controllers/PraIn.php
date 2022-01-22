@@ -2495,7 +2495,7 @@ class PraIn extends \CodeIgniter\Controller
 		}
 
 		$total=$subtot_cleaning+$subtot20+$subtot40+$subtot45+$recept['biaya_adm']+$recept['total_pajak'];
-
+		$terbilang = strtoupper(toEnglish($total)) . ' IDR';
 
 		if(isset($result['status']) && ($result['status']=="Failled"))
 		{
@@ -2580,8 +2580,9 @@ class PraIn extends \CodeIgniter\Controller
 		$html .='
 		<br>
 		<table class="tbl-borderless">
-			<tr><td style="border-botom:1px solid #000;">BANYAK UANG</td><td rowspan="3">:&nbsp;
-			
+			<tr>
+				<td style="border-botom:1px solid #000;">BANYAK UANG</td>
+				<td rowspan="3" class="t-center" style="vertical-align:baseline!important;">:&nbsp; <h2>'.$terbilang.'</h2>
 			</td></tr>
 			<tr><td>----------------------</td></tr>
 			<tr><td><i>THE SUM OF</i></td></tr>

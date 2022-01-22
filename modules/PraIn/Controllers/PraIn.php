@@ -2565,7 +2565,6 @@ class PraIn extends \CodeIgniter\Controller
 							<h2>'.strtoupper($debitur['cuname']).'</h2>
 							<table class="tbl-borderless">
 								<tr><td>NPWP</td><td>:&nbsp; '.$debitur['cunpwp'].'</td></tr>
-								<tr><td>OPERATOR CONTAINER</td><td>:&nbsp; '.$debitur['cuname'].'</td></tr>
 							</table>
 						</td>
 						<td width="40%" style="vertical-align:baseline!important;">
@@ -2646,7 +2645,7 @@ class PraIn extends \CodeIgniter\Controller
 				$html .='
 				<tr>
 					<td>004</td>
-					<td>CLEANING PPN</td>
+					<td>CLEANING</td>
 					<td></td>
 					<td class="t-center">'.$qty.'</td>
 					<td class="t-center"></td>

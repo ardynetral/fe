@@ -290,7 +290,7 @@
 									$total_lolo = 0;
 									$total = 0;
 									foreach($data['orderPraContainers'] as $row):
-										$subtotal = @$row['biaya_lolo']+@$row['biaya_lain']; 
+										$subtotal = @$row['biaya_lolo']+@$row['biaya_lain']+@$row['biaya_clean']; 
 									?>
 										<tr>
 											<td><?=$i;?></td>

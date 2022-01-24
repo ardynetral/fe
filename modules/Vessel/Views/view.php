@@ -23,6 +23,7 @@
 								<tr><th width="100">Title</th><td width="2">:</td><td><?=$data['vestitle'];?></td></tr>
 								<tr><th width="100">Operator</th><td width="2">:</td><td><?=$data['vesopr'];?></td></tr>
 								<tr><th width="100">Country</th><td width="2">:</td><td><?=$data['cncode'];?></td></tr>
+								<tr><th width="100">Principal</th><td width="2">:</td><td><?=$data['prcode'];?></td></tr>
 							</tbody>
 						</table>
 						<?php else: ?>

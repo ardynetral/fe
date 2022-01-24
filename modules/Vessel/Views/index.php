@@ -43,6 +43,7 @@
 									<th>Vessel Title</th>
 									<th>Operator</th>
 									<th>Country</th>
+									<th>Pincipal</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -55,6 +56,7 @@
 									<td><?=$row['vestitle'];?></td>
 									<td><?=$row['vesopr'];?></td>
 									<td><?=$row['cncode'];?></td>
+									<td><?=$row['prcode'];?></td>
 									<td width="150">
 										<a href="<?=site_url('vessel/view/'.$row['vesid']);?>" class="btn btn-xs btn-primary">View</a>
 										<a href="<?=site_url('vessel/edit/'.$row['vesid'])?>" class="btn btn-xs btn-success">Edit</a>

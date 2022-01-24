@@ -386,8 +386,8 @@
 									<th>Length</th>
 									<th>Height</th>
 									<th>Principal</th>
-									<th>Lift Off</th>
-									<th>Deposit</th>
+									<th>Lift On</th>
+									<!-- <th>Deposit</th> -->
 									<th>Remark</th>
 									<th></th>
 								</tr>
@@ -415,7 +415,7 @@
 											<td><?=$row['ccheight']?></td>
 											<td><?=$row['cpopr'];?></td>
 											<td><?=$row['biaya_lolo'];?></td>
-											<td><?=$row['biaya_clean'];?></td>
+											<!-- <td><?=$row['biaya_clean'];?></td> -->
 											<td><?=$row['cpiremark']?></td>
 											<td><a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a></td>
 										</tr>

@@ -172,7 +172,7 @@ $group_id = $token['groupId'];
 					</div>
 				</div>
 */?>
-				<div class="form-group">
+				<div class="form-group" style="display:none;">
 					<label for="cpicargo" class="col-sm-4 control-label text-right">Cargo</label>
 					<div class="col-sm-6">
 						<input type="text" name="cpicargo" class="form-control" id="cpicargo" required>

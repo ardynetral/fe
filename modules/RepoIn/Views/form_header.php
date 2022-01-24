@@ -175,10 +175,10 @@
 					<div class="form-group">
 						<label class="col-sm-4 control-label text-right">Billing Type</label>
 						<div class="col-sm-6">
-							<select name="rebilltype" id="rebilltype" class="">
+							<select name="rebill" id="rebill" class="">
 								<option value="0">- select -</option>
-								<option value="1">Breakdown</option>
-								<option value="2">Package</option>
+								<option value="Breakdown">Breakdown</option>
+								<option value="Package">Package</option>
 							</select>
 						</div>
 					</div>

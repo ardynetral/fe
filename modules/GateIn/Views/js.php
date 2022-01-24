@@ -503,6 +503,7 @@ $(document).ready(function() {
 	$("#crno").on("keyup", function(){
 		var crno = $("#crno").val();
 		var status = "";
+		$(this).val($(this).val().toUpperCase());
 		$("#fGateIns").trigger("reset");
 		$("#crno").val(crno);			
 		$.ajax({

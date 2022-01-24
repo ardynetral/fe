@@ -35,7 +35,7 @@
 										</div>									
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="Type" class="col-sm-5 control-label text-right">Type</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
@@ -178,7 +178,7 @@
 									</div>
 								</div>
 								
-								<div class="form-group">
+								<div class="form-group"  style="display:none;">
 									<label for="cpicargo" class="col-sm-4 control-label text-right">Cargo</label>
 									<div class="col-sm-6">
 										<input type="text" name="cpicargo" class="form-control" id="cpicargo" value="<?=$data['cpicargo']?>" readonly>
@@ -386,8 +386,8 @@
 									<th>Length</th>
 									<th>Height</th>
 									<th>Principal</th>
-									<th>Lift Off</th>
-									<th>Deposit</th>
+									<th>Lift On</th>
+									<!-- <th>Deposit</th> -->
 									<th>Subtotal</th>
 								</tr>
 							</thead>
@@ -414,7 +414,7 @@
 											<td><?=$row['ccheight']?></td>
 											<td><?=$row['cpopr'];?></td>
 											<td class="text-right"><?=number_format($row['biaya_lolo'],2);?></td>
-											<td class="text-right"><?=number_format($row['biaya_clean'],2);?></td>											
+											<!-- 											<td class="text-right"><?=number_format($row['biaya_clean'],2);?></td> -->											
 											<td class="text-right"><?=number_format($subtotal,2);?></td>
 										</tr>
 									
@@ -428,7 +428,7 @@
 
 									?>
 
-									<tr><th colspan="9" class="text-right">TOTAL LOLO</th><th class="text-right"><?=number_format($total,2)?></th></tr>
+									<tr><th colspan="8" class="text-right">TOTAL</th><th class="text-right"><?=number_format($total,2)?></th></tr>
 
 								<?php endif; ?>
 							</tbody>

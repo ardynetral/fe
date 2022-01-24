@@ -88,7 +88,7 @@ $group_id = $token['groupId'];
 			<div class="form-group">
 				<div class="col-sm-offset-4 col-sm-8">
 					<?php if(isset($act)&&$act=="add"):?>
-					<button type="button" id="saveDetail" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>
+					<button type="button" id="saveDetail" class="btn btn-primary" disabled><i class="fa fa-check-circle"></i> Save</button>
 					<?php elseif((isset($act)&&$act=="edit")&&($data['orderPraContainers']==null)):?>
 						<button type="button" id="saveDetail" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>
 					<?php else:?>

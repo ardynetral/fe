@@ -95,7 +95,7 @@ class RepoIn extends \CodeIgniter\Controller
 		$datarepo = $this->getOneRepo($reorderno);
 		$data['data'] = $datarepo['data'];
 		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
-		// echo var_dump($data['containers']);die();
+		// echo var_dump($data['data']);die();
 		$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
 		return view('Modules\RepoIn\Views\view',$data);		
 	}	
@@ -118,14 +118,25 @@ class RepoIn extends \CodeIgniter\Controller
 
 		if ($this->request->isAJAX()) 
 		{
+			// if($_POST['rebill']=='1') {
+			// 	$rebill = 'Breakdown';
+			// } else if($_POST['rebill']=='2') {
+			// 	$rebill = 'Package';
+			// } else {
+			// 	$rebill = '0';
+			// }
+
+			// array_push($_POST,[
+			// 	"rebill"=>$rebill
+			// ]);
+
 			$reformat = [
 				'repocode' => "RI",
 				'cpopr' => $_POST['cpopr'],
 				'redate' => date('Y-m-d',strtotime($_POST['redate'])),
-				'redline' => date('Y-m-d',strtotime($_POST['redline']))  
+				'redline' => date('Y-m-d',strtotime($_POST['redline']))
 			];
-			// echo var_dump($_POST);die();
-			
+			echo var_dump($_POST);die();
 		    if ($this->request->getMethod() === 'post')
 		    {
 
@@ -239,8 +250,22 @@ class RepoIn extends \CodeIgniter\Controller
 		// formData += "&cpishold=" + $("#cpishold").val();
 		// formData += "&reporemark=" + $("#reporemark").val();			
 			$form_params = [
-				// detail
+				//Header
 				'repoid' => $_POST['repoid'],
+				'cpiorderno' => $_POST['cpiorderno'] ,
+				'cpopr' => $_POST['cpopr'] ,
+				'cpcust' => $_POST['cpcust'] ,
+				'cpidish' => $_POST['cpidish'] ,
+				'cpdepo' => $_POST['cpdepo'] ,
+				'cpichrgbb' => $_POST['cpichrgbb'] ,
+				'cpipratgl' => date('Y-m-d',strtotime($_POST['cpipratgl'])) ,
+				'cpijam' => $_POST['cpijam'] ,
+				'cpives' => $_POST['cpives'] ,
+				'cpiremark' => $_POST['cpiremark'] ,
+				'cpideliver' => $_POST['cpideliver'] ,
+				'cpivoyid' => $_POST['cpivoyid'] ,
+				'cpivoy' => $_POST['cpivoy'] ,
+				// detail
 				'crno' => $_POST['crno'],
 				'cccode' => $_POST['cccode'],
 				'ctcode' => $_POST['ctcode'],
@@ -265,7 +290,7 @@ class RepoIn extends \CodeIgniter\Controller
 						'Accept' => 'application/json',
 						'Authorization' => session()->get('login_token')
 					],
-					'form_params' => $_POST,
+					'form_params' => $form_params,
 				]);
 
 				$result = json_decode($response->getBody()->getContents(), true);	
@@ -287,11 +312,11 @@ class RepoIn extends \CodeIgniter\Controller
 				session()->setFlashdata('sukses','Success, Containers Saved.');
 				$data['status'] = "success";
 				$data['message'] = $result['message'];
-				$datarepo = $this->getOneRepo($_POST['cpiorderno']);
+				// $datarepo = $this->getOneRepo($_POST['cpiorderno']);
 				// echo var_dump($datarepo);die();
-				$data['data'] = $datarepo['data'];
-				$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
-				$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
+				// $data['data'] = $datarepo['data'];
+				$data['containers'] = $this->getRepoContainers($_POST['repoid']);
+				$data['QTY'] = hitungHCSTD($this->getRepoContainers($_POST['repoid']));
 				echo json_encode($data);die();
 
 			}

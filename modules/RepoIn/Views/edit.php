@@ -129,7 +129,7 @@
 									<div class="form-group">
 										<label for="repoves" class="col-sm-5 control-label text-right">Ex Vessel</label>
 										<div class="col-sm-7">
-											<?=vessel_dropdown("repoves","");?>
+											<?=repoves_dropdown($data['recpives']);?>
 										</div>
 									</div>		
 									<div class="form-group">
@@ -137,7 +137,7 @@
 										<div class="col-sm-7">
 											<!-- <input type="text" name="name" class="form-control" id="name"> -->
 											<!-- <?=voyage_dropdown(); ?> -->
-											<input type="text" class="form-control" id="repovoyid" name="repovoyid">
+											<input type="text" class="form-control" id="repovoyid" name="repovoyid" value="<?=$data['recpivoyid']?>">
 										</div>
 									</div>		
 									<div class="form-group" style="display:none;">
@@ -192,14 +192,14 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Billing Type</label>
 										<div class="col-sm-6">
-											<select name="rebilltype" id="rebilltype" class="">
+											<select name="rebill" id="rebill" class="">
 												<option value="0">- select -</option>
-												<option value="1" <?=(isset($data['rebilltype'])&&($data['rebilltype']=='1')?'selected':'');?>>Breakdown</option>
-												<option value="2" <?=(isset($data['rebilltype'])&&($data['rebilltype']=='2')?'selected':'');?>>Package</option>
+												<option value="Breakdown" <?=(isset($data['rebill'])&&($data['rebill']=='Breakdown')?'selected':'');?>>Breakdown</option>
+												<option value="Package" <?=(isset($data['rebill'])&&($data['rebill']=='Package')?'selected':'');?>>Package</option>
 											</select>
 										</div>
 									</div>
-									<?php if($data['rebilltype']=='1'):?>
+									<?php if($data['rebill']=='Breakdown'):?>
 									<div id="breakDown">
 										<div class="form-group">
 											<label class="col-sm-4 control-label text-right">Lift On Adm</label>
@@ -283,7 +283,7 @@
 											</div>
 										</div>				
 									</div>
-									<?php elseif($data['rebilltype']=='2'):?>
+									<?php elseif($data['rebill']=='Package'):?>
 									<div id="Package">
 										<div class="form-group">
 											<label class="col-sm-4 control-label text-right">20"</label>
@@ -443,9 +443,9 @@
 													<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 												</div>								
 												<div class="col-sm-4">
-													<?php if($data['rebilltype']=='1'):?>
+													<?php if($data['rebill']=='Breakdown'):?>
 													<input type="text" name="totbreak" class="form-control" id="totbreak" value="<?=$data['totbreak']?>" required>
-													<?php elseif($data['rebilltype']=='2'):?>
+													<?php elseif($data['rebill']=='Package'):?>
 													<input type="text" name="totpack" class="form-control" id="totpack" value="<?=$data['totpack']?>" required>
 													<?php endif; ?>
 												</div>

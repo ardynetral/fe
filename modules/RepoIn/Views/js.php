@@ -12,7 +12,8 @@ $(document).ready(function() {
 	$('.select-voyage').select2();
 	$('.select-ccode').select2();
 	$('.selects').select2();
-	$('#rebilltype').select2();
+	$('#rebill').select2();
+	// $('#rebilltype').select2();
 	$('#retype').select2().prop('disabled', true);
 	// DATATABLE
 	// $("#ctTable").DataTable({
@@ -62,12 +63,12 @@ $(document).ready(function() {
 					// $("#cpivoy").val(json.cpivoy);
 					$("#saveData").prop('disabled', true);
 				} else {
-					$("#saveData").prop('disabled', false);
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
 					  html: '<div class="text-danger">'+json.message+'</div>'
 					});						
+					$("#saveData").prop('disabled', false);
 				}
 			},
             complete: function () {
@@ -267,7 +268,7 @@ $(document).ready(function() {
 	// $("#cpives").on("change", function(){
 	// 	var vesid = $(this).val();
 	// 	$.ajax({
-	// 		url:"<?=site_url('prain/ajax_vessel_listOne/');?>"+vesid,
+	// 		url:"<?=site_url('repoinajax_vessel_listOne/');?>"+vesid,
 	// 		type:"POST",
 	// 		data: "vesid="+vesid,
 	// 		dataType:"JSON",
@@ -291,7 +292,7 @@ $(document).ready(function() {
 	$("#ccode").on("change", function(){
 		var cccode  = $(this).val();
 		$.ajax({
-			url:"<?=site_url('prain/ajax_ccode_listOne/');?>"+cccode,
+			url:"<?=site_url('repoinajax_ccode_listOne/');?>"+cccode,
 			type:"POST",
 			data: "ccode="+ccode,
 			dataType:"JSON",
@@ -432,6 +433,7 @@ $(document).ready(function() {
 	$("#crno").on("keyup", function(){
 		var crno = $("#crno").val();
 		var status = "";
+		$(this).val($(this).val().toUpperCase());
 		$.ajax({
 			url:"<?=site_url('repoin/checkContainerNumber');?>",
 			type:"POST",
@@ -463,7 +465,7 @@ $(document).ready(function() {
 	$('#ctTable tbody').on("click",".print_order", function(e){
 		e.preventDefault();
 		var praid = $(this).data("praid");
-        window.open("<?php echo site_url('prain/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+        window.open("<?php echo site_url('repoinprint_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	//repo type
@@ -625,9 +627,10 @@ $(document).ready(function() {
 
 	});
 
-	$("#rebilltype").on("change", function(){
+	$("#rebill").on("change", function(){
 		var billType = $(this).val();
-		if (billType==='1') {
+		if (billType=='Breakdown') {
+			console.log(billType);
 			// showBreakDown();
 			$("#breakDown").show();			
 			$("#blockReother1").show();			
@@ -635,7 +638,7 @@ $(document).ready(function() {
 			$("#blockReother2").hide();			
 			$("#Package").hide();			
 			$("#totpack").hide();			
-		} else if (billType==='2'){
+		} else if (billType=='Package'){
 			$("#Package").show();
 			$("#blockReother2").show();			
 			$("#totpack").show();			

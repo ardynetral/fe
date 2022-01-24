@@ -411,7 +411,8 @@ $(document).ready(function() {
 		$("#cleaning_type").val("Water Wash");	
 		var prcode = $(this).val();
 		var pracrnoid = $("#pracrnoid").val();
-		
+		var typedo = $("#typedepo").val();
+		var prcode_freeuse = $("#vescpopr").val();
 		if(pracrnoid=="") {
 			Swal.fire({
 			  icon: 'error',
@@ -423,7 +424,7 @@ $(document).ready(function() {
 		$.ajax({
 			url:"<?=site_url('prain/ajax_prcode_listOne/');?>"+prcode,
 			type:"POST",
-			data: {"prcode":prcode,"pracrnoid":pracrnoid},
+			data: {"prcode":prcode,"pracrnoid":pracrnoid,"typedepo":typedepo,"vescpopr":vescpopr},
 			dataType:"JSON",
 			success: function(json){
 				if(json.status=="Failled") {
@@ -873,7 +874,8 @@ $(document).ready(function() {
 					$(".err-crno").show();
 					$(".err-crno").html(json.message);
 					$("#crno").css("background", "#ffbfbf!important");
-					$("#crno").css("border-color", "#ea2525");					
+					$("#crno").css("border-color", "#ea2525");
+					$("#saveDetail").prop("disabled",true);					
 
 				} else {
 
@@ -881,6 +883,7 @@ $(document).ready(function() {
 					$(".err-crno").hide();
 					$("#crno").css("background", "#fff!important");
 					$("#crno").css("border-color", "#ccc");
+					$("#saveDetail").removeAttr("disabled");					
 
 					if(json.data!=null) {
 						$("#ccode").select2().select2('val',json.data.cccode);

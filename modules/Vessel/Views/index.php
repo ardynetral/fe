@@ -44,11 +44,30 @@
 									<th>Vessel Title</th>
 									<th>Operator</th>
 									<th>Country</th>
+									<th>Pincipal</th>
 									<th></th>
 								</tr>
 							</thead>
 							
-							
+
+							<tbody>
+								<?php $i=1; foreach($data as $row): ?>
+								<tr>
+									<td><?=$i;?></td>
+									<td><?=$row['vesid'];?></td>
+									<td><?=$row['vestitle'];?></td>
+									<td><?=$row['vesopr'];?></td>
+									<td><?=$row['cncode'];?></td>
+									<td><?=$row['prcode'];?></td>
+									<td width="150">
+										<a href="<?=site_url('vessel/view/'.$row['vesid']);?>" class="btn btn-xs btn-primary">View</a>
+										<a href="<?=site_url('vessel/edit/'.$row['vesid'])?>" class="btn btn-xs btn-success">Edit</a>
+										<a href="#" class="btn btn-xs btn-danger delete" id="delete" data-kode="<?=$row['vesid'];?>">Delete</a>
+									</td>
+								</tr>
+								<?php $i++; endforeach; ?>
+							</tbody>
+
 						</table>
 
 

@@ -34,6 +34,7 @@ $(document).ready(function() {
 		formData += "&title=" + $("#title").val();
 		formData += "&operator=" + $("#operator").val();
 		formData += "&cncode=" + $("#cncode").val();
+		formData += "&prcode=" + $("#prcode").val();
 
 		$.ajax({
 			url: "<?php echo site_url('vessel/add'); ?>",
@@ -66,6 +67,7 @@ $(document).ready(function() {
 		formData += "&title=" + $("#title").val();
 		formData += "&operator=" + $("#operator").val();
 		formData += "&cncode=" + $("#cncode").val();
+		formData += "&prcode=" + $("#prcode").val();
 		
 		$.ajax({
 			url: "<?php echo site_url('vessel/edit/'); ?>"+$("#code").val(),

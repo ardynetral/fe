@@ -79,10 +79,18 @@ class Vessel extends \CodeIgniter\Controller
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
+			],
+			'json' => [
+				'start' => 0,
+	          	'rows'  => 500,
+	          	'search'=> "",
+	          	'orderColumn' => "vesid",
+	          	'orderType' => "ASC"
 			]
 		]);
 
 		$result = json_decode($response->getBody()->getContents(),true);	
+		// dd($result);
 		$data['data'] = isset($result['data']['datas'])?$result['data']['datas']:"";
 		return view('Modules\Vessel\Views\index',$data);
 	}
@@ -114,6 +122,7 @@ class Vessel extends \CodeIgniter\Controller
 	    	$vesopr = $this->request->getPost('operator');
 	    	$cncode = $this->request->getPost('cncode');
 	    	$vestitle = $this->request->getPost('title');
+	    	$prcode = $this->request->getPost('prcode');
 
 			$validate = $this->validate([
 	            'code' 	=> 'required',
@@ -135,6 +144,7 @@ class Vessel extends \CodeIgniter\Controller
 						'opr' =>$vesopr,
 						'country' =>$cncode,
 						'title' =>$vestitle,
+						'prcode' =>$prcode,
 					]
 				]);
 
@@ -172,6 +182,7 @@ class Vessel extends \CodeIgniter\Controller
 	    	$vesopr = $this->request->getPost('operator');
 	    	$cncode = $this->request->getPost('cncode');
 	    	$vestitle = $this->request->getPost('title');
+	    	$prcode = $this->request->getPost('prcode');
 
 			$validate = $this->validate([
 	            'code' 	=> 'required',
@@ -193,6 +204,7 @@ class Vessel extends \CodeIgniter\Controller
 						'opr' =>$vesopr,
 						'country' =>$cncode,
 						'title' =>$vestitle,
+						'prcode' =>$prcode
 					]
 				]);
 

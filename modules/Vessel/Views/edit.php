@@ -59,10 +59,15 @@
 								<?=$country_dropdown;?>
 							</div>
 						</div>	
-		
+						<div class="form-group">
+							<label for="operator" class="col-sm-2 control-label text-right">Principal</label>
+							<div class="col-sm-3">
+								<input type="text" name="prcode" class="form-control" id="prcode" value="<?=@$data['prcode'];?>">
+							</div>
+						</div>			
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
-								<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
+								<button type="button" id="updateData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
 								<a href="<?=site_url('vessel')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 							</div>
 						</div>						

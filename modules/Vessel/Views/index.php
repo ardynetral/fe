@@ -1,7 +1,11 @@
 <?= $this->extend('smartdepo/dashboard/template') ?>
 
 <?= $this->section('content') ?>
-
+<style type="text/css">
+	.btn-tbl{
+		margin-right: 5px;
+	}
+</style>
 <div class="content">
 	<div class="main-header">
 		<h2>Vessel</h2>
@@ -27,9 +31,6 @@
 					</div>
 				</div><br>	
 
-				<?php if($data ==''): ?>
-					<p class="alert alert-warning"> Data not found.</p>
-				<?php else : ?>	
 
 				<div class="row">
 					<div class="col-md-12">
@@ -48,6 +49,7 @@
 								</tr>
 							</thead>
 							
+
 							<tbody>
 								<?php $i=1; foreach($data as $row): ?>
 								<tr>
@@ -65,6 +67,7 @@
 								</tr>
 								<?php $i++; endforeach; ?>
 							</tbody>
+
 						</table>
 
 
@@ -72,7 +75,7 @@
 					</div>
 				</div>
 
-				<?php endif; ?>
+				
 
 			</div>		
 		</div>		

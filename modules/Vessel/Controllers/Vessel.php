@@ -58,6 +58,7 @@ class Vessel extends \CodeIgniter\Controller
             $record[] = $v['vestitle'];
             $record[] = $v['vesopr'];
             $record[] = $v['cncode'];
+            $record[] = $v['prcode'];
 			
 			$btn_list .= '<a href="'.site_url().'/vessel/view/'.$v['vesid'].'" class="btn btn-xs btn-primary btn-tbl">View</a>';	
 			$btn_list .= '<a href="'.site_url().'/vessel/edit/'.$v['vesid'].'" class="btn btn-xs btn-success btn-tbl">Edit</a>';

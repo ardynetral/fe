@@ -411,8 +411,8 @@ $(document).ready(function() {
 		$("#cleaning_type").val("Water Wash");	
 		var prcode = $(this).val();
 		var pracrnoid = $("#pracrnoid").val();
-		var typedo = $("#typedepo").val();
-		var prcode_freeuse = $("#vescpopr").val();
+		var typedo = $("#typedo").val();
+		var vesprcode = $("#vesprcode").val();
 		if(pracrnoid=="") {
 			Swal.fire({
 			  icon: 'error',
@@ -424,7 +424,7 @@ $(document).ready(function() {
 		$.ajax({
 			url:"<?=site_url('prain/ajax_prcode_listOne/');?>"+prcode,
 			type:"POST",
-			data: {"prcode":prcode,"pracrnoid":pracrnoid,"typedepo":typedepo,"vescpopr":vescpopr},
+			data: {"prcode":prcode,"pracrnoid":pracrnoid,"typedo":typedo,"vesprcode":vesprcode},
 			dataType:"JSON",
 			success: function(json){
 				if(json.status=="Failled") {
@@ -469,6 +469,11 @@ $(document).ready(function() {
 					});		
 				} else {
 					$("#vesopr").val(json.data.vesopr);
+					if((json.data.prcode=="MRT")||(json.data.prcode=="CR")) {
+						$("#vesprcode").val(json.data.prcode);
+					} else {
+						$("#vesprcode").val("");
+					}
 				}
 			}
 		});		
@@ -557,17 +562,38 @@ $(document).ready(function() {
 	$('#detTable tbody').on('click', '.edit', function(e){
 		e.preventDefault();
 		$("#formDetail").trigger("reset");
+		$('#cleaning_type option:eq("Water Wash")').prop('selected', true);
 		var crid = $(this).data("crid");
 	    var cpife = $('input:radio[name=cpife]');
+	    var typedo = $("input:radio[name=typedo]:checked").val();
+	    var vesprcode = $("#vesprcode").val();
 		$.ajax({
 			url:"<?=site_url('prain/get_one_container/');?>"+crid,
 			type:"POST",
-			data: "crid="+crid,
+			data: {"crid":crid,"typedo":typedo,"vesprcode":vesprcode},
 			dataType:"JSON",
 			success: function(json){	
 				if(json.message=="success") {
-					$("#prcode").select2().select2('val',json.cr.cpopr);
-					$("#cucode").val(json.cr.cpcust);
+					if(typedo=="1") {
+						if((vesprcode=="MRT")||(vesprcode=="CR")) {
+							$("#prcode").select2().select2('val',vesprcode);
+							$("#cucode").val(vesprcode);
+							$("#prcode").select2('disable');
+							$("#biaya_lolo").val(json.biaya_lolo);
+						} else {
+							$("#vesprcode").val("");
+							$("#prcode").select2('enable');
+							$("#prcode").select2().select2('val','');
+							$("#cucode").val("");
+						}
+					} else {
+						$("#prcode").select2('enable');
+						$("#prcode").select2().select2('val','');
+					}
+
+
+					// $("#prcode").select2().select2('val',json.cr.cpopr);
+					// $("#cucode").val(json.cr.cpcust);
 					$("#pracrnoid").val(json.cr.pracrnoid);
 					$("#crno").val(json.cr.crno);
 					$("#ccode").select2().select2('val',json.cr.cccode);
@@ -589,9 +615,9 @@ $(document).ready(function() {
 						$("#deposit").prop("checked",true);
 					}					
 					$("#cpiremark").val(json.cr.cpiremark);
-					$("#cleaning_type").val(json.cr.cleaning_type);
+					// $("#cleaning_type").val(json.cr.cleaning_type);
 					$("#biaya_clean").val(json.cr.biaya_clean);
-					$("#biaya_lolo").val(json.cr.biaya_lolo);
+					// $("#biaya_lolo").val(json.cr.biaya_lolo);
 				}
 			}		
 		})

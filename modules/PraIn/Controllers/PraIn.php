@@ -698,7 +698,37 @@ class PraIn extends \CodeIgniter\Controller
 
 			$data['message'] = 'success';
 			$data['cr'] = $result['data'];
-			$data['contract'] = $this->get_contract($result['data']['cpopr']);
+			// echo var_dump($data['cr']);die();
+			// jika free_use & kapal meratus: pakai prcode meratus
+			$typedo = (isset($_POST['typedo'])?$_POST['typedo']:'');
+			$vesprcode = (isset($_POST['vesprcode'])?$_POST['vesprcode']:'');
+			if($typedo=="1") {
+				if($vesprcode=="MRT") {
+					// gunakan tarif MERATUS
+					$contract = $this->get_contract("MRT");
+				} else if ($vesprcode=="CR") {
+					// gunakan tarif contindo
+					$contract = $this->get_contract("CR");
+				} 
+			} else {
+				// gunakan tarif biasa
+				$contract = $this->get_contract($data['cr']['cpopr']);
+			}
+
+			$data['contract'] = $contract;
+			// echo var_dump($contract);die();
+			if($contract != null) {
+				if($data['cr']['cclength']<=20) {
+					$data['biaya_lolo']= $contract['colofmty20'];
+				} else if($data['cr']['cclength']==40) {
+					$data['biaya_lolo']= $contract['colofmty40'];
+				} else if($data['cr']['cclength']>40) {
+					$data['biaya_lolo']= $contract['colofmty45'];
+				}
+			} else {
+				$data['biaya_lolo'] = 0;
+			}
+
 			echo json_encode($data);die();	
 		}	
 
@@ -825,14 +855,13 @@ class PraIn extends \CodeIgniter\Controller
 			]);
 
 			$dt_order = json_decode($get_order->getBody()->getContents(), true);
-			// dd($dt_order);
 			// contract
 			// utk sementara PRCODE/CPOPR diisi manual(ada perubahan proses bisnis)
 			$contract = $this->get_contract($dt_order['data']['datas'][0]['orderPraContainers'][0]['cpopr']);
 
 			if($contract==""){
 				$data['message'] = "Failled";
-				$data['message_body'] = "Approval gagal. Data Contract tidak ditemukan untuk Operator ".$dt_order['data']['cpopr'];
+				$data['message_body'] = "Approval gagal. Data Contract tidak ditemukan untuk Operator ".$dt_order['data']['datas'][0]['orderPraContainers'][0]['cpopr'];
 				echo json_encode($data);die();	
 			}
 
@@ -1768,8 +1797,8 @@ class PraIn extends \CodeIgniter\Controller
 		
 		$result = json_decode($response->getBody()->getContents(),true);
 		$recept = recept_by_praid($praid);
-
 		if(isset($result['data'][0])&&(count($result['data'][0])) > 0){
+			$INVOICE_NUMBER  = 'KW' . date("Ymd", strtotime($result['data'][0]['cpipratgl'])) . str_repeat("0", 8 - strlen($recept['praid'])) . $recept['praid'];
 			$qrcode = $this->generate_qrcode($result['data'][0]['cpid']);
 			$CRNO = $result['data'][0]['crno'];
 			$REFIN = $result['data'][0]['cpirefin'];
@@ -1827,7 +1856,7 @@ class PraIn extends \CodeIgniter\Controller
 				<style>			
 					.page-header{display:block;margin-bottom:20px;line-height:0.3;}
 					table{line-height:1.75;display:block;}
-					table td{font-weight:bold;}
+					table td{font-weight:bold;font-size:12px;}
 					.t-right{text-align:right;}
 					.t-left{text-align:left;}
 					.t-center{text-align:center;}
@@ -1885,7 +1914,7 @@ class PraIn extends \CodeIgniter\Controller
 				</tr>
 				<tr>
 					<td>L/OFF RECEIPT</td>
-					<td colspan="3">'.$CPIRECEPTNO.'</td>
+					<td colspan="3">'.$INVOICE_NUMBER.'</td>
 				</tr>
 				<tr>
 					<td>DET RECEIPT</td>
@@ -3115,20 +3144,6 @@ class PraIn extends \CodeIgniter\Controller
 			}
 
 			$principal = $result['data'];
-
-			// jika free_use & kapal meratus: pakai prcode meratus
-			// $typedo = $_POST['typedo'];
-			// $vescpopr = $_POST['vescpopr'];
-			// if(($typedo=="1")&&($vescpopr=="MRT")) {
-				// gunakan tarif MERATUS
-			// 	$contract = $this->get_contract($vescpopr);
-			// } else if (($typedo=="1")&&($vescpopr!="MRT")) {
-				// gunakan tarif contindo
-			// 	$contract = $this->get_contract("CT");
-			// } else {
-				// gunakan tarif biasa
-				// $contract = $this->get_contract($code);
-			// }
 			$contract = $this->get_contract($code);
 			// Get order_pra_container
 			$response_cr = $this->client->request('GET','orderPraContainers/getDetailData',[

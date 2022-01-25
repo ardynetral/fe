@@ -52,19 +52,19 @@
 									<label for="Type" class="col-sm-5 control-label text-right">Type</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="1" <?=(isset($data['type_do'])&&($data['type_do']==1)?'checked':'');?>>
+											<input type="radio" name="typedo" id="" value="1" <?=(isset($data['type_do'])&&($data['type_do']==1)?'checked':'');?> required>
 											<span>Free Use</span>
 										</label>										
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="2" <?=(isset($data['type_do'])&&($data['type_do']==2)?'checked':'');?>>
+											<input type="radio" name="typedo" id="" value="2" <?=(isset($data['type_do'])&&($data['type_do']==2)?'checked':'');?> required>
 											<span>COC</span>
 										</label>
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="3" <?=(isset($data['type_do'])&&($data['type_do']==3)?'checked':'');?>>
+											<input type="radio" name="typedo" id="" value="3" <?=(isset($data['type_do'])&&($data['type_do']==3)?'checked':'');?> required>
 											<span>SOC</span>
 										</label>											
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="4" <?=(isset($data['type_do'])&&($data['type_do']==4)?'checked':'');?>>
+											<input type="radio" name="typedo" id="" value="4" <?=(isset($data['type_do'])&&($data['type_do']==4)?'checked':'');?> required>
 											<span>ex Import</span>
 										</label>
 
@@ -181,6 +181,7 @@
 									<label for="vesopr" class="col-sm-4 control-label text-right">Vessel Operator</label>
 									<div class="col-sm-6">
 										<input type="text" name="vesopr" class="form-control" id="vesopr" value="<?=@$data['vessels']['vesopr'];?>" readonly>
+										<input type="hidden" name="vesprcode" class="form-control" id="vesprcode" value="<?=@$data['vessels']['prcode'];?>" readonly>
 									</div>
 								</div>
 								
@@ -323,18 +324,18 @@
 								<div class="col-sm-2">
 									<label class="fancy-checkbox custom-color-green">
 										<p></p>
-										<input type="checkbox" name="deposit" id="deposit" value="0">
+										<input type="checkbox" name="deposit" id="deposit" value="0" readonly>
 										<span></span>
 									</label>
 								</div>
 								<div class="col-sm-6">
-									<input type="text" name="biaya_clean" id="biaya_clean" class="form-control"readonly>
+									<input type="text" name="biaya_clean" id="biaya_clean" class="form-control" readonly>
 								</div>
 							</div>	
 							<div class="form-group">
 								<label class="col-sm-4 control-label text-right">Lift Off</label>
 								<div class="col-sm-8">
-									<input type="text" name="biaya_lolo" id="biaya_lolo" value="0" class="form-control">
+									<input type="text" name="biaya_lolo" id="biaya_lolo" value="0" class="form-control" readonly>
 								</div>	
 							</div>	
 							<div class="form-group">

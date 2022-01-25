@@ -13,10 +13,10 @@ $(document).ready(function() {
 	$('.select-voyage').select2();
 	$('.select-ccode').select2();
 	// DATATABLE
-	// $("#ctTable").DataTable({
- //        "paging": false,
- //        "info": false,		
-	// });
+	$("#tblList_add").DataTable({
+        "paging": false,
+        "info": false,		
+	});
 	// datePicker
 	$(".tanggal").datepicker({
 		autoclose:true,

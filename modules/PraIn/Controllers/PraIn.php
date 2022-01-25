@@ -3144,7 +3144,13 @@ class PraIn extends \CodeIgniter\Controller
 			}
 
 			$principal = $result['data'];
-			$contract = $this->get_contract($code);
+			if($_POST['typedo']=='1') {
+				if(($_POST['vesprcode']=="MRT") || ($_POST['vesprcode']=="CR")) {
+				$contract = $this->get_contract($_POST['vesprcode']);
+				}
+			} else {
+				$contract = $this->get_contract($code);
+			}
 			// Get order_pra_container
 			$response_cr = $this->client->request('GET','orderPraContainers/getDetailData',[
 				'headers' => [
@@ -3172,6 +3178,7 @@ class PraIn extends \CodeIgniter\Controller
 			$data['data'] = $principal;
 			$data['biaya_clean'] = (isset($contract['deposit'])?$contract['deposit']:0);
 			$data['biaya_lolo'] = $biaya_lolo;
+			$data['contract'] = $contract;
 			echo json_encode($data);die();
 		}
 	}	

@@ -411,7 +411,8 @@ $(document).ready(function() {
 		$("#cleaning_type").val("Water Wash");	
 		var prcode = $(this).val();
 		var pracrnoid = $("#pracrnoid").val();
-		var typedo = $("#typedo").val();
+		var typedo = $('input:radio[name=typedo]:checked').val();
+		// var cpife = $("input:radio[name=cpife]:checked").val();
 		var vesprcode = $("#vesprcode").val();
 		if(pracrnoid=="") {
 			Swal.fire({
@@ -443,10 +444,15 @@ $(document).ready(function() {
 						$("#deposit").val("1");						
 						$("#biaya_clean").val(json.biaya_clean);
 					} else {
+						$("#deposit").val("0");						
+						$("#deposit").prop('checked',false);
 						$("#deposit").attr("disabled","disabled");
+						$("#biaya_clean").val("0");
 					}
-					
-					$("#biaya_lolo").val(json.biaya_lolo);
+
+					if(typedo!="1") {
+						$("#biaya_lolo").val(json.biaya_lolo);
+					}
 				}
 			}
 		});
@@ -567,6 +573,8 @@ $(document).ready(function() {
 	    var cpife = $('input:radio[name=cpife]');
 	    var typedo = $("input:radio[name=typedo]:checked").val();
 	    var vesprcode = $("#vesprcode").val();
+		$("#prcode").select2().select2('val','');
+		$("#cucode").val("");
 		$.ajax({
 			url:"<?=site_url('prain/get_one_container/');?>"+crid,
 			type:"POST",
@@ -576,18 +584,17 @@ $(document).ready(function() {
 				if(json.message=="success") {
 					if(typedo=="1") {
 						if((vesprcode=="MRT")||(vesprcode=="CR")) {
-							$("#prcode").select2().select2('val',vesprcode);
-							$("#cucode").val(vesprcode);
-							$("#prcode").select2('disable');
+							// $("#prcode").select2().select2('val',vesprcode);
+							// $("#cucode").val(vesprcode);
+							// $("#prcode").select2('disable');
 							$("#biaya_lolo").val(json.biaya_lolo);
 						} else {
-							$("#vesprcode").val("");
-							$("#prcode").select2('enable');
-							$("#prcode").select2().select2('val','');
-							$("#cucode").val("");
+							// $("#vesprcode").val("");
+							// $("#prcode").select2('enable');
+							$("#biaya_lolo").val('0');
 						}
 					} else {
-						$("#prcode").select2('enable');
+						// $("#prcode").select2('enable');
 						$("#prcode").select2().select2('val','');
 					}
 

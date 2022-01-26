@@ -21,7 +21,8 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label text-right">ID Code </label>
 						<div class="col-sm-7">
-							<input type="text" id="cccode" class="form-control" readonly="">							
+							<!-- <input type="text" id="cccode" class="form-control" readonly="">							 -->
+							<?=select_ccode("");?>
 						</div>
 					</div>
 					<div class="form-group">

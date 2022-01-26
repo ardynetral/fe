@@ -52,8 +52,8 @@ class RepoIn extends \CodeIgniter\Controller
 			
 			$btn_list .= '<a href="'.site_url().'/repoin/view/'.$reorderno.'" class="btn btn-xs btn-primary btn-tbl">Cetak kitir</a>';	
 			$btn_list .= '<a href="'.site_url().'/repoin/edit/'.$reorderno.'" class="btn btn-xs btn-success btn-tbl">Edit</a>';	
-			$btn_list .= '<a href="'.site_url().'/repoin/edit/'.$reorderno.'" class="btn btn-xs btn-success btn-tbl">Proforma</a>';	
-			$btn_list .= '<a href="'.site_url().'/repoin/edit/'.$reorderno.'" class="btn btn-xs btn-success btn-tbl">Invoice</a>';	
+			$btn_list .= '<a href="'.site_url().'/repoin/proforma/'.$reorderno.'" class="btn btn-xs btn-success btn-tbl">Proforma</a>';	
+			$btn_list .= '<a href="#" class="btn btn-xs btn-success btn-tbl">Invoice</a>';	
 			// $btn_list .= '<a href="#" data-repoid="'.$v['reorderno'].'" class="btn btn-xs btn-info print_order btn-tbl">Print Kitir</a>';
 			$btn_list .= '<a href="#" id="" class="btn btn-xs btn-danger btn-tbl delete" data-kode="'.$reorderno.'">Delete</a>';
             $record[] = '<div>'.$btn_list.'</div>';
@@ -132,11 +132,12 @@ class RepoIn extends \CodeIgniter\Controller
 
 			$reformat = [
 				'repocode' => "RI",
+				'prcode' => $_POST['cpopr'],
 				'cpopr' => $_POST['cpopr'],
 				'redate' => date('Y-m-d',strtotime($_POST['redate'])),
 				'redline' => date('Y-m-d',strtotime($_POST['redline']))
 			];
-			echo var_dump($_POST);die();
+			// echo var_dump($_POST);die();
 		    if ($this->request->getMethod() === 'post')
 		    {
 
@@ -373,9 +374,20 @@ class RepoIn extends \CodeIgniter\Controller
 
 		$datarepo = $this->getOneRepo($reorderno);
 		$data['data'] = $datarepo['data'];
+		$data['repoid'] = $datarepo['data']['repoid'];
 		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
 		$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
 		return view('Modules\RepoIn\Views\edit',$data);		
+	}	
+
+	public function proforma($reorderno)
+	{
+		check_exp_time();
+		$datarepo = $this->getOneRepo($reorderno);
+		$data['data'] = $datarepo['data'];
+		$data['repoid'] = $datarepo['data']['repoid'];
+		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
+		return view('Modules\RepoIn\Views\proforma',$data);		
 	}	
 
 	public function delete($code)
@@ -428,6 +440,35 @@ class RepoIn extends \CodeIgniter\Controller
 
 		return $data;
 	}
+
+	public function delete_container($code)
+	{
+		check_exp_time();
+		if ($this->request->isAJAX()) 
+		{		
+			$response = $this->client->request('DELETE','orderRepoContainer/deleteData',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'form_params' => [
+					'repocrnoid' => $code,
+				]
+			]);
+
+			$result = json_decode($response->getBody()->getContents(), true);	
+			if(isset($result['status']) && ($result['status']=="Failled"))
+			{
+				$data['message'] = $result['message'];
+				echo json_encode($data);die();				
+			}
+
+			session()->setFlashdata('sukses','Data berhasil dihapus');
+			$data['message'] = "success";
+			$data['QTY'] = hitungHCSTD($this->getRepoContainers($_POST['repoid']));
+			echo json_encode($data);die();
+		}
+	}	
 
 	public function getRepoContainers($repoid) {
 		// get OrderPraContainer
@@ -749,7 +790,10 @@ class RepoIn extends \CodeIgniter\Controller
 				<td>".$row['ccheight']."</td>
 				<td>".((isset($row['repofe'])&&$row['repofe']==1)?'Full':'Empty')."</td>
 				<td>".((isset($row['reposhold'])&&$row['reposhold']==1)?'Hold':'Release')."</td>
-				<td>".$row['reporemark']."</td>";
+				<td>".$row['reporemark']."</td>
+				<td>
+				<a href='#' class='btn btn-sm btn-info' data-kode='".$repocrnoid."'>edit</a>
+				<a href='#' class='btn btn-sm btn-danger delete' data-kode='".$repocrnoid."'>delete</a></td>";
 			$html .= "</tr>";
 			$i++; 
 		}

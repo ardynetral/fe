@@ -14,7 +14,7 @@
 				<div class="col-sm-6">
 					<div class="form-group">
 						<label for="cpopr " class="col-sm-5 control-label text-right">Principal</label>
-						<div class="col-sm-4">
+						<div class="col-sm-7">
 							<?=cpopr_dropdown();?>
 						</div>
 					</div>
@@ -119,7 +119,7 @@
 					<div class="form-group">
 						<label for="repovoyid" class="col-sm-5 control-label text-right">Voyage</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="voyid" name="voyid">
+							<input type="text" class="form-control" id="voyid" name="voyid" required>
 							<input type="hidden" class="form-control" id="voyno" name="voyno" value="0">
 						</div>
 					</div>		
@@ -190,7 +190,7 @@
 								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 							</div>		
 							<div class="col-sm-4">
-								<input type="text" name="revlift" class="form-control" id="revlift" value="0" required>
+								<input type="text" name="relift" class="form-control" id="relift" value="0" required>
 							</div>
 						</div>
 						<div class="form-group">
@@ -199,7 +199,7 @@
 								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 							</div>	
 							<div class="col-sm-4">
-								<input type="text" name="revdoc" class="form-control" id="revdoc" value="0" required>
+								<input type="text" name="redoc" class="form-control" id="redoc" value="0" required>
 							</div>
 						</div>
 						<div class="form-group">
@@ -274,7 +274,8 @@
 								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 							</div>	
 							<div class="col-sm-4">
-								<input type="text" name="revpack20" class="form-control" id="revpack20" value="0" required>
+								<input type="text" name="recpack20" class="form-control" id="recpack20" value="0" required>
+								<input type="hidden" name="rechaul20" class="form-control" id="rechaul20" value="0" required>
 							</div>
 						</div>
 						<div class="form-group">
@@ -283,7 +284,8 @@
 								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 							</div>
 							<div class="col-sm-4">
-								<input type="text" name="revpacktot20" class="form-control" id="revpacktot20" value="0" required>
+								<input type="text" name="recpacktot20" class="form-control" id="recpacktot20" value="0" required>
+								<input type="hidden" name="rechaultot20" class="form-control" id="rechaultot20" value="0" required>
 							</div>
 						</div>
 						<div class="form-group">
@@ -292,7 +294,8 @@
 								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 							</div>	
 							<div class="col-sm-4">
-								<input type="text" name="revpack40" class="form-control" id="revpack40" value="0">
+								<input type="text" name="recpack40" class="form-control" id="recpack40" value="0">
+								<input type="hidden" name="rechaul40" class="form-control" id="rechaul40" value="0">
 							</div>
 						</div>
 						<div class="form-group">
@@ -301,7 +304,8 @@
 								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 							</div>			
 							<div class="col-sm-4">
-								<input type="text" name="revpacktot40" class="form-control" id="revpacktot40" value="0" >
+								<input type="text" name="recpacktot40" class="form-control" id="recpacktot40" value="0" >
+								<input type="hidden" name="rechaultot40" class="form-control" id="rechaultot40" value="0" >
 							</div>
 						</div>
 						<div class="form-group">
@@ -310,7 +314,8 @@
 								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 							</div>			
 							<div class="col-sm-4">
-								<input type="text" name="revpack45" class="form-control" id="revpack45" value="0">
+								<input type="text" name="recpack45" class="form-control" id="recpack45" value="0">
+								<input type="hidden" name="rechaul45" class="form-control" id="rechaul45" value="0">
 							</div>
 						</div>
 						<div class="form-group">
@@ -319,7 +324,8 @@
 								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 							</div>	
 							<div class="col-sm-4">
-								<input type="text" name="revpacktot45" class="form-control" id="revpacktot45" value="0" >
+								<input type="text" name="recpacktot45" class="form-control" id="recpacktot45" value="0" >
+								<input type="hidden" name="rechaultot45" class="form-control" id="rechaultot45" value="0" >
 							</div>
 						</div>
 						<div class="form-group">
@@ -346,13 +352,13 @@
 								<div class="form-group">
 									<label for="code" class="col-sm-2 control-label text-right">20"</label>
 									<div class="col-sm-8">
-										<input type="text" name="std20" class="form-control" id="std20" value="<?=@$QTY['std20']?>">
+										<input type="text" name="std20" class="form-control" id="std20" value="<?=(isset($QTY['std20'])?$QTY['std20']:'0')?>">
 									</div>
 								</div>								
 								<div class="form-group">
 									<label for="code" class="col-sm-2 control-label text-right">40"</label>
 									<div class="col-sm-8">
-										<input type="text" name="std40" class="form-control" id="std40" value="<?=@$QTY['std40']?>">
+										<input type="text" name="std40" class="form-control" id="std40" value="<?=(isset($QTY['std40'])?$QTY['std40']:'0')?>">
 									</div>
 								</div>												
 							</div>
@@ -361,19 +367,19 @@
 								<div class="form-group">
 									<label for="code" class="col-sm-2 control-label text-right">20"</label>
 									<div class="col-sm-8">
-										<input type="text" name="hc20" class="form-control" id="hc20" value="<?=@$QTY['hc20']?>">
+										<input type="text" name="hc20" class="form-control" id="hc20" value="<?=(isset($QTY['hc20'])?$QTY['hc20']:'0')?>">
 									</div>
 								</div>								
 								<div class="form-group">
 									<label for="code" class="col-sm-2 control-label text-right">40"</label>
 									<div class="col-sm-8">
-										<input type="text" name="hc40" class="form-control" id="hc40" value="<?=@$QTY['hc40']?>">
+										<input type="text" name="hc40" class="form-control" id="hc40" value="<?=(isset($QTY['hc40'])?$QTY['hc40']:'0')?>">
 									</div>
 								</div>
 								<div class="form-group">
 									<label for="code" class="col-sm-2 control-label text-right">45"</label>
 									<div class="col-sm-8">
-										<input type="text" name="hc45" class="form-control" id="hc45" value="<?=@$QTY['hc45']?>">
+										<input type="text" name="hc45" class="form-control" id="hc45" value="<?=(isset($QTY['hc45'])?$QTY['hc45']:'0')?>">
 									</div>
 								</div>											
 							</div>										

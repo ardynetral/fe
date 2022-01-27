@@ -9,28 +9,39 @@ function hitungHCSTD($datas)
 	$hc45 = 0;
 	$std20 = 0;
 	$std40 = 0;
-	foreach($datas as $data) {
+	if($datas =="") {
+		$dt['hc20'] = 0;
+		$dt['hc40'] = 0;
+		$dt['hc45'] = 0;
+		$dt['std20'] = 0;
+		$dt['std40'] = 0;
+		$dt['std45'] = 0;
+	} else {
 
-		if((floatval($data['ccheight'])>8.5) && (floatval($data['cclength'])<=20)) {
-			$hc20=$hc20+1;
-		} else if((floatval($data['ccheight'])>8.5) && (floatval($data['ccheight'])<9.5) && (floatval($data['cclength'])==40)) {
-			$hc40=$hc40+1;
-		} else if((floatval($data['ccheight']))>=9.5 && (floatval($data['cclength'])==40)) {
-			$hc45=$hc45+1;
-		}
+		foreach($datas as $data) {
 
-		if((floatval($data['ccheight'])<=8.5) && (floatval($data['cclength'])<=20)) {
-			$std20=$std20+1;
-		} else if((floatval($data['ccheight'])<=8.5) && (floatval($data['cclength'])==40)) {
-			$std40=$std40+1;
+			if((floatval($data['ccheight'])>8.5) && (floatval($data['cclength'])<=20)) {
+				$hc20=$hc20+1;
+			} else if((floatval($data['ccheight'])>8.5) && (floatval($data['ccheight'])<9.5) && (floatval($data['cclength'])==40)) {
+				$hc40=$hc40+1;
+			} else if((floatval($data['ccheight']))>=9.5 && (floatval($data['cclength'])==40)) {
+				$hc45=$hc45+1;
+			}
+
+			if((floatval($data['ccheight'])<=8.5) && (floatval($data['cclength'])<=20)) {
+				$std20=$std20+1;
+			} else if((floatval($data['ccheight'])<=8.5) && (floatval($data['cclength'])==40)) {
+				$std40=$std40+1;
+			}
 		}
+		$dt['hc20'] = $hc20;
+		$dt['hc40'] = $hc40;
+		$dt['hc45'] = $hc45;
+		$dt['std20'] = $std20;
+		$dt['std40'] = $std40;
+		$dt['std45'] = 0;
 	}
-	$dt['hc20'] = $hc20;
-	$dt['hc40'] = $hc40;
-	$dt['hc45'] = $hc45;
-	$dt['std20'] = $std20;
-	$dt['std40'] = $std40;
-	$dt['std45'] = 0;
+
 	return $dt;
 }
 
@@ -55,7 +66,7 @@ function select_ccode($selected="")
 	$result = json_decode($response->getBody()->getContents(),true);	
 	$ccode = $result['data']['datas'];
 	$option = "";
-	$option .= '<select name="ccode[]" id="ccode" class="select-ccode">';
+	$option .= '<select name="cccode" id="cccode" class="select-cccode">';
 	$option .= '<option value="">-select-</option>';
 	foreach($ccode as $cc) {
 		$option .= "

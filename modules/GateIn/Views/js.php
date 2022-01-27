@@ -12,6 +12,9 @@ $(document).ready(function() {
 	$('.select-vessel').select2();
 	$('.select-voyage').select2();
 	$('.select-ccode').select2();
+	$("input:radio[name=cpife]").prop('disabled', true);
+	$("#liftoffcharge").prop('disabled', true);
+	$("#cpipaidbb").prop('disabled', true);
 	// DATATABLE
 	// $("#ctTable").DataTable({
 	//     select: {

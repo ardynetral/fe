@@ -267,6 +267,7 @@ class GateIn extends \CodeIgniter\Controller
 			echo json_encode($data);die();
 		}	
 		$data['data'] = $this->get_data_gatein2($crno);
+		// dd($data);
 		return view('Modules\GateIn\Views\edit',$data);
 	}
 
@@ -336,19 +337,24 @@ class GateIn extends \CodeIgniter\Controller
 		$result = json_decode($response->getBody()->getContents(), true);	
 		if(isset($result['status']) && ($result['status']=="Failled"))
 		{
-			$data['status'] = "Failled";
-			$data['message'] = $result['message'];
-			echo json_encode($data);die();						
+			// $data['status'] = "Failled";
+			// $data['message'] = $result['message'];
+			$data = "";
+			// echo json_encode($data);die();						
 		}
 
 		if(isset($result['data']) &&($result['data']==null)) {
-			$data['status'] = "Failled";
-			$data['message'] = "Data Container tidak ditemukan.";
-			echo json_encode($data);die();					
+			// $data['status'] = "Failled";
+			// $data['message'] = "Data Container tidak ditemukan.";
+			$data = "";
+			// echo json_encode($data);die();					
+		} else {
+			$data = $result['data'][0];
+			// $data['status'] = "success";
+			// $data['message'] = 'success';
 		}
 
-		$data['message'] = 'success';
-		return $result['data'][0];
+		return $data;
 	}
 
 	// Chack Container Number

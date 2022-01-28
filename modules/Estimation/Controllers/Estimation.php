@@ -103,6 +103,10 @@ class Estimation extends \CodeIgniter\Controller
 		$data['act'] = "Add";
 		$data['page_title'] = "Estimation";
 		$data['page_subtitle'] = "Estimation Page";
+		$data['lccode_dropdown'] = $this->lccode_dropdown();
+		$data['cmcode_dropdown'] = $this->cmcode_dropdown();
+		$data['dycode_dropdown'] = $this->dycode_dropdown();
+		$data['rmcode_dropdown'] = $this->rmcode_dropdown();
 		return view('Modules\Estimation\Views\add',$data);
 	}
 
@@ -114,6 +118,132 @@ class Estimation extends \CodeIgniter\Controller
 		$data['page_title'] = "Estimation";
 		$data['page_subtitle'] = "Estimation Page";
 		return view('Modules\Estimation\Views\add_detail',$data);
+	}	
+
+	public function lccode_dropdown($selected = "")
+	{
+
+		$data = [];
+		$response = $this->client->request('GET', 'locations/list', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json' => [
+				'start' => 0,
+				'rows' => 2000,
+				'search' => "",
+				'orderColumn' => "lccode",
+				'orderType' => "ASC"
+
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+
+		$res = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="lccode" id="lccode" class="select-lccode">';
+		$option .= '<option value="">-select-</option>';
+		foreach ($res as $r) {
+			$option .= "<option value='" . $r['lccode'] . "'" . ((isset($selected) && $selected == $r['lccode']) ? ' selected' : '') . ">" . $r['lccode'] . "</option>";
+		}
+		$option .= "</select>";
+		return $option;
+		die();
+	}
+
+	public function cmcode_dropdown($selected = "")
+	{
+		$data = [];
+		$response = $this->client->request('GET', 'components/list', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json' => [
+				'start' => 0,
+				'rows' => 2000
+
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+
+		$option = "";
+		return $option;
+		die();
+		$res = $result['data']['datas'];
+		$option .= '<select name="cmcode" id="cmcode" class="select-cmcode">';
+		$option .= '<option value="">-select-</option>';
+		foreach ($res as $r) {
+			$option .= "<option value='" . $r['cmcode'] . "'" . ((isset($selected) && $selected == $r['cmcode']) ? ' selected' : '') . ">" . $r['cmcode'] . "</option>";
+		}
+		$option .= "</select>";
+
+		return $option;
+		die();
+	}
+
+	public function dycode_dropdown($selected = "")
+	{
+
+		$data = [];
+		$response = $this->client->request('GET', 'damagetype/list', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json' => [
+				'start' => 0,
+				'rows' => 2000,
+				'search' => "",
+				'orderColumn' => "dycode",
+				'orderType' => "ASC"
+
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		$res = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="dycode" id="dycode" class="select-dycode">';
+		$option .= '<option value="">-select-</option>';
+		foreach ($res as $r) {
+			$option .= "<option value='" . $r['dycode'] . "'" . ((isset($selected) && $selected == $r['dycode']) ? ' selected' : '') . ">" . $r['dycode'] . "</option>";
+		}
+		$option .= "</select>";
+		return $option;
+		die();
+	}
+
+	public function rmcode_dropdown($selected = "")
+	{
+
+		$data = [];
+		$response = $this->client->request('GET', 'repair_methods/getAllData', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json' => [
+				'start' => 0,
+				'rows' => 2000
+
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		$res = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="rmcode" id="rmcode" class="select-rmcode">';
+		$option .= '<option value="">-select-</option>';
+		foreach ($res as $r) {
+			$option .= "<option value='" . $r['rmcode'] . "'" . ((isset($selected) && $selected == $r['rmcode']) ? ' selected' : '') . ">" . $r['rmcode'] . "</option>";
+		}
+		$option .= "</select>";
+		return $option;
+		die();
 	}		
 }
 

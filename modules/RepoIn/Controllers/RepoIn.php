@@ -49,6 +49,8 @@ class RepoIn extends \CodeIgniter\Controller
             $record[] = $v['reorderno'];
             $record[] = date('d-m-Y', strtotime($v['redate']));
             $record[] = $v['cpopr'];
+            $record[] = $v['recpives'];
+            $record[] = $v['recpivoyid'];
 			
 			$btn_list .= '<a href="'.site_url().'/repoin/view/'.$reorderno.'" class="btn btn-xs btn-primary btn-tbl">Cetak kitir</a>';	
 			$btn_list .= '<a href="'.site_url().'/repoin/edit/'.$reorderno.'" class="btn btn-xs btn-success btn-tbl">Edit</a>';	
@@ -226,30 +228,7 @@ class RepoIn extends \CodeIgniter\Controller
 
 		// echo var_dump( $_POST);die();
 		if ($this->request->isAJAX()) 
-		{
-		// var formData = "repoid=" + $("#repoid").val();
-		// formData += "&cpiorderno=" + $("#reorderno").val();
-		// formData += "&cpopr=" + $("#cpopr").val();
-		// formData += "&cpcust=" + $("#cpcust").val();
-		// // formData += "&cpidish=" + $("#cpidish").val();
-		// formData += "&cpdepo=" + $("#cpdepo").val();
-		// formData += "&cpichrgbb=" + $("#cpichrgbb").val();
-		// formData += "&cpipratgl=" + $("#redate").val();
-		// formData += "&cpijam=" + $("#repojam").val();
-		// formData += "&cpives=" + $("#cpives").val();
-		// formData += "&cpiremark=" + $("#cpiremark").val();
-		// formData += "&cpideliver=" + $("#cpideliver").val();
-		// formData += "&cpivoyid=" + $("#repovoyid").val();
-		// formData += "&cpivoy=" + $("#cpivoy").val();
-		// // detail
-		// formData += "&crno=" + $("#crno").val();
-		// formData += "&cccode=" + $("#cccode").val();
-		// formData += "&ctcode=" + $("#ctcode").val();
-		// formData += "&cclength=" + $("#cclength").val();
-		// formData += "&ccheight=" + $("#ccheight").val();
-		// formData += "&cpife=" + $("#cpife").val();
-		// formData += "&cpishold=" + $("#cpishold").val();
-		// formData += "&reporemark=" + $("#reporemark").val();			
+		{	
 			$form_params = [
 				//Header
 				'repoid' => $_POST['repoid'],
@@ -313,9 +292,6 @@ class RepoIn extends \CodeIgniter\Controller
 				session()->setFlashdata('sukses','Success, Containers Saved.');
 				$data['status'] = "success";
 				$data['message'] = $result['message'];
-				// $datarepo = $this->getOneRepo($_POST['cpiorderno']);
-				// echo var_dump($datarepo);die();
-				// $data['data'] = $datarepo['data'];
 				$data['containers'] = $this->getRepoContainers($_POST['repoid']);
 				$data['QTY'] = hitungHCSTD($this->getRepoContainers($_POST['repoid']));
 				echo json_encode($data);die();
@@ -328,14 +304,99 @@ class RepoIn extends \CodeIgniter\Controller
 			}			
 		}		
 	}	
-	
+
+	public function updatecontainer()
+	{
+		check_exp_time();
+		// $data = [];
+		$token = get_token_item();
+		$group_id = $token['groupId'];
+		$prcode = $token['prcode'];
+
+		// echo var_dump( $_POST);die();
+		if ($this->request->isAJAX()) 
+		{	
+			$form_params = [
+				//Header
+				'repoid' => $_POST['repoid'],
+				'cpiorderno' => $_POST['cpiorderno'] ,
+				'cpopr' => $_POST['cpopr'] ,
+				'cpcust' => $_POST['cpcust'] ,
+				'cpidish' => $_POST['cpidish'] ,
+				'cpdepo' => $_POST['cpdepo'] ,
+				'cpichrgbb' => $_POST['cpichrgbb'] ,
+				'cpipratgl' => date('Y-m-d',strtotime($_POST['cpipratgl'])) ,
+				'cpijam' => $_POST['cpijam'] ,
+				'cpives' => $_POST['cpives'] ,
+				'cpiremark' => $_POST['cpiremark'] ,
+				'cpideliver' => $_POST['cpideliver'] ,
+				'cpivoyid' => $_POST['cpivoyid'] ,
+				'cpivoy' => $_POST['cpivoy'] ,
+				// detail
+				'crno' => $_POST['crno'],
+				'cccode' => $_POST['cccode'],
+				'ctcode' => $_POST['ctcode'],
+				'cclength' => $_POST['cclength'],
+				'ccheight' => $_POST['ccheight'],
+				'cpife' => $_POST['cpife'],
+				'cpishold' => $_POST['cpishold'],
+				'reporemark' => $_POST['reporemark']
+			];
+
+			// echo var_dump($_POST);die();
+
+			$validate = $this->validate([
+	            'crno' 	=> 'required'
+	        ]);	
+
+		    if ($this->request->getMethod() === 'post' && $validate)
+		    {
+
+				$response = $this->client->request('PUTT','repoin/updateDataRepoInDetails',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'form_params' => $form_params,
+				]);
+
+				$result = json_decode($response->getBody()->getContents(), true);	
+				// echo var_dump($result);die();
+				if(isset($result['status']) && ($result['status']=="Failled"))
+				{
+					$data['status'] = "Failled";
+					$data['message'] = $result['message'];
+					echo json_encode($data);die();				
+				}
+				// "message": "Data available!"
+				if(isset($result['message']) && ($result['message']=="Data available!"))
+				{
+					$data['status'] = "Failled";
+					$data['message'] = $result['message'];
+					echo json_encode($data);die();				
+				}				
+
+				session()->setFlashdata('sukses','Success, Containers Saved.');
+				$data['status'] = "success";
+				$data['message'] = $result['message'];
+				$data['containers'] = $this->getRepoContainers($_POST['repoid']);
+				$data['QTY'] = hitungHCSTD($this->getRepoContainers($_POST['repoid']));
+				echo json_encode($data);die();
+
+			}
+			else 
+			{
+		    	$data['message'] = \Config\Services::validation()->listErrors();
+		    	echo json_encode($data);die();			
+			}			
+		}		
+	}
 	public function edit($reorderno)
 	{
 		check_exp_time();
 
 		if ($this->request->isAJAX()) 
 		{
-			// echo var_dump($_POST);die();
 
 			$reformat = [
 				'redate' => date('Y-m-d',strtotime($_POST['redate'])),
@@ -493,6 +554,27 @@ class RepoIn extends \CodeIgniter\Controller
 		return $datas;
 	}
 
+	public function getOneRepoContainer($repocrnoid) {
+		$response = $this->client->request('GET','orderRepoContainer/getDetailData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'repocrnoid' => $repocrnoid,
+			]
+		]);
+
+		$result= json_decode($response->getBody()->getContents(), true);
+		if(isset($result['status'])&&($result['status']=="Failled")) {
+			$datas = "";
+		} else {
+			$datas = $result['data'];		
+		}
+
+		echo json_encode($datas); die();		
+	}
+
 	public function ajax_country() 
 	{
 		$response = $this->client->request('GET','country/listOne',[
@@ -570,19 +652,28 @@ class RepoIn extends \CodeIgniter\Controller
 				]);
 
 				$result = json_decode($response->getBody()->getContents(),true);
-				// echo var_dump($result);die();
 				if(isset($result['success']) && ($result['success']==false))
 				{
 					$data['status'] = "Failled";
 					$data['message'] = $result['message'];
 					echo json_encode($data);die();				
+				} else {
+
+					$container = $result['data']['rows'][0];
+					// echo var_dump($container['crlastact']);die();
+					if(($container['crlastact']=="BI")OR($container['crlastact']=="OD")OR($container['crlastact']==NULL)) {
+						$data['status'] = "Success";
+						$data['message'] = $result['message'];
+						$data['data'] = $container;
+						$data['container_code'] = $data['data']['container_code'];
+						echo json_encode($data);die();
+					} else {				
+						$data['status'] = "Failled";
+						$data['message'] = "Container sudah masuk depo";
+						echo json_encode($data);die();					
+					}
 				}
 
-				$data['status'] = "Success";
-				$data['message'] = $result['message'];
-				$data['data'] = $result['data']['rows'][0];
-				$data['container_code'] = $data['data']['container_code'];
-				echo json_encode($data);die();
 
 		    } else {
 
@@ -792,8 +883,7 @@ class RepoIn extends \CodeIgniter\Controller
 				<td>".((isset($row['reposhold'])&&$row['reposhold']==1)?'Hold':'Release')."</td>
 				<td>".$row['reporemark']."</td>
 				<td>
-				<a href='#' class='btn btn-sm btn-info' data-kode='".$repocrnoid."'>edit</a>
-				<a href='#' class='btn btn-sm btn-danger delete' data-kode='".$repocrnoid."'>delete</a></td>";
+				<a href='#' class='btn btn-xs btn-danger delete' data-kode='".$repocrnoid."'>delete</a></td>";
 			$html .= "</tr>";
 			$i++; 
 		}
@@ -858,8 +948,8 @@ class RepoIn extends \CodeIgniter\Controller
 		]);
 		
 		$result = json_decode($response->getBody()->getContents(),true);
-		// $recept = recept_by_praid($praid);
 		// print_r($result);die();
+		// $recept = recept_by_praid($praid);
 		if(isset($result['data'][0])&&(count($result['data'][0])) > 0){
 			$qrcode = $this->generate_qrcode($result['data'][0]['cpid']);
 			$CRNO = $result['data'][0]['crno'];

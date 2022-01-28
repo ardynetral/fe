@@ -26,6 +26,7 @@
 				<div class="row">
 					<form id="fUpdateOrderRepo" class="form-horizontal" role="form" method="post">
 						<?= csrf_field() ?>
+						<input type="hidden" name="repoid" id="repoid" value="<?=$data['repoid'];?>">
 						<fieldset>
 							<div class="row">
 								<div class="col-sm-6">
@@ -207,7 +208,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>		
 											<div class="col-sm-4">
-												<input type="text" name="revlift" class="form-control" id="revlift" value="0" required>
+												<input type="text" name="relift" class="form-control" id="relift" value="0" required>
 											</div>
 										</div>
 										<div class="form-group">
@@ -216,7 +217,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="revdoc" class="form-control" id="revdoc" value="0" required>
+												<input type="text" name="redoc" class="form-control" id="redoc" value="0" required>
 											</div>
 										</div>
 										<div class="form-group">
@@ -291,7 +292,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="revpack20" class="form-control" id="revpack20" value="<?=$data['revpack20']?>" required>
+												<input type="text" name="recpack20" class="form-control" id="recpack20" value="<?=$data['recpack20']?>" required>
 											</div>
 										</div>
 										<div class="form-group">
@@ -300,7 +301,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>
 											<div class="col-sm-4">
-												<input type="text" name="revpacktot20" class="form-control" id="revpacktot20" value="<?=$data['revpacktot20']?>" required>
+												<input type="text" name="recpacktot20" class="form-control" id="recpacktot20" value="<?=$data['recpacktot20']?>" required>
 											</div>
 										</div>
 										<div class="form-group">
@@ -309,7 +310,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="revpack40" class="form-control" id="revpack40" value="<?=$data['revpack40']?>">
+												<input type="text" name="recpack40" class="form-control" id="recpack40" value="<?=$data['recpack40']?>">
 											</div>
 										</div>
 										<div class="form-group">
@@ -318,7 +319,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>			
 											<div class="col-sm-4">
-												<input type="text" name="revpacktot40" class="form-control" id="revpacktot40" value="<?=$data['revpacktot40']?>" >
+												<input type="text" name="recpacktot40" class="form-control" id="recpacktot40" value="<?=$data['recpacktot40']?>" >
 											</div>
 										</div>
 										<div class="form-group">
@@ -327,7 +328,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>			
 											<div class="col-sm-4">
-												<input type="text" name="revpack45" class="form-control" id="revpack45" value="<?=$data['revpack45']?>">
+												<input type="text" name="recpack45" class="form-control" id="recpack45" value="<?=$data['recpack45']?>">
 											</div>
 										</div>
 										<div class="form-group">
@@ -336,7 +337,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="revpacktot45" class="form-control" id="revpacktot45" value="<?=$data['revpacktot45']?>" >
+												<input type="text" name="recpacktot45" class="form-control" id="recpacktot45" value="<?=$data['recpacktot45']?>" >
 											</div>
 										</div>
 										<div class="form-group">
@@ -401,6 +402,9 @@
 										
 										<legend><center>Additional Charges </center></legend>
 										<div class="row">
+
+											<?php if($data['rebill']=='Breakdown'):?>
+
 											<div class="form-group">
 												<label class="col-sm-4 control-label text-right" style="color:blue;">Sub Total 2</label>
 												<div class="col-sm-2">
@@ -410,6 +414,9 @@
 													<input type="text" name="reother1" class="form-control" id="reother1" value="<?=$data['reother1']?>" required>
 												</div>
 											</div>
+
+											<?php elseif($data['rebill']=='Package'):?>
+
 											<div class="form-group">
 												<label class="col-sm-4 control-label text-right" style="color:blue;">Sub Total 2</label>
 												<div class="col-sm-2">
@@ -418,7 +425,10 @@
 												<div class="col-sm-4">
 													<input type="text" name="reother2" class="form-control" id="reother2"  value="<?=$data['reother2']?>" required>
 												</div>
-											</div>						
+											</div>	
+
+											<?php endif; ?>					
+
 											<div class="form-group">
 												<label for="liftoffcharge" class="col-sm-5 control-label text-right">Will Be Charge</label>
 												<div class="col-sm-7">
@@ -470,7 +480,7 @@
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> Repo Container</h3>
 					</div>
-					<div class="widget-content">
+					<div class="widget-content">					
 						<table id="rcTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
@@ -487,6 +497,7 @@
 								</tr>
 							</thead>
 							
+							<?php if($containers!=""):?>
 							<tbody id="listOrderPra">
 								<?php $no=1; foreach($containers as $c):?>
 								<tr>
@@ -500,15 +511,14 @@
 									<td><?=((isset($c['reposhold'])&&$c['reposhold']==1)?'Hold':'Release');?></td>
 									<td><?=$c['reporemark'];?></td>
 									<td>
-										<a href="#" 
-										data-repoid="<?=$c['repoid']?>" 
-										data-reorderno="<?=$data['reorderno']?>" 
-										data-crno="<?=$c['crno']?>"
-										class="btn btn-xs btn-info btn-tbl cetak_kitir">Print Kitir</a>
-									</td>
+										<a href='#' class='btn btn-xs btn-info cetak_kitir'	data-crno="<?=$c['crno']?>">cetak kitir</a>
+									</td>									
 								</tr>
 								<?php $no++; endforeach; ?>
 							</tbody>
+							<?php else:?>
+								<tr><td colspan="9">Data Container kosong.</td></tr>
+							<?php endif?>
 						</table>						
 					</div>
 					<div class="widget-footer text-center">
@@ -521,6 +531,7 @@
 	</div>
 </div>
 
+<?= $this->include('\Modules\RepoIn\Views\form_detail_header');?>
 
 <?= $this->endSection();?>
 

@@ -482,7 +482,7 @@
 						<h3><i class="fa fa-table"></i> Repo Container</h3>
 					</div>
 					<div class="widget-content">
-						<p><button class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
+						<p><button class="btn btn-success" data-toggle="modal" data-target="#myModal" id="insertContainer"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
 						</p>
 						<table id="rcTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
@@ -513,7 +513,6 @@
 									<td><?=((isset($c['reposhold'])&&$c['reposhold']==1)?'Hold':'Release');?></td>
 									<td><?=$c['reporemark'];?></td>
 									<td>
-										<a href='#' class='btn btn-xs btn-info' data-kode="<?=$c['repocrnoid']?>">edit</a>
 										<a href='#' class='btn btn-xs btn-danger delete' data-kode="<?=$c['repocrnoid']?>">delete</a>
 									</td>									
 								</tr>

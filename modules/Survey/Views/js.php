@@ -12,11 +12,15 @@ $(document).ready(function() {
 	$('.select-vessel').select2();
 	$('.select-voyage').select2();
 	$('.select-ccode').select2();
-	// DATATABLE
-	// $("#ctTable").DataTable({
- //        "paging": false,
- //        "info": false,		
-	// });
+	$('#CRLASTCOND').select2();
+	$("input:radio[name=CPIFE]").prop('disabled', true);
+	$("input:radio[name=CPITERM]").prop('disabled', true);
+	$("#CPICHRGBB").prop('disabled', true);
+	$("#CPIPAIDBB").prop('disabled', true);
+	$("#CRCDP").prop('disabled', true);
+	$("#CRACEP").prop('disabled', true);
+	$("#CRCSC").prop('disabled', true);
+
 	// datePicker
 	$(".tanggal").datepicker({
 		autoclose:true,

@@ -78,6 +78,7 @@
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle"></i> Close</button>
 				<button type="button" id="saveDetail" class="btn btn-custom-primary"><i class="fa fa-check-circle"></i> Save Container</button>
+				<button type="button" id="updateDetail" class="btn btn-custom-primary" style="display:none;"><i class="fa fa-check-circle"></i> Update Container</button>
 			</div>
 			</form>			
 		</div>

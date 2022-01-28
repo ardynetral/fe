@@ -81,32 +81,66 @@ $(document).ready(function() {
 	$("#updateNewData").on("click", function(e){
 		e.preventDefault();
 		var fomData = "reorderno=" + $("#reorderno").val();
-		fomData += "&relift=" + parseInt($("#relift").val());
-		fomData += "&redoc=" + parseInt($("#redoc").val());
-		fomData += "&re20=" + parseInt($("#re20").val());
-		fomData += "&retot20=" + parseInt($("#retot20").val());
-		fomData += "&re40=" + parseInt($("#re40").val());
-		fomData += "&retot40=" + parseInt($("#retot40").val());
-		fomData += "&re45=" + parseInt($("#re45").val());
-		fomData += "&retot45=" + parseInt($("#retot45").val());
-		fomData += "&subtotbreak=" + parseInt($("#subtotbreak").val());
-		fomData += "&subtotpack=" + parseInt($("#subtotpack").val());
-		fomData += "&totpack=" + parseInt($("#totpack").val());
-		fomData += "&totbreak=" + parseInt($("#totbreak").val());
-		fomData += "&recpack20=" + parseInt($("#recpack20").val());
-		fomData += "&recpacktot20=" + parseInt($("#recpacktot20").val());
-		fomData += "&recpack40=" + parseInt($("#recpack40").val());
-		fomData += "&recpacktot40=" + parseInt($("#recpacktot40").val());
-		fomData += "&recpack45=" + parseInt($("#recpack45").val());
-		fomData += "&recpacktot45=" + parseInt($("#recpacktot45").val());
-		fomData += "&rechaul20=" + parseInt($("#rechaul20").val());
-		fomData += "&rechaultot20=" + parseInt($("#rechaultot20").val());
-		fomData += "&rechaul40=" + parseInt($("#rechaul40").val());
-		fomData += "&rechaultot40=" + parseInt($("#rechaultot40").val());
-		fomData += "&rechaul45=" + parseInt($("#rechaul45").val());
-		fomData += "&rechaultot45=" + parseInt($("#rechaultot45").val());		
-		fomData += "&reother1=" + parseInt($("#reother1").val());
-		fomData += "&reother2="	+ parseInt($("#reother2").val());
+		if($("#rebill").val()=="Breakdown") {
+			// BreakDown
+			fomData += "&relift=" + parseInt($("#relift").val());
+			fomData += "&redoc=" + parseInt($("#redoc").val());
+			fomData += "&re20=" + parseInt($("#re20").val());
+			fomData += "&retot20=" + parseInt($("#retot20").val());
+			fomData += "&re40=" + parseInt($("#re40").val());
+			fomData += "&retot40=" + parseInt($("#retot40").val());
+			fomData += "&re45=" + parseInt($("#re45").val());
+			fomData += "&retot45=" + parseInt($("#retot45").val());
+			fomData += "&subtotbreak=" + parseInt($("#subtotbreak").val());
+			fomData += "&reother1=" + parseInt($("#reother1").val());
+			fomData += "&totbreak=" + parseInt($("#totbreak").val());
+			// Package
+			fomData += "&recpack20=0";
+			fomData += "&recpacktot20=0";
+			fomData += "&recpack40=0";
+			fomData += "&recpacktot40=0";
+			fomData += "&recpack45=0";
+			fomData += "&recpacktot45=0";
+			fomData += "&rechaul20=0";
+			fomData += "&rechaultot20=0";
+			fomData += "&rechaul40=0";
+			fomData += "&rechaultot40=0";
+			fomData += "&rechaul45=0";
+			fomData += "&rechaultot45=0"	
+			fomData += "&reother2=0";
+			fomData += "&subtotpack=0";
+			fomData += "&totpack=0";
+		} else if($("#rebill").val()=="Package") {
+			// BreakDown
+			fomData += "&relift=0";
+			fomData += "&redoc=0";
+			fomData += "&re20=0";
+			fomData += "&retot20=0";
+			fomData += "&re40=0";
+			fomData += "&retot40=0";
+			fomData += "&re45=0";
+			fomData += "&retot45=0";
+			fomData += "&subtotbreak=0";
+			fomData += "&reother1=0";
+			fomData += "&totbreak=0";
+			// Package
+			fomData += "&recpack20=" + parseInt($("#recpack20").val());
+			fomData += "&recpacktot20=" + parseInt($("#recpacktot20").val());
+			fomData += "&recpack40=" + parseInt($("#recpack40").val());
+			fomData += "&recpacktot40=" + parseInt($("#recpacktot40").val());
+			fomData += "&recpack45=" + parseInt($("#recpack45").val());
+			fomData += "&recpacktot45=" + parseInt($("#recpacktot45").val());
+			fomData += "&rechaul20=" + parseInt($("#rechaul20").val());
+			fomData += "&rechaultot20=" + parseInt($("#rechaultot20").val());
+			fomData += "&rechaul40=" + parseInt($("#rechaul40").val());
+			fomData += "&rechaultot40=" + parseInt($("#rechaultot40").val());
+			fomData += "&rechaul45=" + parseInt($("#rechaul45").val());
+			fomData += "&rechaultot45=" + parseInt($("#rechaultot45").val());		
+			fomData += "&reother2="	+ parseInt($("#reother2").val());
+			fomData += "&subtotpack=" + parseInt($("#subtotpack").val());
+			fomData += "&totpack=" + parseInt($("#totpack").val());
+		}
+
 		$.ajax({
 			url: "<?php echo site_url('repoin/update_new_data'); ?>",
 			type: "POST",
@@ -403,8 +437,76 @@ $(document).ready(function() {
 
 	});
 
+	// save detailContainer
+	$("#updateDetail").on("click", function(e){
+		e.preventDefault();
+		// header
+		var formData = "repoid=" + $("#repoid").val();
+		formData += "&cpiorderno=" + $("#reorderno").val();
+		formData += "&cpopr=" + $("#cpopr").val();
+		formData += "&cpcust=" + $("#cpcust").val();
+		formData += "&cpidish=" + $("#repodish").val();
+		formData += "&cpdepo=" + $("#cpdepo").val();
+		formData += "&cpichrgbb=" + 0;
+		formData += "&cpipratgl=" + $("#redate").val();
+		formData += "&cpijam=" + $("#repojam").val();
+		formData += "&cpives=" + $("#vesid").val();
+		formData += "&cpiremark=" + $("#cpiremark").val();
+		formData += "&cpideliver=" + $("#cpideliver").val();
+		formData += "&cpivoyid=" + $("#voyid").val();
+		formData += "&cpivoy=" + $("#voyno").val();
+		// detail
+		formData += "&crno=" + $("#crno").val();
+		formData += "&cccode=" + $("#cccode").val();
+		formData += "&ctcode=" + $("#ctcode").val();
+		formData += "&cclength=" + $("#cclength").val();
+		formData += "&ccheight=" + $("#ccheight").val();
+		formData += "&cpife=" + $("#cpife").val();
+		formData += "&cpishold=" + $("#cpishold").val();
+		formData += "&reporemark=" + $("#reporemark").val();
+		
+		$.ajax({
+			url: "<?php echo site_url('repoin/updatecontainer'); ?>",
+			type: "POST",
+			data: formData,
+			dataType: 'json',
+			success: function(json) {
+				if(json.status == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});	
+					$("#formUpdateDetail").trigger("reset");
+					$("#cccode").select2().select2('val','');
+					// insert value quantity
+					$("#std20").val(json.QTY.std20);
+					$("#std40").val(json.QTY.std40);
+					$("#hc20").val(json.QTY.hc20);
+					$("#hc40").val(json.QTY.hc40);
+					$("#hc45").val(json.QTY.hc45);
+
+					loadTableContainer($("#repoid").val());
+					getTariff($("#cpopr").val(),$("#retype").val());
+
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});						
+				}
+			}
+		});	
+
+	});
+
+// untuk insert container
 	$("#crno").on("keyup", function(){
 		var crno = $("#crno").val();
+		$("#formDetail").trigger("reset");
+		$("#cccode").select2().select2('val','');
+		$("#crno").val(crno);	
 		var status = "";
 		$(this).val($(this).val().toUpperCase());
 		$.ajax({
@@ -417,7 +519,7 @@ $(document).ready(function() {
 					$(".err-crno").show();
 					$(".err-crno").html(json.message);
 					$("#crno").css("background", "#ffbfbf!important");
-					$("#crno").css("border-color", "#ea2525");					
+					$("#crno").css("border-color", "#ea2525");		
 				} else {
 					$(".err-crno").html("");
 					$(".err-crno").hide();
@@ -432,6 +534,37 @@ $(document).ready(function() {
 				}
 			}
 		});
+	});
+
+	$('#insertContainer').on('click',function(e){
+		e.preventDefault();	
+		// $('#myModal').modal('toggle');
+		$("#formDetail").trigger("reset");		
+		$('#updateDetail').hide();
+		$('#saveDetail').show();
+	});
+
+	$('#rcTable tbody').on('click', '.edit', function(e){
+		e.preventDefault();	
+		$('#myModal').modal('toggle');
+		$('#updateDetail').show();
+		$('#saveDetail').hide();
+		let code = $(this).data('kode');
+		$.ajax({
+			url: "<?php echo site_url('repoin/getOneRepoContainer/'); ?>"+code,
+			type: "POST",
+			dataType: 'json',
+			data: {"repoid":$("#repoid").val()},
+			success: function(json) {
+				console.log(json);
+				$("#crno").val(json.crno);
+				$("#cccode").select2().select2('val',json.cccode);
+				$("#ctcode").val(json.ctcode);
+				$("#cclength").val(json.cclength);
+				$("#ccheight").val(json.ccheight);
+				$("input:radio[name=cpife]").filter('[value=0]').prop('checked', true);	
+			}
+		});				
 	});
 
 	$('#rcTable tbody').on('click', '.delete', function(e){
@@ -460,7 +593,7 @@ $(document).ready(function() {
 			data: {"repoid":$("#repoid").val()},
 			success: function(json) {
 				if(json.message == "success") {
-					
+
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
@@ -474,7 +607,7 @@ $(document).ready(function() {
 					$("#hc45").val(json.QTY.hc45); 
 
 					getTariff($("#cpopr").val(),$("#retype").val());
-					loadTableContainer($("#repoid").val());;
+					loadTableContainer($("#repoid").val());
 
 				} else {
 
@@ -655,9 +788,9 @@ $(document).ready(function() {
 	// Print Kitir
 	$("#rcTable tbody").on('click','.cetak_kitir', function(e){
 		e.preventDefault();
-		var repoid = $(this).attr('data-repoid');
+		var repoid = $("#repoid").val();
 		var crno = $(this).attr('data-crno');
-		var reorderno = $(this).attr('data-reorderno');
+		var reorderno = $("#reorderno").val();
 		window.open("<?php echo site_url('repoin/cetak_kitir/'); ?>" + crno + "/" + reorderno + "/" + repoid, '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 

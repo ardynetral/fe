@@ -26,6 +26,7 @@
 				<div class="row">
 					<form id="fUpdateOrderRepo" class="form-horizontal" role="form" method="post">
 						<?= csrf_field() ?>
+						<input type="hidden" name="repoid" id="repoid" value="<?=$data['repoid'];?>">
 						<fieldset>
 							<div class="row">
 								<div class="col-sm-6">
@@ -470,7 +471,7 @@
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> Repo Container</h3>
 					</div>
-					<div class="widget-content">
+					<div class="widget-content">					
 						<table id="rcTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
@@ -487,6 +488,7 @@
 								</tr>
 							</thead>
 							
+							<?php if($containers!=""):?>
 							<tbody id="listOrderPra">
 								<?php $no=1; foreach($containers as $c):?>
 								<tr>
@@ -500,15 +502,14 @@
 									<td><?=((isset($c['reposhold'])&&$c['reposhold']==1)?'Hold':'Release');?></td>
 									<td><?=$c['reporemark'];?></td>
 									<td>
-										<a href="#" 
-										data-repoid="<?=$c['repoid']?>" 
-										data-reorderno="<?=$data['reorderno']?>" 
-										data-crno="<?=$c['crno']?>"
-										class="btn btn-xs btn-info btn-tbl cetak_kitir">Print Kitir</a>
-									</td>
+										<a href='#' class='btn btn-xs btn-info cetak_kitir'	data-crno="<?=$c['crno']?>">cetak kitir</a>
+									</td>									
 								</tr>
 								<?php $no++; endforeach; ?>
 							</tbody>
+							<?php else:?>
+								<tr><td colspan="9">Data Container kosong.</td></tr>
+							<?php endif?>
 						</table>						
 					</div>
 					<div class="widget-footer text-center">
@@ -521,6 +522,7 @@
 	</div>
 </div>
 
+<?= $this->include('\Modules\RepoIn\Views\form_detail_header');?>
 
 <?= $this->endSection();?>
 

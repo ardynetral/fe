@@ -11,6 +11,8 @@ $routes->add('/repoin/update_new_data', '\Modules\RepoIn\Controllers\RepoIn::upd
 $routes->add('/repoin/edit/(:alphanum)', '\Modules\RepoIn\Controllers\RepoIn::edit/$1', ['filter' => 'login']);
 $routes->post('/repoin/edit/(:alphanum)', '\Modules\RepoIn\Controllers\RepoIn::edit/$1', ['filter' => 'login']);
 $routes->add('/repoin/delete/(:alphanum)', '\Modules\RepoIn\Controllers\RepoIn::delete/$1', ['filter' => 'login']);
+$routes->add('/repoin/getOneRepoContainer/(:alphanum)', '\Modules\RepoIn\Controllers\RepoIn::getOneRepoContainer/$1', ['filter' => 'login']);
+$routes->post('/repoin/updatecontainer', '\Modules\RepoIn\Controllers\RepoIn::updatecontainer', ['filter' => 'login']);
 $routes->add('/repoin/delete_container/(:alphanum)', '\Modules\RepoIn\Controllers\RepoIn::delete_container/$1', ['filter' => 'login']);
 $routes->add('/repoin/checkContainerNumber', '\Modules\RepoIn\Controllers\RepoIn::checkContainerNumber', ['filter' => 'login']);
 $routes->add('/repoin/ajax_ccode_listOne/(:alphanum)', '\Modules\RepoIn\Controllers\RepoIn::ajax_ccode_listOne/$1', ['filter' => 'login']);

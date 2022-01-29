@@ -4,13 +4,7 @@
 		$('.select-cmcode').select2();
 		$('.select-dycode').select2();
 		$('.select-rmcode').select2();
-
-
-
-
-
-
-
+    
 		// Error Message element
 		$(".err-crno").hide(); //container number check
 		// $("#update").hide();
@@ -36,6 +30,7 @@
 		$(".tanggal").datepicker({
 			autoclose: true,
 		});
+
 
 		// $("#cpipratgl").datepicker("disable");
 

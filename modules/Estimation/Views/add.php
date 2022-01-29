@@ -121,11 +121,9 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 			</fieldset>
 		</form>
 
-
 		<div class="row">
 			<!-- List Final Estimation -->
 			<div class="col-lg-4">
-
 				<div class="widget widget-table">
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> Form Input Estimation Detail</h3>
@@ -252,13 +250,6 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 										<input type="file" name="files[]" class="form-control" id="files" multiple="true" required="">
 									</div>
 								</div>
-
-
-
-
-
-
-
 								<div class="form-group">
 									<div class="col-sm-offset-4 col-sm-8">
 										<button type="button" id="saveDetail" class="btn btn-primary" disabled=""><i class="fa fa-check-circle"></i> Save</button>
@@ -298,6 +289,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 								</tr>
 							</thead>
 							<!-- <tbody>
+
 						<tr>
 							<td></td>
 							<td></td>

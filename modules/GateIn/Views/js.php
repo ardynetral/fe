@@ -40,7 +40,7 @@ $(document).ready(function() {
 
 	$("form#fGateIns").on("submit", function(e){
 		e.preventDefault();													
-
+		var crno = $("#crno").val();
 		$.ajax({
 			url: "<?php echo site_url('gatein/add'); ?>",
 			type: "POST",
@@ -51,11 +51,12 @@ $(document).ready(function() {
 			dataType: 'json',
 			success: function(json) {
 				if(json.message == "success") {
+			        window.open("<?php echo site_url('gatein/print_eir_in/'); ?>" + crno, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');				
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
-					});							
+					});			
 					window.location.href = "<?php echo site_url('gatein'); ?>";
 				} else {
 					Swal.fire({
@@ -560,10 +561,10 @@ $(document).ready(function() {
 	});
 
 
-	$('#ctTable').on("click",".print_eir", function(e){
+	$('#ctTable').on("click",".print", function(e){
 		e.preventDefault();
 		var crno = $(this).data("crno");
-        window.open("<?php echo site_url('gatein/print_eir/'); ?>" + crno, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+        window.open("<?php echo site_url('gatein/print/'); ?>" + crno, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	$('[data-toggle="tab"]').on('click', function(){

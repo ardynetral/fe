@@ -113,7 +113,7 @@ class GateIn extends \CodeIgniter\Controller
 			
 			// $btn_list .='<a href="#" id="" class="btn btn-xs btn-primary btn-table" data-praid="">view</a>';						
 			$btn_list .='<a href="#" id="editPraIn" class="btn btn-xs btn-success btn-table edit" data-crno="'.$v['crno'].'">edit</a>&nbsp;';
-			$btn_list .='<a href="#" class="btn btn-xs btn-info btn-table print_eir" data-crno="'.$v['crno'].'">print</a>';	
+			$btn_list .='<a href="#" class="btn btn-xs btn-info btn-table print" data-crno="'.$v['crno'].'">print</a>';	
 			// $btn_list .='<a href="#" id="deleteRow_'.$no.'" class="btn btn-xs btn-danger btn-table">delete</a>';			
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
@@ -321,8 +321,8 @@ class GateIn extends \CodeIgniter\Controller
 			"retype1" => 21,
 			"retype2" => 22,
 			"retype3" => 23,
-			"crlastact1" => 'od',
-			"crlastact2" => 'bi',
+			"crlastact1" => 'WE',
+			"crlastact2" => 'WS',
 			"crno" => $crno		
 		];
 
@@ -408,69 +408,15 @@ class GateIn extends \CodeIgniter\Controller
 		}
 	}
 
-	public function print_eir($crno) 
+	public function print($crno) 
 	{
 		check_exp_time();
 		$mpdf = new \Mpdf\Mpdf();
 
 		$data = [];
-		$gateIn = $this->get_data_gatein2($crno);
-		$params = [
-		    "cpdepo" => $gateIn['cpdepo'],
-		    "spdepo" => $gateIn['spdepo'],
-		    "cpitgl" => $gateIn['cpitgl'],
-		    "cpiefin" => $gateIn['cpirefin'],
-		    "cpichrgbb" => $gateIn['cpichrgbb'],
-		    "cpipaidbb" => $gateIn['cpipaidbb'],
-		    "cpieir" => $gateIn['cpieir'],
-		    "cpinopol" => $gateIn['cpinopol'],
-		    "cpidriver" => $gateIn['cpidriver'],
-		    "cpicargo" => $gateIn['cpicargo'],
-		    "cpiseal" => $gateIn['cpiseal'],
-		    "cpiremark" => $gateIn['cpiremark'],
-		    "cpiremark1" => $gateIn['cpiremark1'],
-		    "cpidpp" => $gateIn['cpidpp'],
-		    "cpireceptno" => $gateIn['cpireceptno'],
-		    "cpideliver" => $gateIn['cpideliver'],
-		    "cpitruck" => $gateIn['cpitruck'],
-		    "cpiorderno" => $gateIn['cpiorderno']
-		];
-
-		// dd($gateIn);
-
-		// $response = $this->client->request('GET','containerProcess/printEIRIns',[
-		// 	'headers' => [
-		// 		'Accept' => 'application/json',
-		// 		'Authorization' => session()->get('login_token')
-		// 	],
-		// 	'json'=>$params
-		// ]);
-
-		// $result = json_decode($response->getBody()->getContents(),true);	
-		// $header = $result['data']['datas'][0];
-		$header = $gateIn;
-
-		// $pratgl = $header['cpipratgl'];
-		// $recept = recept_by_praid($header['praid']);
-
-		// if($recept==""){
-		// 	$invoice_number ="-";	
-		// } else {
-		// 	$invoice_number = "INV." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
-		// }
-				
-		// $detail = $header['orderPraContainers'];
-		// $depo = $this->get_depo($header['cpdepo']);
-		// if(isset($result['status']) && ($result['status']=="Failled"))
-		// {
-		// 	$data['status'] = "Failled";
-		// 	$data['message'] = $result['message'];
-		// 	echo json_encode($data);die();				
-		// }
-		
+		$header = $this->get_data_gatein2($crno);
 
 		$html = '';
-
 		$html .= '
 		<html>
 			<head>
@@ -593,6 +539,96 @@ class GateIn extends \CodeIgniter\Controller
 		// $mpdf->WriteHTML($html);
 		// $mpdf->Output();
 		echo $html;
+		die();		
+	}
+
+	public function print_eir_in($CRNO) {
+		$response = $this->client->request('GET','containerProcess/printEIRIns',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(),true);
+		if(isset($result['message'])&&($result['message']=="Failled")) {
+			$data = "";
+		}
+
+		$data = $result['data']['datas'];
+
+		$html = '';
+		$html .= '
+		<html>
+			<head>
+				<title>PRINT EIR-IN</title>
+
+				<style>
+					body{font-family: Arial;font-size:12px;}
+					.page-header{display:block;border-bottom:2px solid #aaa;padding:0;min-height:30px;margin-bottom:30px;}
+					.head-left{float:left;width:200px;padding:0px;}
+					.head-right{float:left;padding:0px;margin-left:200px;text-align: right;}
+
+					.tbl_head_prain, .tbl_det_prain{border-spacing: 0;border-collapse: collapse;}
+					.tbl_head_prain td{border-collapse: collapse;}
+					.t-right{text-align:right;}
+					.t-left{text-align:left;}
+
+					.tbl_det_prain th,.tbl_det_prain td {
+						border:1px solid #666666!important;
+						border-spacing: 0;
+						border-collapse: collapse;
+						padding:5px;
+
+					}
+					.line-space{border-bottom:1px solid #dddddd;margin:30px 0;}
+				</style>
+			</head>
+		';
+		$html .= '<body>
+			<div class="page-header">
+				<table width="100%">
+				<tr>
+				<td><b>PRINT EIR-IN</b></td>
+				<td class="t-left"><b>PT. CONTINDO RAYA</b></td>
+				<td class="t-right" width="5%"><p style="border:1px solid #000000; padding:5px;"><b>000</b></p></td>
+				</tr>
+				</table>
+			</div>
+		';
+
+		$html .='<div>
+			<table width="100%">
+			<tbody>
+			<tr>
+			<td width="130">CONTAINER NO</td><td>:</td>
+			<tr>
+			<tr>
+			<td>DATE</td><td>:</td>
+			<tr>
+			<tr>
+			<td>PRNCIPAL</td><td>:</td>
+			<tr>
+			<tr>
+			<td>Prain Ref.</td><td>:</td>
+			<tr>		
+			<tr>
+			<td>EIR IN</td><td>:</td>
+			<tr>
+			</tbody>
+			</table>
+		</div>';
+
+		$html .='<div>';
+		// $html .= print_r($data);
+		$html .='</div>';
+		
+		$html .='
+		</body>
+		</html>
+		';
+
+		echo $html;	
 		die();		
 	}
 		

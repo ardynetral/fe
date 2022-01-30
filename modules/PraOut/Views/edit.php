@@ -46,31 +46,7 @@
 											<span></span>
 										</label>
 									</div>
-								</div>
-
-								<div class="form-group">
-									<label for="Type" class="col-sm-5 control-label text-right">Type</label>
-									<div class="col-sm-7">
-										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="1" <?=(isset($data['type_do'])&&($data['type_do']==1)?'checked':'');?>>
-											<span>Free Use</span>
-										</label>										
-										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="2" <?=(isset($data['type_do'])&&($data['type_do']==3)?'checked':'');?>>
-											<span>COC</span>
-										</label>
-										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="3" <?=(isset($data['type_do'])&&($data['type_do']==3)?'checked':'');?>>
-											<span>SOC</span>
-										</label>											
-										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="4" <?=(isset($data['type_do'])&&($data['type_do']==4)?'checked':'');?>>
-											<span>ex Import</span>
-										</label>
-
-									</div>
-								</div>									
-
+								</div>							
 								<div class="form-group">
 									<label for="cpdepo" class="col-sm-5 control-label text-right">Depot</label>
 									<div class="col-sm-7">
@@ -156,7 +132,7 @@
 									</div>
 								</div>								
 								<div class="form-group">
-									<label for="cpijam" class="col-sm-4 control-label text-right">Time In</label>
+									<label for="cpijam" class="col-sm-4 control-label text-right">Time Out</label>
 									<div class="col-sm-4">
 										<input type="text" name="cpijam" class="form-control" id="cpijam" required readonly value="<?=$data['cpijam'];?>">
 									</div>
@@ -185,23 +161,29 @@
 								</div>
 								
 								<div class="form-group">
-									<label for="cpicargo" class="col-sm-4 control-label text-right">Cargo</label>
-									<div class="col-sm-6">
-										<input type="text" name="cpicargo" class="form-control" id="cpicargo" value="<?=$data['cpicargo']?>" readonly="">
-									</div>
-								</div>
-								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">Receiver</label>
 									<div class="col-sm-6">
 										<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=$data['cpideliver']?>" readonly>
 									</div>
 								</div>
-								<div class="form-group" style="display:none;">
+								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">File Upload</label>
 									<div class="col-sm-6">
 										<input type="file" name="files[]" class="form-control" id="files" multiple="true">
 									</div>
-								</div>								
+								</div>
+								<?php if($data['files']!=""):?>
+								<div class="form-group">
+									<label for="cpideliver" class="col-sm-4 control-label text-right">&nbsp;</label>
+									<div class="col-sm-6 alert alert-info">
+										<b>Files uploaded:</b><br>
+										<?php $i=1; foreach($data['files'] as $f):?>
+											<a href="<?=$f['url']; ?>" class="btn btn-default" target="_blank"><i class="fa fa-file"></i>&nbsp;File-<?=$i?></a>
+										<?php $i++;
+										endforeach;?>								
+									</div>
+								</div>	
+								<?php endif;?>			
 							</div>	
 							<input type="hidden" name="appv1_update" class="form-control" id="appv1_update" value="<?=(isset($act)&&($act=='approval1')?'1':'0')?>" readonly="">
 						</fieldset>

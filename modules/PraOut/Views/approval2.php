@@ -44,29 +44,7 @@
 											<span></span>
 										</label>
 									</div>
-								</div>
-								<div class="form-group">
-									<label for="Type" class="col-sm-5 control-label text-right">Type</label>
-									<div class="col-sm-7">
-										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="1" <?=(isset($data['typedo'])&&($data['typedo']==1)?'':'checked');?>>
-											<span>Free Use</span>
-										</label>										
-										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="2" <?=(isset($data['typedo'])&&($data['typedo']==3)?'':'checked');?>>
-											<span>COC</span>
-										</label>
-										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="3" <?=(isset($data['typedo'])&&($data['typedo']==3)?'':'checked');?>>
-											<span>SOC</span>
-										</label>											
-										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="4" <?=(isset($data['typedo'])&&($data['typedo']==4)?'':'checked');?>>
-											<span>ex Import</span>
-										</label>
-
-									</div>
-								</div>									
+								</div>								
 								<div class="form-group">
 									<label for="cpdepo" class="col-sm-5 control-label text-right">Depot</label>
 									<div class="col-sm-7">
@@ -95,13 +73,13 @@
 									</div>
 								</div>								
 								<div class="form-group">
-									<label for="cpirefin" class="col-sm-4 control-label text-right">Reff In No #</label>
+									<label for="cpirefin" class="col-sm-4 control-label text-right">RO Number #</label>
 									<div class="col-sm-6">
 										<input type="text" name="cpirefin" class="form-control" id="cpirefin" value="<?=$data['cpirefin']?>" readOnly>
 									</div>
 								</div>								
 								<div class="form-group">
-									<label for="cpijam" class="col-sm-4 control-label text-right">Time In</label>
+									<label for="cpijam" class="col-sm-4 control-label text-right">Time Out</label>
 									<div class="col-sm-4">
 										<input type="text" name="cpijam" class="form-control" id="cpijam" required readonly value="<?=$data['cpijam'];?>">
 									</div>
@@ -129,12 +107,6 @@
 									</div>
 								</div>
 								
-								<div class="form-group">
-									<label for="cpicargo" class="col-sm-4 control-label text-right">Ex Cargo</label>
-									<div class="col-sm-6">
-										<input type="text" name="cpicargo" class="form-control" id="cpicargo" value="<?=$data['cpicargo']?>" readonly>
-									</div>
-								</div>
 								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">Redeliverer</label>
 									<div class="col-sm-6">

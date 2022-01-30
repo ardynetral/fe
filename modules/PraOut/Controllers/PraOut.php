@@ -272,7 +272,7 @@ class PraOut extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'cpicargo',
-				'contents'	=> $_POST['cpicargo']
+				'contents'	=> ''
 			];
 			$post_arr[] = [
 				'name'		=> 'cpideliver',
@@ -430,7 +430,7 @@ class PraOut extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'cpicargo',
-				'contents'	=> $_POST['cpicargo']
+				'contents'	=> ''
 			];
 			$post_arr[] = [
 				'name'		=> 'cpideliver',
@@ -442,7 +442,7 @@ class PraOut extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'typedo',
-				'contents'	=> $_POST['typedo']
+				'contents'	=> 0
 			];
 			$post_arr[] = [
 				'name'		=> 'flag',
@@ -636,7 +636,7 @@ class PraOut extends \CodeIgniter\Controller
 
 		    	// jika kontaner sudah ada di depo
 		    	$container = $this->get_container($_POST['crno']);
-		    	if(($container['crlastact']=="BI") || ($container['crlastact']=="OD")) {
+		    	if(($container['crlastact']=="WE") || ($container['crlastact']=="WS")) {
 
 					$response = $this->client->request('POST','orderPraContainers/createNewData',[
 						'headers' => [
@@ -661,7 +661,7 @@ class PraOut extends \CodeIgniter\Controller
 
 		    	} else {
 
-					$data['message'] = "Container sudah masuk depo.";
+					$data['message'] = "Invalid Container.";
 					echo json_encode($data);die();
 		    	}
 
@@ -1027,6 +1027,8 @@ class PraOut extends \CodeIgniter\Controller
 		} else {
 			$bukti_bayar = "";
 		}
+
+
 		
 		if ($this->request->isAJAX()) 
 		{
@@ -1038,28 +1040,64 @@ class PraOut extends \CodeIgniter\Controller
 				$no=0;
 				foreach ($containers as $c) {
 				// echo var_dump($c);die();
+/*
+cpotgl,
+// cpopr,
+// cpopr1,
+// cpcust,
+// cpcust1,
+// cporeceptno,
+//cpoorderno,
+//cporefout,
+//cpopratgl,
+// cpofe,
+//cpocargo,
+//cpoves,
+//cpovoy,
+//cpoloaddat,
+//cpojam,
+cpotruck,
+svsurdat,
+syid,
+cpoeir,
+cpochrgbm,
+cpopaidbm,
+cpoterm,
+cpoload,
+cposeal,
+//cporeceiv,
+cpodpp,
+cpodriver,
+cponopol,
+cporemark,
+cpid,		
+*/			
+					$cr_result = $this->get_container($c['crno']);
 					$cprocess_params[$no] = [
-						"CRNO" => $c['crno'],
-					    "CPOPR" => $c['cpopr'],
-					    "CPCUST" => $c['cpcust'],					    
-					    "CPDEPO" => $data['data']['cpdepo'],
-					    "SPDEPO" => $dt_company['sdcode'],
-					    "CPIFE" => $c['cpife'],
-					    "CPICARGO" => $data['data']['cpicargo'],
-					    "CPIPRATGL" => $data['data']['cpipratgl'],
-					    "CPIREFIN" => $data['data']['cpirefin'],
-					    "CPIVES" => $data['data']['cpives'],
-					    "CPIDISH" => $data['data']['cpidish'],
-					    "CPIDISDAT" => $data['data']['cpidisdat'],
-					    "CPIJAM" => $data['data']['cpijam'],
-					    "CPICHRGBB" => 1,
-					    "CPIDELIVER" => $data['data']['cpideliver'],
-					    "CPIORDERNO" => $data['data']['cpiorderno'],
-					    "CPISHOLD" => $c['cpishold'],
-					    "CPIREMARK" => $c['cpiremark'],
-					    "CPIVOYID" => $data['data']['cpivoyid'],
-					    "CPIVOY" => $data['data']['voyages']['voyno'],
-					    "CPISTATUS" => 0,
+						"crno" => $c['crno'],
+					    // "CPOPR" => '',
+					    "cpopr1" => $c['cpopr'],
+					    // "CPCUST" => '',					    
+					    "cpcust1" => $c['cpcust'],					    
+					    // "CPDEPO" => $data['data']['cpdepo'],
+					    // "SPDEPO" => $dt_company['sdcode'],
+					    "cpofe" => $c['cpife'],
+					    "cpocargo" => '',
+					    "cpopratgl" => $data['data']['cpipratgl'],
+					    "cporefout" => $data['data']['cpirefin'],
+					    "cpoves" => $data['data']['cpives'],
+					    // "cpodish" => $data['data']['cpidish'],
+					    "cpoloaddat" => $data['data']['cpidisdat'],
+					    "cpojam" => $data['data']['cpijam'],
+					    // "CPOCHRGBB" => 1,
+					    "cporeceiv" => $data['data']['cpideliver'],
+					    "cpoorderno" => $data['data']['cpiorderno'],
+					    // "CPOSHOLD" => $c['cpishold'],
+					    "cporemark" => $c['cpiremark'],
+					    // "CPOVOYID" => $data['data']['cpivoyid'],
+					    "cpovoy" => $data['data']['voyages']['voyno'],
+					    // "CPOSTATUS" => 0,
+						"cpid" => $cr_result['crcpid'],
 					];	
 
 					// get One Container
@@ -1072,17 +1110,14 @@ class PraOut extends \CodeIgniter\Controller
 					// ]);
 
 					// $cr_result = json_decode($cr_req->getBody()->getContents(), true);
-					$cr_result = $this->get_container($c['crno']);
-					if(isset($cr_result)) {
-						$mtcode_cccode = [
-							'MTCODE' => $cr_result['mtcode'],
-							'CCCODE' => $cr_result['cccode']
-						];
-						array_push($cprocess_params[$no], $mtcode_cccode);
-					}		
+					// if(isset($cr_result)) {
+					// 	$CRCPID = [
+					// 	];
+					// 	array_push($cprocess_params[$no], $CRCPID);
+					// }		
 
 					// Container Process
-					$cp_response = $this->client->request('POST','praIns/createNewData',[
+					$cp_response = $this->client->request('PUT','gateout/updateGateOut',[
 						'headers' => [
 							'Accept' => 'application/json',
 							'Authorization' => session()->get('login_token')
@@ -1097,11 +1132,11 @@ class PraOut extends \CodeIgniter\Controller
 						$data['message'] = $result['message'];
 						echo json_encode($data);die();				
 					}
-		
+					// echo var_dump($cprocess_params[$no]);
 					$no++;
 				} //endforeach
 
-				// echo var_dump($result);die();
+					// echo var_dump($result);die();
 
 				// UPDATE ORDER PRA appv=2
 				$op_response = $this->client->request('PUT','orderPras/updateData',[
@@ -1297,7 +1332,7 @@ class PraOut extends \CodeIgniter\Controller
 					    "CPDEPO" => $dt_order['cpdepo'],
 					    "SPDEPO" => $dt_company['sdcode'],
 					    "CPIFE" => $c['cpife'],
-					    "CPICARGO" => $dt_order['cpicargo'],
+					    // "CPICARGO" => $dt_order['cpicargo'],
 					    "CPIPRATGL" => $dt_order['cpipratgl'],
 					    "CPIREFIN" => $dt_order['cpirefin'],
 					    "CPIVES" => $dt_order['cpives'],
@@ -1677,6 +1712,7 @@ class PraOut extends \CodeIgniter\Controller
 			$CPIRECEPTNO = $recept['cpireceptno'];
 			// $QRCODE_CONTENT = $qrcode['content'];
 		} else {
+			$CODE = "";
 			$CRNO = "";
 			$CPID = "";
 			$REFIN = "";
@@ -2011,12 +2047,6 @@ class PraOut extends \CodeIgniter\Controller
 					<tr>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
-						<td class="t-right">Ex Cargo</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header['cpicargo'].' </td>
-					</tr>	
-					<tr>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
 						<td class="t-right">Redeliverer</td>
 						<td class="t-left">&nbsp;:&nbsp;'.$header['cpideliver'].' </td>
 					</tr>							
@@ -2243,12 +2273,6 @@ class PraOut extends \CodeIgniter\Controller
 					<tr>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
-						<td class="t-right">Ex Cargo</td>
-						<td class="t-left">&nbsp;:&nbsp;'.$header['cpicargo'].' </td>
-					</tr>	
-					<tr>
-						<td>&nbsp;</td>
-						<td>&nbsp;</td>
 						<td class="t-right">Redeliverer</td>
 						<td class="t-left">&nbsp;:&nbsp;'.$header['cpideliver'].' </td>
 					</tr>							
@@ -2371,7 +2395,6 @@ class PraOut extends \CodeIgniter\Controller
 		if($this->request->isAjax()) {
 
 			$ccode = $_POST['ccode'];
-			$praid = $_POST['praid'];
 			// $ccode = "APZU";
 			$validate = $this->validate([
 	            'ccode' => 'required'
@@ -2379,7 +2402,6 @@ class PraOut extends \CodeIgniter\Controller
 		
 		    if ($this->request->getMethod() === 'post' && $validate)
 		    {
-		    	// check table Container
 				$response = $this->client->request('GET','containers/checkcCode',[
 					'headers' => [
 						'Accept' => 'application/json',
@@ -2391,7 +2413,6 @@ class PraOut extends \CodeIgniter\Controller
 				]);
 
 				$result = json_decode($response->getBody()->getContents(),true);
-				// echo var_dump($result);die();
 				if(isset($result['success']) && ($result['success']==false))
 				{
 					$data['status'] = "Failled";
@@ -2414,7 +2435,6 @@ class PraOut extends \CodeIgniter\Controller
 
 				$resPraContainer= json_decode($reqPraContainer->getBody()->getContents(), true);		
 				$orderPraContainers = $resPraContainer['data']['datas'];
-				// echo var_dump($orderPraContainers);
 				if(isset($orderPraContainers) && ($orderPraContainers!=null)) {
 					foreach($orderPraContainers as $opc) {
 						$crnos[] = $opc['crno'];
@@ -2424,12 +2444,21 @@ class PraOut extends \CodeIgniter\Controller
 						$data['message'] = "Container ini sudah diinput";
 						echo json_encode($data);die();
 					}
-				}
-
-				$data['status'] = "Success";
-				$data['message'] = $result['message'];
-				$data['data'] = $result['data']['rows'][0];
-				echo json_encode($data);die();
+				}	
+							
+				$container = $result['data']['rows'][0];
+				// echo var_dump($container['crlastact']);die();
+				// if(($container['crlastact']=="WE")OR$container['crlastact']=="WS") {
+					$data['status'] = "Success";
+					$data['message'] = $result['message'];
+					$data['data'] = $container;
+					$data['container_code'] = $data['data']['container_code'];
+					echo json_encode($data);die();
+				// } else {				
+				// 	$data['status'] = "Failled";
+				// 	$data['message'] = "Container Belum diproses";
+				// 	echo json_encode($data);die();					
+				// }
 
 		    } else {
 

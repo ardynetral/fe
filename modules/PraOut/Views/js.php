@@ -24,7 +24,7 @@ $(document).ready(function() {
 		format:'dd-mm-yyyy',
 		startDate: '-5y'
 	});
-
+	$(".tanggal").datepicker('setDate',new Date());
 	// $("#cpipratgl").datepicker("disable");
 	if($("#liftoffcharge").val("1")) {
 		$("#liftoffcharge").prop('checked',true);
@@ -94,21 +94,24 @@ $(document).ready(function() {
             contentType: false,
             cache: false,			
 			dataType: 'json',
+            beforeSend: function () {
+				$("#save").prop('disabled', true);
+                $(".block-loading").addClass("loading"); 
+            },				
 			success: function(json) {
 				if(json.status == "success") {
+					$("#praid").val(json.praid);	
+					$("#pra_id").val(json.praid);	
+					console.log(json.praid);		
+					$("#crno").focus();
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
 					window.location.href = "#formDetail";
-					$("#crno").focus();
-					// window.location.href = "<?php echo site_url('praout'); ?>";
-					// $("#navItem3").removeClass("disabled");
-					// $("#navLink3").attr("data-toggle","tab");
-					// $("#navLink3").trigger("click");	
-					$("#praid").val(json.praid);			
 					$("#save").prop('disabled', true);
+					$("#saveDetail").prop('disabled', false);
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -116,7 +119,10 @@ $(document).ready(function() {
 					  html: '<div class="text-danger">'+json.message_body+'</div>'
 					});						
 				}
-			}
+			},
+            complete: function () {
+                $(".block-loading").removeClass("loading");
+            },	
 		});
 	});
 
@@ -181,7 +187,7 @@ $(document).ready(function() {
 		// $("#cpijam").attr('readonly', false);
 		$("#cpives").select2('enable');
 		$("#cpivoyid").attr('readonly', false);
-		$("#cpicargo").attr('readonly', false);
+		// $("#cpicargo").attr('readonly', false);
 		$("#cpideliver").attr('readonly', false);		
 	}
 
@@ -197,7 +203,7 @@ $(document).ready(function() {
 		$("#cpijam").attr('readonly', true);
 		$("#cpives").select2('disable');
 		$("#cpivoyid").attr('readonly', true);
-		$("#cpicargo").attr('readonly', true);
+		// $("#cpicargo").attr('readonly', true);
 		$("#cpideliver").attr('readonly', true);		
 	}	
 	$("#editOrder").on('click', function(e){
@@ -295,7 +301,7 @@ $(document).ready(function() {
 					if(json.dt_header.vessels!=null) {
 						$("#cpopr").val(json.dt_header.vessels.vesopr);
 					}
-					$("#cpicargo").val(json.dt_header.cpicargo);
+					// $("#cpicargo").val(json.dt_header.cpicargo);
 					$("#cpideliver").val(json.dt_header.cpideliver);
 
 					// Hitung HC_STD
@@ -406,7 +412,9 @@ $(document).ready(function() {
 		$("#cleaning_type").val("Water Wash");	
 		var prcode = $(this).val();
 		var pracrnoid = $("#pracrnoid").val();
-		
+		// var typedo = $('input:radio[name=typedo]:checked').val();
+		// var cpife = $("input:radio[name=cpife]:checked").val();
+		var vesprcode = $("#vesprcode").val();
 		if(pracrnoid=="") {
 			Swal.fire({
 			  icon: 'error',
@@ -418,7 +426,7 @@ $(document).ready(function() {
 		$.ajax({
 			url:"<?=site_url('praout/ajax_prcode_listOne/');?>"+prcode,
 			type:"POST",
-			data: {"prcode":prcode,"pracrnoid":pracrnoid},
+			data: {"prcode":prcode,"pracrnoid":pracrnoid,"vesprcode":vesprcode},
 			dataType:"JSON",
 			success: function(json){
 				if(json.status=="Failled") {
@@ -437,10 +445,15 @@ $(document).ready(function() {
 						$("#deposit").val("1");						
 						$("#biaya_clean").val(json.biaya_clean);
 					} else {
+						$("#deposit").val("0");						
+						$("#deposit").prop('checked',false);
 						$("#deposit").attr("disabled","disabled");
+						$("#biaya_clean").val("0");
 					}
-					
+
 					$("#biaya_lolo").val(json.biaya_lolo);
+					// if(typedo!="1") {
+					// }
 				}
 			}
 		});
@@ -463,6 +476,11 @@ $(document).ready(function() {
 					});		
 				} else {
 					$("#vesopr").val(json.data.vesopr);
+					if((json.data.prcode=="MRT")||(json.data.prcode=="CR")) {
+						$("#vesprcode").val(json.data.prcode);
+					} else {
+						$("#vesprcode").val("");
+					}
 				}
 			}
 		});		
@@ -551,17 +569,40 @@ $(document).ready(function() {
 	$('#detTable tbody').on('click', '.edit', function(e){
 		e.preventDefault();
 		$("#formDetail").trigger("reset");
+		$('#cleaning_type option:eq("Water Wash")').prop('selected', true);
 		var crid = $(this).data("crid");
 	    var cpife = $('input:radio[name=cpife]');
+	    // var typedo = $("input:radio[name=typedo]:checked").val();
+	    var vesprcode = $("#vesprcode").val();
+		$("#prcode").select2().select2('val','');
+		$("#cucode").val("");
 		$.ajax({
 			url:"<?=site_url('praout/get_one_container/');?>"+crid,
 			type:"POST",
-			data: "crid="+crid,
+			data: {"crid":crid,"vesprcode":vesprcode},
 			dataType:"JSON",
 			success: function(json){	
 				if(json.message=="success") {
-					$("#prcode").select2().select2('val',json.cr.cpopr);
-					$("#cucode").val(json.cr.cpcust);
+					// if(typedo=="1") {
+					// 	if((vesprcode=="MRT")||(vesprcode=="CR")) {
+					// 		// $("#prcode").select2().select2('val',vesprcode);
+					// 		// $("#cucode").val(vesprcode);
+					// 		// $("#prcode").select2('disable');
+					// 		$("#biaya_lolo").val(json.biaya_lolo);
+					// 	} else {
+					// 		// $("#vesprcode").val("");
+					// 		// $("#prcode").select2('enable');
+					// 		$("#biaya_lolo").val('0');
+					// 	}
+					// } else {
+					// 	// $("#prcode").select2('enable');
+					// 	$("#prcode").select2().select2('val','');
+					// }
+
+					$("#biaya_lolo").val(json.biaya_lolo);
+
+					// $("#prcode").select2().select2('val',json.cr.cpopr);
+					// $("#cucode").val(json.cr.cpcust);
 					$("#pracrnoid").val(json.cr.pracrnoid);
 					$("#crno").val(json.cr.crno);
 					$("#ccode").select2().select2('val',json.cr.cccode);
@@ -583,9 +624,9 @@ $(document).ready(function() {
 						$("#deposit").prop("checked",true);
 					}					
 					$("#cpiremark").val(json.cr.cpiremark);
-					$("#cleaning_type").val(json.cr.cleaning_type);
+					// $("#cleaning_type").val(json.cr.cleaning_type);
 					$("#biaya_clean").val(json.cr.biaya_clean);
-					$("#biaya_lolo").val(json.cr.biaya_lolo);
+					// $("#biaya_lolo").val(json.cr.biaya_lolo);
 				}
 			}		
 		})
@@ -674,6 +715,47 @@ $(document).ready(function() {
 
 	});
 
+	$('#detTable tbody').on('click', '.delete', function(e){
+		e.preventDefault();	
+		var code = $(this).data('crid');
+		Swal.fire({
+		  title: 'Are you sure?',
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+		  if (result.isConfirmed) {
+		  	delete_data_container(code);
+		  }
+		});		
+		
+	});
+
+	function delete_data_container(code) {
+		$.ajax({
+			url: "<?php echo site_url('praout/delete_container/'); ?>"+code,
+			type: "POST",
+			dataType: 'json',
+			success: function(json) {
+				if(json.message == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});							
+					loadTableContainer2($("#praid").val());
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});						
+				}
+			}
+		});		
+	}
 
 	$("#ApprovalOrder").on("click", function(e){
 		e.preventDefault();
@@ -693,6 +775,8 @@ $(document).ready(function() {
 		formData += "&cpcust=" + $("#cucode").val();
 		formData += "&total_lolo=" + $("#total_lolo").val();
 		formData += "&total_cleaning=" + $("#total_cleaning").val();
+		formData += "&total_biaya_lain=" + $("#total_biaya_lain").val();
+		formData += "&total_pph23=" + $("#total_pph23").val();
 		formData += "&subtotal_bill=" + $("#subtotal_bill").val();
 		
 		$.ajax({
@@ -720,7 +804,7 @@ $(document).ready(function() {
 
 	});
 
-	// update OrderPraContainer page Approval1
+	// update OrderPraContainer di approval1
 	$("#apvUpdateContainer").on("click",function(){
 		formData = "&pracrnoid=" + $("#pracrnoid").val();
 		formData += "&cpopr=" + $("#prcode").val();
@@ -730,9 +814,12 @@ $(document).ready(function() {
 			formData += "&deposit=" + $("#deposit").val("0");
 		}
 		formData += "&cpcust=" + $("#cucode").val();
+		formData += "&emkl=" + $("#cpideliver").val();
 		formData += "&biaya_clean=" + $("#biaya_clean").val();
 		formData += "&biaya_lolo=" + $("#biaya_lolo").val();
 		formData += "&cleaning_type=" + $("#cleaning_type").val();
+		formData += "&biaya_lain=" + $("#biaya_lain").val();
+		console.log(formData);
 		$.ajax({
 			url: "<?php echo site_url('praout/appv1_update_container')?>",
 			type: "POST",
@@ -801,12 +888,13 @@ $(document).ready(function() {
 
 	$("#crno").on("keyup", function(){
 		var crno = $("#crno").val();
+		var praid = $("#pra_id").val();
 		var status = "";
 		$(this).val($(this).val().toUpperCase());
 		$.ajax({
 			url:"<?=site_url('praout/checkContainerNumber');?>",
 			type:"POST",
-			data: "ccode="+crno,
+			data: {"ccode":crno,"praid":praid},
 			dataType:"JSON",
 			success: function(json){
 
@@ -821,7 +909,8 @@ $(document).ready(function() {
 					$(".err-crno").show();
 					$(".err-crno").html(json.message);
 					$("#crno").css("background", "#ffbfbf!important");
-					$("#crno").css("border-color", "#ea2525");					
+					$("#crno").css("border-color", "#ea2525");
+					$("#saveDetail").prop("disabled",true);					
 
 				} else {
 
@@ -829,6 +918,7 @@ $(document).ready(function() {
 					$(".err-crno").hide();
 					$("#crno").css("background", "#fff!important");
 					$("#crno").css("border-color", "#ccc");
+					$("#saveDetail").removeAttr("disabled");					
 
 					if(json.data!=null) {
 						$("#ccode").select2().select2('val',json.data.cccode);
@@ -884,6 +974,16 @@ function loadTableContainer(praid) {
 	$('#detTable tbody').html("");
 	$.ajax({
 		url: "<?=site_url('praout/get_container_by_praid/')?>"+praid,
+		dataType: "json",
+		success: function(json) {
+			$('#detTable tbody').html(json);
+		}
+	});
+}
+function loadTableContainer2(praid) {
+	$('#detTable tbody').html("");
+	$.ajax({
+		url: "<?=site_url('praout/get_container_by_praid2/')?>"+praid,
 		dataType: "json",
 		success: function(json) {
 			$('#detTable tbody').html(json);

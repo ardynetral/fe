@@ -83,12 +83,6 @@
 						<tr>
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
-							<td class="t-right">Ex Cargo</td>
-							<td class="t-left">&nbsp;:&nbsp;<?=$header[0]['cpicargo'];?> </td>
-						</tr>	
-						<tr>
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
 							<td class="t-right">Redeliverer</td>
 							<td class="t-left">&nbsp;:&nbsp;<?=$header[0]['cpideliver'];?> </td>
 						</tr>	

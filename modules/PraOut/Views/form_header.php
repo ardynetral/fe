@@ -144,40 +144,12 @@ $group_id = $token['groupId'];
 					</div>
 				</div>								
 				<div class="form-group">
-					<label for="cpijam" class="col-sm-4 control-label text-right">Time In</label>
+					<label for="cpijam" class="col-sm-4 control-label text-right">Time Out</label>
 					<div class="col-sm-4">
 						<input type="text" name="cpijam" class="form-control" id="cpijam" required readonly value="<?=date('H:i:s');?>">
 					</div>
-					<!-- <label class="col-sm-2 control-label">hh:mm:ss</label> -->
 				</div>		
-<?php /*										
-				<div class="form-group">
-					<label for="cpives" class="col-sm-4 control-label text-right">Vessel</label>
-					<div class="col-sm-6">
-						<?=vessel_dropdown();?>
-					</div>
-				</div>															
-				<div class="form-group">
-					<label for="cpivoyid" class="col-sm-4 control-label text-right">Voyage</label>
-					<div class="col-sm-6">
-						<!-- <input type="text" name="name" class="form-control" id="name"> -->
-						<!-- <?=voyage_dropdown(); ?> -->
-						<input type="text" id="cpivoyid" name="cpivoyid" class="form-control">
-					</div>
-				</div>								
-				<div class="form-group">
-					<label for="cpopr" class="col-sm-4 control-label text-right">Vessel Operator</label>
-					<div class="col-sm-6">
-						<input type="text" name="cpopr" class="form-control" id="cpopr" readonly>
-					</div>
-				</div>
-*/?>
-				<div class="form-group" style="display:none;">
-					<label for="cpicargo" class="col-sm-4 control-label text-right">Cargo</label>
-					<div class="col-sm-6">
-						<input type="text" name="cpicargo" class="form-control" id="cpicargo" required>
-					</div>
-				</div>
+
 				<div class="form-group">
 					<label for="cpideliver" class="col-sm-4 control-label text-right">Receiver</label>
 					<div class="col-sm-6">

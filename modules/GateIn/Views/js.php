@@ -51,13 +51,13 @@ $(document).ready(function() {
 			dataType: 'json',
 			success: function(json) {
 				if(json.message == "success") {
-			        window.open("<?php echo site_url('gatein/print_eir_in/'); ?>" + crno, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');				
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});			
 					window.location.href = "<?php echo site_url('gatein'); ?>";
+			        window.open("<?php echo site_url('gatein/print_eir_in/'); ?>" + crno, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');				
 				} else {
 					Swal.fire({
 					  icon: 'error',

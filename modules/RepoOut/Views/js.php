@@ -2,16 +2,19 @@
 $(document).ready(function() {
 	// Error Message element
 	$(".err-crno").hide(); //container number check
-	// $("#update").hide();
-	// $("#updateDetail").hide();
-	$("#editOrderFrame").hide();
+
 	// SELECT2
 	$('.select-pr').select2();
 	$('.select-port').select2();
 	$('.select-depo').select2();
+	$('.select-city').select2();
 	$('.select-vessel').select2();
 	$('.select-voyage').select2();
-	$('.select-ccode').select2();
+	$('.select-cccode').select2();
+	$('.selects').select2();
+	$('#rebill').select2();
+	// $('#rebilltype').select2();
+	// $('#retype').select2().prop('disabled', true);
 	// DATATABLE
 	// $("#ctTable").DataTable({
  //        "paging": false,
@@ -20,44 +23,128 @@ $(document).ready(function() {
 	// datePicker
 	$(".tanggal").datepicker({
 		autoclose:true,
+		format:'dd-mm-yyyy',
+		startDate: '-5y',
 	});
-
-	// $("#cpipratgl").datepicker("disable");
-
-	$("#addOrder").on('click', function(e){
-		e.preventDefault();
-		$("#save").show();
-		$("#update").hide();
-		$("#form1")[0].reset();
-		$("#formDetail")[0].reset();
-		$("#detTable tbody").html("");
-		window.location.href = "#OrderPra";
-	});
-
-	$("#save").click(function(e){
-		e.preventDefault();													
+	$(".tanggal").datepicker('setDate',new Date());
+	$("form#formOrderRepo").on("submit", function(e){
+		e.preventDefault();																														
 		// window.scrollTo(xCoord, yCoord);
-		var formData = "cpiorderno=" + $("#cpiorderno").val();
-		formData += "&cpiopr=" + $("#prcode").val();
-		formData += "&cpicust=" + $("#cucode").val();
-		formData += "&cpidish=" + $("#cpidish").val();
-		formData += "&cpidisdat=" + $("#cpidisdat").val();
-		formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		formData += "&cpdepo=" + $("#cpdepo").val();
-		formData += "&cpipratgl=" + $("#cpipratgl").val();
-		formData += "&cpirefin=" + $("#cpirefin").val();
-		formData += "&cpijam=" + $("#cpijam").val();
-		formData += "&cpives=" + $("#cpives").val();
-		formData += "&cpivoyid=" + $("#cpivoyid").val();
-		formData += "&cpicargo=" + $("#cpicargo").val();
-		formData += "&cpideliver=" + $("#cpideliver").val();
-		// alert(formData);
-		// console.log("data="+formData);
+		$.ajax({
+			url: "<?php echo site_url('repoout/add'); ?>",
+			type: "POST",
+			data:  new FormData(this),
+            processData: false,
+            contentType: false,
+            cache: false,			
+			dataType: 'json',
+            beforeSend: function () {
+				$("#saveData").prop('disabled', true);
+                $(".block-loading").addClass("loading"); 
+            },			
+			success: function(json) {
+				if(json.message == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});		
+					$("#repoid").val(json.repoid);
+					// $("#cpiorderno").val(json.reorderno);
+					// $("#cpopr").select2().select2('val',json.cpopr);
+					// $("#cpcust").select2().select2('val',json.cpcust);
+					// $("#cpdepo").val(json.cpdepo);
+					// $("#cpipratgl").val(json.redate);
+					// $("#cpijam").val(json.cpijam);
+					// $("#cpives").val(json.cpives);
+					// $("#cpiremark").val(json.cpiremark);
+					// $("#cpideliver").val(json.cpideliver);
+					// $("#cpivoyid").val(json.cpivoyid);
+					// $("#cpivoy").val(json.cpivoy);
+					$("#saveData").prop('disabled', true);
+				} else {
+					$("#saveData").prop('disabled', false);
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});						
+					$("#saveData").prop('disabled', false);
+				}
+			},
+            complete: function () {
+                $(".block-loading").removeClass("loading");
+            },			
+		});
+	});
+
+	$("#updateNewData").on("click", function(e){
+		e.preventDefault();
+		var fomData = "reorderno=" + $("#reorderno").val();
+		if($("#rebill").val()=="Breakdown") {
+			// BreakDown
+			fomData += "&relift=" + parseInt($("#relift").val());
+			fomData += "&redoc=" + parseInt($("#redoc").val());
+			fomData += "&re20=" + parseInt($("#re20").val());
+			fomData += "&retot20=" + parseInt($("#retot20").val());
+			fomData += "&re40=" + parseInt($("#re40").val());
+			fomData += "&retot40=" + parseInt($("#retot40").val());
+			fomData += "&re45=" + parseInt($("#re45").val());
+			fomData += "&retot45=" + parseInt($("#retot45").val());
+			fomData += "&subtotbreak=" + parseInt($("#subtotbreak").val());
+			fomData += "&reother1=" + parseInt($("#reother1").val());
+			fomData += "&totbreak=" + parseInt($("#totbreak").val());
+			// Package
+			fomData += "&recpack20=0";
+			fomData += "&recpacktot20=0";
+			fomData += "&recpack40=0";
+			fomData += "&recpacktot40=0";
+			fomData += "&recpack45=0";
+			fomData += "&recpacktot45=0";
+			fomData += "&rechaul20=0";
+			fomData += "&rechaultot20=0";
+			fomData += "&rechaul40=0";
+			fomData += "&rechaultot40=0";
+			fomData += "&rechaul45=0";
+			fomData += "&rechaultot45=0"	
+			fomData += "&reother2=0";
+			fomData += "&subtotpack=0";
+			fomData += "&totpack=0";
+		} else if($("#rebill").val()=="Package") {
+			// BreakDown
+			fomData += "&relift=0";
+			fomData += "&redoc=0";
+			fomData += "&re20=0";
+			fomData += "&retot20=0";
+			fomData += "&re40=0";
+			fomData += "&retot40=0";
+			fomData += "&re45=0";
+			fomData += "&retot45=0";
+			fomData += "&subtotbreak=0";
+			fomData += "&reother1=0";
+			fomData += "&totbreak=0";
+			// Package
+			fomData += "&recpack20=" + parseInt($("#recpack20").val());
+			fomData += "&recpacktot20=" + parseInt($("#recpacktot20").val());
+			fomData += "&recpack40=" + parseInt($("#recpack40").val());
+			fomData += "&recpacktot40=" + parseInt($("#recpacktot40").val());
+			fomData += "&recpack45=" + parseInt($("#recpack45").val());
+			fomData += "&recpacktot45=" + parseInt($("#recpacktot45").val());
+			fomData += "&rechaul20=" + parseInt($("#rechaul20").val());
+			fomData += "&rechaultot20=" + parseInt($("#rechaultot20").val());
+			fomData += "&rechaul40=" + parseInt($("#rechaul40").val());
+			fomData += "&rechaultot40=" + parseInt($("#rechaultot40").val());
+			fomData += "&rechaul45=" + parseInt($("#rechaul45").val());
+			fomData += "&rechaultot45=" + parseInt($("#rechaultot45").val());		
+			fomData += "&reother2="	+ parseInt($("#reother2").val());
+			fomData += "&subtotpack=" + parseInt($("#subtotpack").val());
+			fomData += "&totpack=" + parseInt($("#totpack").val());
+		}
 
 		$.ajax({
-			url: "<?php echo site_url('prain/add'); ?>",
+			url: "<?php echo site_url('repoout/update_new_data'); ?>",
 			type: "POST",
-			data: formData,
+			data:  fomData,			
 			dataType: 'json',
 			success: function(json) {
 				if(json.message == "success") {
@@ -65,13 +152,37 @@ $(document).ready(function() {
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
-					});							
-					window.location.href = "#formDetail";
-					// $("#navItem3").removeClass("disabled");
-					// $("#navLink3").attr("data-toggle","tab");
-					// $("#navLink3").trigger("click");	
-					$("#praid").val(json.praid);				
-					$("#saveData").prop('disabled', true);
+					});		
+					window.location.href = "<?php echo site_url('repoin'); ?>";
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});						
+				}
+			}
+		});		
+	});
+
+	$("form#fUpdateOrderRepo").on("submit", function(e){
+		e.preventDefault();	
+		$.ajax({
+			url: "<?php echo site_url('repoout/edit/'); ?>"+$("#reorderno").val(),
+			type: "POST",
+			data:  new FormData(this),
+            processData: false,
+            contentType: false,
+            cache: false,			
+			dataType: 'json',
+			success: function(json) {
+				if(json.message == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});		
+					window.location.href = "<?php echo site_url('repoin'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -93,74 +204,31 @@ $(document).ready(function() {
 		return $(this).val(val);
 	});
 
-	// EDIT DATA ORDER
-	function enableFormOrder() {
-		$("#prcode").select2('enable');
-		$("#cpidish").select2('enable');
-		$("#cpidisdat").attr('readonly', false);
-		$("#liftoffcharge").attr('readonly', false);
-		$("#cpdepo").select2('enable');
-		// $("#cpipratgl").attr('readonly', false);
-		$("#cpirefin").attr('readonly', false);
-		// $("#cpijam").attr('readonly', false);
-		$("#cpives").select2('enable');
-		$("#cpivoyid").attr('readonly', false);
-		$("#cpicargo").attr('readonly', false);
-		$("#cpideliver").attr('readonly', false);		
-	}
-
-	function disableFormOrder() {
-		$("#save")
-		$("#prcode").select2('disable');
-		$("#cpidish").select2('disable');
-		$("#cpidisdat").attr('readonly', true);
-		$("#liftoffcharge").attr('readonly', true);
-		$("#cpdepo").select2('disable');
-		// $("#cpipratgl").attr('readonly', true);
-		$("#cpirefin").attr('readonly', true);
-		$("#cpijam").attr('readonly', true);
-		$("#cpives").select2('disable');
-		$("#cpivoyid").attr('readonly', true);
-		$("#cpicargo").attr('readonly', true);
-		$("#cpideliver").attr('readonly', true);		
-	}	
-	$("#editOrder").on('click', function(e){
-		enableFormOrder();
-		$("#update").show();
-		$("#cancel").show();
-	});
-
-	$("#update").click(function(e){
+	// $("#revlift").on("keyup",function(){
+	// 	// console.log("hitung...");
+	// 	// $("#hitung_subtotal1").trigger('click');
+	// 	alert("hahaha");
+	// });
+	// EDIT DATA
+	$("#updateData").click(function(e){
 		e.preventDefault();
-		var formData = "cpiorderno=" + $("#cpiorderno").val();
-		formData += "&praid=" + $("#praid").val();
-		formData += "&cpiopr=" + $("#prcode").val();
-		formData += "&cpicust=" + $("#cucode").val();
-		formData += "&cpidish=" + $("#cpidish").val();
-		formData += "&cpidisdat=" + $("#cpidisdat").val();
-		formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		formData += "&cpdepo=" + $("#cpdepo").val();
-		formData += "&cpipratgl=" + $("#cpipratgl").val();
-		formData += "&cpirefin=" + $("#cpirefin").val();
-		formData += "&cpijam=" + $("#cpijam").val();
-		formData += "&cpives=" + $("#cpives").val();
-		formData += "&cpivoyid=" + $("#cpivoyid").val();
-		formData += "&cpicargo=" + $("#cpicargo").val();
-		formData += "&cpideliver=" + $("#cpideliver").val();
-		// console.log(formData);
+		var formData = "code=" + $("#cityId").val();
+		formData += "&name=" + $("#name").val();
+		formData += "&cncode=" + $("#cncode").val();
+		console.log(formData);
 		$.ajax({
-			url: "<?php echo site_url('prain/edit/'); ?>"+$("#praid").val(),
+			url: "<?php echo site_url('city/edit/'); ?>"+$("#code").val(),
 			type: "POST",
 			data: formData,
 			dataType: 'json',
 			success: function(json) {
-				console.log(json.message);
 				if(json.message == "success") {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
-					  html: '<div class="text-success">'+json.msgdata+'</div>'
+					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
+					window.location.href = "<?php echo site_url('city'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -171,138 +239,6 @@ $(document).ready(function() {
 			}
 		});
 	});	
-
-
-// BTN View click
-	$('#ctTable tbody').on('click', '.view-order', function(e){
-		e.preventDefault();	
-		var praid = $(this).data('praid');
-		$("#detTable tbody").html("");
-		$("#save").hide();
-		$("#cancel").hide();
-		$("#editOrderFrame").show();
-		disableFormOrder();
-		$.ajax({
-			url: "<?php echo site_url('prain/ajax_view/'); ?>"+praid,
-			type: "POST",
-			dataType: 'json',
-			// data:"praid="+praid,
-			success: function(json) {
-				if(json.status === "success") {
-					// console.log("data: "+json.dt_header.cpidish);
-// "praid":42,"cpiorderno":"PI000D100000024","cpopr":"CMA","cpcust":"MIF","cpidish":"BEN","cpidisdat":"2021-09-01","liftoffcharge":0,"cpdepo":"11A25","cpipratgl":"2021-09-13","cpirefin":"","cpijam":"","cpivoyid":123,"cpives":"ARMADA SEJATI","cpicargo":"","cpideliver":"","cpilunas":0,"voyages":{"voyid":123,"vesid":"SINAR BATAM","voyno":"V246"},"vessels":{"vesid":"ARMADA SEJATI","vesopr":"SPIL","cncode":"ID","vestitle":"ARMADA SEJATI"
-					// $("#cpidish option[value="+json.dt_header.cpidish+"]").attr("selected","selected");
-					$("#praid").val(json.dt_header.praid);
-					$("#cpidish").select2().select2('val',json.dt_header.cpidish);
-					$("#prcode").select2().select2('val',json.dt_header.cpopr);
-					$("#cucode").val(json.dt_header.cpcust);
-					$("#cpidisdat").val(json.dt_header.cpidisdat);
-					if(json.dt_header.liftoffcharge==1) {
-						$("#liftoffcharge").prop('checked',true);
-						$("#liftoffcharge:checked").val(json.dt_header.liftoffcharge);
-					}
-					$("#cpdepo").select2().select2('val',json.dt_header.cpdepo);
-					$("#cpiorderno").val(json.dt_header.cpiorderno);
-					$("#cpipratgl").val(json.dt_header.cpipratgl);
-					$("#cpirefin").val(json.dt_header.cpirefin);
-					$("#cpijam").val(json.dt_header.cpijam);
-					$("#cpives").select2().select2('val',json.dt_header.cpives);
-					$("#cpivoyid").val(json.dt_header.cpivoyid);
-					if(json.dt_header.vessels!=null) {
-						$("#cpopr").val(json.dt_header.vessels.vesopr);
-					}
-					$("#cpicargo").val(json.dt_header.cpicargo);
-					$("#cpideliver").val(json.dt_header.cpideliver);
-
-					// Hitung HC_STD
-					$("#hc20").val(json.hc20);
-					$("#hc40").val(json.hc40);
-					$("#hc45").val(json.hc45);
-					$("#std20").val(json.std20);
-					$("#std40").val(json.std40);
-
-					// get data container
-					var dt_container = json.dt_detail;
-					if(dt_container.length > 0) {
-						dt_container.forEach(list_container);
-						$("#detTable tbody").html(dt_container);
-					}
-
-					window.location.href = "#OrderPra";
-
-				} else {
-
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});
-				}
-			}
-		});			
-	});
-
-	$("#ctTable tbody").on("click",".approve", function(e){
-		e.preventDefault();
-		var praid = $(this).data('praid');
-		var formData = "cpiorderno=" + $("#cpiorderno").val();
-		formData += "&praid=" + praid;
-		// console.log(formData);
-		$.ajax({
-			url: "<?php echo site_url('prain/approve_order/'); ?>"+praid,
-			type: "POST",
-			data: formData,
-			dataType: 'json',
-			success: function(json) {
-				console.log(json.message);
-				if(json.message == "success") {
-					Swal.fire({
-					  icon: 'success',
-					  title: "Success",
-					  html: '<div class="text-success">Order Approved</div>'
-					});	
-					window.location.href = "<?php echo site_url('prain'); ?>";
-				} else {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
-				}
-			}
-		});
-	});	
-
-	function list_container(item, index, arr) {
-		var num = index+1;
-		var cpishold = "";
-		var cpife = "";
-		if(item.cpife==1) {
-			cpife="Full";
-		}else {
-			cpife="Empty";
-		}
-
-		if(item.cpishold==1) {
-			cpishold = "Hold";
-		} else {
-			cpishold = "Release";
-		}
-
-		arr[index] = "<tr>"+
-		"<td>"+num+"</td>"+
-		"<td>"+item.crno+"</td>"+
-		"<td>"+item.cccode+"</td>"+
-		"<td>"+item.ctcode+"</td>"+
-		"<td>"+item.cclength+"</td>"+
-		"<td>"+item.ccheight+"</td>"+
-		"<td>"+cpife+"</td>"+
-		"<td>"+cpishold+"</td>"+
-		"<td>"+item.cpiremark+"</td>"+
-		"<td></td>"+
-		"<td><a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='"+item.pracrnoid+"'>edit</a><a href='#' id='deleteContainer' class='btn btn-xs btn-danger'>delete</a></td>"+
-		"</tr>";
-	}
 
 	$('#ctTable tbody').on('click', '.delete', function(e){
 		e.preventDefault();	
@@ -324,7 +260,7 @@ $(document).ready(function() {
 
 	function delete_data(code) {
 		$.ajax({
-			url: "<?php echo site_url('city/delete/'); ?>"+code,
+			url: "<?php echo site_url('repoout/delete/'); ?>"+code,
 			type: "POST",
 			dataType: 'json',
 			success: function(json) {
@@ -334,7 +270,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					window.location.href = "<?php echo site_url('city'); ?>";
+					window.location.href = "<?php echo site_url('repoin'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -347,12 +283,13 @@ $(document).ready(function() {
 	}
 
 	// STEP 1 :
-	$("#prcode").on("change", function(){
-		var prcode = $(this).val();
+	$("#cpopr").on("change", function(){
+		$('#retype').select2().prop('disabled', false);
+		var cpopr = $(this).val();
 		$.ajax({
-			url:"<?=site_url('prain/ajax_prcode_listOne/');?>"+prcode,
+			url:"<?=site_url('repoout/ajax_prcode_listOne/');?>"+cpopr,
 			type:"POST",
-			data: "prcode="+prcode,
+			data: "cpopr="+cpopr,
 			dataType:"JSON",
 			success: function(json){
 				if(json.status=="Failled") {
@@ -362,43 +299,43 @@ $(document).ready(function() {
 					  html: '<div class="text-danger">'+json.message+'</div>'
 					});		
 				} else {
-					$("#cucode").val(json.data.cucode);
+					$("#cpcust").val(json.data.cucode);
 				}
 			}
 		});
 	}) ;
 
 	// Vessel dropdown change
-	$("#cpives").on("change", function(){
-		var vesid = $(this).val();
-		$.ajax({
-			url:"<?=site_url('prain/ajax_vessel_listOne/');?>"+vesid,
-			type:"POST",
-			data: "vesid="+vesid,
-			dataType:"JSON",
-			success: function(json){
-				if(json.status=="Failled") {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});		
-				} else {
-					$("#cpopr").val(json.data.vesopr);
-				}
-			}
-		});		
-	});
+	// $("#cpives").on("change", function(){
+	// 	var vesid = $(this).val();
+	// 	$.ajax({
+	// 		url:"<?=site_url('repoinajax_vessel_listOne/');?>"+vesid,
+	// 		type:"POST",
+	// 		data: "vesid="+vesid,
+	// 		dataType:"JSON",
+	// 		success: function(json){
+	// 			if(json.status=="Failled") {
+	// 				Swal.fire({
+	// 				  icon: 'error',
+	// 				  title: "Error",
+	// 				  html: '<div class="text-danger">'+json.message+'</div>'
+	// 				});		
+	// 			} else {
+	// 				$("#repoves").val(json.data.vesopr);
+	// 			}
+	// 		}
+	// 	});		
+	// });
 
 
 	// STEP 2 : 
 	//Get Container Code detail
-	$("#ccode").on("change", function(){
+	$("#cccode").on("change", function(){
 		var cccode  = $(this).val();
 		$.ajax({
-			url:"<?=site_url('prain/ajax_ccode_listOne/');?>"+cccode,
+			url:"<?=site_url('repoout/ajax_ccode_listOne/');?>"+cccode,
 			type:"POST",
-			data: "ccode="+ccode,
+			data: "ccode="+cccode,
 			dataType:"JSON",
 			success: function(json){
 				if(json.status=="Failled") {
@@ -417,36 +354,77 @@ $(document).ready(function() {
 		});
 	});
 
+	$("#reother1").on("keyup", function(){
+		var subtotbreak = parseInt($("#subtotbreak").val());
+		var totbreak = subtotbreak + parseInt($(this).val()) + parseInt($("#reother2").val());
+		$("#totbreak").val(totbreak);
 
+		var subtotpack = parseInt($("#subtotpack").val());
+		var totpack = subtotpack + parseInt($(this).val()) + parseInt($("#reother2").val());
+		$("#totpack").val(totpack);
+	});
+
+	$("#reother2").on("keyup", function(){
+		var subtotbreak = parseInt($("#subtotbreak").val());
+		var totbreak = subtotbreak + parseInt($(this).val()) + parseInt($("#reother1").val());
+		$("#totbreak").val(totbreak);
+
+		var subtotpack = parseInt($("#subtotpack").val());
+		var totpack = subtotpack + parseInt($(this).val()) + parseInt($("#reother1").val());
+		$("#totpack").val(totpack);
+	});	
 	// save detailContainer
 	$("#saveDetail").on("click", function(e){
 		e.preventDefault();
-		var cpife = $("input:radio[name=cpife]:checked").val();
-		var formData = "praid=" + $("#praid").val();
+		// header
+		var formData = "repoid=" + $("#repoid").val();
+		formData += "&cpiorderno=" + $("#reorderno").val();
+		formData += "&cpopr=" + $("#cpopr").val();
+		formData += "&cpcust=" + $("#cpcust").val();
+		formData += "&cpidish=" + $("#repodish").val();
+		formData += "&cpdepo=" + $("#cpdepo").val();
+		formData += "&cpichrgbb=" + 0;
+		formData += "&cpipratgl=" + $("#redate").val();
+		formData += "&cpijam=" + $("#repojam").val();
+		formData += "&cpives=" + $("#vesid").val();
+		formData += "&cpiremark=" + $("#cpiremark").val();
+		formData += "&cpideliver=" + $("#cpideliver").val();
+		formData += "&cpivoyid=" + $("#voyid").val();
+		formData += "&cpivoy=" + $("#voyno").val();
+		// detail
 		formData += "&crno=" + $("#crno").val();
-		formData += "&ccode=" + $("#ccode").val();
+		formData += "&cccode=" + $("#cccode").val();
 		formData += "&ctcode=" + $("#ctcode").val();
 		formData += "&cclength=" + $("#cclength").val();
 		formData += "&ccheight=" + $("#ccheight").val();
-		formData += "&cpife=" + cpife;
+		formData += "&cpife=" + $("#cpife").val();
 		formData += "&cpishold=" + $("#cpishold").val();
-		formData += "&cpiremark=" + $("#cpiremark").val();
+		formData += "&reporemark=" + $("#reporemark").val();
 		
 		$.ajax({
-			url: "<?php echo site_url('prain/addcontainer'); ?>",
+			url: "<?php echo site_url('repoout/addcontainer'); ?>",
 			type: "POST",
 			data: formData,
 			dataType: 'json',
 			success: function(json) {
-				if(json.message == "success") {
+				if(json.status == "success") {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
-					});							
-					// window.location.href = "<?php echo site_url('prain/view/'); ?>"+json.praid;
-					window.location.href = "<?php echo site_url('prain'); ?>";
-					// getDetailOrder(json.praid);
+					});	
+					$("#formDetail").trigger("reset");
+					$("#cccode").select2().select2('val','');
+					// insert value quantity
+					$("#std20").val(json.QTY.std20);
+					$("#std40").val(json.QTY.std40);
+					$("#hc20").val(json.QTY.hc20);
+					$("#hc40").val(json.QTY.hc40);
+					$("#hc45").val(json.QTY.hc45);
+
+					loadTableContainer($("#repoid").val());
+					getTariff($("#cpopr").val(),$("#retype").val());
+
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -459,70 +437,58 @@ $(document).ready(function() {
 
 	});
 
-	$('#detTable tbody').on('click', '.edit', function(e){
-		e.preventDefault();
-		var crid = $(this).data("crid");
-	    var cpife = $('input:radio[name=cpife]');
-		$.ajax({
-			url:"<?=site_url('prain/get_one_container/');?>"+crid,
-			type:"POST",
-			data: "crid="+crid,
-			dataType:"JSON",
-			success: function(json){	
-				if(json.message=="success") {
-					$("#pracrnoid").val(json.cr.pracrnoid);
-					$("#crno").val(json.cr.crno);
-					$("#ccode").select2().select2('val',json.cr.cccode);
-					$("#ctcode").val(json.cr.ctcode);
-					$("#cclength").val(json.cr.cclength);
-					$("#ccheight").val(json.cr.ccheight);
-
-				    $("#saveDetail").hide();
-				    $("#updateDetail").show();
-
-				    if(json.cr.cpife=="1") {
-				        cpife.filter('[value=1]').prop('checked', true);
-				    }else if(json.cr.cpife=="0"){
-				        cpife.filter('[value=0]').prop('checked', true);
-					}
-
-					if(json.cr.cpishold==1) {
-						$("#cpishold").prop('checked',true);
-						$("#cpishold").val(json.cr.cpishold);
-					}					
-					$("#cpiremark").val(json.cr.cpiremark);
-
-				}
-			}		
-		})
-	});
-
+	// save detailContainer
 	$("#updateDetail").on("click", function(e){
 		e.preventDefault();
-		var cpife = $("input:radio[name=cpife]:checked").val();
-		var formData = "praid=" + $("#praid").val();
-		formData += "&pracrnoid=" + $("#pracrnoid").val();
+		// header
+		var formData = "repoid=" + $("#repoid").val();
+		formData += "&cpiorderno=" + $("#reorderno").val();
+		formData += "&cpopr=" + $("#cpopr").val();
+		formData += "&cpcust=" + $("#cpcust").val();
+		formData += "&cpidish=" + $("#repodish").val();
+		formData += "&cpdepo=" + $("#cpdepo").val();
+		formData += "&cpichrgbb=" + 0;
+		formData += "&cpipratgl=" + $("#redate").val();
+		formData += "&cpijam=" + $("#repojam").val();
+		formData += "&cpives=" + $("#vesid").val();
+		formData += "&cpiremark=" + $("#cpiremark").val();
+		formData += "&cpideliver=" + $("#cpideliver").val();
+		formData += "&cpivoyid=" + $("#voyid").val();
+		formData += "&cpivoy=" + $("#voyno").val();
+		// detail
 		formData += "&crno=" + $("#crno").val();
-		formData += "&ccode=" + $("#ccode").val();
+		formData += "&cccode=" + $("#cccode").val();
 		formData += "&ctcode=" + $("#ctcode").val();
 		formData += "&cclength=" + $("#cclength").val();
 		formData += "&ccheight=" + $("#ccheight").val();
-		formData += "&cpife=" + cpife;
+		formData += "&cpife=" + $("#cpife").val();
 		formData += "&cpishold=" + $("#cpishold").val();
-		formData += "&cpiremark=" + $("#cpiremark").val();
+		formData += "&reporemark=" + $("#reporemark").val();
 		
 		$.ajax({
-			url: "<?php echo site_url('prain/edit_container'); ?>",
+			url: "<?php echo site_url('repoout/updatecontainer'); ?>",
 			type: "POST",
 			data: formData,
 			dataType: 'json',
 			success: function(json) {
-				if(json.message == "success") {
+				if(json.status == "success") {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
-					});
+					});	
+					$("#formUpdateDetail").trigger("reset");
+					$("#cccode").select2().select2('val','');
+					// insert value quantity
+					$("#std20").val(json.QTY.std20);
+					$("#std40").val(json.QTY.std40);
+					$("#hc20").val(json.QTY.hc20);
+					$("#hc40").val(json.QTY.hc40);
+					$("#hc45").val(json.QTY.hc45);
+
+					loadTableContainer($("#repoid").val());
+					getTariff($("#cpopr").val(),$("#retype").val());
+
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -535,11 +501,16 @@ $(document).ready(function() {
 
 	});
 
+// untuk insert container
 	$("#crno").on("keyup", function(){
 		var crno = $("#crno").val();
+		$("#formDetail").trigger("reset");
+		$("#cccode").select2().select2('val','');
+		$("#crno").val(crno);	
 		var status = "";
+		$(this).val($(this).val().toUpperCase());
 		$.ajax({
-			url:"<?=site_url('prain/checkContainerNumber');?>",
+			url:"<?=site_url('repoout/checkContainerNumber');?>",
 			type:"POST",
 			data: "ccode="+crno,
 			dataType:"JSON",
@@ -548,38 +519,282 @@ $(document).ready(function() {
 					$(".err-crno").show();
 					$(".err-crno").html(json.message);
 					$("#crno").css("background", "#ffbfbf!important");
-					$("#crno").css("border-color", "#ea2525");					
+					$("#crno").css("border-color", "#ea2525");		
 				} else {
 					$(".err-crno").html("");
 					$(".err-crno").hide();
 					$("#crno").css("background", "#fff!important");
 					$("#crno").css("border-color", "#ccc");
+					// load data
+					$("#cccode").select2().select2('val',json.container_code.cccode);
+					$("#ctcode").val(json.container_code.ctcode);
+					$("#cclength").val(json.container_code.cclength);
+					$("#ccheight").val(json.container_code.ccheight);
+					$("input:radio[name=cpife]").filter('[value=0]').prop('checked', true);		
 				}
 			}
 		});
 	});
 
+	$('#insertContainer').on('click',function(e){
+		e.preventDefault();	
+		// $('#myModal').modal('toggle');
+		$("#formDetail").trigger("reset");		
+		$('#updateDetail').hide();
+		$('#saveDetail').show();
+	});
+
+	$('#rcTable tbody').on('click', '.edit', function(e){
+		e.preventDefault();	
+		$('#myModal').modal('toggle');
+		$('#updateDetail').show();
+		$('#saveDetail').hide();
+		let code = $(this).data('kode');
+		$.ajax({
+			url: "<?php echo site_url('repoout/getOneRepoContainer/'); ?>"+code,
+			type: "POST",
+			dataType: 'json',
+			data: {"repoid":$("#repoid").val()},
+			success: function(json) {
+				console.log(json);
+				$("#crno").val(json.crno);
+				$("#cccode").select2().select2('val',json.cccode);
+				$("#ctcode").val(json.ctcode);
+				$("#cclength").val(json.cclength);
+				$("#ccheight").val(json.ccheight);
+				$("input:radio[name=cpife]").filter('[value=0]').prop('checked', true);	
+			}
+		});				
+	});
+
+	$('#rcTable tbody').on('click', '.delete', function(e){
+		e.preventDefault();	
+		var code = $(this).data('kode');
+		Swal.fire({
+		  title: 'Are you sure?',
+		  icon: 'warning',
+		  showCancelButton: true,
+		  confirmButtonColor: '#3085d6',
+		  cancelButtonColor: '#d33',
+		  confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+		  if (result.isConfirmed) {
+		  	delete_container(code);
+		  }
+		});		
+		
+	});
+
+	function delete_container(code) {
+		$.ajax({
+			url: "<?php echo site_url('repoout/delete_container/'); ?>"+code,
+			type: "POST",
+			dataType: 'json',
+			data: {"repoid":$("#repoid").val()},
+			success: function(json) {
+				if(json.message == "success") {
+
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});		
+
+					$("#std20").val(json.QTY.std20); 
+					$("#std40").val(json.QTY.std40); 
+					$("#hc20").val(json.QTY.hc20); 
+					$("#hc40").val(json.QTY.hc40); 
+					$("#hc45").val(json.QTY.hc45); 
+
+					getTariff($("#cpopr").val(),$("#retype").val());
+					loadTableContainer($("#repoid").val());
+
+				} else {
+
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});						
+				}
+			}
+		});		
+	}
+
 	// End Step 2
 	$('#ctTable tbody').on("click",".print_order", function(e){
 		e.preventDefault();
 		var praid = $(this).data("praid");
-        window.open("<?php echo site_url('prain/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+        window.open("<?php echo site_url('repoinprint_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
-	$('[data-toggle="tab"]').on('click', function(){
-	    var $this = $(this),
-	        loadurl = $this.attr('href'),
-	        targ = $this.attr('data-target');
+	//repo type
+	$("#fromDepoBlok").children().attr('disabled', true);
+	$("#fromPortBlok").children().attr('disabled', true);
+	$("#fromCityBlok").children().attr('disabled', true);
 
-	    $.get(loadurl, function(data) {
-	        $(targ).html(data);
-	    });
+	$("#toPortBlok").children().attr('disabled', true);
+	$("#toDepoBlok").children().attr('disabled', true);
+	$("#toCityBlok").children().attr('disabled', true);
 
-	    $this.tab('show');
-	    return false;
+	$("#retype").on("change", function(){
+		let val = $(this).val();
+		let prcode = $("#cpopr").val();
+		// DEPO TO DEPO OUT
+		if (val == '11' || val == '11') {
+			$('#fromDepoBlok').removeClass('hideBlock');
+			$("#fromDepoBlok").children().attr('disabled', false);
+			$('#fromPortBlok').addClass('hideBlock');
+			$("#fromPortBlok").children().attr('disabled', true);
+			$('#fromCityBlok').addClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', true);
+
+			$('#toDepoBlok').removeClass('hideBlock');
+			$("#toDepoBlok").children().attr('disabled', false);
+			$('#toPortBlok').addClass('hideBlock');
+			$("#toPortBlok").children().attr('disabled', true);
+			$('#toCityBlok').addClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', true);
+		
+		// DEPO TO PORT
+		} else if(val == '12') {
+			$('#fromDepoBlok').removeClass('hideBlock');
+			$("#fromDepoBlok").children().attr('disabled', false);
+			$('#toPortBlok').removeClass('hideBlock');
+			$("#toPortBlok").children().attr('disabled', false);
+			$('#fromCityBlok').addClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', true);
+
+			$("#toDepoBlok").addClass('hideBlock');
+			$("#toDepoBlok").children().attr('disabled', true);
+			$('#fromPortBlok').addClass('hideBlock');
+			$("#fromPortBlok").children().attr('disabled', true);
+			$('#toCityBlok').addClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', true);
+
+		// DEPO TO INTERCITY
+		}  else if(val == '13'){
+			$('#fromDepoBlok').removeClass('hideBlock');
+			$("#fromDepoBlok").children().attr('disabled', false);
+			$('#fromPortBlok').addClass('hideBlock');
+			$("#fromPortBlok").children().attr('disabled', true);
+			$('#fromCityBlok').addClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', true);
+
+			$('#toPortBlok').addClass('hideBlock');
+			$("#toPortBlok").children().attr('disabled', true);
+			$('#toDepoBlok').addClass('hideBlock');
+			$("#toDepoBlok").children().attr('disabled', true);
+			$('#toCityBlok').removeClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', false);
+
+		// DEPO TO DEPO IN
+		} else if(val == '21'){
+			$('#fromDepoBlok').removeClass('hideBlock');
+			$("#fromDepoBlok").children().attr('disabled', false);
+			$('#fromPortBlok').addClass('hideBlock');
+			$("#fromPortBlok").children().attr('disabled', true);
+			$('#fromCityBlok').addClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', true);
+
+			$('#toDepoBlok').removeClass('hideBlock');
+			$("#toDepoBlok").children().attr('disabled', false);
+			$('#toPortBlok').addClass('hideBlock');
+			$("#toPortBlok").children().attr('disabled', true);
+			$('#toCityBlok').addClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', true);
+
+		// PORT TO DEPO
+		}  else if(val == '22'){
+			$('#fromDepoBlok').addClass('hideBlock');
+			$("#fromDepoBlok").children().attr('disabled', true);
+			$('#fromPortBlok').removeClass('hideBlock');
+			$("#fromPortBlok").children().attr('disabled', false);
+			$('#fromCityBlok').addClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', true);	
+
+			$('#toPortBlok').addClass('hideBlock');
+			$("#toPortBlok").children().attr('disabled', true);
+			$('#toDepoBlok').removeClass('hideBlock');
+			$("#toDepoBlok").children().attr('disabled', false);
+			$('#toCityBlok').addClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', true);	
+
+		// INTRCITY TO DEPO
+		}   else if(val == '23'){
+			$('#fromDepoBlok').addClass('hideBlock');
+			$("#fromDepoBlok").children().attr('disabled', true);
+			$('#fromPortBlok').addClass('hideBlock');
+			$("#fromPortBlok").children().attr('disabled', true);
+			$('#fromCityBlok').removeClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', false);			
+
+			$('#toPortBlok').addClass('hideBlock');
+			$("#toPortBlok").children().attr('disabled', true);
+			$('#toDepoBlok').removeClass('hideBlock');
+			$("#toDepoBlok").children().attr('disabled', false);
+			$('#toCityBlok').addClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', true);			
+
+		} else {
+			$('#fromDepoBlok').addClass('hideBlock');
+			$("#fromDepoBlok").children().attr('disabled', true);
+			$('#fromPortBlok').addClass('hideBlock');
+			$("#fromPortBlok").children().attr('disabled', true);			
+			$('#fromCityBlok').addClass('hideBlock');
+			$("#fromCityBlok").children().attr('disabled', true);
+
+			$('#toPortBlok').addClass('hideBlock');
+			$("#toPortBlok").children().attr('disabled', true);
+			$('#toDepoBlok').addClass('hideBlock');
+			$("#toDepoBlok").children().attr('disabled', true);
+			$('#toCityBlok').addClass('hideBlock');
+			$("#toCityBlok").children().attr('disabled', true);
+		}
+
+		getTariff(prcode,val);
+
 	});
 
+	$("#rebill").on("change", function(){
+		var billType = $(this).val();
+		let retype = $("#retype").val();
+		let prcode = $("#cpopr").val();		
+		if (billType=='Breakdown') {
+			console.log(billType);
+			// showBreakDown();
+			$("#breakDown").show();			
+			$("#blockReother1").show();			
+			$("#totbreak").show();			
+			$("#blockReother2").hide();			
+			$("#Package").hide();			
+			$("#totpack").hide();	
+			getTariff(prcode,retype);		
+		} else if (billType=='Package'){
+			$("#Package").show();
+			$("#blockReother2").show();			
+			$("#totpack").show();			
+			$("#breakDown").hide();			
+			$("#blockReother1").hide();			
+			$("#totbreak").hide();	
+			getTariff(prcode,retype);			
+		} else {
+			$("#breakDown").hide();			
+			$("#Package").hide();	
 
+		}
+	});
+
+	// Print Kitir
+	$("#rcTable tbody").on('click','.cetak_kitir', function(e){
+		e.preventDefault();
+		var repoid = $("#repoid").val();
+		var crno = $(this).attr('data-crno');
+		var reorderno = $("#reorderno").val();
+		window.open("<?php echo site_url('repoout/cetak_kitir/'); ?>" + crno + "/" + reorderno + "/" + repoid, '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	});
+
+	// Datatable
 	runDataTables();
 	var table = $('#ctTable').DataTable({
         "processing": true,
@@ -602,6 +817,258 @@ $(document).ready(function() {
     $('.DTTT').css('display','none');
 
 });
+
+function loadTableContainer(repoid) {
+	$('#rcTable tbody').html("");
+	$.ajax({
+		url: "<?=site_url('repoout/ajax_repo_containers')?>",
+		type:"POST",
+		data: "repoid="+repoid,
+		dataType: "json",
+		success: function(json) {
+			$('#rcTable tbody').html(json);
+		}
+	});
+}
+
+function getTariff(prcode,retype) {
+	$.ajax({
+		url:"<?=site_url('repoout/get_repo_tariff_detail');?>",
+		type:"POST",
+		data: {'prcode':prcode,'retype':retype},
+		dataType:"JSON",
+		success: function(json){
+			if(json.status=="Failled") {
+				// breakdown
+				$("#relift").val("0");
+				$("#redoc").val("0");
+				$("#re20").val("0");
+				$("#re40").val("0");
+				$("#re45").val("0");
+				// package
+				$("#recpack20").val("0");
+				$("#recpack40").val("0");
+				$("#recpack45").val("0");
+				$("#rechaul20").val("0");
+				$("#rechaul40").val("0");
+				$("#rechaul45").val("0");					
+			
+			} else {
+				console.log(json.data);
+				
+				var qty20 = parseInt($("#std20").val()) + parseInt($("#hc20").val()); 
+				var qty40 = parseInt($("#std40").val()) + parseInt($("#hc40").val()); 
+				var qty45 = parseInt($("#hc45").val()); 
+
+				// breakdown
+				$("#relift").val(json.contract.coadmv);
+				$("#redoc").val(json.data.rtdocv);
+				$("#re20").val(json.data.rthaulv20);
+				$("#re40").val(json.data.rthaulv40);
+				$("#re45").val(json.data.rthaulv45);
+				var retot20 = parseInt($("#re20").val()) * parseInt(qty20); 
+				var retot40 = parseInt($("#re20").val()) * parseInt(qty40); 
+				var retot45 = parseInt($("#re20").val()) * parseInt(qty45); 
+				var subtotbreak = parseInt($("#relift").val()) + parseInt($("#redoc").val()) + parseInt(retot20) + parseInt(retot40) + parseInt(retot45);
+				var totbreak = parseInt(subtotbreak) + parseInt($("#reother1").val());
+				// console.log(retot20);
+				$("#retot20").val(retot20);
+				$("#retot40").val(retot40);
+				$("#retot45").val(retot45);					
+				$("#subtotbreak").val(subtotbreak);
+				// package
+				$("#recpack20").val(json.data.rtpackv20);
+				$("#recpack40").val(json.data.rtpackv40);
+				$("#recpack45").val(json.data.rtpackv45);
+				$("#rechaul20").val(json.data.rtpackv20);
+				$("#rechaul40").val(json.data.rtpackv40);
+				$("#rechaul45").val(json.data.rtpackv45);
+				var recpacktot20 = parseInt($("#recpack20").val()) * parseInt(qty20); 
+				var recpacktot40 = parseInt($("#recpack40").val()) * parseInt(qty40); 
+				var recpacktot45 = parseInt($("#recpack45").val()) * parseInt(qty45);
+				var subtotpack = parseInt(recpacktot20) + parseInt(recpacktot40) + parseInt(recpacktot45);
+				var totpack = parseInt(subtotpack) + parseInt($("#reother2").val());
+				$("#recpacktot20").val(recpacktot20);
+				$("#recpacktot40").val(recpacktot40);
+				$("#recpacktot45").val(recpacktot45);
+				$("#rechaultot20").val(recpacktot20);
+				$("#rechaultot40").val(recpacktot40);
+				$("#rechaultot45").val(recpacktot45);
+				$("#subtotpack").val(subtotpack);
+				$("#totpack").val(totpack);
+			}
+		}
+	});
+}
+
+function showBreakDown() {
+	$("#breakDownBill").html(
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Admv</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+				
+			'<div class="col-sm-4">'+
+				'<input type="text" name="relift" class="form-control" id="relift" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Doc Fee</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="redoc" class="form-control" id="redoc" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Haulage 20"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="re20" class="form-control" id="re20" value=" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Total Haulage 20"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="retot20" class="form-control" id="retot20" value="0" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Haulage 40"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="re40" class="form-control" id="re40" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Total Haulage 40"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="retot40" class="form-control" id="retot40" value="0" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Haulage 45"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="re45" class="form-control" id="re45" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Total Haulage 45"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="retot45" class="form-control" id="retot45" value="0" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right" style="color:blue;">Sub Total 1</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="SUBTOT" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="subtotbreak" class="form-control" id="subtotbreak" value="0" required readonly>'+
+			'</div>'+
+		'</div>'
+	);
+
+}
+
+function showPackage() {
+	$("#breakDownBill").html(
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">20"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="recpack20" class="form-control" id="recpack20" required>'+
+				'<input type="hidden" name="rechaul20" class="form-control" id="rechaul20" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Total 20"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="recpacktot20" class="form-control" id="recpacktot20" value="0" required>'+
+				'<input type="hidden" name="rechaultot20" class="form-control" id="rechaultot20" value="0" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">40"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="recpack40" class="form-control" id="recpack40" required>'+
+				'<input type="hidden" name="rechaul40" class="form-control" id="rechaul40" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Total 40"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="recpacktot40" class="form-control" id="recpacktot40" value="0" required>'+
+				'<input type="hidden" name="rechaultot40" class="form-control" id="rechaultot40" value="0" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">45"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="recpack45" class="form-control" id="recpack45" required>'+
+				'<input type="hidden" name="rechaul45" class="form-control" id="rechaul45" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right">Total45"</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="IDR" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="recpacktot45" class="form-control" id="recpacktot45" value="0" required>'+
+				'<input type="hidden" name="rechaultot45" class="form-control" id="rechaultot45" value="0" required>'+
+			'</div>'+
+		'</div>'+
+		'<div class="form-group">'+
+			'<label class="col-sm-4 control-label text-right" style="color:blue;">Sub Total 1</label>'+
+			'<div class="col-sm-2">'+
+				'<input type="text" name="" class="form-control" id="" value="SUBTOT" readonly>'+
+			'</div>'+			
+			'<div class="col-sm-4">'+
+				'<input type="text" name="subtotpack" class="form-control" id="subtotpack" value="0" readonly required>'+
+			'</div>'+
+		'</div>'
+	);
+}
+
+function totalBreak() {
+	
+}
+function totalPack() {
+	var totpack = subtotpack+reother1+reother2;
+	$("#totpack").val(totpack);
+}
 
 function runDataTables() {		
     $.fn.dataTable.pipeline = function ( opts ) { 
@@ -648,7 +1115,8 @@ function runDataTables() {
 
                 request.start = requestStart;
                 request.length = requestLength * conf.pages;
-                
+                request.startdate = $("#startdate").val();
+                request.enddate = $("#enddate").val();
                 request.rows = requestLength;
 
                 if ($.isFunction(conf.data)) {
@@ -699,4 +1167,5 @@ function runDataTables() {
         }
     } 	   
 }
+
 </script>

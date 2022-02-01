@@ -585,7 +585,8 @@ class PraIn extends \CodeIgniter\Controller
 				'ccheight' => $_POST['ccheight'],
 				'cpife' => $_POST['cpife'],
 				'cpishold' => $_POST['cpishold'],
-				'cpiremark' => $_POST['cpiremark']
+				'cpiremark' => $_POST['cpiremark'],
+				'sealno' => ''
 			];
 
 
@@ -752,7 +753,8 @@ class PraIn extends \CodeIgniter\Controller
 				'ccheight' => $_POST['ccheight'],
 				'cpife' => $_POST['cpife'],
 				'cpishold' => $_POST['cpishold'],
-				'cpiremark' => $_POST['cpiremark']
+				'cpiremark' => $_POST['cpiremark'],
+				'sealno' => ''
 			];
 
 			// if(($_POST['cpopr'] !='')||($_POST['cpcust'] !='')) {

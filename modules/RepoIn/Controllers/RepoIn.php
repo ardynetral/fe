@@ -135,7 +135,6 @@ class RepoIn extends \CodeIgniter\Controller
 			$reformat = [
 				'repocode' => "RI",
 				'prcode' => $_POST['cpopr'],
-				'cpopr' => $_POST['cpopr'],
 				'redate' => date('Y-m-d', strtotime($_POST['redate'])),
 				'redline' => date('Y-m-d', strtotime($_POST['redline']))
 			];
@@ -157,7 +156,6 @@ class RepoIn extends \CodeIgniter\Controller
 					die();
 				}
 				$datarepo = $result['data']['succes created order Container Repo'];
-				$data_process = $result['data']['succes created container process'];
 				session()->setFlashdata('sukses', 'Success, Order Repo Saved.');
 				$data['message'] = "success";
 				$data['repoid'] = $datarepo['repoid'];
@@ -1060,23 +1058,12 @@ class RepoIn extends \CodeIgniter\Controller
 					<td colspan="3">' . $PRINCIPAL . '</td>
 				</tr>
 				<tr>
-					<td>L/OFF RECEIPT</td>
+					<td>L/OFF</td>
 					<td colspan="3">' . $CPIRECEPTNO . '</td>
-				</tr>
-				<tr>
-					<td>DET RECEIPT</td>
-					<td colspan="3"></td>
 				</tr>
 				<tr>
 					<td>SIZE</td>
 					<td colspan="3">' . $CODE . ' ' . $LENGTH . '/' . $HEIGHT . '</td>
-				</tr>
-				<tr>
-					<td>DELIVERER</td>
-					<td colspan="3"></td>
-				</tr>
-				<tr>
-					<td colspan="4" style="padding-bottom:10px;"><h5 style="font-weight:normal;">PT. CONTINDO RAYA</h5></td>
 				</tr>
 				<tr>
 					<td style="width:40%;">PARTY</td>

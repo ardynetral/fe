@@ -156,7 +156,6 @@ class RepoIn extends \CodeIgniter\Controller
 					die();
 				}
 				$datarepo = $result['data']['succes created order Container Repo'];
-				$data_process = $result['data']['succes created container process'];
 				session()->setFlashdata('sukses', 'Success, Order Repo Saved.');
 				$data['message'] = "success";
 				$data['repoid'] = $datarepo['repoid'];

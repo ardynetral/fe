@@ -358,8 +358,8 @@
 									<th>Length</th>
 									<th>Height</th>
 									<th>Principal</th>
+									<th>Seal No.</th>
 									<th>Lift On</th>
-									<!-- <th>Deposit</th> -->
 									<th>Subtotal</th>
 								</tr>
 							</thead>
@@ -385,8 +385,8 @@
 											<td><?=$row['cclength']?></td>
 											<td><?=$row['ccheight']?></td>
 											<td><?=$row['cpopr'];?></td>
-											<td class="text-right"><?=number_format($row['biaya_lolo'],2);?></td>
-											<!-- 											<td class="text-right"><?=number_format($row['biaya_clean'],2);?></td> -->											
+											<td><?=@$row['sealno'];?></td>				
+											<td class="text-right"><?=number_format($row['biaya_lolo'],2);?></td>				
 											<td class="text-right"><?=number_format($subtotal,2);?></td>
 										</tr>
 									
@@ -400,7 +400,7 @@
 
 									?>
 
-									<tr><th colspan="8" class="text-right">TOTAL</th><th class="text-right"><?=number_format($total,2)?></th></tr>
+									<tr><th colspan="9" class="text-right">TOTAL</th><th class="text-right"><?=number_format($total,2)?></th></tr>
 
 								<?php endif; ?>
 							</tbody>

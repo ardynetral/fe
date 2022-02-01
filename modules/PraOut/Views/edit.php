@@ -323,7 +323,13 @@
 								<div class="col-sm-8">
 									<input type="text" name="cpiremark" id="cpiremark" class="form-control">
 								</div>	
-							</div>								
+							</div>	
+							<div class="form-group">
+								<label class="col-sm-4 control-label text-right">Seal Number</label>
+								<div class="col-sm-8">
+									<input type="text" name="sealno" id="sealno" class="form-control" >
+								</div>	
+							</div>														
 							<div class="form-group">
 								<div class="col-sm-offset-4 col-sm-8">
 									<button type="button" id="updateDetail" class="btn btn-info"><i class="fa fa-pencil"></i> Update Container</button>
@@ -351,6 +357,7 @@
 									<th>Length</th>
 									<th>Height</th>
 									<th>Remark</th>
+									<th>Seal No</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -377,6 +384,7 @@
 											<td><?=$row['cclength']?></td>
 											<td><?=$row['ccheight']?></td>
 											<td><?=$row['cpiremark']?></td>
+											<td><?=$row['sealno']?></td>
 											<td><a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a></td>
 										</tr>
 									<?php 

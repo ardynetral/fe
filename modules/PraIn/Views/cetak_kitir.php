@@ -300,7 +300,7 @@
 									<td><?=number_format($row['biaya_clean'],2);?></td>									
 									<td><?=number_format($row['biaya_lain'],2);?></td>									
 									<td><?=$row['cpiremark']?></td>
-									<td></td>
+									<td><?=date('d-m-Y',strtotime($row['cpigatedate']))?></td>
 									<td>
 										<a class="btn btn-xs btn-primary cetak_kitir" href="#" id=""
 										data-praid="<?=$row['praid']; ?>"  

@@ -9,7 +9,7 @@ $(document).ready(function() {
 	$('.select-depo').select2();
 	$('.select-city').select2();
 	$('.select-vessel').select2();
-	$('.select-voyage').select2();
+	// $('.select-voyage').select2();
 	$('.select-cccode').select2();
 	$('.selects').select2();
 	$('#rebill').select2();

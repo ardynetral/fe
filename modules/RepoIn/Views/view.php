@@ -493,6 +493,7 @@
 									<th>F/E</th>
 									<th>Hold/Release</th>
 									<th>Remark</th>
+									<th>Gate In Date</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -510,6 +511,7 @@
 									<td><?=((isset($c['repofe'])&&$c['repofe']==1)?'Full':'Empty');?></td>
 									<td><?=((isset($c['reposhold'])&&$c['reposhold']==1)?'Hold':'Release');?></td>
 									<td><?=$c['reporemark'];?></td>
+									<td><?=$c['repogatedate'];?></td>
 									<td>
 										<a href='#' class='btn btn-xs btn-info cetak_kitir'	data-crno="<?=$c['crno']?>">cetak kitir</a>
 									</td>									

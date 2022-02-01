@@ -10,6 +10,7 @@
 			<th>Principal</th>
 			<th>F/E</th>
 			<th>Remark</th>
+			<th>Seal No.</th>
 			<th>GateIn Date</th>
 			<th></th>
 		</tr>

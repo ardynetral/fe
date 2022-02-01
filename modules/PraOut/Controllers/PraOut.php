@@ -336,7 +336,7 @@ class PraOut extends \CodeIgniter\Controller
 				session()->setFlashdata('sukses','Success, Order Pra Saved.');
 				session()->setFlashdata('notif_insert_container','Silahkan mengisi data Container.');
 				$data['status'] = "success";
-				$data['message'] = "Berasil menyimpan data";
+				$data['message'] = "Berhasil menyimpan data";
 				$data['praid'] = $result['data']["data order Pra"]['praid'];
 				echo json_encode($data);die();
 			}
@@ -584,7 +584,8 @@ class PraOut extends \CodeIgniter\Controller
 				'ccheight' => $_POST['ccheight'],
 				'cpife' => $_POST['cpife'],
 				'cpishold' => $_POST['cpishold'],
-				'cpiremark' => $_POST['cpiremark']
+				'cpiremark' => $_POST['cpiremark'],
+				'sealno' => $_POST['sealno']
 			];
 
 
@@ -597,46 +598,10 @@ class PraOut extends \CodeIgniter\Controller
 	        ]);			
 		
 		    if ($this->request->getMethod() === 'post' && $validate)
-		    {
-		    	// Jika container belum ada di table container maka insert tabel container
-		    	if($this->check_container($_POST['crno'])==0) {
-					$body = [
-			            "crno" 		=> $_POST['crno'],
-			            "mtcode" 	=> $_POST['ctcode'],
-			            "cccode" 	=> $_POST['ccode'],
-			            "crowner" 	=> 0,
-			            "crcdp" 	=> 0,
-			            "crcsc" 	=> 0,
-			            "cracep" 	=> 0,
-			            "crmmyy" 	=> 0,
-			            "crweightk" => 0,
-			            "crweightl" => 0,
-			            "crtarak" 	=> 0,
-			            "crtaral" 	=> 0,
-			            "crnetk" 	=> 0,
-			            "crnetl" 	=> 0,
-			            "crvol" 	=> 0,
-			            "crmanuf" 	=> 0,
-			            "crmandat" 	=> 0,
-			            "crlastact" => "BI"
-			        ];
-
-
-					$this->client->request('POST','containers/create',[
-						'headers' => [
-							'Accept' => 'application/json',
-							'Authorization' => session()->get('login_token')
-						],
-						'form_params' => [
-							'crNo' => $_POST['crno'],
-							'dset' => $body
-						]
-					]);	
-		    	}    	
-
+		    {  	
 		    	// jika kontaner sudah ada di depo
 		    	$container = $this->get_container($_POST['crno']);
-		    	if(($container['crlastact']=="WE") || ($container['crlastact']=="WS")) {
+		    	if($container['crlastact']=="CO") {
 
 					$response = $this->client->request('POST','orderPraContainers/createNewData',[
 						'headers' => [
@@ -721,7 +686,8 @@ class PraOut extends \CodeIgniter\Controller
 				'ccheight' => $_POST['ccheight'],
 				'cpife' => $_POST['cpife'],
 				'cpishold' => $_POST['cpishold'],
-				'cpiremark' => $_POST['cpiremark']
+				'cpiremark' => $_POST['cpiremark'],
+				'sealno' => $_POST['sealno']
 			];
 
 			$validate = $this->validate([
@@ -834,7 +800,7 @@ class PraOut extends \CodeIgniter\Controller
 
 			$tax = (isset($contract['cotax'])?$contract['cotax']:0);
 			$total_lolo = (int)$_POST['total_lolo'];
-			$total_cleaning = (int)$_POST['total_cleaning'];
+			$total_cleaning = 0;
 			$subtotal = (int)$_POST['subtotal_bill'];
 			$pajak = ($tax/100);
 			$nilai_pajak = $pajak*$subtotal;
@@ -886,7 +852,7 @@ class PraOut extends \CodeIgniter\Controller
 				    "cpireceptno" => '-',
 				    "cpicurr" => "IDR",
 				    "cpirate" => 1,
-				    "biaya_cleaning" => $total_cleaning,
+				    "biaya_cleaning" => 0,
 				    "tot_lolo" => $total_lolo,
 				    "biaya_adm" => $adm_tarif,
 				    "total_pajak" => $nilai_pajak,
@@ -965,7 +931,7 @@ class PraOut extends \CodeIgniter\Controller
 					'pracrnoid' => $_POST['pracrnoid'],
 					'cpopr' => $_POST['cpopr'],
 					'cpcust' => $_POST['cpcust'],
-					'biaya_clean' => $_POST['biaya_clean'],
+					'biaya_clean' => 0,
 					'biaya_lolo' => $_POST['biaya_lolo'],
 					'cleaning_type' => $_POST['cleaning_type']
 				],
@@ -1494,7 +1460,7 @@ cpid,
 			];			
 			$post_arr[] = [
 				'name'		=> 'biaya_cleaning',
-				'contents'	=> (int)$_POST['biaya_cleaning']
+				'contents'	=> 0
 			];				
 			$post_arr[] = [
 				'name'		=> 'tot_lolo',
@@ -1600,6 +1566,7 @@ cpid,
 				<td>".((isset($row['cpopr'])&&$row['cpopr']!="")?$row['cpopr']:'-')."</td>
 				<td>".((isset($row['cpife'])&&$row['cpife']==1)?'Full':'Empty')."</td>
 				<td>".$row['cpiremark']."</td>
+				<td>".$row['sealno']."</td>
 				<td></td>
 				<td>";
 
@@ -1651,8 +1618,8 @@ cpid,
 				<td>".$row['ccheight']."</td>
 				<td>".((isset($row['cpopr'])&&$row['cpopr']!="")?$row['cpopr']:'-')."</td>
 				<td>".$row['biaya_lolo']."</td>
-				<td>".$row['biaya_clean']."</td>
 				<td>".$row['cpiremark']."</td>
+				<td>".$row['sealno']."</td>
 				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."'>edit</a></td>
 				</tr>";
 			$i++; 
@@ -2395,6 +2362,7 @@ cpid,
 		if($this->request->isAjax()) {
 
 			$ccode = $_POST['ccode'];
+			$praid = $_POST['praid'];
 			// $ccode = "APZU";
 			$validate = $this->validate([
 	            'ccode' => 'required'
@@ -2552,7 +2520,7 @@ cpid,
 
 			$data['status'] = "Success";
 			$data['data'] = $principal;
-			$data['biaya_clean'] = (isset($contract['deposit'])?$contract['deposit']:0);
+			$data['biaya_clean'] = 0;
 			$data['biaya_lolo'] = $biaya_lolo;
 			echo json_encode($data);die();
 		}

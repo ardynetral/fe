@@ -358,6 +358,7 @@ $(document).ready(function() {
 		"<td>"+cpife+"</td>"+
 		"<td>"+cpishold+"</td>"+
 		"<td>"+item.cpiremark+"</td>"+
+		"<td>"+item.sealno+"</td>"+
 		"<td></td>"+
 		"<td><a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='"+item.pracrnoid+"'>edit</a><a href='#' id='deleteContainer' class='btn btn-xs btn-danger'>delete</a></td>"+
 		"</tr>";
@@ -532,6 +533,7 @@ $(document).ready(function() {
 		formData += "&cpife=" + cpife;
 		formData += "&cpishold=" + $("#cpishold").val();
 		formData += "&cpiremark=" + $("#cpiremark").val();
+		formData += "&sealno=" + $("#sealno").val();
 		formData += "&cleaning_type=" + $("#cleaning_type").val();
 
 		$.ajax({
@@ -624,6 +626,7 @@ $(document).ready(function() {
 						$("#deposit").prop("checked",true);
 					}					
 					$("#cpiremark").val(json.cr.cpiremark);
+					$("#sealno").val(json.cr.sealno);
 					// $("#cleaning_type").val(json.cr.cleaning_type);
 					$("#biaya_clean").val(json.cr.biaya_clean);
 					// $("#biaya_lolo").val(json.cr.biaya_lolo);
@@ -667,6 +670,7 @@ $(document).ready(function() {
 						$("#deposit").prop("checked",true);
 					}					
 					$("#cpiremark").val(json.cr.cpiremark);
+					$("#sealno").val(json.cr.sealno);
 					$("#cleaning_type").val(json.cr.cleaning_type);
 					$("#biaya_clean").val(json.cr.biaya_clean);
 					$("#biaya_lolo").val(json.cr.biaya_lolo);
@@ -690,6 +694,7 @@ $(document).ready(function() {
 		formData += "&cpife=" + cpife;
 		formData += "&cpishold=" + $("#cpishold").val();
 		formData += "&cpiremark=" + $("#cpiremark").val();
+		formData += "&sealno=" + $("#sealno").val();
 		
 		$.ajax({
 			url: "<?php echo site_url('praout/edit_container'); ?>",
@@ -771,6 +776,7 @@ $(document).ready(function() {
 		formData += "&cpife=" + cpife;
 		formData += "&cpishold=" + $("#cpishold").val();
 		formData += "&cpiremark=" + $("#cpiremark").val();
+		formData += "&sealno=" + $("#sealno").val();
 		formData += "&cpopr=" + $("#prcode").val();
 		formData += "&cpcust=" + $("#cucode").val();
 		formData += "&total_lolo=" + $("#total_lolo").val();

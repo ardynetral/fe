@@ -244,8 +244,8 @@
 									<th>Height</th>
 									<th>Principal</th>
 									<th>Lift Off</th>
-									<th>Deposit</th>
 									<th>Remark</th>
+									<th>Seal No</th>
 									<th>GateIn Date</th>
 								</tr>
 							</thead>
@@ -272,7 +272,7 @@
 											<td><?=$row['ccheight']?></td>
 											<td><?=$row['cpopr'];?></td>
 											<td><?=$row['biaya_lolo'];?></td>
-											<td><?=$row['biaya_clean'];?></td>
+											<td><?=@$row['sealno'];?></td>
 											<td><?=$row['cpiremark']?></td>
 											<td></td>
 										</tr>

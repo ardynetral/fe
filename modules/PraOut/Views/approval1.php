@@ -360,13 +360,14 @@
 									<th>Lift On</th>
 									<!-- <th>Deposit</th> -->
 									<th>Remark</th>
+									<th>Seal No</th>
 									<th></th>
 								</tr>
 							</thead>
 							
 							<tbody id="listOrderPra">
 								<?php if($data['orderPraContainers']==null): ?>
-									<tr><td colspan="11"><p class="alert alert-warning">Data not found.</p></td></tr>
+									<tr><td colspan="12"><p class="alert alert-warning">Data not found.</p></td></tr>
 								<?php else: ?>
 
 									<?php 
@@ -386,8 +387,8 @@
 											<td><?=$row['ccheight']?></td>
 											<td><?=$row['cpopr'];?></td>
 											<td><?=$row['biaya_lolo'];?></td>
-											<!-- <td><?=$row['biaya_clean'];?></td> -->
 											<td><?=$row['cpiremark']?></td>
+											<td><?=$row['sealno']?></td>
 											<td><a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a></td>
 										</tr>
 									<?php 

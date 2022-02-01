@@ -1,6 +1,12 @@
 <?php
 namespace Modules\GateIn\Controllers;
 
+use App\Libraries\Ciqrcode;
+
+use function bin2hex;
+use function file_exists;
+use function mkdir;
+
 class GateIn extends \CodeIgniter\Controller
 {
 	private $client;
@@ -415,6 +421,7 @@ class GateIn extends \CodeIgniter\Controller
 
 		$data = [];
 		$header = $this->get_data_gatein2($crno);
+		$CPIEIR  = str_repeat("0", 8 - strlen($header['cpieir'])) . $header['cpieir'];
 
 		$html = '';
 		$html .= '
@@ -451,7 +458,7 @@ class GateIn extends \CodeIgniter\Controller
 				<tr>
 				<td><h4>Tanda Terima Container</h4></td>
 				<td class="t-left"><b>PT. CONTINDO RAYA</b></td>
-				<td class="t-right" width="5%"><p style="border:1px solid #000000; padding:5px;"><b>'.$header['cpieir'].'</b></p></td>
+				<td class="t-right" width="5%"><p style="border:1px solid #000000; padding:5px;"><b>'.$CPIEIR.'</b></p></td>
 				</tr>
 				</table>
 			</div>
@@ -542,94 +549,179 @@ class GateIn extends \CodeIgniter\Controller
 		die();		
 	}
 
-	public function print_eir_in($CRNO) {
-		$response = $this->client->request('GET','containerProcess/printEIRIns',[
-			'headers' => [
-				'Accept' => 'application/json',
-				'Authorization' => session()->get('login_token')
-			]
-		]);
-
-		$result = json_decode($response->getBody()->getContents(),true);
-		if(isset($result['message'])&&($result['message']=="Failled")) {
-			$data = "";
-		}
-
-		$data = $result['data']['datas'];
+	public function print_eir_in($crno) 
+	{
+		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80,236]]);
+		$header = $this->get_data_gatein2($crno);
+		$CPIEIR  = str_repeat("0", 8 - strlen($header['cpieir'])) . $header['cpieir'];
+		$QR_FORMAT = $header['crno'] . $CPIEIR;
+		$QRCODE = $this->generate_qrcode($QR_FORMAT);
+		// print_r($header);die();
+		$QRCODE_IMG = ROOTPATH .'/public/media/qrcode/'.$QRCODE['content'] . '.png';
 
 		$html = '';
+
 		$html .= '
 		<html>
 			<head>
-				<title>PRINT EIR-IN</title>
-
-				<style>
-					body{font-family: Arial;font-size:12px;}
-					.page-header{display:block;border-bottom:2px solid #aaa;padding:0;min-height:30px;margin-bottom:30px;}
-					.head-left{float:left;width:200px;padding:0px;}
-					.head-right{float:left;padding:0px;margin-left:200px;text-align: right;}
-
-					.tbl_head_prain, .tbl_det_prain{border-spacing: 0;border-collapse: collapse;}
-					.tbl_head_prain td{border-collapse: collapse;}
+				<title>Gate In | Print EIR-IN</title>
+				<link href="'.base_url().'/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+				<style>			
+					.page-header{display:block;margin-bottom:20px;line-height:0.3;}
+					table{line-height:1.75;display:block;}
+					table td{font-weight:bold;font-size:12px;}
 					.t-right{text-align:right;}
 					.t-left{text-align:left;}
-
-					.tbl_det_prain th,.tbl_det_prain td {
-						border:1px solid #666666!important;
-						border-spacing: 0;
-						border-collapse: collapse;
-						padding:5px;
-
+					.t-center{text-align:center;}
+					.bordered {
+						border:1px solid #666666;
+						padding:3px;
 					}
-					.line-space{border-bottom:1px solid #dddddd;margin:30px 0;}
+					.kotak1{border:1px solid #000000;padding:3px;width:20%;text-align:center;}
+					.kotak2{border:1px solid #ffffff;padding:3px;width:20%;text-align:center;}
+					.kotak3{border:1px solid #000000;padding:3px;width:20%;text-align:center;}
+			        @media print {
+			            @page {
+			                margin: 0 auto;
+			                sheet-size: 300px 250mm;
+			            }
+			            html {
+			                direction: rtl;
+			            }
+			            html,body{margin:0;padding:0}
+			            .wrapper {
+			                width: 250px;
+			                margin: auto;
+			                text-align: justify;
+			            }
+			           .t-center{text-align: center;}
+			           .t-right{text-align: right;}
+			        }						
 				</style>
 			</head>
 		';
 		$html .= '<body>
-			<div class="page-header">
-				<table width="100%">
-				<tr>
-				<td><b>PRINT EIR-IN</b></td>
-				<td class="t-left"><b>PT. CONTINDO RAYA</b></td>
-				<td class="t-right" width="5%"><p style="border:1px solid #000000; padding:5px;"><b>000</b></p></td>
-				</tr>
-				</table>
+			<div class="wrapper">
+
+			<div class="page-header t-center">
+				<h5 style="line-height:1.2;font-weight:bold;padding-top:20px;">TANDA TERIMA<br>CONTAINER</h5>
+				<img src="' . $QRCODE_IMG . '" style="height:120px;">
+				<h5 style="text-decoration: underline;line-height:0.5;">EIR IN.'.$CPIEIR.'</h5>
 			</div>
-		';
-
-		$html .='<div>
-			<table width="100%">
-			<tbody>
-			<tr>
-			<td width="130">CONTAINER NO</td><td>:</td>
-			<tr>
-			<tr>
-			<td>DATE</td><td>:</td>
-			<tr>
-			<tr>
-			<td>PRNCIPAL</td><td>:</td>
-			<tr>
-			<tr>
-			<td>Prain Ref.</td><td>:</td>
-			<tr>		
-			<tr>
-			<td>EIR IN</td><td>:</td>
-			<tr>
-			</tbody>
+		';		
+		$html .='
+			<table border-spacing: 0; border-collapse: collapse; width="100%">	
+				<tr>
+					<td style="width:40%;">CONTAINER NO.</td>
+					<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">:&nbsp;'.$header['crno'].'</h5></td>
+				</tr>
+				<tr>
+					<td>TYPE</td>
+					<td colspan="3">:&nbsp;'.$header['ctcode'].'</td>
+				</tr>				
+				<tr>
+					<td>SIZE</td>
+					<td colspan="3">:&nbsp;'.$header['cclength'].'/'.$header['ccheight'].'</td>
+				</tr>
+				<tr>
+					<td>LOAD STATUS</td>
+					<td colspan="3">:&nbsp;</td>
+				</tr>					
+				<tr>
+					<td>PRINCIPAL</td>
+					<td colspan="3">:&nbsp;'.$header['cpopr'].'</td>
+				</tr>
+				<tr>
+					<td>EX VESSEL</td>
+					<td colspan="3">:&nbsp;'.$header['vesid'].'</td>
+				</tr>
+				<tr>
+					<td>NO POLISI</td>
+					<td colspan="3">:&nbsp;'.$header['cpinopol'].'</td>
+				</tr>
+				<tr>
+					<td>TRUCKER</td>
+					<td colspan="3">:&nbsp;'.$header['cpitruck'].'</td>
+				</tr>
+				<tr>
+					<td>DRIVER</td>
+					<td colspan="3">:&nbsp;'.$header['cpidriver'].'</td>
+				</tr>				
+				<tr>
+					<td>CONDITION</td>
+					<td colspan="3">:&nbsp;'.$header['crlastcond'].'</td>
+				</tr>
+				<tr>
+					<td>CLEANING</td>
+					<td colspan="3">:&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan="3">Telah kami terima dan survey</td>
+					<td>:&nbsp;Y/T</td>
+				</tr>
 			</table>
-		</div>';
-
-		$html .='<div>';
-		// $html .= print_r($data);
-		$html .='</div>';
-		
+			<br>
+			<table width="100%">	
+				<tr>
+					<td width="33%">TRUCKER</td>
+					<td width="33%" class="t-center">SURVEYOR</td>
+					<td width="33%">PETUGAS</td>
+				</tr>
+				<tr><td colspan="3" height="15" width="100%"></td></tr>
+				<tr>
+					<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+					<td class="t-center">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+					<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+				</tr>	
+			</table>
+			</div>
+		';		
 		$html .='
 		</body>
 		</html>
 		';
-
-		echo $html;	
+		$mpdf->WriteHTML($html);
+		$mpdf->Output();
 		die();		
 	}
-		
+
+    public function generate_qrcode($data)
+    {
+        /* Load QR Code Library */
+        // $this->load->library('ciqrcode');
+        $ciQrcode = new Ciqrcode();
+
+        /* Data */
+        $hex_data   = bin2hex($data);
+        $save_name  = $data . '.png';
+
+        /* QR Code File Directory Initialize */
+        $dir = 'public/media/qrcode/';
+        if (! file_exists($dir)) {
+            mkdir($dir, 0775, true);
+        }
+
+        /* QR Configuration  */
+        $config['cacheable']    = true;
+        $config['imagedir']     = $dir;
+        $config['quality']      = true;
+        $config['size']         = '1024';
+        $config['black']        = [255, 255, 255];
+        $config['white']        = [255, 255, 255];
+        $ciQrcode->initialize($config);
+
+        /* QR Data  */
+        $params['data']     = $data;
+        $params['level']    = 'L';
+        $params['size']     = 10;
+        $params['savename'] = FCPATH . $config['imagedir'] . $save_name;
+
+        $ciQrcode->generate($params);
+
+        /* Return Data */
+        return [
+            'content' => $data,
+            'file'    => $dir . $save_name,
+        ];
+    }		
 }

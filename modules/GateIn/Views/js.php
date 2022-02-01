@@ -56,8 +56,8 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});			
+			        window.open("<?php echo site_url('gatein/print_eir_in/'); ?>" + crno, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 					window.location.href = "<?php echo site_url('gatein'); ?>";
-			        window.open("<?php echo site_url('gatein/print_eir_in/'); ?>" + crno, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');				
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -564,7 +564,7 @@ $(document).ready(function() {
 	$('#ctTable').on("click",".print", function(e){
 		e.preventDefault();
 		var crno = $(this).data("crno");
-        window.open("<?php echo site_url('gatein/print/'); ?>" + crno, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+        window.open("<?php echo site_url('gatein/print_eir_in/'); ?>" + crno, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	$('[data-toggle="tab"]').on('click', function(){

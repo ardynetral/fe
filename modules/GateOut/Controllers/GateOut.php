@@ -152,32 +152,50 @@ class GateOut extends \CodeIgniter\Controller
 	public function get_data_gateout() 
 	{
 		if($this->request->isAjax()) {
-			$response = $this->client->request('GET','gateout/getByCrno',[
-				'headers' => [
-					'Accept' => 'application/json',
-					'Authorization' => session()->get('login_token')
-				],
-				'query' => $_POST['crno'],
-			]);
-			
-			$result = json_decode($response->getBody()->getContents(), true);	
-			echo var_dump($result);die();
-			if(isset($result['status']) && ($result['status']=="Failled"))
-			{
-				$data['status'] = "Failled";
-				$data['message'] = $result['message'];
-				echo json_encode($data);die();						
-			}
 
-			if(isset($result['data']) &&($result['data']==null)) {
+			$container = $this->get_container($_POST['crno']);
+			if($container=="") {
 				$data['status'] = "Failled";
-				$data['message'] = "Data Container tidak ditemukan.";
+				$data['message'] = "Data Container tidak ditemukan.";	
 				echo json_encode($data);die();					
-			}
+			} else{
+				if (($container['crlastact'] == "CO" &&  $container['crlastcond'] == "AC") ||  $container['lastact'] == "AC") {
 
-			$data['message'] = 'success';
-			$data['data'] = $result['data'][0];
-			echo json_encode($data);die();				
+					// periksa Query getByCrno di backend
+					// getKitirRepoGateOut tdk bisa dipakai karne pakai 2 param (crno & cpoorderno) 
+					$response = $this->client->request('GET','gateout/getByCrno',[
+						'headers' => [
+							'Accept' => 'application/json',
+							'Authorization' => session()->get('login_token')
+						],
+						'query' => $_POST['crno'],
+					]);
+					
+					$result = json_decode($response->getBody()->getContents(), true);	
+					if(isset($result['status']) && ($result['status']=="Failled"))
+					{
+						$data['status'] = "Failled";
+						$data['message'] = $result['message'];
+						echo json_encode($data);die();						
+					}
+
+					if(isset($result['data']) &&($result['data']==null)) {
+						$data['status'] = "Failled";
+						$data['message'] = "Data Container tidak ditemukan.";
+						echo json_encode($data);die();					
+					}	
+
+					$data['message'] = 'success';
+					$data['data'] = $result['data'];
+					echo json_encode($data);die();					    		
+
+		    	} else {
+
+					$data['status'] = "Failled";
+					$data['message'] = "Invalid. Status Container(".$container['crlastact'].")";	    		
+					echo json_encode($data);die();					    		
+		    	}	
+			}		
 		}
 	}
 
@@ -204,4 +222,26 @@ class GateOut extends \CodeIgniter\Controller
 		return $option; 
 		die();
 	}
+
+	public function get_container($crno)
+	{
+		$response = $this->client->request('GET', 'containers/listOne', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'form_params' => [
+				'crNo' => $crno,
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		// echo var_dump($result);die();
+		if(isset($result['status'])&&($result['status']=="Failled")) {
+			$data="";
+		} else {
+			$data = $result['data']; 
+		}
+		return $data;
+	}	
 }

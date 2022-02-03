@@ -881,7 +881,7 @@ $(document).ready(function() {
 		var praid = $(this).attr('data-praid');
 		var crno = $(this).attr('data-crno');
 		var cpiorderno = $(this).attr('data-cpiorderno');
-		window.open("<?php echo site_url('prain/cetak_kitir/'); ?>" + crno + "/" + cpiorderno + "/" + praid, '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+		window.open("<?php echo site_url('prain/cetak_kitir_new/'); ?>" + crno + "/" + cpiorderno + "/" + praid, '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	$("#crno").on("keyup", function(){

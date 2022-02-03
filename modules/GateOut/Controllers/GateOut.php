@@ -91,9 +91,92 @@ class GateOut extends \CodeIgniter\Controller
 	public function add()
 	{
 		$data = [];
+		if($this->request->isAjax()) {
+			$form_params = [
+			"cpotgl"		=> $_POST['cpotgl'],
+			"cpopr"			=> $_POST['cpopr'],
+			"cpopr1"		=> $_POST['cpopr1'],
+			"cpcust"		=> $_POST['cpcust'],
+			"cpcust1"		=> $_POST['cpcust1'],
+			"cpotruck"		=> $_POST['cpotruck'],
+			"cporeceptno"	=> $_POST['cporeceptno'],
+			"svsurdat"		=> $_POST['svsurdat'],
+			"syid"			=> $_POST['syid'],
+			"cpoorderno"	=> $_POST['cpoorderno'],
+			"cpoeir"		=> $_POST['cpoeir'],
+			"cporefout"		=> $_POST['cporefout'],
+			"cpopratgl"		=> $_POST['cpopratgl'],
+			"cpochrgbm"		=> $_POST['cpochrgbm'],
+			"cpopaidbm"		=> $_POST['cpopaidbm'],
+			"cpofe"			=> $_POST['cpofe'],
+			"cpoterm"		=> $_POST['cpoterm'],
+			"cpoload"		=> $_POST['cpoload'],
+			"cpoloaddat"	=> $_POST['cpoloaddat'],
+			"cpojam"		=> $_POST['cpojam'],
+			"cpocargo"		=> $_POST['cpocargo'],
+			"cposeal"		=> $_POST['cposeal'],
+			"cpovoy"		=> $_POST['cpovoy'],
+			"cpoves"		=> $_POST['cpoves'],
+			"cporeceiv"		=> $_POST['cporeceiv'],
+			"cpodpp"		=> $_POST['cpodpp'],
+			"cpodriver"		=> $_POST['cpodriver'],
+			"cponopol"		=> $_POST['cponopol'],
+			"cporemark"		=> $_POST['cporemark'],
+			"cpid"			=> $_POST['cpid']
+			];
+
+			$cp_response = $this->client->request('PUT','gateout/updateGateOut',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'form_params' => $form_params
+			]);
+
+			$result = json_decode($cp_response->getBody()->getContents(), true);	
+
+			if(isset($result['status']) && ($result['status']=="Failled"))
+			{
+				$data['message'] = $result['message'];
+				echo json_encode($data);die();				
+			}			
+		}
+
 		$data['act'] = "Add";
 		$data['page_title'] = "Gate Out";
 		$data['page_subtitle'] = "Gate Out Page";		
 		return view('Modules\GateOut\Views\add',$data);
+	}	
+
+	public function get_data_gateout() 
+	{
+		if($this->request->isAjax()) {
+			$response = $this->client->request('GET','gateout/getByCrno',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'query' => $_POST['crno'],
+			]);
+			
+			$result = json_decode($response->getBody()->getContents(), true);	
+			echo var_dump($result);die();
+			if(isset($result['status']) && ($result['status']=="Failled"))
+			{
+				$data['status'] = "Failled";
+				$data['message'] = $result['message'];
+				echo json_encode($data);die();						
+			}
+
+			if(isset($result['data']) &&($result['data']==null)) {
+				$data['status'] = "Failled";
+				$data['message'] = "Data Container tidak ditemukan.";
+				echo json_encode($data);die();					
+			}
+
+			$data['message'] = 'success';
+			$data['data'] = $result['data'][0];
+			echo json_encode($data);die();				
+		}
 	}	
 }

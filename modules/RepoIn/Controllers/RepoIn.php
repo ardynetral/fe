@@ -1160,6 +1160,209 @@ class RepoIn extends \CodeIgniter\Controller
 		die();
 	}
 
+	public function cetak_kitir_new($crno = "", $reorderno = "", $praid = "")
+	{
+
+		$generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80, 236]]);
+		// $mpdf->showImageErrors = true;
+		$query_params = [
+			"crno" => trim($crno),
+			"cpiorderno" => trim($reorderno)
+		];
+		//print_r($query_params);
+		$response = $this->client->request('GET', 'containerProcess/getKitirPepoIn', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => $query_params,
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		//print_r($result);		die();
+		// $recept = recept_by_praid($praid);
+		if (isset($result['data'][0]) && (count($result['data'][0])) > 0) {
+			$qrcode = $this->generate_qrcode($result['data'][0]['cpid']);
+			$CRNO = $result['data'][0]['crno'];
+			$REFIN = $result['data'][0]['cpirefin'];
+			$CPID = $result['data'][0]['cpid'];
+			$LENGTH = $result['data'][0]['cclength'];
+			$HEIGHT = $result['data'][0]['ccheight'];
+			$CPIORDERNO = $result['data'][0]['cpiorderno'];
+			$TYPE = $result['data'][0]['cccode'];
+			$CODE = $result['data'][0]['ctcode'];
+			$PRINCIPAL = $result['data'][0]['prcode'];
+			$SHIPPER = $result['data'][0]['cpideliver'];
+			$VESSEL = $result['data'][0]['vesid'];
+			$VOY = $result['data'][0]['cpivoy'];
+			$DATE = $result['data'][0]['cpidisdat'];
+			$DESTINATION = "";
+			$REMARK = $result['data'][0]['cpiremark'];
+			$NOPOL = $result['data'][0]['cpinopol'];
+			$QRCODE_IMG = ROOTPATH . '/public/media/qrcode/' . $qrcode['content'] . '.png';
+			$CPIPRATGL = $result['data'][0]['cpipratgl'];
+			$CPIRECEPTNO = $result['data'][0]['cpireceptno'];
+			// $QRCODE_CONTENT = $qrcode['content'];
+		} else {
+			$CRNO = "";
+			$CODE = "";
+			$CPID = "";
+			$REFIN = "";
+			$LENGTH = "";
+			$HEIGHT = "";
+			$CPIORDERNO = "";
+			$TYPE = "";
+			$PRINCIPAL = "";
+			$SHIPPER = "";
+			$VESSEL = "";
+			$VOY = "";
+			$DATE = "";
+			$DESTINATION = "";
+			$REMARK = "";
+			$NOPOL = "";
+			$QRCODE_IMG = "";
+			$QRCODE_CONTENT = "";
+			$CPIRECEPTNO = "";
+			$CPIPRATGL = "";
+		}
+
+		$result = json_decode($response->getBody()->getContents(), true);
+
+		$barcode = $generator->getBarcode($crno, $generator::TYPE_CODE_128);
+
+		$html = '';
+
+		$html .= '
+		<html>
+			<head>
+				<title>Order PraIn | Print Kitir</title>
+				<link href="' . base_url() . '/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+				<style>			
+					.page-header{display:block;margin-bottom:20px;line-height:0.3;}
+					table{line-height:1.75;display:block;}
+					table td{font-weight:bold;}
+					.t-right{text-align:right;}
+					.t-left{text-align:left;}
+					.t-center{text-align:center;}
+					.bordered {
+						border:1px solid #666666;
+						padding:3px;
+					}
+					.kotak1{border:1px solid #000000;padding:3px;width:20%;text-align:center;}
+					.kotak2{border:1px solid #ffffff;padding:3px;width:20%;text-align:center;}
+					.kotak3{border:1px solid #000000;padding:3px;width:20%;text-align:center;}
+			        @media print {
+			            @page {
+			                margin: 0 auto;
+			                sheet-size: 300px 250mm;
+			            }
+			            html {
+			                direction: rtl;
+			            }
+			            html,body{margin:0;padding:0}
+			            .wrapper {
+			                width: 250px;
+			                margin: auto;
+			                text-align: justify;
+			            }
+			           .t-center{text-align: center;}
+			           .t-right{text-align: right;}
+			        }						
+				</style>
+			</head>
+		';
+		$html .= '<body onload="window.print()">
+			<div class="wrapper">
+
+			<div class="page-header t-center">
+				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR BONGKAR</h3>
+				<h4 style="text-decoration: underline;line-height:0.5;">' . $REFIN . '</h3>
+				<img src="' . $QRCODE_IMG . '" style="height:120px;">
+				<h5 style="text-decoration: underline;line-height:0.5;">' . $CPID . '</h4>
+			</div>
+		';
+		$html .= '
+			<table border-spacing: 0; border-collapse: collapse; width="100%">	
+				<tr>
+					<td colspan="4" >NO. ' . $CPIORDERNO . '
+					</td>
+					
+				</tr>
+				<tr>
+				<td colspan="4" >( ' . date("d/m/Y", strtotime($CPIPRATGL)) . ' )</td>
+				</tr>
+				<tr>
+					<td style="width:40%;">CONTAINER#</td>
+					<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">' . $CRNO . '</h5></td>
+				</tr>
+				<tr>
+					<td>PRINCIPAL</td>
+					<td colspan="3">' . $PRINCIPAL . '</td>
+				</tr>
+				<tr>
+					<td>SIZE</td>
+					<td colspan="3">' . $CODE . ' ' . $LENGTH . '/' . $HEIGHT . '</td>
+				</tr>
+				
+			</table>
+			<br>
+			<table style="border-spacing: 3px; border-collapse: separate;" width="100%">
+				
+				<tr>
+					<td>VESSEL</td>
+					<td colspan="3">' . $VESSEL . '</td>
+				</tr>
+				<tr>
+					<td>EXPIRED</td>
+					<td colspan="3"></td>
+				</tr>
+				<tr>
+					<td>REMARK</td>
+					<td colspan="3">' . $REMARK . '</td>
+				</tr>
+				<tr>
+					<td>TRUCK ID</td>
+					<td colspan="3"></td>
+				</tr>	
+				<tr  rowspan="4">
+					<td colspan="4">&nbsp;</td>
+				</tr>
+				
+			</table>
+			
+			<table width="100%">	
+				<tr>
+					<td>SURVEYOR</td>
+					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
+				</tr>
+				<tr  rowspan="4">
+					<td colspan="4">&nbsp;</td>
+				</tr>
+				<tr>
+					<td>KERANI</td>
+					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
+				</tr>
+				<tr  rowspan="4">
+					<td colspan="4">&nbsp;</td>
+				</tr>
+				<tr>
+					<td>GATE OFFICER</td>
+					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
+				</tr>
+			</table>
+			</div>
+		';
+		$html .= '
+		</body>
+		</html>
+		';
+		$mpdf->WriteHTML($html);
+		$mpdf->Output();
+		// echo $html;
+		die();
+	}
+
 	public function generate_qrcode($data)
 	{
 		/* Load QR Code Library */

@@ -791,7 +791,7 @@ $(document).ready(function() {
 		var repoid = $("#repoid").val();
 		var crno = $(this).attr('data-crno');
 		var reorderno = $("#reorderno").val();
-		window.open("<?php echo site_url('repoin/cetak_kitir/'); ?>" + crno + "/" + reorderno + "/" + repoid, '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+		window.open("<?php echo site_url('repoin/cetak_kitir_new/'); ?>" + crno + "/" + reorderno + "/" + repoid, '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	// Datatable

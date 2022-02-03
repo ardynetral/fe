@@ -538,22 +538,54 @@ $(document).ready(function() {
 	$("#crno").on("keyup", function(){
 		var crno = $("#crno").val();
 		var status = "";
+		$(this).val($(this).val().toUpperCase());
+		$("#fGateIns").trigger("reset");
+		$("#crno").val(crno);			
 		$.ajax({
-			url:"<?=site_url('prain/checkContainerNumber');?>",
+			url:"<?=site_url('gateout/get_data_gateout');?>",
 			type:"POST",
-			data: "ccode="+crno,
+			data: "crno="+crno,
 			dataType:"JSON",
 			success: function(json){
 				if(json.status=="Failled") {
 					$(".err-crno").show();
 					$(".err-crno").html(json.message);
 					$("#crno").css("background", "#ffbfbf!important");
-					$("#crno").css("border-color", "#ea2525");					
+					$("#crno").css("border-color", "#ea2525");	
 				} else {
 					$(".err-crno").html("");
 					$(".err-crno").hide();
 					$("#crno").css("background", "#fff!important");
 					$("#crno").css("border-color", "#ccc");
+
+					$("#cpopr").val(json.data.cpopr);
+					$("#cpcust").val(json.data.cpcust);
+					$("#cccode").val(json.data.cccode);
+					$("#cclength").val(json.data.cclength);
+					$("#ccheight").val(json.data.ccheight);
+					$("#ctcode").val(json.data.ctcode);
+					$("#cpiterm").val(json.data.cpiterm);
+					$("#cpdepo").select2().select2('val',json.data.cpdepo);
+					$("#spdepo").val(json.data.spdepo);
+					$("#poport").val(json.data.poport);
+					$("#cpidisdat").val(json.data.cpidisdat);
+					$("#cpidriver").val(json.data.cpidriver);
+					$("#cpinopol").val(json.data.cpinopol);
+					$("#cpiorderno").val(json.data.cpiorderno);
+					$("#cpieir").val(json.data.cpieir);
+					$("#cpirefin").val(json.data.cpirefin);
+					$("#cpipratgl").val(json.data.cpipratgl);
+					$("#cpijam").val(json.data.cpijam);
+					$("#cpireceptno").val(json.data.cpireceptno);
+					// Lift Off charge -> nama_variabelnya apa?
+					$("#liftoffcharge").prop("checked", true);
+					$("#cpife").val(json.data.cpife);
+					$("#cpicargo").val(json.data.cpicargo);
+					$("#vesid").val(json.data.vesid);
+					$("#voyno").val(json.data.voyno);
+					$("#vesopr").val(json.data.vesopr);
+					$("#cpideliver").val(json.data.cpideliver);
+					$("#crlastcond").val(json.data.crlastcond);
 				}
 			}
 		});

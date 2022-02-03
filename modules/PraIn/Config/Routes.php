@@ -30,7 +30,7 @@ $routes->add('/prain/edit_container', '\Modules\PraIn\Controllers\PraIn::edit_co
 $routes->add('/prain/checkContainerNumber', '\Modules\PraIn\Controllers\PraIn::checkContainerNumber', ['filter' => 'login']);
 $routes->add('/prain/delete_container/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::delete_container/$1', ['filter' => 'login']);
 $routes->add('/prain/final_order/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::final_order/$1', ['filter' => 'login']);
-$routes->add('/prain/cetak_kitir/(:alphanum)/(:alphanum)/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::cetak_kitir/$1/$2/$3', ['filter' => 'login']);
+$routes->add('/prain/cetak_kitir_new/(:alphanum)/(:alphanum)/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::cetak_kitir_new/$1/$2/$3', ['filter' => 'login']);
 
 // ajax request
 $routes->add('/prain/ajax_ccode_listOne/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::ajax_ccode_listOne/$1', ['filter' => 'login']);

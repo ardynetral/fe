@@ -145,6 +145,7 @@ class GateOut extends \CodeIgniter\Controller
 		$data['act'] = "Add";
 		$data['page_title'] = "Gate Out";
 		$data['page_subtitle'] = "Gate Out Page";		
+		$data['surveyor'] = $this->surveyor_dropdown();		
 		return view('Modules\GateOut\Views\add',$data);
 	}	
 
@@ -178,5 +179,29 @@ class GateOut extends \CodeIgniter\Controller
 			$data['data'] = $result['data'][0];
 			echo json_encode($data);die();				
 		}
-	}	
+	}
+
+	public function surveyor_dropdown() 
+	{
+		$client = api_connect();
+
+		$response = $client->request('GET','gateOut/getAllSurveyor',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(),true);
+		$res = $result['data'];
+		$option = "";
+		$option .= '<select name="syid" id="syid" class="select-syid">';
+		$option .= '<option value="">-select-</option>';
+		foreach($res as $r) {
+			$option .= "<option value='".$r['syid'] ."'". ((isset($selected) && $selected==$r['syid']) ? ' selected' : '').">".$r['syname']."</option>"; 
+		}
+		$option .="</select>";
+		return $option; 
+		die();
+	}
 }

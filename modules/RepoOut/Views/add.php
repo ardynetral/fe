@@ -15,7 +15,7 @@
 				<h3><i class="fa fa-table"></i> Form Order Repo</h3>
 			</div>
 			<div class="widget-content">
-				<?= $this->include('\Modules\RepoIn\Views\form_header');?>	
+				<?= $this->include('\Modules\RepoOut\Views\form_header');?>	
 			</div>
 		</div>	
 
@@ -26,8 +26,8 @@
 						<h3><i class="fa fa-table"></i> Repo Container</h3>
 					</div>
 					<div class="widget-content">
-					<?= $this->include('\Modules\RepoIn\Views\list_order_pracontainer');?>
-					<?= $this->include('\Modules\RepoIn\Views\form_detail_header');?>						
+					<?= $this->include('\Modules\RepoOut\Views\list_order_pracontainer');?>
+					<?= $this->include('\Modules\RepoOut\Views\form_detail_header');?>						
 					</div>
 					<div class="widget-footer text-center">
 						<a href="#" class="btn btn-danger" id="updateNewData"><i class="fa fa-save"></i> Save All</a>
@@ -45,6 +45,6 @@
 <!-- Load JS -->
 <?= $this->Section('script_js');?>
 
-	<?= $this->include('\Modules\RepoIn\Views\js'); ?>
+	<?= $this->include('\Modules\RepoOut\Views\js'); ?>
 
 <?= $this->endSection();?>

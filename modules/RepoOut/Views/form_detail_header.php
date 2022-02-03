@@ -14,6 +14,7 @@
 						<label class="col-sm-3 control-label text-right">Container No. </label>
 						<div class="col-sm-7">
 							<input type="hidden" name="repoid" class="form-control" id="repoid" value="<?=@$repoid?>">
+							<input type="hidden" name="repo_orderno" class="form-control" id="repo_orderno" value="<?=@$reorderno?>">
 							<input type="text" name="crno" class="form-control" id="crno">
 							<i class="err-crno text-danger"></i>
 						</div>

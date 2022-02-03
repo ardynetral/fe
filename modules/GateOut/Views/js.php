@@ -12,6 +12,7 @@ $(document).ready(function() {
 	$('.select-vessel').select2();
 	$('.select-voyage').select2();
 	$('.select-ccode').select2();
+	$('.select-syid').select2();
 	// DATATABLE
 	// $("#ctTable").DataTable({
  //        "paging": false,

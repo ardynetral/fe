@@ -541,6 +541,6 @@
 <!-- Load JS -->
 <?= $this->Section('script_js');?>
 
-	<?= $this->include('\Modules\RepoIn\Views\js'); ?>
+	<?= $this->include('\Modules\RepoOut\Views\js'); ?>
 
 <?= $this->endSection();?>

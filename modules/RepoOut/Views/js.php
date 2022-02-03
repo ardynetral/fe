@@ -50,17 +50,7 @@ $(document).ready(function() {
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});		
 					$("#repoid").val(json.repoid);
-					// $("#cpiorderno").val(json.reorderno);
-					// $("#cpopr").select2().select2('val',json.cpopr);
-					// $("#cpcust").select2().select2('val',json.cpcust);
-					// $("#cpdepo").val(json.cpdepo);
-					// $("#cpipratgl").val(json.redate);
-					// $("#cpijam").val(json.cpijam);
-					// $("#cpives").val(json.cpives);
-					// $("#cpiremark").val(json.cpiremark);
-					// $("#cpideliver").val(json.cpideliver);
-					// $("#cpivoyid").val(json.cpivoyid);
-					// $("#cpivoy").val(json.cpivoy);
+					$("#repo_orderno").val(json.reorderno);
 					$("#saveData").prop('disabled', true);
 				} else {
 					$("#saveData").prop('disabled', false);
@@ -153,7 +143,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});		
-					window.location.href = "<?php echo site_url('repoin'); ?>";
+					window.location.href = "<?php echo site_url('repoout'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -182,7 +172,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});		
-					window.location.href = "<?php echo site_url('repoin'); ?>";
+					window.location.href = "<?php echo site_url('repoout'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -270,7 +260,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					window.location.href = "<?php echo site_url('repoin'); ?>";
+					window.location.href = "<?php echo site_url('repoout'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -392,6 +382,7 @@ $(document).ready(function() {
 		formData += "&cpivoyid=" + $("#voyid").val();
 		formData += "&cpivoy=" + $("#voyno").val();
 		// detail
+		formData += "&repo_orderno=" + $("#repo_orderno").val();
 		formData += "&crno=" + $("#crno").val();
 		formData += "&cccode=" + $("#cccode").val();
 		formData += "&ctcode=" + $("#ctcode").val();
@@ -625,7 +616,7 @@ $(document).ready(function() {
 	$('#ctTable tbody').on("click",".print_order", function(e){
 		e.preventDefault();
 		var praid = $(this).data("praid");
-        window.open("<?php echo site_url('repoinprint_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+        window.open("<?php echo site_url('repoout/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	//repo type

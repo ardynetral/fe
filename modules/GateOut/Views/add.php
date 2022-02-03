@@ -193,7 +193,7 @@ if(isset($data) && ($data!='')) {
 									<td class="text-right" width="130">Seal No :</td>
 									<td><input type="text" name="cposeal" class="form-control" id="cposeal" value="<?= ''; ?>"></td>
 									<td class="text-right">Inspector:</td>
-									<td><input type="text" name="syid" class="form-control" id="syid" value="<?= ''; ?>"></td>
+									<td><?=$surveyor;?></td>
 									<td colspan="5"></td>
 								</tr>
 

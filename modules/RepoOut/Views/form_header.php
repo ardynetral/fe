@@ -116,7 +116,7 @@
 					<div class="form-group">
 						<label for="repovoyid" class="col-sm-5 control-label text-right">Voyage</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="voyid" name="voyid" required>
+							<input type="text" class="form-control" id="recpivoyid" name="recpivoyid" required>
 							<input type="hidden" class="form-control" id="voyno" name="voyno" value="0">
 						</div>
 					</div>		
@@ -138,7 +138,7 @@
 					<div class="form-group">
 						<label for="reorderno" class="col-sm-4 control-label text-right">Repo Pra Out No</label>
 						<div class="col-sm-6">
-							<input type="text" name="reorderno" class="form-control" id="reorderno" value="<?=$repoin_no;?>" readonly>
+							<input type="text" name="reorderno" class="form-control" id="reorderno" value="<?=$RepoOut_no;?>" readonly>
 						</div>
 					</div>								
 					<div class="form-group">

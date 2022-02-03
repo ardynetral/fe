@@ -12,7 +12,7 @@ class RepoOut extends \CodeIgniter\Controller
 	private $client;
 	public function __construct()
 	{
-		helper(['url', 'form', 'app', 'RepoOut']);
+		helper(['url', 'form', 'app', 'repoin']);
 		$this->client = api_connect();
 	}
 
@@ -23,7 +23,7 @@ class RepoOut extends \CodeIgniter\Controller
 		$limit = ($this->request->getPost('rows') != "") ? $this->request->getPost('rows') : 10;
 		// $sort_dir = $this->get_sort_dir();		
 		// PULL data from API
-		$response = $this->client->request('GET', 'orderContainerRepos/getAllData', [
+		$response = $this->client->request('GET', 'orderContainerRepos/getAllDataOut', [
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
@@ -54,9 +54,9 @@ class RepoOut extends \CodeIgniter\Controller
 			$record[] = $v['recpives'];
 			$record[] = $v['recpivoyid'];
 
-			$btn_list .= '<a href="' . site_url() . '/RepoOut/view/' . $reorderno . '" class="btn btn-xs btn-primary btn-tbl">Cetak kitir</a>';
-			$btn_list .= '<a href="' . site_url() . '/RepoOut/edit/' . $reorderno . '" class="btn btn-xs btn-success btn-tbl">Edit</a>';
-			$btn_list .= '<a href="' . site_url() . '/RepoOut/proforma/' . $reorderno . '" class="btn btn-xs btn-success btn-tbl">Proforma</a>';
+			$btn_list .= '<a href="' . site_url() . '/repoout/view/' . $reorderno . '" class="btn btn-xs btn-primary btn-tbl">Cetak kitir</a>';
+			$btn_list .= '<a href="' . site_url() . '/repoout/edit/' . $reorderno . '" class="btn btn-xs btn-success btn-tbl">Edit</a>';
+			$btn_list .= '<a href="' . site_url() . '/repoout/proforma/' . $reorderno . '" class="btn btn-xs btn-success btn-tbl">Proforma</a>';
 			$btn_list .= '<a href="#" class="btn btn-xs btn-success btn-tbl">Invoice</a>';
 			// $btn_list .= '<a href="#" data-repoid="'.$v['reorderno'].'" class="btn btn-xs btn-info print_order btn-tbl">Print Kitir</a>';
 			$btn_list .= '<a href="#" id="" class="btn btn-xs btn-danger btn-tbl delete" data-kode="' . $reorderno . '">Delete</a>';
@@ -121,16 +121,17 @@ class RepoOut extends \CodeIgniter\Controller
         
 		if ($this->request->isAJAX()) {
 			$reformat = [
-				'repocode' => "RO",
+				'reorderno' => $this->get_RepoOut_number(),
 				'prcode' => $_POST['cpopr'],
 				'cpopr' => $_POST['cpopr'],
+				'recpives' => $_POST['vesid'],
 				'redate' => date('Y-m-d', strtotime($_POST['redate'])),
 				'redline' => date('Y-m-d', strtotime($_POST['redline']))
 			];
-			 echo var_dump($_POST);die();
+			 // echo var_dump($_POST);die();
 			if ($this->request->getMethod() === 'post') {
 
-				$response = $this->client->request('POST', 'RepoOut/insertDataRepoOut', [
+				$response = $this->client->request('POST', 'orderContainerRepos/createNewData', [
 					'headers' => [
 						'Accept' => 'application/json',
 						'Authorization' => session()->get('login_token')
@@ -144,11 +145,11 @@ class RepoOut extends \CodeIgniter\Controller
 					echo json_encode($data);
 					die();
 				}
-				$datarepo = $result['data']['succes created order Container Repo'];
-				$data_process = $result['data']['succes created container process'];
+				$datarepo = $result['data'];
 				session()->setFlashdata('sukses', 'Success, Order Repo Saved.');
 				$data['message'] = "success";
 				$data['repoid'] = $datarepo['repoid'];
+				$data['reorderno'] = $datarepo['reorderno'];
 				echo json_encode($data);
 				die();
 			} else {
@@ -214,22 +215,7 @@ class RepoOut extends \CodeIgniter\Controller
 		// echo var_dump( $_POST);die();
 		if ($this->request->isAJAX()) {
 			$form_params = [
-				//Header
 				'repoid' => $_POST['repoid'],
-				'cpiorderno' => $_POST['cpiorderno'],
-				'cpopr' => $_POST['cpopr'],
-				'cpcust' => $_POST['cpcust'],
-				'cpidish' => $_POST['cpidish'],
-				'cpdepo' => $_POST['cpdepo'],
-				'cpichrgbb' => $_POST['cpichrgbb'],
-				'cpipratgl' => date('Y-m-d', strtotime($_POST['cpipratgl'])),
-				'cpijam' => $_POST['cpijam'],
-				'cpives' => $_POST['cpives'],
-				'cpiremark' => $_POST['cpiremark'],
-				'cpideliver' => $_POST['cpideliver'],
-				'cpivoyid' => $_POST['cpivoyid'],
-				'cpivoy' => $_POST['cpivoy'],
-				// detail
 				'crno' => $_POST['crno'],
 				'cccode' => $_POST['cccode'],
 				'ctcode' => $_POST['ctcode'],
@@ -247,30 +233,42 @@ class RepoOut extends \CodeIgniter\Controller
 			]);
 
 			if ($this->request->getMethod() === 'post' && $validate) {
+		    	
+		    	// jika kontaner sudah ada di depo
+		    	$container = $this->get_container($_POST['crno']);
+		    	if (($container['crlastact'] == "CO" &&  $container['crlastcond'] == "AC") ||  $container['lastact'] == "AC") {
 
-				$response = $this->client->request('POST', 'RepoOut/insertDataPraRepoOutDetails', [
-					'headers' => [
-						'Accept' => 'application/json',
-						'Authorization' => session()->get('login_token')
-					],
-					'form_params' => $form_params,
-				]);
+					$response = $this->client->request('POST', 'orderRepoContainer/createNewData', [
+						'headers' => [
+							'Accept' => 'application/json',
+							'Authorization' => session()->get('login_token')
+						],
+						'form_params' => $form_params,
+					]);
 
-				$result = json_decode($response->getBody()->getContents(), true);
-				// echo var_dump($result);die();
-				if (isset($result['status']) && ($result['status'] == "Failled")) {
-					$data['status'] = "Failled";
-					$data['message'] = $result['message'];
-					echo json_encode($data);
-					die();
+					$result = json_decode($response->getBody()->getContents(), true);
+					// echo var_dump($result);die();
+					if (isset($result['status']) && ($result['status'] == "Failled")) {
+						$data['status'] = "Failled";
+						$data['message'] = $result['message'];
+						echo json_encode($data);
+						die();
+					}
+					// "message": "Data available!"
+					if (isset($result['message']) && ($result['message'] == "Data available!")) {
+						$data['status'] = "Failled";
+						$data['message'] = $result['message'];
+						echo json_encode($data);
+						die();
+					}
+				} else {
+					$data['message'] = "Invalid Container.";
+					echo json_encode($data);die();					
 				}
-				// "message": "Data available!"
-				if (isset($result['message']) && ($result['message'] == "Data available!")) {
-					$data['status'] = "Failled";
-					$data['message'] = $result['message'];
-					echo json_encode($data);
-					die();
-				}
+
+				// Update Container_process
+
+				$this->updateContainerProcess();
 
 				session()->setFlashdata('sukses', 'Success, Containers Saved.');
 				$data['status'] = "success";
@@ -554,53 +552,6 @@ class RepoOut extends \CodeIgniter\Controller
 		die();
 	}
 
-	public function ajax_country()
-	{
-		$response = $this->client->request('GET', 'country/listOne', [
-			'headers' => [
-				'Accept' => 'application/json',
-				'Authorization' => session()->get('login_token')
-			],
-			'form_params' => [
-				'cityId' => $cccode,
-			]
-		]);
-		$result = json_decode($response->getBody()->getContents(), true);
-
-		if ($this->request->isAJAX()) {
-			echo json_encode($result['data']);
-			die();
-		}
-
-		return $result['data'];
-	}
-
-	public function country_dropdown($selected = "")
-	{
-		$data = [];
-		$response = $this->client->request('GET', 'countries/list', [
-			'headers' => [
-				'Accept' => 'application/json',
-				'Authorization' => session()->get('login_token')
-			],
-			'json' => [
-				'start' => 0,
-				'rows' => 100
-			]
-		]);
-
-		$result = json_decode($response->getBody()->getContents(), true);
-		$res = $result['data'];
-		$option = "";
-		$option .= '<select name="cncode" id="cncode" class="select-cncode">';
-		$option .= '<option value="">-select-</option>';
-		foreach ($res as $r) {
-			$option .= "<option value='" . $r['cncode'] . "'" . ((isset($selected) && $selected == $r['cncode']) ? ' selected' : '') . ">" . $r['cndesc'] . "</option>";
-		}
-		$option .= "</select>";
-		return $option;
-		die();
-	}
 
 	public function checkContainerNumber()
 	{
@@ -639,7 +590,7 @@ class RepoOut extends \CodeIgniter\Controller
 
 					$container = $result['data']['rows'][0];
 					// echo var_dump($container['crlastact']);die();
-					if (($container['crlastact'] == "BI") or ($container['crlastact'] == "OD") or ($container['crlastact'] == NULL)) {
+					if (($container['crlastact'] == "BI") or ($container['crlastcond'] == "AC") or ($container['lastact'] == "AC")) {
 						$data['status'] = "Success";
 						$data['message'] = $result['message'];
 						$data['data'] = $container;
@@ -648,7 +599,7 @@ class RepoOut extends \CodeIgniter\Controller
 						die();
 					} else {
 						$data['status'] = "Failled";
-						$data['message'] = "Container sudah masuk depo";
+						$data['message'] = "Container Invalid";
 						echo json_encode($data);
 						die();
 					}
@@ -762,7 +713,7 @@ class RepoOut extends \CodeIgniter\Controller
 				'Authorization' => session()->get('login_token')
 			],
 			'query' => [
-				'repoCode' => 'RI'
+				'repoCode' => 'RO'
 			]
 		]);
 
@@ -918,10 +869,10 @@ class RepoOut extends \CodeIgniter\Controller
 		// $mpdf->showImageErrors = true;
 		$query_params = [
 			"crno" => trim($crno),
-			"cpiorderno" => trim($reorderno)
+			"cpoorderno" => trim($reorderno)
 		];
 		//print_r($query_params);
-		$response = $this->client->request('GET', 'containerProcess/getKitirPepoIn', [
+		$response = $this->client->request('GET', 'containerProcess/getKitirRepoGateOut', [
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
@@ -930,29 +881,28 @@ class RepoOut extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		//print_r($result);		die();
+		// print_r($result);		die();
 		// $recept = recept_by_praid($praid);
 		if (isset($result['data'][0]) && (count($result['data'][0])) > 0) {
 			$qrcode = $this->generate_qrcode($result['data'][0]['cpid']);
 			$CRNO = $result['data'][0]['crno'];
-			$REFIN = $result['data'][0]['cpirefin'];
+			$REFIN = $result['data'][0]['cporefout'];
 			$CPID = $result['data'][0]['cpid'];
 			$LENGTH = $result['data'][0]['cclength'];
 			$HEIGHT = $result['data'][0]['ccheight'];
-			$CPIORDERNO = $result['data'][0]['cpiorderno'];
+			$CPIORDERNO = $result['data'][0]['cpoorderno'];
 			$TYPE = $result['data'][0]['cccode'];
 			$CODE = $result['data'][0]['ctcode'];
-			$PRINCIPAL = $result['data'][0]['prcode'];
-			$SHIPPER = $result['data'][0]['cpideliver'];
+			$PRINCIPAL = $result['data'][0]['cpopr1'];
+			$SHIPPER = $result['data'][0]['cporeceiv'];
 			$VESSEL = $result['data'][0]['vesid'];
-			$VOY = $result['data'][0]['cpivoy'];
-			$DATE = $result['data'][0]['cpidisdat'];
+			$VOY = $result['data'][0]['cpovoyid'];
+			$DATE = $result['data'][0]['cpopratgl'];
 			$DESTINATION = "";
-			$REMARK = $result['data'][0]['cpiremark'];
-			$NOPOL = $result['data'][0]['cpinopol'];
+			$REMARK = $result['data'][0]['cporemark'];
+			$NOPOL = $result['data'][0]['cponopol'];
 			$QRCODE_IMG = ROOTPATH . '/public/media/qrcode/' . $qrcode['content'] . '.png';
-			$CPIPRATGL = $result['data'][0]['cpipratgl'];
-			$CPIRECEPTNO = $result['data'][0]['cpireceptno'];
+			$CPIPRATGL = $result['data'][0]['cpopratgl'];
 			// $QRCODE_CONTENT = $qrcode['content'];
 		} else {
 			$CRNO = "";
@@ -973,7 +923,6 @@ class RepoOut extends \CodeIgniter\Controller
 			$NOPOL = "";
 			$QRCODE_IMG = "";
 			$QRCODE_CONTENT = "";
-			$CPIRECEPTNO = "";
 			$CPIPRATGL = "";
 		}
 
@@ -1035,12 +984,15 @@ class RepoOut extends \CodeIgniter\Controller
 		$html .= '
 			<table border-spacing: 0; border-collapse: collapse; width="100%">	
 				<tr>
-					<td colspan="2" style="font-weight:normal;">NO. ' . $CPIORDERNO . '
+					<td colspan="4" >NO. ' . $CPIORDERNO . '
 					</td>
-					<td colspan="2" style="font-weight:normal;text-align:right;">( ' . date("d/m/Y", strtotime($CPIPRATGL)) . ' )</td>
+					
 				</tr>
 				<tr>
-					<td style="width:40%;">CONTAINER NO.</td>
+				<td colspan="4" >( ' . date("d/m/Y", strtotime($CPIPRATGL)) . ' )</td>
+				</tr>
+				<tr>
+					<td style="width:40%;">CONTAINER#</td>
 					<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">' . $CRNO . '</h5></td>
 				</tr>
 				<tr>
@@ -1048,77 +1000,14 @@ class RepoOut extends \CodeIgniter\Controller
 					<td colspan="3">' . $PRINCIPAL . '</td>
 				</tr>
 				<tr>
-					<td>L/OFF RECEIPT</td>
-					<td colspan="3">' . $CPIRECEPTNO . '</td>
-				</tr>
-				<tr>
-					<td>DET RECEIPT</td>
-					<td colspan="3"></td>
-				</tr>
-				<tr>
 					<td>SIZE</td>
 					<td colspan="3">' . $CODE . ' ' . $LENGTH . '/' . $HEIGHT . '</td>
 				</tr>
-				<tr>
-					<td>DELIVERER</td>
-					<td colspan="3"></td>
-				</tr>
-				<tr>
-					<td colspan="4" style="padding-bottom:10px;"><h5 style="font-weight:normal;">PT. CONTINDO RAYA</h5></td>
-				</tr>
-				<tr>
-					<td style="width:40%;">PARTY</td>
-					
-					<td class="kotak1">20</td>
-					<td class="kotak1">40</td>
-					<td class="kotak1">45</td>
-					
-				</tr>
-				<tr>
-					<td>GP STD</td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>					
-				</tr>
-				<tr>
-					<td>GP HC</td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>	
-				</tr>
-				<tr>
-					<td>NON GP STD</td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>	
-				</tr>
-				<tr>
-					<td>NON GP HC</td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>	
-				</tr>
+				
 			</table>
 			<br>
 			<table style="border-spacing: 3px; border-collapse: separate;" width="100%">
-				<tr>
-					<td width="40%">CONDITION</td>
-					<td class="kotak3">AC</td>
-					<td class="kotak3">AU</td>
-					<td class="kotak3">DN</td>
-				</tr>
-				<tr>
-					<td>CLEANING</td>
-					<td class="kotak3">WW</td>
-					<td class="kotak3">SC</td>
-					<td class="kotak3">CC</td>
-				</tr>
-				<tr>
-					<td>REPAIR</td>
-					<td class="kotak3">Y</td>
-					<td class="kotak3">N</td>
-					<td class="">&nbsp;</td>
-				</tr>
+				
 				<tr>
 					<td>VESSEL</td>
 					<td colspan="3">' . $VESSEL . '</td>
@@ -1134,20 +1023,32 @@ class RepoOut extends \CodeIgniter\Controller
 				<tr>
 					<td>TRUCK ID</td>
 					<td colspan="3"></td>
-				</tr>		
+				</tr>	
+				<tr  rowspan="4">
+					<td colspan="4">&nbsp;</td>
+				</tr>
+				
 			</table>
+			
 			<table width="100%">	
 				<tr>
-					<td width="33%">SURVEYOR</td>
-					<td width="33%" class="t-center">YARDMAN</td>
-					<td width="33%">INVENTORY</td>
+					<td>SURVEYOR</td>
+					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
 				</tr>
-				<tr><td colspan="3" height="15" width="100%"></td></tr>
+				<tr  rowspan="4">
+					<td colspan="4">&nbsp;</td>
+				</tr>
 				<tr>
-					<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-					<td class="t-center">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-					<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-				</tr>	
+					<td>KERANI</td>
+					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
+				</tr>
+				<tr  rowspan="4">
+					<td colspan="4">&nbsp;</td>
+				</tr>
+				<tr>
+					<td>GATE OFFICER</td>
+					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
+				</tr>
 			</table>
 			</div>
 		';
@@ -1199,5 +1100,45 @@ class RepoOut extends \CodeIgniter\Controller
 			'content' => $data,
 			'file'    => $dir . $save_name,
 		];
+	}
+
+	public function updateContainerProcess() 
+	{
+		$t_container = $this->get_container($_POST['crno']);
+		$header = $this->getOneRepo($_POST['repo_orderno']);
+		// echo var_dump($header);
+		$cprocess_params = [
+			"crno" => $_POST['crno'],
+		    "cpofe" => $_POST['cpife'],
+		    "cporemark" => $_POST['cpiremark'],
+		    "cpopr1" => $header['data']['cpopr'],				    
+		    "cpcust1" => $header['data']['cpcust'],					    
+		    "cpocargo" => '',
+		    "cpopratgl" => $header['data']['redate'],
+		    "cpoves" => $header['data']['recpives'],
+		    "cpoloaddat" => date('Y-m-d',strtotime($_POST['repodishdat'])),
+		    "cpojam" => $_POST['cpijam'],
+		    // "cporeceiv" => $_POST['cpideliver'],
+		    "cpoorderno" => $header['data']['reorderno'],
+		    "cpovoy" => $header['data']['recpivoyid'],
+			"cpid" => $t_container['crcpid'],
+		];	
+
+		// Container Process
+		$cp_response = $this->client->request('PUT','gateout/updateGateOut',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'form_params' => $cprocess_params
+		]);
+
+		$result = json_decode($cp_response->getBody()->getContents(), true);	
+
+		if(isset($result['status']) && ($result['status']=="Failled"))
+		{
+			$data['message'] = $result['message'];
+			echo json_encode($data);die();				
+		}		
 	}
 }

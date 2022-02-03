@@ -131,7 +131,7 @@ class PraOut extends \CodeIgniter\Controller
 
 		$pratgl = $data['header'][0]['cpipratgl'];
 		$recept = recept_by_praid($data['header'][0]['praid']);
-		$invoice_number = "INV." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
+		$invoice_number = "KW." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
 		$data['prcode'] = $prcode;
 		$data['cucode'] = $prcode;
 		// $data['data'] = $result['data']['datas'];
@@ -601,7 +601,7 @@ class PraOut extends \CodeIgniter\Controller
 		    {  	
 		    	// jika kontaner sudah ada di depo
 		    	$container = $this->get_container($_POST['crno']);
-		    	if($container['crlastact']=="CO") {
+		    	if (($container['crlastact'] == "CO" &&  $container['crlastcond'] == "AC") ||  $container['lastact'] == "AC") {
 
 					$response = $this->client->request('POST','orderPraContainers/createNewData',[
 						'headers' => [
@@ -1642,10 +1642,10 @@ cpid,
 		// $mpdf->showImageErrors = true;
 		$query_params = [
 			"crno" => $crno,
-			"cpiorderno" => $cpiorderno
+			"cpoorderno" => $cpiorderno
 		];
 
-		$response = $this->client->request('GET','containerProcess/getByCpiorderno',[
+		$response = $this->client->request('GET','containerProcess/getKitirPraOut',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
@@ -1654,29 +1654,30 @@ cpid,
 		]);
 		
 		$result = json_decode($response->getBody()->getContents(),true);
+		// dd($result);
 		$recept = recept_by_praid($praid);
 
 		if(isset($result['data'][0])&&(count($result['data'][0])) > 0){
 			$qrcode = $this->generate_qrcode($result['data'][0]['cpid']);
 			$CRNO = $result['data'][0]['crno'];
-			$REFIN = $result['data'][0]['cpirefin'];
+			$REFOUT = $result['data'][0]['cporefout'];
 			$CPID = $result['data'][0]['cpid'];
 			$LENGTH = $result['data'][0]['cclength'];
 			$HEIGHT = $result['data'][0]['ccheight'];
-			$CPIORDERNO = $result['data'][0]['cpiorderno'];
+			$CPOORDERNO = $result['data'][0]['cpoorderno'];
 			$TYPE = $result['data'][0]['cccode'];
 			$CODE = $result['data'][0]['ctcode'];
-			$PRINCIPAL = $result['data'][0]['prcode'];
-			$SHIPPER = $result['data'][0]['cpideliver'];
-			$VESSEL = $result['data'][0]['vesid'];
-			$VOY = $result['data'][0]['cpivoy'];
-			$DATE = $result['data'][0]['cpidisdat'];
+			$PRINCIPAL = $result['data'][0]['cpopr1'];
+			$SHIPPER = $result['data'][0]['cporeceiv'];
+			$VESSEL = $result['data'][0]['cpoves'];
+			$VOY = $result['data'][0]['cpovoyid'];
+			$DATE = $result['data'][0]['cpoloaddat'];
 			$DESTINATION = "";
-			$REMARK = $result['data'][0]['cpiremark'];
-			$NOPOL = $result['data'][0]['cpinopol'];
+			$REMARK = $result['data'][0]['cporemark'];
+			$NOPOL = $result['data'][0]['cponopol'];
 			$QRCODE_IMG = ROOTPATH .'/public/media/qrcode/'.$qrcode['content'] . '.png';
-			$CPIPRATGL = $result['data'][0]['cpipratgl'];
-			$CPIRECEPTNO = $recept['cpireceptno'];
+			$CPOPRATGL = $result['data'][0]['cpopratgl'];
+			$CPORECEPTNO = $result['data'][0]['cporeceptno'];
 			// $QRCODE_CONTENT = $qrcode['content'];
 		} else {
 			$CODE = "";
@@ -1685,7 +1686,7 @@ cpid,
 			$REFIN = "";
 			$LENGTH = "";
 			$HEIGHT = "";
-			$CPIORDERNO = "";
+			$CPOORDERNO = "";
 			$TYPE = "";
 			$PRINCIPAL = "";
 			$SHIPPER = "";
@@ -1697,8 +1698,8 @@ cpid,
 			$NOPOL = "";	
 			$QRCODE_IMG = "";
 			$QRCODE_CONTENT = ""; 
-			$CPIRECEPTNO = "";
-			$CPIPRATGL = "";
+			$CPORECEPTNO = "";
+			$CPOPRATGL = "";
 		}
 
 		$result = json_decode($response->getBody()->getContents(), true);
@@ -1715,7 +1716,7 @@ cpid,
 				<style>			
 					.page-header{display:block;margin-bottom:20px;line-height:0.3;}
 					table{line-height:1.75;display:block;}
-					table td{font-weight:bold;}
+					table td{font-weight:bold;font-size:12px;}
 					.t-right{text-align:right;}
 					.t-left{text-align:left;}
 					.t-center{text-align:center;}
@@ -1751,7 +1752,7 @@ cpid,
 
 			<div class="page-header t-center">
 				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR MUAT</h3>
-				<h4 style="text-decoration: underline;line-height:0.5;">'.$REFIN.'</h3>
+				<h4 style="text-decoration: underline;line-height:0.5;">'.$REFOUT.'</h3>
 				<img src="' . $QRCODE_IMG . '" style="height:120px;">
 				<h5 style="text-decoration: underline;line-height:0.5;">'.$CPID.'</h4>
 			</div>
@@ -1759,33 +1760,33 @@ cpid,
 		$html .='
 			<table border-spacing: 0; border-collapse: collapse; width="100%">	
 				<tr>
-					<td colspan="2" style="font-weight:normal;">NO. '.$CPIORDERNO.'
+					<td colspan="2" style="font-weight:normal;">NO. '.$CPOORDERNO.'
 					</td>
-					<td colspan="2" style="font-weight:normal;text-align:right;">( '.date("d/m/Y",strtotime($CPIPRATGL)).' )</td>
+					<td colspan="2" style="font-weight:normal;text-align:right;">( '.date("d/m/Y",strtotime($CPOPRATGL)).' )</td>
 				</tr>
 				<tr>
 					<td style="width:40%;">CONTAINER NO.</td>
-					<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">'.$CRNO.'</h5></td>
+					<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">:&nbsp;'.$CRNO.'</h5></td>
 				</tr>
 				<tr>
 					<td>PRINCIPAL</td>
-					<td colspan="3">'.$PRINCIPAL.'</td>
+					<td colspan="3">:&nbsp;'.$PRINCIPAL.'</td>
 				</tr>
 				<tr>
 					<td>L/OFF RECEIPT</td>
-					<td colspan="3">'.$CPIRECEPTNO.'</td>
+					<td colspan="3">:&nbsp;'.$CPORECEPTNO.'</td>
 				</tr>
 				<tr>
 					<td>DET RECEIPT</td>
-					<td colspan="3"></td>
+					<td colspan="3">:</td>
 				</tr>
 				<tr>
 					<td>SIZE</td>
-					<td colspan="3">'.$CODE.' '.$LENGTH.'/'.$HEIGHT.'</td>
+					<td colspan="3">:&nbsp;'.$CODE.' '.$LENGTH.'/'.$HEIGHT.'</td>
 				</tr>
 				<tr>
 					<td>DELIVERER</td>
-					<td colspan="3"></td>
+					<td colspan="3">:</td>
 				</tr>
 				<tr>
 					<td colspan="4" style="padding-bottom:10px;"><h5 style="font-weight:normal;">PT. CONTINDO RAYA</h5></td>
@@ -1845,7 +1846,7 @@ cpid,
 				</tr>
 				<tr>
 					<td>VESSEL</td>
-					<td colspan="3">'.$VESSEL.'</td>
+					<td colspan="3">:&nbsp;'.$VESSEL.'</td>
 				</tr>
 				<tr>
 					<td>EXPIRED</td>
@@ -1853,7 +1854,7 @@ cpid,
 				</tr>
 				<tr>
 					<td>REMARK</td>
-					<td colspan="3">'.$REMARK.'</td>
+					<td colspan="3">:&nbsp;'.$REMARK.'</td>
 				</tr>
 				<tr>
 					<td>TRUCK ID</td>

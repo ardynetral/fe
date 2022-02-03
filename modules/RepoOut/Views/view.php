@@ -531,13 +531,13 @@
 	</div>
 </div>
 
-<?= $this->include('\Modules\RepoIn\Views\form_detail_header');?>
+<?= $this->include('\Modules\RepoOut\Views\form_detail_header');?>
 
 <?= $this->endSection();?>
 
 <!-- Load JS -->
 <?= $this->Section('script_js');?>
 
-	<?= $this->include('\Modules\RepoIn\Views\js'); ?>
+	<?= $this->include('\Modules\RepoOut\Views\js'); ?>
 
 <?= $this->endSection();?>

@@ -612,13 +612,17 @@ class GateIn extends \CodeIgniter\Controller
 		$html .='
 			<table border-spacing: 0; border-collapse: collapse; width="100%">	
 				<tr>
+					<td style="width:40%;">DATE/TIME</td>
+					<td colspan="3">:&nbsp;'.date('d-m-Y', strtotime($header['cpipratgl'])).'/'.$header['cpijam'].'</td>
+				</tr>				
+				<tr>
 					<td style="width:40%;">CONTAINER NO.</td>
 					<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">:&nbsp;'.$header['crno'].'</h5></td>
 				</tr>
 				<tr>
 					<td>TYPE</td>
 					<td colspan="3">:&nbsp;'.$header['ctcode'].'</td>
-				</tr>				
+				</tr>					
 				<tr>
 					<td>SIZE</td>
 					<td colspan="3">:&nbsp;'.$header['cclength'].'/'.$header['ccheight'].'</td>

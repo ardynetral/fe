@@ -1678,6 +1678,7 @@ cpid,
 			$QRCODE_IMG = ROOTPATH .'/public/media/qrcode/'.$qrcode['content'] . '.png';
 			$CPOPRATGL = $result['data'][0]['cpopratgl'];
 			$CPORECEPTNO = $result['data'][0]['cporeceptno'];
+			$CPORECEIV = $result['data'][0]['cporeceiv'];
 			// $QRCODE_CONTENT = $qrcode['content'];
 		} else {
 			$CODE = "";
@@ -1700,6 +1701,7 @@ cpid,
 			$QRCODE_CONTENT = ""; 
 			$CPORECEPTNO = "";
 			$CPOPRATGL = "";
+			$CPORECEIV = "";
 		}
 
 		$result = json_decode($response->getBody()->getContents(), true);
@@ -1789,42 +1791,12 @@ cpid,
 					<td colspan="3">:</td>
 				</tr>
 				<tr>
-					<td colspan="4" style="padding-bottom:10px;"><h5 style="font-weight:normal;">PT. CONTINDO RAYA</h5></td>
+					<td colspan="4" style="padding-bottom:10px;"><h5 style="font-weight:normal;">'.$CPORECEIV.'</h5></td>
 				</tr>
-				<tr>
-					<td style="width:40%;">PARTY</td>
-					
-					<td class="kotak1">20</td>
-					<td class="kotak1">40</td>
-					<td class="kotak1">45</td>
-					
-				</tr>
-				<tr>
-					<td>GP STD</td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>					
-				</tr>
-				<tr>
-					<td>GP HC</td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>	
-				</tr>
-				<tr>
-					<td>NON GP STD</td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>	
-				</tr>
-				<tr>
-					<td>NON GP HC</td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>	
-				</tr>
+				<tr  rowspan="4">
+					<td colspan="4">&nbsp;</td>
+				</tr>				
 			</table>
-			<br>
 			<table style="border-spacing: 3px; border-collapse: separate;" width="100%">
 				<tr>
 					<td width="40%">CONDITION</td>
@@ -1850,7 +1822,7 @@ cpid,
 				</tr>
 				<tr>
 					<td>EXPIRED</td>
-					<td colspan="3"></td>
+					<td colspan="3">:&nbsp;</td>
 				</tr>
 				<tr>
 					<td>REMARK</td>
@@ -1858,21 +1830,28 @@ cpid,
 				</tr>
 				<tr>
 					<td>TRUCK ID</td>
-					<td colspan="3"></td>
+					<td colspan="3">:&nbsp;'.$NOPOL.'</td>
 				</tr>		
 			</table>
 			<table width="100%">	
 				<tr>
-					<td width="33%">SURVEYOR</td>
-					<td width="33%" class="t-center">YARDMAN</td>
-					<td width="33%">INVENTORY</td>
+					<td>SURVEYOR</td>
+					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
 				</tr>
-				<tr><td colspan="3" height="15" width="100%"></td></tr>
+				<tr  rowspan="4">
+					<td colspan="4">&nbsp;</td>
+				</tr>
 				<tr>
-					<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-					<td class="t-center">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-					<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-				</tr>	
+					<td>KERANI</td>
+					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
+				</tr>
+				<tr  rowspan="4">
+					<td colspan="4">&nbsp;</td>
+				</tr>
+				<tr>
+					<td>GATE OFFICER</td>
+					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
+				</tr>
 			</table>
 			</div>
 		';		

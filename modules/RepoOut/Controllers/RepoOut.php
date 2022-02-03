@@ -940,7 +940,7 @@ class RepoOut extends \CodeIgniter\Controller
 				<style>			
 					.page-header{display:block;margin-bottom:20px;line-height:0.3;}
 					table{line-height:1.75;display:block;}
-					table td{font-weight:bold;}
+					table td{font-weight:bold;font-size:12px;}
 					.t-right{text-align:right;}
 					.t-left{text-align:left;}
 					.t-center{text-align:center;}
@@ -975,7 +975,7 @@ class RepoOut extends \CodeIgniter\Controller
 			<div class="wrapper">
 
 			<div class="page-header t-center">
-				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR BONGKAR</h3>
+				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR MUAT</h3>
 				<h4 style="text-decoration: underline;line-height:0.5;">' . $REFIN . '</h3>
 				<img src="' . $QRCODE_IMG . '" style="height:120px;">
 				<h5 style="text-decoration: underline;line-height:0.5;">' . $CPID . '</h4>
@@ -993,36 +993,32 @@ class RepoOut extends \CodeIgniter\Controller
 				</tr>
 				<tr>
 					<td style="width:40%;">CONTAINER#</td>
-					<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">' . $CRNO . '</h5></td>
+					<td colspan="3">:&nbsp;' . $CRNO . '</td>
 				</tr>
 				<tr>
 					<td>PRINCIPAL</td>
-					<td colspan="3">' . $PRINCIPAL . '</td>
+					<td colspan="3">:&nbsp;' . $PRINCIPAL . '</td>
 				</tr>
 				<tr>
 					<td>SIZE</td>
-					<td colspan="3">' . $CODE . ' ' . $LENGTH . '/' . $HEIGHT . '</td>
+					<td colspan="3">:&nbsp;' . $CODE . ' ' . $LENGTH . '/' . $HEIGHT . '</td>
 				</tr>
-				
-			</table>
-			<br>
-			<table style="border-spacing: 3px; border-collapse: separate;" width="100%">
-				
+						
 				<tr>
 					<td>VESSEL</td>
-					<td colspan="3">' . $VESSEL . '</td>
+					<td colspan="3">:&nbsp;' . $VESSEL . '</td>
 				</tr>
 				<tr>
 					<td>EXPIRED</td>
-					<td colspan="3"></td>
+					<td colspan="3">:&nbsp;</td>
 				</tr>
 				<tr>
 					<td>REMARK</td>
-					<td colspan="3">' . $REMARK . '</td>
+					<td colspan="3">:&nbsp;' . $REMARK . '</td>
 				</tr>
 				<tr>
 					<td>TRUCK ID</td>
-					<td colspan="3"></td>
+					<td colspan="3">:&nbsp;'.$NOPOL.'</td>
 				</tr>	
 				<tr  rowspan="4">
 					<td colspan="4">&nbsp;</td>

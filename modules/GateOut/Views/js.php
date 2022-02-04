@@ -13,6 +13,12 @@ $(document).ready(function() {
 	$('.select-voyage').select2();
 	$('.select-ccode').select2();
 	$('.select-syid').select2();
+	// $("input:radio[name=cpofe]").prop('disabled', true);
+	// $("input:radio[name=cpochrgbm]").prop('disabled', true);
+	// $("input:radio[name=cpopaidbm]").prop('disabled', true);
+	$("input:checkbox[name=crcdp]").prop('disabled', true);
+	$("input:checkbox[name=cracep]").prop('disabled', true);
+	$("input:checkbox[name=crcsc]").prop('disabled', true);
 	// DATATABLE
 	// $("#ctTable").DataTable({
  //        "paging": false,
@@ -21,9 +27,9 @@ $(document).ready(function() {
 	// datePicker
 	$(".tanggal").datepicker({
 		autoclose:true,
+		format:'dd-mm-yyyy',
 	});
-
-	// $("#cpipratgl").datepicker("disable");
+	$(".tanggal").datepicker('setDate',new Date());
 
 	$("#addOrder").on('click', function(e){
 		e.preventDefault();
@@ -35,44 +41,26 @@ $(document).ready(function() {
 		window.location.href = "#OrderPra";
 	});
 
-	$("#save").click(function(e){
+	$("form#fGateOut").on("submit", function(e){
 		e.preventDefault();													
-		// window.scrollTo(xCoord, yCoord);
-		var formData = "cpiorderno=" + $("#cpiorderno").val();
-		formData += "&cpiopr=" + $("#prcode").val();
-		formData += "&cpicust=" + $("#cucode").val();
-		formData += "&cpidish=" + $("#cpidish").val();
-		formData += "&cpidisdat=" + $("#cpidisdat").val();
-		formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		formData += "&cpdepo=" + $("#cpdepo").val();
-		formData += "&cpipratgl=" + $("#cpipratgl").val();
-		formData += "&cpirefin=" + $("#cpirefin").val();
-		formData += "&cpijam=" + $("#cpijam").val();
-		formData += "&cpives=" + $("#cpives").val();
-		formData += "&cpivoyid=" + $("#cpivoyid").val();
-		formData += "&cpicargo=" + $("#cpicargo").val();
-		formData += "&cpideliver=" + $("#cpideliver").val();
-		// alert(formData);
-		// console.log("data="+formData);
-
+		var crno = $("#crno").val();
 		$.ajax({
-			url: "<?php echo site_url('prain/add'); ?>",
+			url: "<?php echo site_url('gateout/add'); ?>",
 			type: "POST",
-			data: formData,
+			data: new FormData(this),
+            processData: false,
+            contentType: false,
+            cache: false,				
 			dataType: 'json',
 			success: function(json) {
-				if(json.message == "success") {
+				if(json.status == "success") {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
-					});							
-					window.location.href = "#formDetail";
-					// $("#navItem3").removeClass("disabled");
-					// $("#navLink3").attr("data-toggle","tab");
-					// $("#navLink3").trigger("click");	
-					$("#praid").val(json.praid);				
-					$("#saveData").prop('disabled', true);
+					});			
+			        window.open("<?php echo site_url('gateout/print_eir_out/'); ?>" + crno, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+					window.location.href = "<?php echo site_url('gateout'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -84,464 +72,41 @@ $(document).ready(function() {
 		});
 	});
 
-	$("#liftoffcharge").on("change", function(){
+	$('#ctTable').on('click', '.edit', function(e){
+		e.preventDefault();
+		var crno = $(this).data("crno");
+		window.location.href = "<?=site_url('gateout/edit/');?>"+crno;
+	});
+
+	$("#crcdp").on("change", function(){
 		var val = this.checked ? '1' : '0';
 		return $(this).val(val);
 	});
-
+	$("#cracep").on("change", function(){
+		var val = this.checked ? '1' : '0';
+		return $(this).val(val);
+	});
+	$("#crcsc").on("change", function(){
+		var val = this.checked ? '1' : '0';
+		return $(this).val(val);
+	});	
 	$("#cpishold").on("change", function(){
 		var val = this.checked ? '1' : '0';
 		return $(this).val(val);
 	});
 
-	// EDIT DATA ORDER
-	function enableFormOrder() {
-		$("#prcode").select2('enable');
-		$("#cpidish").select2('enable');
-		$("#cpidisdat").attr('readonly', false);
-		$("#liftoffcharge").attr('readonly', false);
-		$("#cpdepo").select2('enable');
-		// $("#cpipratgl").attr('readonly', false);
-		$("#cpirefin").attr('readonly', false);
-		// $("#cpijam").attr('readonly', false);
-		$("#cpives").select2('enable');
-		$("#cpivoyid").attr('readonly', false);
-		$("#cpicargo").attr('readonly', false);
-		$("#cpideliver").attr('readonly', false);		
-	}
-
-	function disableFormOrder() {
-		$("#save")
-		$("#prcode").select2('disable');
-		$("#cpidish").select2('disable');
-		$("#cpidisdat").attr('readonly', true);
-		$("#liftoffcharge").attr('readonly', true);
-		$("#cpdepo").select2('disable');
-		// $("#cpipratgl").attr('readonly', true);
-		$("#cpirefin").attr('readonly', true);
-		$("#cpijam").attr('readonly', true);
-		$("#cpives").select2('disable');
-		$("#cpivoyid").attr('readonly', true);
-		$("#cpicargo").attr('readonly', true);
-		$("#cpideliver").attr('readonly', true);		
-	}	
-	$("#editOrder").on('click', function(e){
-		enableFormOrder();
-		$("#update").show();
-		$("#cancel").show();
-	});
-
-	$("#update").click(function(e){
-		e.preventDefault();
-		var formData = "cpiorderno=" + $("#cpiorderno").val();
-		formData += "&praid=" + $("#praid").val();
-		formData += "&cpiopr=" + $("#prcode").val();
-		formData += "&cpicust=" + $("#cucode").val();
-		formData += "&cpidish=" + $("#cpidish").val();
-		formData += "&cpidisdat=" + $("#cpidisdat").val();
-		formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		formData += "&cpdepo=" + $("#cpdepo").val();
-		formData += "&cpipratgl=" + $("#cpipratgl").val();
-		formData += "&cpirefin=" + $("#cpirefin").val();
-		formData += "&cpijam=" + $("#cpijam").val();
-		formData += "&cpives=" + $("#cpives").val();
-		formData += "&cpivoyid=" + $("#cpivoyid").val();
-		formData += "&cpicargo=" + $("#cpicargo").val();
-		formData += "&cpideliver=" + $("#cpideliver").val();
-		// console.log(formData);
-		$.ajax({
-			url: "<?php echo site_url('prain/edit/'); ?>"+$("#praid").val(),
-			type: "POST",
-			data: formData,
-			dataType: 'json',
-			success: function(json) {
-				console.log(json.message);
-				if(json.message == "success") {
-					Swal.fire({
-					  icon: 'success',
-					  title: "Success",
-					  html: '<div class="text-success">'+json.msgdata+'</div>'
-					});							
-				} else {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
-				}
-			}
-		});
-	});	
-
-
-// BTN View click
-	$('#ctTable tbody').on('click', '.view-order', function(e){
-		e.preventDefault();	
-		var praid = $(this).data('praid');
-		$("#detTable tbody").html("");
-		$("#save").hide();
-		$("#cancel").hide();
-		$("#editOrderFrame").show();
-		disableFormOrder();
-		$.ajax({
-			url: "<?php echo site_url('prain/ajax_view/'); ?>"+praid,
-			type: "POST",
-			dataType: 'json',
-			// data:"praid="+praid,
-			success: function(json) {
-				if(json.status === "success") {
-					// console.log("data: "+json.dt_header.cpidish);
-// "praid":42,"cpiorderno":"PI000D100000024","cpopr":"CMA","cpcust":"MIF","cpidish":"BEN","cpidisdat":"2021-09-01","liftoffcharge":0,"cpdepo":"11A25","cpipratgl":"2021-09-13","cpirefin":"","cpijam":"","cpivoyid":123,"cpives":"ARMADA SEJATI","cpicargo":"","cpideliver":"","cpilunas":0,"voyages":{"voyid":123,"vesid":"SINAR BATAM","voyno":"V246"},"vessels":{"vesid":"ARMADA SEJATI","vesopr":"SPIL","cncode":"ID","vestitle":"ARMADA SEJATI"
-					// $("#cpidish option[value="+json.dt_header.cpidish+"]").attr("selected","selected");
-					$("#praid").val(json.dt_header.praid);
-					$("#cpidish").select2().select2('val',json.dt_header.cpidish);
-					$("#prcode").select2().select2('val',json.dt_header.cpopr);
-					$("#cucode").val(json.dt_header.cpcust);
-					$("#cpidisdat").val(json.dt_header.cpidisdat);
-					if(json.dt_header.liftoffcharge==1) {
-						$("#liftoffcharge").prop('checked',true);
-						$("#liftoffcharge:checked").val(json.dt_header.liftoffcharge);
-					}
-					$("#cpdepo").select2().select2('val',json.dt_header.cpdepo);
-					$("#cpiorderno").val(json.dt_header.cpiorderno);
-					$("#cpipratgl").val(json.dt_header.cpipratgl);
-					$("#cpirefin").val(json.dt_header.cpirefin);
-					$("#cpijam").val(json.dt_header.cpijam);
-					$("#cpives").select2().select2('val',json.dt_header.cpives);
-					$("#cpivoyid").val(json.dt_header.cpivoyid);
-					if(json.dt_header.vessels!=null) {
-						$("#cpopr").val(json.dt_header.vessels.vesopr);
-					}
-					$("#cpicargo").val(json.dt_header.cpicargo);
-					$("#cpideliver").val(json.dt_header.cpideliver);
-
-					// Hitung HC_STD
-					$("#hc20").val(json.hc20);
-					$("#hc40").val(json.hc40);
-					$("#hc45").val(json.hc45);
-					$("#std20").val(json.std20);
-					$("#std40").val(json.std40);
-
-					// get data container
-					var dt_container = json.dt_detail;
-					if(dt_container.length > 0) {
-						dt_container.forEach(list_container);
-						$("#detTable tbody").html(dt_container);
-					}
-
-					window.location.href = "#OrderPra";
-
-				} else {
-
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});
-				}
-			}
-		});			
-	});
-
-	$("#ctTable tbody").on("click",".approve", function(e){
-		e.preventDefault();
-		var praid = $(this).data('praid');
-		var formData = "cpiorderno=" + $("#cpiorderno").val();
-		formData += "&praid=" + praid;
-		// console.log(formData);
-		$.ajax({
-			url: "<?php echo site_url('prain/approve_order/'); ?>"+praid,
-			type: "POST",
-			data: formData,
-			dataType: 'json',
-			success: function(json) {
-				console.log(json.message);
-				if(json.message == "success") {
-					Swal.fire({
-					  icon: 'success',
-					  title: "Success",
-					  html: '<div class="text-success">Order Approved</div>'
-					});	
-					window.location.href = "<?php echo site_url('prain'); ?>";
-				} else {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
-				}
-			}
-		});
-	});	
-
-	function list_container(item, index, arr) {
-		var num = index+1;
-		var cpishold = "";
-		var cpife = "";
-		if(item.cpife==1) {
-			cpife="Full";
-		}else {
-			cpife="Empty";
-		}
-
-		if(item.cpishold==1) {
-			cpishold = "Hold";
-		} else {
-			cpishold = "Release";
-		}
-
-		arr[index] = "<tr>"+
-		"<td>"+num+"</td>"+
-		"<td>"+item.crno+"</td>"+
-		"<td>"+item.cccode+"</td>"+
-		"<td>"+item.ctcode+"</td>"+
-		"<td>"+item.cclength+"</td>"+
-		"<td>"+item.ccheight+"</td>"+
-		"<td>"+cpife+"</td>"+
-		"<td>"+cpishold+"</td>"+
-		"<td>"+item.cpiremark+"</td>"+
-		"<td></td>"+
-		"<td><a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='"+item.pracrnoid+"'>edit</a><a href='#' id='deleteContainer' class='btn btn-xs btn-danger'>delete</a></td>"+
-		"</tr>";
-	}
-
-	$('#ctTable tbody').on('click', '.delete', function(e){
-		e.preventDefault();	
-		var code = $(this).data('kode');
-		Swal.fire({
-		  title: 'Are you sure?',
-		  icon: 'warning',
-		  showCancelButton: true,
-		  confirmButtonColor: '#3085d6',
-		  cancelButtonColor: '#d33',
-		  confirmButtonText: 'Yes, delete it!'
-		}).then((result) => {
-		  if (result.isConfirmed) {
-		  	delete_data(code);
-		  }
-		});		
-		
-	});
-
-	function delete_data(code) {
-		$.ajax({
-			url: "<?php echo site_url('city/delete/'); ?>"+code,
-			type: "POST",
-			dataType: 'json',
-			success: function(json) {
-				if(json.message == "success") {
-					Swal.fire({
-					  icon: 'success',
-					  title: "Success",
-					  html: '<div class="text-success">'+json.message+'</div>'
-					});							
-					window.location.href = "<?php echo site_url('city'); ?>";
-				} else {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
-				}
-			}
-		});		
-	}
-
-	// STEP 1 :
-	$("#prcode").on("change", function(){
-		var prcode = $(this).val();
-		$.ajax({
-			url:"<?=site_url('prain/ajax_prcode_listOne/');?>"+prcode,
-			type:"POST",
-			data: "prcode="+prcode,
-			dataType:"JSON",
-			success: function(json){
-				if(json.status=="Failled") {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});		
-				} else {
-					$("#cucode").val(json.data.cucode);
-				}
-			}
-		});
-	}) ;
-
-	// Vessel dropdown change
-	$("#cpives").on("change", function(){
-		var vesid = $(this).val();
-		$.ajax({
-			url:"<?=site_url('prain/ajax_vessel_listOne/');?>"+vesid,
-			type:"POST",
-			data: "vesid="+vesid,
-			dataType:"JSON",
-			success: function(json){
-				if(json.status=="Failled") {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});		
-				} else {
-					$("#cpopr").val(json.data.vesopr);
-				}
-			}
-		});		
-	});
-
-
-	// STEP 2 : 
-	//Get Container Code detail
-	$("#ccode").on("change", function(){
-		var cccode  = $(this).val();
-		$.ajax({
-			url:"<?=site_url('prain/ajax_ccode_listOne/');?>"+cccode,
-			type:"POST",
-			data: "ccode="+ccode,
-			dataType:"JSON",
-			success: function(json){
-				if(json.status=="Failled") {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});		
-				} else {
-					$("#ctcode").val(json.data.ctcode);
-					$("#cclength").val(json.data.cclength);
-					$("#ccheight").val(json.data.ccheight);
-				}
-
-			}
-		});
-	});
-
-
-	// save detailContainer
-	$("#saveDetail").on("click", function(e){
-		e.preventDefault();
-		var cpife = $("input:radio[name=cpife]:checked").val();
-		var formData = "praid=" + $("#praid").val();
-		formData += "&crno=" + $("#crno").val();
-		formData += "&ccode=" + $("#ccode").val();
-		formData += "&ctcode=" + $("#ctcode").val();
-		formData += "&cclength=" + $("#cclength").val();
-		formData += "&ccheight=" + $("#ccheight").val();
-		formData += "&cpife=" + cpife;
-		formData += "&cpishold=" + $("#cpishold").val();
-		formData += "&cpiremark=" + $("#cpiremark").val();
-		
-		$.ajax({
-			url: "<?php echo site_url('prain/addcontainer'); ?>",
-			type: "POST",
-			data: formData,
-			dataType: 'json',
-			success: function(json) {
-				if(json.message == "success") {
-					Swal.fire({
-					  icon: 'success',
-					  title: "Success",
-					  html: '<div class="text-success">'+json.message+'</div>'
-					});							
-					// window.location.href = "<?php echo site_url('prain/view/'); ?>"+json.praid;
-					window.location.href = "<?php echo site_url('prain'); ?>";
-					// getDetailOrder(json.praid);
-				} else {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
-				}
-			}
-		});	
-
-	});
-
-	$('#detTable tbody').on('click', '.edit', function(e){
-		e.preventDefault();
-		var crid = $(this).data("crid");
-	    var cpife = $('input:radio[name=cpife]');
-		$.ajax({
-			url:"<?=site_url('prain/get_one_container/');?>"+crid,
-			type:"POST",
-			data: "crid="+crid,
-			dataType:"JSON",
-			success: function(json){	
-				if(json.message=="success") {
-					$("#pracrnoid").val(json.cr.pracrnoid);
-					$("#crno").val(json.cr.crno);
-					$("#ccode").select2().select2('val',json.cr.cccode);
-					$("#ctcode").val(json.cr.ctcode);
-					$("#cclength").val(json.cr.cclength);
-					$("#ccheight").val(json.cr.ccheight);
-
-				    $("#saveDetail").hide();
-				    $("#updateDetail").show();
-
-				    if(json.cr.cpife=="1") {
-				        cpife.filter('[value=1]').prop('checked', true);
-				    }else if(json.cr.cpife=="0"){
-				        cpife.filter('[value=0]').prop('checked', true);
-					}
-
-					if(json.cr.cpishold==1) {
-						$("#cpishold").prop('checked',true);
-						$("#cpishold").val(json.cr.cpishold);
-					}					
-					$("#cpiremark").val(json.cr.cpiremark);
-
-				}
-			}		
-		})
-	});
-
-	$("#updateDetail").on("click", function(e){
-		e.preventDefault();
-		var cpife = $("input:radio[name=cpife]:checked").val();
-		var formData = "praid=" + $("#praid").val();
-		formData += "&pracrnoid=" + $("#pracrnoid").val();
-		formData += "&crno=" + $("#crno").val();
-		formData += "&ccode=" + $("#ccode").val();
-		formData += "&ctcode=" + $("#ctcode").val();
-		formData += "&cclength=" + $("#cclength").val();
-		formData += "&ccheight=" + $("#ccheight").val();
-		formData += "&cpife=" + cpife;
-		formData += "&cpishold=" + $("#cpishold").val();
-		formData += "&cpiremark=" + $("#cpiremark").val();
-		
-		$.ajax({
-			url: "<?php echo site_url('prain/edit_container'); ?>",
-			type: "POST",
-			data: formData,
-			dataType: 'json',
-			success: function(json) {
-				if(json.message == "success") {
-					Swal.fire({
-					  icon: 'success',
-					  title: "Success",
-					  html: '<div class="text-success">'+json.message+'</div>'
-					});
-				} else {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
-				}
-			}
-		});	
-
+	$("#cpochrgbm").on("change", function(){
+		var val = this.checked ? '1' : '0';
+		return $(this).val(val);
 	});
 
 	$("#crno").on("keyup", function(){
 		var crno = $("#crno").val();
 		var status = "";
-		$(this).val($(this).val().toUpperCase());
-		$("#fGateIns").trigger("reset");
-		$("#crno").val(crno);			
+		var cpofe = $('input:radio[name=cpofe]');
+		$("#fGateOut").trigger("reset");
+		$("#crno").val(crno);	
+		$(this).val($(this).val().toUpperCase());		
 		$.ajax({
 			url:"<?=site_url('gateout/get_data_gateout');?>",
 			type:"POST",
@@ -558,7 +123,7 @@ $(document).ready(function() {
 					$(".err-crno").hide();
 					$("#crno").css("background", "#fff!important");
 					$("#crno").css("border-color", "#ccc");
-
+					$("#cpid").val(json.data.crcpid);
 					$("#cpopr1").val(json.data.cpopr);
 					$("#cpcust1").val(json.data.cpcust);
 					$("#cccode").val(json.data.cccode);
@@ -570,42 +135,80 @@ $(document).ready(function() {
 					$("#manufdate").val(json.data.manufdate);
 					$("#crlastact").val(json.data.crlastact);
 					$("#crlastcond").val(json.data.crlastcond);
+					if(json.data.crcdp==1) {
+						$("#crcdp").prop("checked", true);
+					} else {
+						$("#crcdp").prop("checked", false);
+					}					
 					$("#crcdp").val(json.data.crcdp);
+					if(json.data.cracep==1) {
+						$("#cracep").prop("checked", true);
+					} else {
+						$("#cracep").prop("checked", false);
+					}						
 					$("#cracep").val(json.data.cracep);
+					if(json.data.crcsc==1) {
+						$("#crcsc").prop("checked", true);
+					} else {
+						$("#crcsc").prop("checked", false);
+					}						
 					$("#crcsc").val(json.data.crcsc);
+					$("#crweightk").val(json.data.crweightk);
+					$("#crweightl").val(json.data.crweightl);
+					$("#crtarak").val(json.data.crtarak);
+					$("#crtaral").val(json.data.crtaral);
+					$("#crnetk").val(json.data.crnetk);
+					$("#crnetl").val(json.data.crnetl);
+					$("#crvol").val(json.data.crvol);
 					$("#mtdesc").val(json.data.mtdesc);
 					$("#svsurdat").val(json.data.svsurdat);
 					$("#syid").val(json.data.syid);
 					$("#cpodisdat").val(json.data.cpodisdat);
 					$("#cpodriver").val(json.data.cpodriver);
 					$("#cponopol").val(json.data.cponopol);
-					$("#cpodriver").val(json.data.cpodriver);
 					$("#cpoorderno").val(json.data.cpoorderno);
 					$("#cpoeir").val(json.data.cpoeir);
 					$("#cporefout").val(json.data.cporefout);
 					$("#cpopratgl").val(json.data.cpopratgl);
 					$("#cpojam").val(json.data.cpojam);
 					$("#cporeceptno").val(json.data.cporeceptno);
-					$("#cpochrgbm").prop("checked", true);
-					$("#cpochrgbm").val(json.data.cpochrgbm);
-					$("#cpopaidbm").val(json.data.cpopaidbm);
+
+					if(json.data.cpochrgbm==1) {
+						$("#cpochrgbm").prop('checked',true);
+						$("#cpochrgbm:checked").val(json.data.cpochrgbm);
+					} else {
+						$("#cpochrgbm").prop('checked',false);
+						$("#cpochrgbm").val("1");
+					}
+
+					if(json.data.cpopaidbm==1) {
+						$("#cpopaidbm").prop('checked',true);
+						$("#cpopaidbm:checked").val(json.data.cpopaidbm);
+					}
+
 					$("#cpoload").val(json.data.cpoload);
-					$("#cpofe").val(json.data.cpofe);
+
+				    if(json.data.cpofe==1) {
+				        cpofe.filter('[value=1]').prop('checked', true);
+				    } else {
+				        cpofe.filter('[value=0]').prop('checked', true);
+					}					
 					$("#cpocargo").val(json.data.cpocargo);
 					$("#vesid").val(json.data.vesid);
+					$("#cposeal").val(json.data.cposeal);
+					$("#cporeceiv").val(json.data.cporeceiv);
 					// $("#voyno").val(json.data.voyno);
 					// $("#vesopr").val(json.data.vesopr);
-					$("#cporeceiv").val(json.data.cporeceiv);
 				}
 			}
 		});
 	});
 
-	// End Step 2
-	$('#ctTable tbody').on("click",".print_order", function(e){
+	$('#ctTable').on("click",".print", function(e){
 		e.preventDefault();
-		var praid = $(this).data("praid");
-        window.open("<?php echo site_url('prain/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+		var orderno = $(this).data("orderno");
+		var cpid = $(this).data("cpid");
+        window.open("<?php echo site_url('gateout/print_eir_out/'); ?>" + orderno + '/' + cpid, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	$('[data-toggle="tab"]').on('click', function(){

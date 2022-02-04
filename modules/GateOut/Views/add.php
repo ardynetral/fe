@@ -36,7 +36,7 @@ if(isset($data) && ($data!='')) {
 				<div id="alert">
 
 				</div>
-				<form id="fContract" class="form-horizontal" role="form">
+				<form id="fGateOut" class="form-horizontal" role="form">
 					<?= csrf_field() ?>
 					<?php $readonly = 'readonly'; ?>
 					<fieldset>
@@ -46,7 +46,9 @@ if(isset($data) && ($data!='')) {
 								<!-- baris 1  -->
 								<tr>
 									<td class="text-right" width="130">Container No :</td>
-									<td><input type="text" name="crno" class="form-control" id="crno" value="<?= ''; ?>">
+									<td>
+										<input type="hidden" name="cpid" id="cpid">
+										<input type="text" name="crno" class="form-control" id="crno" value="<?= ''; ?>">
 										<i class="err-crno text-danger"></i>
 									</td>
 									<td class="text-right">Pra Out Ref :</td>
@@ -87,27 +89,27 @@ if(isset($data) && ($data!='')) {
 									<td><input <?php echo $readonly; ?> type="text" name="cpoterm" id="cpoterm" class="form-control" value="<?= ''; ?>"></td>
 									<td></td>
 									<td colspan="2">
-										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="crcdp" id="crcdp" value="1" readonly>
-											<span><i></i>CDP</span>
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="checkbox" name="crcdp" id="crcdp" value="0" readonly>
+											<span>CDP</span>
 										</label>
-										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="cracep" id="cracep" value="0" readonly>
-											<span><i></i>ACEP</span>
-										</label>
-										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="crcsc" id="crcsc" value="0" readonly>
-											<span><i></i>CSC</span>
-										</label>
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="checkbox" name="cracep" id="cracep" value="0" readonly>
+											<span>ACEP</span>
+										</label>	
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="checkbox" name="crcsc" id="crcsc" value="0" readonly>
+											<span>CSC</span>
+										</label>	
 									</td>
 									<td colspan="4">
-										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="cpochrgbm" id="cpochrgbm" value="1" readonly>
-											<span><i></i>Lift On Charged</span>
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="checkbox" name="cpochrgbm" id="cpochrgbm" value="0">
+											<span>Lift On Charged</span>
 										</label>
-										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="cpopaidbm" id="cpopaidbm" value="0" readonly>
-											<span><i></i>Paid</span>
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="checkbox" name="cpopaidbm" id="cpopaidbm" value="0">
+											<span>Paid</span>
 										</label>
 									</td>
 								</tr>
@@ -123,17 +125,17 @@ if(isset($data) && ($data!='')) {
 								<!-- baris 7  -->
 								<tr>
 									<td class="text-right" width="130">Tare (Kgs) :</td>
-									<td><input <?php echo $readonly; ?> type="text" name="crweightk" id="crweightk" class="form-control" value="<?= ''; ?>"></td>
+									<td><input <?php echo $readonly; ?> type="text" name="crtarak" id="crtarak" class="form-control" value="<?= ''; ?>"></td>
 									<td class="text-right">Tare (Lbs) :</td>
 									<td><input <?php echo $readonly; ?> type="text" name="crtaral" class="form-control" id="crtaral" value="<?= ''; ?>"></td>
 									<td class="text-right">F/E :</td>
 									<td colspan="3">
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="cpife" id="cpife" value="1" readonly>
+											<input type="radio" name="cpofe" id="" value="1" readonly>
 											<span><i></i>Full</span>
 										</label>
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="cpife" id="cpife" value="0" readonly>
+											<input type="radio" name="cpofe" id="" value="0" readonly>
 											<span><i></i>Empty</span>
 										</label>
 									</td>
@@ -179,14 +181,14 @@ if(isset($data) && ($data!='')) {
 
 									<td class="text-right" width="130">Vehicle ID :</td>
 									<td><input type="text" name="cponopol" class="form-control" id="cponopol" value="<?= ''; ?>"></td>
-									<td class="text-right">Survey Out:</td>
+									<td class="text-right"><b>Survey Out</b>:</td>
 									<td colspan="6"></td>
 								</tr>
 								<tr>
 									<td class="text-right" width="130">Driver :</td>
 									<td><input type="text" name="cpodriver" class="form-control" id="cpodriver" value="<?= ''; ?>"></td>
 									<td class="text-right">Inspector Date :</td>
-									<td><input type="text" name="svsurdat" class="form-control" id="svsurdat" value="<?= ''; ?>"></td>
+									<td><input type="text" name="svsurdat" class="form-control tanggal" id="svsurdat" value="<?= ''; ?>"></td>
 									<td colspan="5"></td>
 								</tr>
 								<tr>

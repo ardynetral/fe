@@ -372,6 +372,7 @@ $(document).ready(function() {
 		formData += "&cpopr=" + $("#cpopr").val();
 		formData += "&cpcust=" + $("#cpcust").val();
 		formData += "&cpidish=" + $("#repodish").val();
+		formData += "&cpidisdat=" + $("#repodisdat").val();
 		formData += "&cpdepo=" + $("#cpdepo").val();
 		formData += "&cpichrgbb=" + 0;
 		formData += "&cpipratgl=" + $("#redate").val();

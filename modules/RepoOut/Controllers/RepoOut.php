@@ -1112,7 +1112,7 @@ class RepoOut extends \CodeIgniter\Controller
 		    "cpocargo" => '',
 		    "cpopratgl" => $header['data']['redate'],
 		    "cpoves" => $header['data']['recpives'],
-		    "cpoloaddat" => date('Y-m-d',strtotime($_POST['repodishdat'])),
+		    "cpoloaddat" => date('Y-m-d',strtotime($_POST['cpidisdat'])),
 		    "cpojam" => $_POST['cpijam'],
 		    // "cporeceiv" => $_POST['cpideliver'],
 		    "cpoorderno" => $header['data']['reorderno'],

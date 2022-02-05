@@ -1,6 +1,10 @@
 <?php
 namespace Modules\Did\Controllers;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border;
+
 class Did extends \CodeIgniter\Controller
 {
 	private $client;
@@ -366,5 +370,66 @@ class Did extends \CodeIgniter\Controller
 		$mpdf->WriteHTML($html);
 		$mpdf->Output();
 		die();				
+	}
+
+	public function reportExcel() 
+	{
+		$db = \Config\Database::connect();
+		$sql_body = "
+		select 
+		cp.cpopr as principal,
+		month(cp.cpitgl) as dinfo_month,
+		day(cp.cpitgl) as dinfo_daily,
+		count(cp.crno) as total
+		from container_process cp
+		where year(cp.cpitgl)=year(now())
+		group by cp.cpopr, month(cp.cpitgl), day(cp.cpitgl)
+		";
+		
+		$data_body = $db->query($sql_body)->getResultArray();
+
+		$exl = new Spreadsheet();
+		// Judul Dokumen
+		$exl->setActiveSheetIndex(0)
+            ->setCellValue('A1', 'Depo Info Daily Report');
+        $exl->getActiveSheet()->mergeCells("A1:E1");
+		$exl->getActiveSheet()->getStyle('A1:E1')->getFont()->setSize(20);        
+        // Header Tabel
+        $exl->setActiveSheetIndex(0)
+            ->setCellValue('A2', 'No')
+            ->setCellValue('B2', 'Principal')
+            ->setCellValue('C2', 'Info Month')
+            ->setCellValue('D2', 'Info Daily')
+            ->setCellValue('E2', 'Total');
+
+		// Body Tabel
+		$col=3;
+		$i=0;
+		$num = 2;
+		foreach($data_body as $row){
+            $exl->setActiveSheetIndex(0)
+                ->setCellValue('A' . $col, $i)
+                ->setCellValue('B' . $col, $row['principal'])
+                ->setCellValue('C' . $col, $row['dinfo_month'])
+                ->setCellValue('D' . $col, $row['dinfo_daily'])
+                ->setCellValue('E' . $col, $row['total']);
+			$col++;
+			$i++;
+			$num = $num+1;
+		}
+
+        //Style font
+		$exl->getActiveSheet()->getStyle('A2:E2')->getFont()->applyFromArray( [ 'name' => 'Arial', 'bold' => TRUE, 'color' => [ 'rgb' => '000000' ] ] );
+		// style border
+		$exl->getActiveSheet()->getStyle('A1:E'.$num)->getAlignment()->applyFromArray( [ 'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => TRUE ] );
+		$exl->getActiveSheet()->getStyle('A2:E'.$num)->getBorders()->getAllBorders()->applyFromArray( [ 'borderStyle' => Border::BORDER_THIN, 'color' => [ 'rgb' => '000000' ] ] );
+
+		$writer = new Xlsx($exl);
+        $filename = 'DailyReport-' . date('Y-m-d-His');
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
+        header('Cache-Control: max-age=0');	
+		$writer->save('php://output');
+		die();
 	}
 }

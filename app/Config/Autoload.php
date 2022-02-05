@@ -44,6 +44,7 @@ class Autoload extends AutoloadConfig
 		'Config'      => APPPATH . 'Config',
 		'Modules'     => ROOTPATH . 'modules',
 		'Mpdf'	      => ROOTPATH . 'vendor/mpdf/mpdf/src',
+		'PHPExcel'	      => ROOTPATH . 'vendor/phpoffice/phpspreadsheet/src',
 		'Picqer'	  => ROOTPATH . 'vendor/picqer/php-barcode-generator/src'	
 	];
 

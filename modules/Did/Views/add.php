@@ -14,7 +14,7 @@
 			<div class="widget-header"></div>
 			<div class="rows">
 				<a href="" id="printPdf" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print To PDF</a>
-				<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print To CSV</button>
+				<button type="button" id="printExl" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print To CSV</button>
 			</div>
 			<div class="widget-content">
 

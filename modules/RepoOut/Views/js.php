@@ -377,10 +377,10 @@ $(document).ready(function() {
 		formData += "&cpichrgbb=" + 0;
 		formData += "&cpipratgl=" + $("#redate").val();
 		formData += "&cpijam=" + $("#repojam").val();
-		formData += "&cpives=" + $("#vesid").val();
+		formData += "&cpives=" + $("#recpives").val();
 		formData += "&cpiremark=" + $("#cpiremark").val();
 		formData += "&cpideliver=" + $("#cpideliver").val();
-		formData += "&cpivoyid=" + $("#voyid").val();
+		formData += "&cpivoyid=" + $("#recpivoyid").val();
 		formData += "&cpivoy=" + $("#voyno").val();
 		// detail
 		formData += "&repo_orderno=" + $("#repo_orderno").val();
@@ -392,6 +392,7 @@ $(document).ready(function() {
 		formData += "&cpife=" + $("#cpife").val();
 		formData += "&cpishold=" + $("#cpishold").val();
 		formData += "&reporemark=" + $("#reporemark").val();
+		formData += "&sealno=" + $("#sealno").val();
 		
 		$.ajax({
 			url: "<?php echo site_url('repoout/addcontainer'); ?>",
@@ -442,10 +443,10 @@ $(document).ready(function() {
 		formData += "&cpichrgbb=" + 0;
 		formData += "&cpipratgl=" + $("#redate").val();
 		formData += "&cpijam=" + $("#repojam").val();
-		formData += "&cpives=" + $("#vesid").val();
+		formData += "&cpives=" + $("#recpives").val();
 		formData += "&cpiremark=" + $("#cpiremark").val();
 		formData += "&cpideliver=" + $("#cpideliver").val();
-		formData += "&cpivoyid=" + $("#voyid").val();
+		formData += "&cpivoyid=" + $("#recpivoyid").val();
 		formData += "&cpivoy=" + $("#voyno").val();
 		// detail
 		formData += "&crno=" + $("#crno").val();
@@ -456,6 +457,7 @@ $(document).ready(function() {
 		formData += "&cpife=" + $("#cpife").val();
 		formData += "&cpishold=" + $("#cpishold").val();
 		formData += "&reporemark=" + $("#reporemark").val();
+		formData += "&sealno=" + $("#sealno").val();
 		
 		$.ajax({
 			url: "<?php echo site_url('repoout/updatecontainer'); ?>",

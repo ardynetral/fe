@@ -40,26 +40,26 @@
 					</div>
 					<div class="form-group">
 						<label  class="col-sm-5 control-label text-right">From</label>
-						<div id="fromDepoBlok" class="col-sm-7 hideBlock">
-							<?=depo_dropdown2("retfrom","000")?>
+						<div id="fromDepoBlok" class="col-sm-7 <?=(isset($data['retype'])&&($data['retype']=='21')?'':'hideBlock')?>">
+							<?= $from_depo_dropdown ?>
 						</div>
-						<div id="fromPortBlok" class="col-sm-7 hideBlock">
-							<?=port_dropdown("retfrom","")?>
+						<div id="fromPortBlok" class="col-sm-7 <?=(isset($data['retype'])&&($data['retype']=='22')?'':'hideBlock')?>">
+							<?= $from_port_dropdown ?>
 						</div>						
-						<div id="fromCityBlok" class="col-sm-7 hideBlock">
-							<?=city_dropdown("retfrom","1")?>
+						<div id="fromCityBlok" class="col-sm-7 <?=(isset($data['retype'])&&($data['retype']=='23')?'':'hideBlock')?>">
+							<?= $from_city_dropdown ?>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-5 control-label text-right">To</label>
-						<div id="toDepoBlok" class="col-sm-7 hideBlock">
-							<?=depo_dropdown2("retto","000")?>
+						<div id="toDepoBlok" class="col-sm-7">
+							<?= $to_depo_dropdown ?>
 						</div>
 						<div id="toPortBlok" class="col-sm-7 hideBlock">
-							<?=port_dropdown("retto","")?>
+							<?= $to_port_dropdown ?>
 						</div>						
 						<div id="toCityBlok" class="col-sm-7 hideBlock">
-							<?=city_dropdown("retto","1")?>
+							<?= $to_city_dropdown ?>
 						</div>
 					</div>
 
@@ -119,8 +119,7 @@
 					<div class="form-group">
 						<label for="repovoyid" class="col-sm-5 control-label text-right">Voyage</label>
 						<div class="col-sm-7">
-							<input type="text" class="form-control" id="voyid" name="voyid" required>
-							<input type="hidden" class="form-control" id="voyno" name="voyno" value="0">
+							<input type="text" class="form-control" id="recpivoyid" name="recpivoyid" required>
 						</div>
 					</div>		
 					<div class="form-group" style="display:none">

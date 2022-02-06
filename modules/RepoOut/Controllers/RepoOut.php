@@ -120,13 +120,28 @@ class RepoOut extends \CodeIgniter\Controller
 		$group_id = $token['groupId'];
         
 		if ($this->request->isAJAX()) {
+			
+			$form_params = [];
+
+			if($_POST['retype']=="11") {
+				$retfrom = "DEPO";
+				$retto = "DEPO";
+			} else if($_POST['retype']=="12") {
+				$retfrom = "DEPO";
+				$retto = "PORT";
+			} else if($_POST['retype']=="13") {
+				$retfrom = "DEPO";
+				$retto = "CITY";
+			}
+
 			$reformat = [
 				'reorderno' => $this->get_RepoOut_number(),
-				'prcode' => $_POST['cpopr'],
-				'cpopr' => $_POST['cpopr'],
-				'recpives' => $_POST['vesid'],
+				'repocode' => "RI",
 				'redate' => date('Y-m-d', strtotime($_POST['redate'])),
-				'redline' => date('Y-m-d', strtotime($_POST['redline']))
+				'redline' => date('Y-m-d', strtotime($_POST['redline'])),
+				'retfrom' => $retfrom,
+				'retto' => $retto,
+				'replace1' => $_POST['retto']				
 			];
 			 // echo var_dump($_POST);die();
 			if ($this->request->getMethod() === 'post') {
@@ -175,7 +190,12 @@ class RepoOut extends \CodeIgniter\Controller
 		$data['act'] = "add";
 		$data['RepoOut_no'] = $this->get_RepoOut_number();
 		$result_container = json_decode($response2->getBody()->getContents(), true);
-		
+		$data['from_depo_dropdown'] = $this->depo_dropdown("retfrom","DEPO CONTINDO");
+		$data['from_port_dropdown'] = $this->port_dropdown("retfrom","");
+		$data['from_city_dropdown'] = $this->city_dropdown("retfrom","");
+		$data['to_depo_dropdown'] = $this->depo_dropdown("retto","DEPO CONTINDO");
+		$data['to_port_dropdown'] = $this->port_dropdown("retto","");
+		$data['to_city_dropdown'] = $this->city_dropdown("retto","");		
 		return view('Modules\RepoOut\Views\add', $data);
 	}
 	public function update_new_data()
@@ -221,9 +241,10 @@ class RepoOut extends \CodeIgniter\Controller
 				'ctcode' => $_POST['ctcode'],
 				'cclength' => $_POST['cclength'],
 				'ccheight' => $_POST['ccheight'],
-				'cpife' => $_POST['cpife'],
+				'cpofe' => $_POST['cpofe'],
 				'cpishold' => $_POST['cpishold'],
-				'reporemark' => $_POST['reporemark']
+				'reporemark' => $_POST['reporemark'],
+				'sealno' => $_POST['sealno']
 			];
 
 			// echo var_dump($_POST);die();
@@ -319,7 +340,8 @@ class RepoOut extends \CodeIgniter\Controller
 				'ccheight' => $_POST['ccheight'],
 				'cpife' => $_POST['cpife'],
 				'cpishold' => $_POST['cpishold'],
-				'reporemark' => $_POST['reporemark']
+				'reporemark' => $_POST['reporemark'],
+				'sealno' => $_POST['sealno']
 			];
 
 			// echo var_dump($_POST);die();
@@ -412,6 +434,12 @@ class RepoOut extends \CodeIgniter\Controller
 		$data['repoid'] = $datarepo['data']['repoid'];
 		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
 		$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
+		$data['from_depo_dropdown'] = $this->depo_dropdown("retfrom","DEPO CONTINDO");
+		$data['from_port_dropdown'] = $this->port_dropdown("retfrom",$datarepo['data']['replace1']);
+		$data['from_city_dropdown'] = $this->city_dropdown("retfrom",$datarepo['data']['retfrom']);
+		$data['to_depo_dropdown'] = $this->depo_dropdown("retto","DEPO CONTINDO");
+		$data['to_port_dropdown'] = $this->port_dropdown("retto",$datarepo['data']['replace1']);
+		$data['to_city_dropdown'] = $this->city_dropdown("retto",$datarepo['data']['replace1']);		
 		return view('Modules\RepoOut\Views\edit', $data);
 	}
 
@@ -813,6 +841,7 @@ class RepoOut extends \CodeIgniter\Controller
 				<td>" . ((isset($row['repofe']) && $row['repofe'] == 1) ? 'Full' : 'Empty') . "</td>
 				<td>" . ((isset($row['reposhold']) && $row['reposhold'] == 1) ? 'Hold' : 'Release') . "</td>
 				<td>" . $row['reporemark'] . "</td>
+				<td>" . $row['sealno'] . "</td>
 				<td>
 				<a href='#' class='btn btn-xs btn-danger delete' data-kode='" . $repocrnoid . "'>delete</a></td>";
 			$html .= "</tr>";
@@ -1105,7 +1134,7 @@ class RepoOut extends \CodeIgniter\Controller
 		// echo var_dump($header);
 		$cprocess_params = [
 			"crno" => $_POST['crno'],
-		    "cpofe" => $_POST['cpife'],
+		    "cpofe" => $_POST['cpofe'],
 		    "cporemark" => $_POST['cpiremark'],
 		    "cpopr1" => $header['data']['cpopr'],				    
 		    "cpcust1" => $header['data']['cpcust'],					    
@@ -1137,4 +1166,74 @@ class RepoOut extends \CodeIgniter\Controller
 			echo json_encode($data);die();				
 		}		
 	}
+
+	public function depo_dropdown($varname="",$selected="")
+	{
+		$response = $this->client->request('GET','depos/getAllData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(),true);	
+		$depo = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="'.$varname.'" id="'.$varname.'" class="select-depo">';
+		$option .= '<option value="">-select-</option>';
+		foreach($depo as $p) {
+			$option .= "<option value='".$p['dpname'] ."'". ((isset($selected) && $selected==$p['dpname']) ? ' selected' : '').">".$p['dpname']."</option>";
+		}
+		$option .="</select>";
+		return $option; 
+		die();			
+	}
+
+	public function port_dropdown($varname="",$selected="")
+	{
+		$response = $this->client->request('GET','ports/list',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(),true);	
+		$port = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="'.$varname.'" id="'.$varname.'" class="select-port">';
+		$option .= '<option value="">-select-</option>';
+		foreach($port as $p) {
+			$option .= "<option value='".$p['poid'] ."'". ((isset($selected) && $selected==$p['poid']) ? ' selected' : '').">".$p['podesc']."</option>";
+		}
+		$option .="</select>";
+		return $option; 
+		die();			
+	}
+
+	public function city_dropdown($varname,$selected="") 
+	{
+		$response = $this->client->request('GET','city/list',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json'=>[
+				'start'=>0,
+				'rows'=>10
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(),true);	
+		$data = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="'.$varname.'" id="'.$varname.'" class="select-city">';
+		$option .= '<option value="">-select-</option>';
+		foreach($data as $r) {
+			$option .= "<option value='".$r['city_name'] ."'". ((isset($selected) && $selected==$r['city_name']) ? ' selected' : '').">".$r['city_name']."</option>"; 
+		}
+		$option .="</select>";
+		return $option; 
+		die();		
+	}	
 }

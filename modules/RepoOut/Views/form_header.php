@@ -38,25 +38,25 @@
 					<div class="form-group">
 						<label  class="col-sm-5 control-label text-right">From</label>
 						<div id="fromDepoBlok" class="col-sm-7 hideBlock">
-							<?=depo_dropdown2("retfrom","000")?>
+							<?= $from_depo_dropdown ?>
 						</div>
 						<div id="fromPortBlok" class="col-sm-7 hideBlock">
-							<?=port_dropdown("retfrom","")?>
+							<?= $from_port_dropdown ?>
 						</div>						
 						<div id="fromCityBlok" class="col-sm-7 hideBlock">
-							<?=city_dropdown("retfrom","1")?>
+							<?= $from_city_dropdown ?>
 						</div>
 					</div>
 					<div class="form-group">
 						<label class="col-sm-5 control-label text-right">To</label>
 						<div id="toDepoBlok" class="col-sm-7 hideBlock">
-							<?=depo_dropdown2("retto","000")?>
+							<?= $to_depo_dropdown ?>
 						</div>
 						<div id="toPortBlok" class="col-sm-7 hideBlock">
-							<?=port_dropdown("retto","")?>
+							<?= $to_port_dropdown ?>
 						</div>						
 						<div id="toCityBlok" class="col-sm-7 hideBlock">
-							<?=city_dropdown("retto","1")?>
+							<?= $to_city_dropdown ?>
 						</div>
 					</div>
 

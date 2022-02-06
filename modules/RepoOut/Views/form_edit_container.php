@@ -68,6 +68,12 @@
 							</div>	
 						</div>	
 						<div class="form-group">
+							<label class="col-sm-3 control-label text-right">Seal Number</label>
+							<div class="col-sm-7">
+								<input type="text" name="sealno" id="sealno" class="form-control">
+							</div>	
+						</div>							
+						<div class="form-group">
 							<label class="col-sm-3 control-label text-right">Remark</label>
 							<div class="col-sm-7">
 								<textarea name="reporemark" id="reporemark" class="form-control" ></textarea>

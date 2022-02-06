@@ -67,10 +67,10 @@
 							</label>
 						</div>	
 					</div>	
-					<div class="form-group">
+					<div class="form-group" style="display:none;">
 						<label class="col-sm-3 control-label text-right">Seal Number</label>
 						<div class="col-sm-7">
-							<input type="text" name="sealno" id="sealno" class="form-control" readonly="">
+							<input type="text" name="sealno" id="sealno" class="form-control" value="">
 						</div>	
 					</div>						
 					<div class="form-group">

@@ -120,33 +120,36 @@ class RepoIn extends \CodeIgniter\Controller
 		$group_id = $token['groupId'];
 
 		if ($this->request->isAJAX()) {
-			// if($_POST['rebill']=='1') {
-			// 	$rebill = 'Breakdown';
-			// } else if($_POST['rebill']=='2') {
-			// 	$rebill = 'Package';
-			// } else {
-			// 	$rebill = '0';
-			// }
 
-			// array_push($_POST,[
-			// 	"rebill"=>$rebill
-			// ]);
+			$form_params = [];
 
+			if($_POST['retype']=="21") {
+				$retfrom = "DEPO";
+				$retto = "DEPO";
+			} else if($_POST['retype']=="22") {
+				$retfrom = "PORT";
+				$retto = "DEPO";
+			} else if($_POST['retype']=="23") {
+				$retfrom = "CITY";
+				$retto = "DEPO";
+			}
 			$reformat = [
-				'repocode' => "RI",
-				'prcode' => $_POST['cpopr'],
+				'reorderno' => $this->get_repoin_number(),
 				'redate' => date('Y-m-d', strtotime($_POST['redate'])),
-				'redline' => date('Y-m-d', strtotime($_POST['redline']))
+				'redline' => date('Y-m-d', strtotime($_POST['redline'])),
+				'retfrom' => $retfrom,
+				'retto' => $retto,
+				'replace1' => $_POST['retfrom']
 			];
-			// echo var_dump($_POST);die();
+			$form_params = array_replace($_POST, $reformat);
 			if ($this->request->getMethod() === 'post') {
 
-				$response = $this->client->request('POST', 'repoin/insertDataRepoIn', [
+				$response = $this->client->request('POST', 'orderContainerRepos/createNewData', [
 					'headers' => [
 						'Accept' => 'application/json',
 						'Authorization' => session()->get('login_token')
 					],
-					'form_params' => array_replace($_POST, $reformat),
+					'form_params' => $form_params,
 				]);
 
 				$result = json_decode($response->getBody()->getContents(), true);
@@ -155,7 +158,7 @@ class RepoIn extends \CodeIgniter\Controller
 					echo json_encode($data);
 					die();
 				}
-				$datarepo = $result['data']['succes created order Container Repo'];
+				$datarepo = $result['data'];
 				session()->setFlashdata('sukses', 'Success, Order Repo Saved.');
 				$data['message'] = "success";
 				$data['repoid'] = $datarepo['repoid'];
@@ -184,7 +187,12 @@ class RepoIn extends \CodeIgniter\Controller
 		$data['repoin_no'] = $this->get_repoin_number();
 		$result_container = json_decode($response2->getBody()->getContents(), true);
 		// $data['data_container'] = isset($result_container['data']['datas'])?$result_container['data']['datas']:"";
-
+		$data['from_depo_dropdown'] = $this->depo_dropdown("retfrom","DEPO CONTINDO");
+		$data['from_port_dropdown'] = $this->port_dropdown("retfrom","");
+		$data['from_city_dropdown'] = $this->city_dropdown("retfrom","");
+		$data['to_depo_dropdown'] = $this->depo_dropdown("retto","DEPO CONTINDO");
+		$data['to_port_dropdown'] = $this->port_dropdown("retto","");
+		$data['to_city_dropdown'] = $this->city_dropdown("retto","");	
 		return view('Modules\RepoIn\Views\add', $data);
 	}
 	public function update_new_data()
@@ -234,10 +242,10 @@ class RepoIn extends \CodeIgniter\Controller
 				'cpichrgbb' => $_POST['cpichrgbb'],
 				'cpipratgl' => date('Y-m-d', strtotime($_POST['cpipratgl'])),
 				'cpijam' => $_POST['cpijam'],
-				'cpives' => $_POST['cpives'],
+				'cpives' => $_POST['recpives'],
 				'cpiremark' => $_POST['cpiremark'],
 				'cpideliver' => $_POST['cpideliver'],
-				'cpivoyid' => $_POST['cpivoyid'],
+				'cpivoyid' => $_POST['recpivoyid'],
 				'cpivoy' => $_POST['cpivoy'],
 				// detail
 				'crno' => $_POST['crno'],
@@ -318,10 +326,10 @@ class RepoIn extends \CodeIgniter\Controller
 				'cpichrgbb' => $_POST['cpichrgbb'],
 				'cpipratgl' => date('Y-m-d', strtotime($_POST['cpipratgl'])),
 				'cpijam' => $_POST['cpijam'],
-				'cpives' => $_POST['cpives'],
+				'cpives' => $_POST['recpives'],
 				'cpiremark' => $_POST['cpiremark'],
 				'cpideliver' => $_POST['cpideliver'],
-				'cpivoyid' => $_POST['cpivoyid'],
+				'cpivoyid' => $_POST['recpivoyid'],
 				'cpivoy' => $_POST['cpivoy'],
 				// detail
 				'crno' => $_POST['crno'],
@@ -421,6 +429,12 @@ class RepoIn extends \CodeIgniter\Controller
 
 		$datarepo = $this->getOneRepo($reorderno);
 		$data['data'] = $datarepo['data'];
+		$data['from_depo_dropdown'] = $this->depo_dropdown("retfrom","DEPO CONTINDO");
+		$data['from_port_dropdown'] = $this->port_dropdown("retfrom",$datarepo['data']['replace1']);
+		$data['from_city_dropdown'] = $this->city_dropdown("retfrom",$datarepo['data']['replace1']);
+		$data['to_depo_dropdown'] = $this->depo_dropdown("retto","DEPO CONTINDO");
+		$data['to_port_dropdown'] = $this->port_dropdown("retto",$datarepo['data']['retto']);
+		$data['to_city_dropdown'] = $this->city_dropdown("retto",$datarepo['data']['retto']);		
 		$data['repoid'] = $datarepo['data']['repoid'];
 		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
 		$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
@@ -1401,5 +1415,75 @@ class RepoIn extends \CodeIgniter\Controller
 			'content' => $data,
 			'file'    => $dir . $save_name,
 		];
+	}
+
+	public function depo_dropdown($varname="",$selected="")
+	{
+		$response = $this->client->request('GET','depos/getAllData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(),true);	
+		$depo = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="'.$varname.'" id="'.$varname.'" class="select-depo">';
+		$option .= '<option value="">-select-</option>';
+		foreach($depo as $p) {
+			$option .= "<option value='".$p['dpname'] ."'". ((isset($selected) && $selected==$p['dpname']) ? ' selected' : '').">".$p['dpname']."</option>";
+		}
+		$option .="</select>";
+		return $option; 
+		die();			
+	}
+
+	public function port_dropdown($varname="",$selected="")
+	{
+		$response = $this->client->request('GET','ports/list',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(),true);	
+		$port = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="'.$varname.'" id="'.$varname.'" class="select-port">';
+		$option .= '<option value="">-select-</option>';
+		foreach($port as $p) {
+			$option .= "<option value='".$p['poid'] ."'". ((isset($selected) && $selected==$p['poid']) ? ' selected' : '').">".$p['podesc']."</option>";
+		}
+		$option .="</select>";
+		return $option; 
+		die();			
+	}
+
+	public function city_dropdown($varname,$selected="") 
+	{
+		$response = $this->client->request('GET','city/list',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json'=>[
+				'start'=>0,
+				'rows'=>10
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(),true);	
+		$data = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="'.$varname.'" id="'.$varname.'" class="select-city">';
+		$option .= '<option value="">-select-</option>';
+		foreach($data as $r) {
+			$option .= "<option value='".$r['city_name'] ."'". ((isset($selected) && $selected==$r['city_name']) ? ' selected' : '').">".$r['city_name']."</option>"; 
+		}
+		$option .="</select>";
+		return $option; 
+		die();		
 	}
 }

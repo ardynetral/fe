@@ -138,7 +138,7 @@
 									<div class="form-group">
 										<label for="repovoyid" class="col-sm-5 control-label text-right">Voyage</label>
 										<div class="col-sm-7">
-											<input type="text" class="form-control" id="voyid" name="voyid" value="<?=$data['recpivoyid']?>">
+											<input type="text" class="form-control" id="recpivoyid" name="recpivoyid" value="<?=$data['recpivoyid']?>">
 											<input type="hidden" class="form-control" id="voyno" name="voyno" value="0">
 										</div>
 									</div>		

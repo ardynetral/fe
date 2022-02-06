@@ -386,10 +386,10 @@ $(document).ready(function() {
 		formData += "&cpichrgbb=" + 0;
 		formData += "&cpipratgl=" + $("#redate").val();
 		formData += "&cpijam=" + $("#repojam").val();
-		formData += "&cpives=" + $("#vesid").val();
+		formData += "&recpives=" + $("#recpives").val();
 		formData += "&cpiremark=" + $("#cpiremark").val();
 		formData += "&cpideliver=" + $("#cpideliver").val();
-		formData += "&cpivoyid=" + $("#voyid").val();
+		formData += "&recpivoyid=" + $("#recpivoyid").val();
 		formData += "&cpivoy=" + $("#voyno").val();
 		// detail
 		formData += "&crno=" + $("#crno").val();
@@ -450,10 +450,10 @@ $(document).ready(function() {
 		formData += "&cpichrgbb=" + 0;
 		formData += "&cpipratgl=" + $("#redate").val();
 		formData += "&cpijam=" + $("#repojam").val();
-		formData += "&cpives=" + $("#vesid").val();
+		formData += "&recpives=" + $("#recpives").val();
 		formData += "&cpiremark=" + $("#cpiremark").val();
 		formData += "&cpideliver=" + $("#cpideliver").val();
-		formData += "&cpivoyid=" + $("#voyid").val();
+		formData += "&recpivoyid=" + $("#recpivoyid").val();
 		formData += "&cpivoy=" + $("#voyno").val();
 		// detail
 		formData += "&crno=" + $("#crno").val();

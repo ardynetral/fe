@@ -146,7 +146,7 @@ function repoves_dropdown($selected="")
 	$result = json_decode($response->getBody()->getContents(),true);	
 	$vessel = $result['data']['datas'];
 	$option = "";
-	$option .= '<select name="vesid" id="vesid" class="select-vessel">';
+	$option .= '<select name="recpives" id="recpives" class="select-vessel">';
 	$option .= '<option value="">-select-</option>';
 	foreach($vessel as $v) {
 		$option .= "<option value='".$v['vesid'] ."'". ((isset($selected) && $selected==$v['vesid']) ? ' selected' : '').">".$v['vesid']."</option>";

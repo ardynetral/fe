@@ -136,7 +136,7 @@ class RepoOut extends \CodeIgniter\Controller
 
 			$reformat = [
 				'reorderno' => $this->get_RepoOut_number(),
-				'repocode' => "RI",
+				// 'repocode' => "RO",
 				'redate' => date('Y-m-d', strtotime($_POST['redate'])),
 				'redline' => date('Y-m-d', strtotime($_POST['redline'])),
 				'retfrom' => $retfrom,
@@ -549,10 +549,10 @@ class RepoOut extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		if ($result['data']['count'] == 0) {
-			$datas = "";
-		} else {
+		if (isset($result['data'])&&($result['data']['count'] > 0)) {
 			$datas = $result['data']['datas'];
+		} else {
+			$datas = "";
 		}
 		return $datas;
 	}

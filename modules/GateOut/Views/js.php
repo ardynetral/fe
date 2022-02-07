@@ -43,7 +43,8 @@ $(document).ready(function() {
 
 	$("form#fGateOut").on("submit", function(e){
 		e.preventDefault();													
-		var crno = $("#crno").val();
+		var cpid = $("#cpid").val();
+		var orderno = $("#cpoorderno").val();
 		$.ajax({
 			url: "<?php echo site_url('gateout/add'); ?>",
 			type: "POST",
@@ -59,7 +60,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});			
-			        window.open("<?php echo site_url('gateout/print_eir_out/'); ?>" + crno, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+			        window.open("<?php echo site_url('gateout/print_eir_out/'); ?>" + orderno+'/'+cpid, '_blank', 'height=600,width=700,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 					window.location.href = "<?php echo site_url('gateout'); ?>";
 				} else {
 					Swal.fire({
@@ -75,7 +76,8 @@ $(document).ready(function() {
 	$('#ctTable').on('click', '.edit', function(e){
 		e.preventDefault();
 		var crno = $(this).data("crno");
-		window.location.href = "<?=site_url('gateout/edit/');?>"+crno;
+		var cpoorderno = $(this).data("orderno");
+		window.location.href = "<?=site_url('gateout/edit/');?>"+crno+"/"+cpoorderno;
 	});
 
 	$("#crcdp").on("change", function(){

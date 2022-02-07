@@ -109,7 +109,7 @@ class GateOut extends \CodeIgniter\Controller
 			"cpoorderno"	=> $_POST['cpoorderno'],
 			"cpoeir"		=> $_POST['cpoeir'],
 			"cporefout"		=> $_POST['cporefout'],
-			"cpopratgl"		=> $_POST['cpopratgl'],
+			"cpopratgl"		=> date('Y-m-d', strtotime($_POST['cpopratgl'])),
 			"cpochrgbm"		=> isset($_POST['cpochrgbm'])?$_POST['cpochrgbm']:0,
 			"cpopaidbm"		=> isset($_POST['cpopaidbm'])?$_POST['cpopaidbm']:0,
 			"cpofe"			=> $_POST['cpofe'],
@@ -181,11 +181,12 @@ class GateOut extends \CodeIgniter\Controller
 		]);
 		
 		$result = json_decode($responses->getBody()->getContents(), true);
+		// echo var_dump($result);die();
 		if($result['data']==null) {
 			$data['data'] = "";
 		}
 		$data['data'] = $result['data'][0];
-		$data['surveyor'] = $this->surveyor_dropdown();
+		$data['surveyor'] = $this->surveyor_dropdown($data['data']['syid']);
 		return view('Modules\GateOut\Views\edit',$data);
 	}
 
@@ -229,7 +230,7 @@ class GateOut extends \CodeIgniter\Controller
 					}	
 
 					$data['message'] = 'success';
-					$data['data'] = $res_gateout['data'][0];
+					$data['data'] = $res_gateout['data'];
 					echo json_encode($data);die();					    		
 
 		    	} else {
@@ -242,7 +243,7 @@ class GateOut extends \CodeIgniter\Controller
 		}
 	}
 
-	public function surveyor_dropdown() 
+	public function surveyor_dropdown($selected="") 
 	{
 		$client = api_connect();
 
@@ -309,7 +310,8 @@ class GateOut extends \CodeIgniter\Controller
 		}
 		// echo var_dump($data);die();
 		return $data;
-	}	
+	}
+
 	public function print_eir_out($cpoorderno,$cpid) 
 	{
 		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80,236]]);

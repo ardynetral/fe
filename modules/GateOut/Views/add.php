@@ -211,7 +211,7 @@ if(isset($data) && ($data!='')) {
 								<a href="<?= site_url('gateout') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 							<?php else : ?>
 								<button type="submit" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
-								<a href="<?= site_url('gatgateoutein') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+								<a href="<?= site_url('gateout') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 							<?php endif; ?>
 						</div>
 					</div>

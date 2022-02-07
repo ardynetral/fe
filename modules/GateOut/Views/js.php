@@ -77,7 +77,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var crno = $(this).data("crno");
 		var cpoorderno = $(this).data("orderno");
-		window.location.href = "<?=site_url('gateout/edit/');?>"+crno+"/"+cpoorderno;
+		window.location.href = "<?=site_url('gateout/edit/');?>"+crno;
 	});
 
 	$("#crcdp").on("change", function(){

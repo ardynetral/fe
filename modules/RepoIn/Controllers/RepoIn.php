@@ -438,6 +438,7 @@ class RepoIn extends \CodeIgniter\Controller
 		$data['repoid'] = $datarepo['data']['repoid'];
 		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
 		$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
+		// echo var_dump($data['containers']);die();
 		return view('Modules\RepoIn\Views\edit', $data);
 	}
 
@@ -547,10 +548,10 @@ class RepoIn extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		if ($result['data']['count'] == 0) {
-			$datas = "";
-		} else {
+		if (isset($result['data'])&& $result['data']['count'] > 0) {
 			$datas = $result['data']['datas'];
+		} else {
+			$datas = "";
 		}
 		return $datas;
 	}

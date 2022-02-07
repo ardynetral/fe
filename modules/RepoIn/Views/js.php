@@ -81,6 +81,7 @@ $(document).ready(function() {
 	$("#updateNewData").on("click", function(e){
 		e.preventDefault();
 		var fomData = "reorderno=" + $("#reorderno").val();
+		fomData += "&repovendor=" + $("#repovendor").val();
 		if($("#rebill").val()=="Breakdown") {
 			// BreakDown
 			fomData += "&relift=" + parseInt($("#relift").val());

@@ -168,7 +168,7 @@
 					<div class="form-group">
 						<label class="col-sm-4 control-label text-right">Repo Vendor</label>
 						<div class="col-sm-6">
-							<input type="text" name="cpicargo" class="form-control" id="cpicargo" required>
+							<input type="text" name="repovendor" class="form-control" id="repovendor" required>
 						</div>
 					</div>
 					<div class="form-group">

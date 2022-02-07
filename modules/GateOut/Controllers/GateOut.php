@@ -230,7 +230,7 @@ class GateOut extends \CodeIgniter\Controller
 					}	
 
 					$data['message'] = 'success';
-					$data['data'] = $res_gateout['data'][0];
+					$data['data'] = $res_gateout['data'];
 					echo json_encode($data);die();					    		
 
 		    	} else {

@@ -9,18 +9,18 @@
 		$(".err-crno").hide(); //container number check
 		// $("#update").hide();
 		// $("#updateDetail").hide();
-		$("#editOrderFrame").hide();
+		// $("#editOrderFrame").hide();
 		// SELECT2
-		$('.select-pr').select2();
-		$('.select-port').select2();
-		$('.select-depo').select2();
-		$('.select-vessel').select2();
-		$('.select-voyage').select2();
-		$('.select-ccode').select2();
-		$('.select-lccode').select2();
-		$('.select-cmcode').select2();
-		$('.select-dycode').select2();
-		$('.select-rmcode').select2();
+		// $('.select-pr').select2();
+		// $('.select-port').select2();
+		// $('.select-depo').select2();
+		// $('.select-vessel').select2();
+		// $('.select-voyage').select2();
+		// $('.select-ccode').select2();
+		// $('.select-lccode').select2();
+		// $('.select-cmcode').select2();
+		// $('.select-dycode').select2();
+		// $('.select-rmcode').select2();
 		// DATATABLE
 		$("#tblList_add").DataTable({
 			"paging": false,
@@ -65,7 +65,7 @@
 			// console.log("data="+formData);
 
 			$.ajax({
-				url: "<?php echo site_url('prain/add'); ?>",
+				url: "<?php echo site_url('estimation/add'); ?>",
 				type: "POST",
 				data: formData,
 				dataType: 'json',
@@ -152,7 +152,7 @@
 			formData += "&cpideliver=" + $("#cpideliver").val();
 			// console.log(formData);
 			$.ajax({
-				url: "<?php echo site_url('prain/edit/'); ?>" + $("#praid").val(),
+				url: "<?php echo site_url('estimation/edit/'); ?>" + $("#praid").val(),
 				type: "POST",
 				data: formData,
 				dataType: 'json',
@@ -186,7 +186,7 @@
 			$("#editOrderFrame").show();
 			disableFormOrder();
 			$.ajax({
-				url: "<?php echo site_url('prain/ajax_view/'); ?>" + praid,
+				url: "<?php echo site_url('estimation/ajax_view/'); ?>" + praid,
 				type: "POST",
 				dataType: 'json',
 				// data:"praid="+praid,
@@ -252,7 +252,7 @@
 			formData += "&praid=" + praid;
 			// console.log(formData);
 			$.ajax({
-				url: "<?php echo site_url('prain/approve_order/'); ?>" + praid,
+				url: "<?php echo site_url('estimation/approve_order/'); ?>" + praid,
 				type: "POST",
 				data: formData,
 				dataType: 'json',
@@ -264,7 +264,7 @@
 							title: "Success",
 							html: '<div class="text-success">Order Approved</div>'
 						});
-						window.location.href = "<?php echo site_url('prain'); ?>";
+						window.location.href = "<?php echo site_url('estimation'); ?>";
 					} else {
 						Swal.fire({
 							icon: 'error',
@@ -353,7 +353,7 @@
 		$("#prcode").on("change", function() {
 			var prcode = $(this).val();
 			$.ajax({
-				url: "<?= site_url('prain/ajax_prcode_listOne/'); ?>" + prcode,
+				url: "<?= site_url('estimation/ajax_prcode_listOne/'); ?>" + prcode,
 				type: "POST",
 				data: "prcode=" + prcode,
 				dataType: "JSON",
@@ -375,7 +375,7 @@
 		$("#cpives").on("change", function() {
 			var vesid = $(this).val();
 			$.ajax({
-				url: "<?= site_url('prain/ajax_vessel_listOne/'); ?>" + vesid,
+				url: "<?= site_url('estimation/ajax_vessel_listOne/'); ?>" + vesid,
 				type: "POST",
 				data: "vesid=" + vesid,
 				dataType: "JSON",
@@ -399,7 +399,7 @@
 		$("#ccode").on("change", function() {
 			var cccode = $(this).val();
 			$.ajax({
-				url: "<?= site_url('prain/ajax_ccode_listOne/'); ?>" + cccode,
+				url: "<?= site_url('estimation/ajax_ccode_listOne/'); ?>" + cccode,
 				type: "POST",
 				data: "ccode=" + ccode,
 				dataType: "JSON",
@@ -436,7 +436,7 @@
 			formData += "&cpiremark=" + $("#cpiremark").val();
 
 			$.ajax({
-				url: "<?php echo site_url('prain/addcontainer'); ?>",
+				url: "<?php echo site_url('estimation/addcontainer'); ?>",
 				type: "POST",
 				data: formData,
 				dataType: 'json',
@@ -447,8 +447,8 @@
 							title: "Success",
 							html: '<div class="text-success">' + json.message + '</div>'
 						});
-						// window.location.href = "<?php echo site_url('prain/view/'); ?>"+json.praid;
-						window.location.href = "<?php echo site_url('prain'); ?>";
+						// window.location.href = "<?php echo site_url('estimation/view/'); ?>"+json.praid;
+						window.location.href = "<?php echo site_url('estimation'); ?>";
 						// getDetailOrder(json.praid);
 					} else {
 						Swal.fire({
@@ -467,7 +467,7 @@
 			var crid = $(this).data("crid");
 			var cpife = $('input:radio[name=cpife]');
 			$.ajax({
-				url: "<?= site_url('prain/get_one_container/'); ?>" + crid,
+				url: "<?= site_url('estimation/get_one_container/'); ?>" + crid,
 				type: "POST",
 				data: "crid=" + crid,
 				dataType: "JSON",
@@ -515,7 +515,7 @@
 			formData += "&cpiremark=" + $("#cpiremark").val();
 
 			$.ajax({
-				url: "<?php echo site_url('prain/edit_container'); ?>",
+				url: "<?php echo site_url('estimation/edit_container'); ?>",
 				type: "POST",
 				data: formData,
 				dataType: 'json',
@@ -538,13 +538,16 @@
 
 		});
 
-		$("#crno").on("keyup", function() {
-			var crno = $("#crno").val();
+		$("#rpcrno").on("keyup", function() {
+			var crno = $("#rpcrno").val();
 			var status = "";
+			$("#fEstimasi").trigger("reset");
+			$("#rpcrno").val(crno);				
+			$(this).val($(this).val().toUpperCase());
 			$.ajax({
-				url: "<?= site_url('prain/checkContainerNumber'); ?>",
+				url: "<?= site_url('estimation/getDataEstimasi'); ?>",
 				type: "POST",
-				data: "ccode=" + crno,
+				data: { "crno": crno },
 				dataType: "JSON",
 				success: function(json) {
 					if (json.status == "Failled") {
@@ -555,18 +558,38 @@
 					} else {
 						$(".err-crno").html("");
 						$(".err-crno").hide();
-						$("#crno").css("background", "#fff!important");
-						$("#crno").css("border-color", "#ccc");
+						$("#rpcrno").css("background", "#fff!important");
+						$("#rpcrno").css("border-color", "#ccc");
+						// fill data Header
+						var rptglest = $.format.date(json.header.rptglest,"dd-MM-yyyy")
+						var svsurdat = $.format.date(json.header.svsurdat,"dd-MM-yyyy")
+						$("#rpnoest").val(json.header.rpnoest);
+						$("#rptglest").val(rptglest);
+						$("#cccode").val(json.header.cccode);
+						$("#ctcode").val(json.header.ctcode);
+						$("#cclength").val(json.header.cclength);
+						$("#ccheight").val(json.header.ccheight);
+						$("#coexpdate").val(json.header.coexpdate);
+						$("#cono").val(json.header.cono);
+						$("#svsurdat").val(svsurdat);
+						$("#svcond").val(json.header.svcond);
+						$("#svcond").val(json.header.svcond);
+						$("#rpver").val(json.header.rpver);
+						$("#tblList_add tbody").html(json.detail);
+						console.log(json.header);
 					}
 				}
 			});
 		});
 
+		function fillTableDetail(data) {
+
+		}
 		// End Step 2
 		$('#ctTable tbody').on("click", ".print_order", function(e) {
 			e.preventDefault();
 			var praid = $(this).data("praid");
-			window.open("<?php echo site_url('prain/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+			window.open("<?php echo site_url('estimation/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 		});
 
 		$('[data-toggle="tab"]').on('click', function() {

@@ -37,7 +37,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 		<div id="alert">
 
 		</div>
-		<form id="fContract" class="form-horizontal" role="form">
+		<form id="fEstimasi" class="form-horizontal" role="form">
 			<?= csrf_field() ?>
 			<?php $readonly = 'readonly'; ?>
 			<fieldset>
@@ -46,7 +46,8 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 					<tbody>
 						<tr>
 							<td class="text-right" width="130">Container No :</td>
-							<td><input type="text" name="crno" class="form-control" id="crno" value="<?= ''; ?>"></td>
+							<td><input type="text" name="rpcrno" class="form-control" id="rpcrno" value="<?= ''; ?>">
+								<i class="err-crno text-danger"></i></td>
 							<td class="text-right">EOR No :</td>
 							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="rpnoest" id="rpnoest" class="form-control" value="<?= ''; ?>"></td>
 							<td></td>
@@ -56,7 +57,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 							<td class="text-right" width="130">Date :</td>
 							<td><input type="text" name="rptglest" class="form-control" id="rptglest" value="<?= ''; ?>"></td>
 							<td class="text-right">Time :</td>
-							<td colspan="3"><input type="text" name="rpjamest" id="rpjamest" class="form-control" value="<?= ''; ?>"></td>
+							<td colspan="3"><input type="text" name="rpjamest" id="rpjamest" class="form-control" value="<?= date('H:i:s'); ?>"></td>
 							<td></td>
 							<td></td>
 						</tr>
@@ -78,9 +79,9 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Contract No :</td>
-							<td><input <?php echo $readonly; ?> type="text" name="" class="form-control" id="" value="<?= ''; ?>"></td>
+							<td><input <?php echo $readonly; ?> type="text" name="cono" class="form-control" id="cono" value="<?= ''; ?>"></td>
 							<td class="text-right">Expired :</td>
-							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="" id="" class="form-control" value="<?= ''; ?>"></td>
+							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="coexpdate" id="coexpdate" class="form-control" value="<?= ''; ?>"></td>
 							<td></td>
 							<td></td>
 						</tr>
@@ -94,7 +95,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Est Version :</td>
-							<td><input <?php echo $readonly; ?> type="text" name="" class="form-control" id="" value="<?= ''; ?>"></td>
+							<td><input <?php echo $readonly; ?> type="text" name="rpver" class="form-control" id="rpver" value="<?= ''; ?>"></td>
 							<td class="text-right">Survey Condition :</td>
 							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="svcond" id="svcond" class="form-control" value="<?= ''; ?>"></td>
 							<td></td>
@@ -269,6 +270,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 						<h3><i class="fa fa-table"></i> List Final Estimation</h3>
 					</div>
 					<div class="widget-content">
+						<div class="table-responsive">
 						<table class="table" id="tblList_add">
 							<thead>
 								<tr>
@@ -286,9 +288,11 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<th>DESC</th>
 									<th>Lab. Cost</th>
 									<th>Mat. Cost</th>
+									<th></th>
 								</tr>
 							</thead>
-							<!-- <tbody>
+							<tbody>
+							<!-- 
 
 						<tr>
 							<td></td>
@@ -306,8 +310,9 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 							<td></td>
 							<td></td>
 						</tr>
-					</tbody> -->
+					 --></tbody>
 						</table>
+						</div>
 					</div>
 				</div>
 			</div>

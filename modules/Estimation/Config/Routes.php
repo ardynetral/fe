@@ -8,3 +8,4 @@ $routes->add('/estimation/add_detail', '\Modules\Estimation\Controllers\Estimati
 // $routes->add('/prain/edit/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::edit/$1', ['filter' => 'login']);
 // $routes->add('/prain/delete/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::delete/$1', ['filter' => 'login']);
 $routes->add('/estimation/list_data', '\Modules\Estimation\Controllers\Estimation::list_data', ['filter' => 'login']);
+$routes->add('/estimation/getDataEstimasi', '\Modules\Estimation\Controllers\Estimation::getDataEstimasi', ['filter' => 'login']);

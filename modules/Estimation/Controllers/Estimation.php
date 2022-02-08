@@ -98,6 +98,7 @@ class Estimation extends \CodeIgniter\Controller
 
 	public function add()
 	{
+		check_exp_time();
 		$data = [];
 		$data['data'] = "";
 		$data['act'] = "Add";
@@ -120,6 +121,66 @@ class Estimation extends \CodeIgniter\Controller
 		return view('Modules\Estimation\Views\add_detail',$data);
 	}	
 
+	public function getDataEstimasi() 
+	{
+		$CRNO = $this->request->getPost('crno');
+		if($this->request->isAjax()) {
+			$response = $this->client->request('GET', 'estimasi/listOneCrno', [
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'query' => [
+					'crno' => $CRNO
+				]
+			]);	
+			$result = json_decode($response->getBody()->getContents(), true);
+			if($result['data']['dataOne']==null) {
+				$data['status'] = "Failled";
+				$data['message'] = "Data tidak ditemukan";
+				echo json_encode($data);
+				die();
+			}
+			$data['status'] = "success";
+			$data['header'] = $result['data']['dataOne'][0];
+			$data['detail'] = $this->fill_table_detail($result['data']['dataTwo']);
+			// echo var_dump($result);die();		
+			echo json_encode($data);
+			die();
+		}
+	}
+
+	public function fill_table_detail($data) {
+		$html = "";
+		if($data=="") {
+			$html="";
+		} else {
+			$no=1;
+			foreach($data as $row) {
+				$html .= '<tr>';
+				$html .= '<td>'.$no.'</td>';
+				$html .= '<td>'.$row['cmcode'].'</td>';
+				$html .= '<td>'.$row['dycode'].'</td>';
+				$html .= '<td>'.$row['rmcode'].'</td>';
+				$html .= '<td>'.$row['cmcode'].'</td>';
+				$html .= '<td>'.$row['rdmhr'].'</td>';
+				$html .= '<td>'.$row['rdsize'].'</td>';
+				$html .= '<td>'.$row['muname'].'</td>';
+				$html .= '<td>'.$row['rdqty'].'</td>';
+				$html .= '<td>'.$row['rdmhr'].'</td>';
+				$html .= '<td>'.$row['curr_symbol'].'</td>';
+				$html .= '<td>'.$row['rddesc'].'</td>';
+				$html .= '<td>'.number_format($row['rdlab'],2).'</td>';
+				$html .= '<td>'.number_format($row['rdmat'],2).'</td>';
+				$html .= '<td><a href="#" class="btn btn-primary btn-xs view">view</a></td>';
+				$html .= '</tr>';
+				$no++;
+			}
+		}
+
+		return $html;
+	}
+	// DROPDOwN
 	public function lccode_dropdown($selected = "")
 	{
 
@@ -171,8 +232,8 @@ class Estimation extends \CodeIgniter\Controller
 		$result = json_decode($response->getBody()->getContents(), true);
 
 		$option = "";
-		return $option;
-		die();
+		// return $option;
+		// die();
 		$res = $result['data']['datas'];
 		$option .= '<select name="cmcode" id="cmcode" class="select-cmcode">';
 		$option .= '<option value="">-select-</option>';
@@ -226,9 +287,9 @@ class Estimation extends \CodeIgniter\Controller
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
 			],
-			'json' => [
-				'start' => 0,
-				'rows' => 2000
+			'query' => [
+				'offset' => 0,
+				'limit' => 2000
 
 			]
 		]);

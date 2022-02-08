@@ -22,6 +22,7 @@
 <script src="<?php echo base_url();?>/public/themes/smartdepo/js/king-table.js"></script>
 <script src="<?php echo base_url();?>/public/themes/smartdepo/js/king-components.js"></script>
 <script src="<?php echo base_url();?>/public/themes/smartdepo/js/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
+<script src="<?php echo base_url();?>/public/themes/smartdepo/js/plugins/jquery-dateformat/jquery-dateformat.min.js"></script>
 
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="<?php echo base_url();?>/public/themes/smartdepo/js/plugins/fontawesome-iconpicker/dist/js/fontawesome-iconpicker.min.js"></script>

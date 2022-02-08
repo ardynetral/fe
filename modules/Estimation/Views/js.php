@@ -44,48 +44,29 @@
 			window.location.href = "#OrderPra";
 		});
 
-		$("#save").click(function(e) {
+		$("form#fEstimasi").on("submit", function(e) {
 			e.preventDefault();
-			// window.scrollTo(xCoord, yCoord);
-			var formData = "cpiorderno=" + $("#cpiorderno").val();
-			formData += "&cpiopr=" + $("#prcode").val();
-			formData += "&cpicust=" + $("#cucode").val();
-			formData += "&cpidish=" + $("#cpidish").val();
-			formData += "&cpidisdat=" + $("#cpidisdat").val();
-			formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-			formData += "&cpdepo=" + $("#cpdepo").val();
-			formData += "&cpipratgl=" + $("#cpipratgl").val();
-			formData += "&cpirefin=" + $("#cpirefin").val();
-			formData += "&cpijam=" + $("#cpijam").val();
-			formData += "&cpives=" + $("#cpives").val();
-			formData += "&cpivoyid=" + $("#cpivoyid").val();
-			formData += "&cpicargo=" + $("#cpicargo").val();
-			formData += "&cpideliver=" + $("#cpideliver").val();
-			// alert(formData);
-			// console.log("data="+formData);
 
 			$.ajax({
 				url: "<?php echo site_url('estimation/add'); ?>",
 				type: "POST",
-				data: formData,
+				data: new FormData(this),
+	            processData: false,
+	            contentType: false,
+	            cache: false,					
 				dataType: 'json',
 				success: function(json) {
-					if (json.message == "success") {
+					if (json.status == "success") {
 						Swal.fire({
 							icon: 'success',
 							title: "Success",
 							html: '<div class="text-success">' + json.message + '</div>'
 						});
-						window.location.href = "#formDetail";
-						// $("#navItem3").removeClass("disabled");
-						// $("#navLink3").attr("data-toggle","tab");
-						// $("#navLink3").trigger("click");	
-						$("#praid").val(json.praid);
-						$("#saveData").prop('disabled', true);
+						// $("#saveData").prop('disabled', true);
 					} else {
 						Swal.fire({
-							icon: 'error',
-							title: "Error",
+							icon: 'warning',
+							title: "Alert",
 							html: '<div class="text-danger">' + json.message + '</div>'
 						});
 					}
@@ -582,9 +563,47 @@
 			});
 		});
 
-		function fillTableDetail(data) {
+		$("#tblList_add tbody").on("click",".view", function(e){
+			e.preventDefault();
+			$("#saveDetail").prop("disabled",false);
+			var row = $(this).closest("tr");
+			var rpid = row.find(".no").text();
+			var lccode = row.find(".lccode").text();
+			var cmcode = row.find(".cmcode").text();
+			var dycode = row.find(".dycode").text();
+			var rmcode = row.find(".rmcode").text();
+			var rdcalmtd = row.find(".rdcalmtd").text();
+			var rdsize = row.find(".rdsize").text();
+			var muname = row.find(".muname").text();
+			var rdqtyact = row.find(".rdqty").text();
+			var rdmhr = row.find(".rdmhr").text();
+			var tucode = row.find(".curr_symbol").text();
+			var rdmat = row.find(".rdmat span").text();
+			var curr_code = "";
+			if(tucode=="IDR") {	curr_code="001"; } 
+			else if(tucode=="USD") { curr_code="002"; } 
+			else if(tucode=="JPY") { curr_code="003"; }
+			else if(tucode=="SGD") { curr_code="004"; }
+			else if(tucode=="EUD") { curr_code="005"; }
+			$("#rpid").val(rpid);
+			$("#lccode").select2().select2('val',lccode);
+			$("#cmcode").select2().select2('val',cmcode);
+			$("#dycode").select2().select2('val',dycode);
+			$("#rmcode").select2().select2('val',rmcode);
+			$("#rdsize").val(rdsize);
+			$("#muname").val(muname);
+			$("#rdqtyact").val(rdqtyact);
+			$("#rdmhr").val(rdmhr);
+			$("#tucode").val(curr_code);
+			$("#rdmat").val(rdmat);
+			$("input[name=rdcalmtd][value=" + rdcalmtd + "]").prop('checked', true);
+			// var $set_rdcalmtd = $('input:radio[name=rdcalmtd]');
+			// $("input[name=rdcalmtd][value=" + cmcode + "]").prop('checked', true);
+	  //       if($set_rdcalmtd.is(':checked') === false) {
+	  //           $set_rdcalmtd.filter('[value=Male]').prop('checked', true);
+	  //       }				
+		});
 
-		}
 		// End Step 2
 		$('#ctTable tbody').on("click", ".print_order", function(e) {
 			e.preventDefault();

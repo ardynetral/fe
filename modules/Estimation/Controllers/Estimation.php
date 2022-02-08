@@ -101,6 +101,27 @@ class Estimation extends \CodeIgniter\Controller
 		check_exp_time();
 		$data = [];
 		$data['data'] = "";
+		$form_params = [];
+		if($this->request->isAjax()) {
+			// echo var_dump($this->request->getPost());die();
+			// $form_params= [
+
+			// ];
+			// $response = $this->client->request('POST', 'estimasi/create', [
+			// 	'headers' => [
+			// 		'Accept' => 'application/json',
+			// 		'Authorization' => session()->get('login_token')
+			// 	],
+			// 	'form_params' => $_POST
+			// ]);	
+			// $result = json_decode($response->getBody()->getContents(), true);		
+			// echo var_dump($result);die();
+			$data['status'] = "Failled";	
+			$data['message'] = "Under Construction..";
+			echo json_encode($data);
+			die();	
+		}	
+
 		$data['act'] = "Add";
 		$data['page_title'] = "Estimation";
 		$data['page_subtitle'] = "Estimation Page";
@@ -158,20 +179,21 @@ class Estimation extends \CodeIgniter\Controller
 			$no=1;
 			foreach($data as $row) {
 				$html .= '<tr>';
-				$html .= '<td>'.$no.'</td>';
-				$html .= '<td>'.$row['cmcode'].'</td>';
-				$html .= '<td>'.$row['dycode'].'</td>';
-				$html .= '<td>'.$row['rmcode'].'</td>';
-				$html .= '<td>'.$row['cmcode'].'</td>';
-				$html .= '<td>'.$row['rdmhr'].'</td>';
-				$html .= '<td>'.$row['rdsize'].'</td>';
-				$html .= '<td>'.$row['muname'].'</td>';
-				$html .= '<td>'.$row['rdqty'].'</td>';
-				$html .= '<td>'.$row['rdmhr'].'</td>';
-				$html .= '<td>'.$row['curr_symbol'].'</td>';
-				$html .= '<td>'.$row['rddesc'].'</td>';
-				$html .= '<td>'.number_format($row['rdlab'],2).'</td>';
-				$html .= '<td>'.number_format($row['rdmat'],2).'</td>';
+				$html .= '<td class="no">'.$no.'</td>';
+				$html .= '<td class="lccode" style="display:none">'.$row['lccode'].'</td>';
+				$html .= '<td class="cmcode">'.$row['cmcode'].'</td>';
+				$html .= '<td class="dycode">'.$row['dycode'].'</td>';
+				$html .= '<td class="rmcode">'.$row['rmcode'].'</td>';
+				$html .= '<td class="rdcalmtd">'.$row['rdcalmtd'].'</td>';
+				$html .= '<td class="rdmhr"></td>';
+				$html .= '<td class="rdsize">'.$row['rdsize'].'</td>';
+				$html .= '<td class="muname">'.$row['muname'].'</td>';
+				$html .= '<td class="rdqty">'.$row['rdqty'].'</td>';
+				$html .= '<td class="rdmhr">'.$row['rdmhr'].'</td>';
+				$html .= '<td class="curr_symbol">'.$row['curr_symbol'].'</td>';
+				$html .= '<td class="rddesc">'.$row['rddesc'].'</td>';
+				$html .= '<td class="rdlab">'.number_format($row['rdlab'],2).'<span style="display:none;">'.$row['rdlab'].'</span></td>';
+				$html .= '<td class="rdmat">'.number_format($row['rdmat'],2).'<span style="display:none;">'.$row['rdmat'].'</span></td>';
 				$html .= '<td><a href="#" class="btn btn-primary btn-xs view">view</a></td>';
 				$html .= '</tr>';
 				$no++;

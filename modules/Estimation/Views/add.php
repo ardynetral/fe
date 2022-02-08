@@ -37,7 +37,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 		<div id="alert">
 
 		</div>
-		<form id="fEstimasi" class="form-horizontal" role="form">
+		<form id="fEstimasi" class="form-horizontal" role="form" method="POST">
 			<?= csrf_field() ?>
 			<?php $readonly = 'readonly'; ?>
 			<fieldset>
@@ -111,7 +111,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<!-- <button type="button" id="updateData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp; -->
 									<button type="button" id="cancel" class="btn btn-default"><i class="fa fa-ban"></i> Back</button>
 								<?php else : ?>
-									<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
+									<button type="submit" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
 
 									<a href="<?= site_url('estimation') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 								<?php endif; ?>
@@ -131,11 +131,11 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 					</div>
 					<div class="widget-content">
 						<form id="formDetail" class="form-horizontal" role="form">
-							<input type="hidden" name="csrf_test_name" value="8cfe7a8c003a7f787f5f0eb4f24fb8f5"> <input type="hidden" name="pracrnoid" id="pracrnoid">
 							<fieldset>
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Location</label>
 									<div class="col-sm-8">
+										<input type="hidden" name="rpid" id="rpid">
 										<?= $lccode_dropdown; ?>
 									</div>
 								</div>
@@ -161,23 +161,23 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<label class="col-sm-4 control-label text-right">Calculation Method</label>
 									<div class="col-sm-8">
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="1" checked="">
+											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="L">
 											<span><i></i>L</span>
 										</label>
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="2">
+											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="S">
 											<span><i></i>S</span>
 										</label>
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="3">
+											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="P">
 											<span><i></i>P</span>
 										</label>
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="4">
+											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="Q">
 											<span><i></i>Q</span>
 										</label>
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="5">
+											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="B">
 											<span><i></i>B</span>
 										</label>
 									</div>
@@ -186,49 +186,45 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<label class="col-sm-4 control-label text-right">Size</label>
 									<div class="col-sm-8">
 										<input type="text" name="rdsize" class="form-control" id="rdsize">
-										<i class="err-crno text-danger" style="display: none;"></i>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Measurement Unit</label>
 									<div class="col-sm-8">
 										<input type="text" name="muname" class="form-control" id="muname">
-										<i class="err-crno text-danger" style="display: none;"></i>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Quantity</label>
 									<div class="col-sm-8">
 										<input type="text" name="rdqtyact" class="form-control" id="rdqtyact">
-										<i class="err-crno text-danger" style="display: none;"></i>
+										
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Man Hour</label>
 									<div class="col-sm-8">
 										<input type="text" name="rdmhr" class="form-control" id="rdmhr">
-										<i class="err-crno text-danger" style="display: none;"></i>
+										
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Currency</label>
 									<div class="col-sm-8">
-										<input type="text" name="tucode" class="form-control" id="tucode">
-										<i class="err-crno text-danger" style="display: none;"></i>
+										<?=currency_dropdown2('tucode','');?>
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Material Cost</label>
 									<div class="col-sm-8">
 										<input type="text" name="rdmat" class="form-control" id="rdmat">
-										<i class="err-crno text-danger" style="display: none;"></i>
+										
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Total Cost</label>
 									<div class="col-sm-8">
 										<input type="text" name="rdtotal" class="form-control" id="rdtotal">
-										<i class="err-crno text-danger" style="display: none;"></i>
 									</div>
 								</div>
 

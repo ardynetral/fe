@@ -569,6 +569,31 @@ function currency_dropdown2($varname="",$selected="")
 	die();
 }
 
+function cleaning_method($varname = "", $selected="") {
+	$api = api_connect();
+	$response = $api->request('GET','repair_methods/getCleanMethod',[
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		],
+		'query' => [
+			'offset' => 0,
+			'limit' =>100
+		]
+	]);
+
+	$result = json_decode($response->getBody()->getContents(), true);
+	$res = $result['data']['datas'];
+	$option = "";
+	$option .= '<select name="'.$varname.'" id="'.$varname.'" class="form-control">';
+	foreach($res as $r) {
+		$option .= "<option value='".$r['rmcode'] ."'". ((isset($selected) && $selected==$r['rmcode']) ? ' selected' : '').">".$r['rmdesc']."</option>"; 
+	}
+	$option .="</select>";
+	return $option; 
+	die();
+}
+
 function check_bukti_bayar($praid) 
 {
 	$api = api_connect();

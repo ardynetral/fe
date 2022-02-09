@@ -31,19 +31,6 @@
 			autoclose: true,
 		});
 
-
-		// $("#cpipratgl").datepicker("disable");
-
-		$("#addOrder").on('click', function(e) {
-			e.preventDefault();
-			$("#save").show();
-			$("#update").hide();
-			$("#form1")[0].reset();
-			$("#formDetail")[0].reset();
-			$("#detTable tbody").html("");
-			window.location.href = "#OrderPra";
-		});
-
 		$("form#fEstimasi").on("submit", function(e) {
 			e.preventDefault();
 
@@ -62,7 +49,8 @@
 							title: "Success",
 							html: '<div class="text-success">' + json.message + '</div>'
 						});
-						// $("#saveData").prop('disabled', true);
+						$("#saveData").prop('disabled', true);
+						$("#saveDetail").prop('disabled', false);
 					} else {
 						Swal.fire({
 							icon: 'warning',
@@ -156,107 +144,6 @@
 			});
 		});
 
-
-		// BTN View click
-		$('#ctTable tbody').on('click', '.view-order', function(e) {
-			e.preventDefault();
-			var praid = $(this).data('praid');
-			$("#detTable tbody").html("");
-			$("#save").hide();
-			$("#cancel").hide();
-			$("#editOrderFrame").show();
-			disableFormOrder();
-			$.ajax({
-				url: "<?php echo site_url('estimation/ajax_view/'); ?>" + praid,
-				type: "POST",
-				dataType: 'json',
-				// data:"praid="+praid,
-				success: function(json) {
-					if (json.status === "success") {
-						// console.log("data: "+json.dt_header.cpidish);
-						// "praid":42,"cpiorderno":"PI000D100000024","cpopr":"CMA","cpcust":"MIF","cpidish":"BEN","cpidisdat":"2021-09-01","liftoffcharge":0,"cpdepo":"11A25","cpipratgl":"2021-09-13","cpirefin":"","cpijam":"","cpivoyid":123,"cpives":"ARMADA SEJATI","cpicargo":"","cpideliver":"","cpilunas":0,"voyages":{"voyid":123,"vesid":"SINAR BATAM","voyno":"V246"},"vessels":{"vesid":"ARMADA SEJATI","vesopr":"SPIL","cncode":"ID","vestitle":"ARMADA SEJATI"
-						// $("#cpidish option[value="+json.dt_header.cpidish+"]").attr("selected","selected");
-						$("#praid").val(json.dt_header.praid);
-						$("#cpidish").select2().select2('val', json.dt_header.cpidish);
-						$("#prcode").select2().select2('val', json.dt_header.cpopr);
-						$("#cucode").val(json.dt_header.cpcust);
-						$("#cpidisdat").val(json.dt_header.cpidisdat);
-						if (json.dt_header.liftoffcharge == 1) {
-							$("#liftoffcharge").prop('checked', true);
-							$("#liftoffcharge:checked").val(json.dt_header.liftoffcharge);
-						}
-						$("#cpdepo").select2().select2('val', json.dt_header.cpdepo);
-						$("#cpiorderno").val(json.dt_header.cpiorderno);
-						$("#cpipratgl").val(json.dt_header.cpipratgl);
-						$("#cpirefin").val(json.dt_header.cpirefin);
-						$("#cpijam").val(json.dt_header.cpijam);
-						$("#cpives").select2().select2('val', json.dt_header.cpives);
-						$("#cpivoyid").val(json.dt_header.cpivoyid);
-						if (json.dt_header.vessels != null) {
-							$("#cpopr").val(json.dt_header.vessels.vesopr);
-						}
-						$("#cpicargo").val(json.dt_header.cpicargo);
-						$("#cpideliver").val(json.dt_header.cpideliver);
-
-						// Hitung HC_STD
-						$("#hc20").val(json.hc20);
-						$("#hc40").val(json.hc40);
-						$("#hc45").val(json.hc45);
-						$("#std20").val(json.std20);
-						$("#std40").val(json.std40);
-
-						// get data container
-						var dt_container = json.dt_detail;
-						if (dt_container.length > 0) {
-							dt_container.forEach(list_container);
-							$("#detTable tbody").html(dt_container);
-						}
-
-						window.location.href = "#OrderPra";
-
-					} else {
-
-						Swal.fire({
-							icon: 'error',
-							title: "Error",
-							html: '<div class="text-danger">' + json.message + '</div>'
-						});
-					}
-				}
-			});
-		});
-
-		$("#ctTable tbody").on("click", ".approve", function(e) {
-			e.preventDefault();
-			var praid = $(this).data('praid');
-			var formData = "cpiorderno=" + $("#cpiorderno").val();
-			formData += "&praid=" + praid;
-			// console.log(formData);
-			$.ajax({
-				url: "<?php echo site_url('estimation/approve_order/'); ?>" + praid,
-				type: "POST",
-				data: formData,
-				dataType: 'json',
-				success: function(json) {
-					console.log(json.message);
-					if (json.message == "success") {
-						Swal.fire({
-							icon: 'success',
-							title: "Success",
-							html: '<div class="text-success">Order Approved</div>'
-						});
-						window.location.href = "<?php echo site_url('estimation'); ?>";
-					} else {
-						Swal.fire({
-							icon: 'error',
-							title: "Error",
-							html: '<div class="text-danger">' + json.message + '</div>'
-						});
-					}
-				}
-			});
-		});
-
 		function list_container(item, index, arr) {
 			var num = index + 1;
 			var cpishold = "";
@@ -288,9 +175,11 @@
 				"</tr>";
 		}
 
-		$('#ctTable tbody').on('click', '.delete', function(e) {
+		$('#tblList_add tbody').on('click', '.delete', function(e) {
 			e.preventDefault();
-			var code = $(this).data('kode');
+			var svid = $(this).data('svid');
+			var rpid = $(this).data('rpid');
+			var rpver = $(this).data('rpver');
 			Swal.fire({
 				title: 'Are you sure?',
 				icon: 'warning',
@@ -300,16 +189,17 @@
 				confirmButtonText: 'Yes, delete it!'
 			}).then((result) => {
 				if (result.isConfirmed) {
-					delete_data(code);
+					delete_data(svid,rpid,rpver);
 				}
 			});
 
 		});
 
-		function delete_data(code) {
+		function delete_data(svid,rpid,rpver) {
 			$.ajax({
-				url: "<?php echo site_url('city/delete/'); ?>" + code,
+				url: "<?php echo site_url('estimation/delete_detail'); ?>",
 				type: "POST",
+				data: { "svid":svid, "rpid":rpid, "rpver":rpver },
 				dataType: 'json',
 				success: function(json) {
 					if (json.message == "success") {
@@ -330,107 +220,37 @@
 			});
 		}
 
-		// STEP 1 :
-		$("#prcode").on("change", function() {
-			var prcode = $(this).val();
-			$.ajax({
-				url: "<?= site_url('estimation/ajax_prcode_listOne/'); ?>" + prcode,
-				type: "POST",
-				data: "prcode=" + prcode,
-				dataType: "JSON",
-				success: function(json) {
-					if (json.status == "Failled") {
-						Swal.fire({
-							icon: 'error',
-							title: "Error",
-							html: '<div class="text-danger">' + json.message + '</div>'
-						});
-					} else {
-						$("#cucode").val(json.data.cucode);
-					}
-				}
-			});
+		$("#addDetail").on("click", function(e){
+			var det_crno = $("#det_crno").val();
+			$("#saveDetail").prop('disabled', false);
+			$("#formDetail").trigger("reset");
+			$("#det_crno").val(crno);
+			$("#lccode").select2().select2('val','');
+			$("#cmcode").select2().select2('val','');
+			$("#dycode").select2().select2('val','');
+			$("#rmcode").select2().select2('val','');			
 		});
-
-		// Vessel dropdown change
-		$("#cpives").on("change", function() {
-			var vesid = $(this).val();
-			$.ajax({
-				url: "<?= site_url('estimation/ajax_vessel_listOne/'); ?>" + vesid,
-				type: "POST",
-				data: "vesid=" + vesid,
-				dataType: "JSON",
-				success: function(json) {
-					if (json.status == "Failled") {
-						Swal.fire({
-							icon: 'error',
-							title: "Error",
-							html: '<div class="text-danger">' + json.message + '</div>'
-						});
-					} else {
-						$("#cpopr").val(json.data.vesopr);
-					}
-				}
-			});
-		});
-
-
-		// STEP 2 : 
-		//Get Container Code detail
-		$("#ccode").on("change", function() {
-			var cccode = $(this).val();
-			$.ajax({
-				url: "<?= site_url('estimation/ajax_ccode_listOne/'); ?>" + cccode,
-				type: "POST",
-				data: "ccode=" + ccode,
-				dataType: "JSON",
-				success: function(json) {
-					if (json.status == "Failled") {
-						Swal.fire({
-							icon: 'error',
-							title: "Error",
-							html: '<div class="text-danger">' + json.message + '</div>'
-						});
-					} else {
-						$("#ctcode").val(json.data.ctcode);
-						$("#cclength").val(json.data.cclength);
-						$("#ccheight").val(json.data.ccheight);
-					}
-
-				}
-			});
-		});
-
 
 		// save detailContainer
-		$("#saveDetail").on("click", function(e) {
+		$("#formDetail").on("submit", function(e) {
 			e.preventDefault();
-			var cpife = $("input:radio[name=cpife]:checked").val();
-			var formData = "praid=" + $("#praid").val();
-			formData += "&crno=" + $("#crno").val();
-			formData += "&ccode=" + $("#ccode").val();
-			formData += "&ctcode=" + $("#ctcode").val();
-			formData += "&cclength=" + $("#cclength").val();
-			formData += "&ccheight=" + $("#ccheight").val();
-			formData += "&cpife=" + cpife;
-			formData += "&cpishold=" + $("#cpishold").val();
-			formData += "&cpiremark=" + $("#cpiremark").val();
-
+			$("#tblList_add tbody").html("");
 			$.ajax({
-				url: "<?php echo site_url('estimation/addcontainer'); ?>",
+				url: "<?php echo site_url('estimation/save_detail'); ?>",
 				type: "POST",
-				data: formData,
+				data: new FormData(this),
+	            processData: false,
+	            contentType: false,
+	            cache: false,		
 				dataType: 'json',
 				success: function(json) {
-					if (json.message == "success") {
+					if (json.status == "success") {
 						Swal.fire({
 							icon: 'success',
 							title: "Success",
 							html: '<div class="text-success">' + json.message + '</div>'
 						});
-						// window.location.href = "<?php echo site_url('estimation/view/'); ?>"+json.praid;
-						window.location.href = "<?php echo site_url('estimation'); ?>";
-						// getDetailOrder(json.praid);
+						$("#tblList_add tbody").html(json.data);
 					} else {
 						Swal.fire({
 							icon: 'error',
@@ -523,6 +343,8 @@
 			var crno = $("#rpcrno").val();
 			var status = "";
 			$("#fEstimasi").trigger("reset");
+			$("#formDetail").trigger("reset");
+			$("#tblList_add tbody").html("");
 			$("#rpcrno").val(crno);				
 			$(this).val($(this).val().toUpperCase());
 			$.ajax({
@@ -544,6 +366,12 @@
 						// fill data Header
 						var rptglest = $.format.date(json.header.rptglest,"dd-MM-yyyy")
 						var svsurdat = $.format.date(json.header.svsurdat,"dd-MM-yyyy")
+						$("#det_crno").val(crno);
+						$("#svid").val(json.header.svid);
+						$("#det_svid").val(json.header.svid);
+						$("#syid").val(json.header.syid);
+						$("#rpcrton").val(json.header.svcrton);
+						$("#rpcrtby").val(json.header.svcrtby);
 						$("#rpnoest").val(json.header.rpnoest);
 						$("#rptglest").val(rptglest);
 						$("#cccode").val(json.header.cccode);
@@ -565,7 +393,7 @@
 
 		$("#tblList_add tbody").on("click",".view", function(e){
 			e.preventDefault();
-			$("#saveDetail").prop("disabled",false);
+			$("#saveDetail").prop("disabled",true);
 			var row = $(this).closest("tr");
 			var rpid = row.find(".no").text();
 			var lccode = row.find(".lccode").text();
@@ -609,19 +437,6 @@
 			e.preventDefault();
 			var praid = $(this).data("praid");
 			window.open("<?php echo site_url('estimation/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
-		});
-
-		$('[data-toggle="tab"]').on('click', function() {
-			var $this = $(this),
-				loadurl = $this.attr('href'),
-				targ = $this.attr('data-target');
-
-			$.get(loadurl, function(data) {
-				$(targ).html(data);
-			});
-
-			$this.tab('show');
-			return false;
 		});
 
 		runDataTables();

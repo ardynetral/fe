@@ -40,6 +40,10 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 		<form id="fEstimasi" class="form-horizontal" role="form" method="POST">
 			<?= csrf_field() ?>
 			<?php $readonly = 'readonly'; ?>
+			<input type="hidden" name="svid" id="svid">
+<!-- 			<input type="hidden" name="syid" id="syid"> -->
+			<input type="hidden" name="rpcrton" id="rpcrton">
+			<input type="hidden" name="rpcrtby" id="rpcrtby">
 			<fieldset>
 				<table class="tbl-form" width="100%">
 					<!-- 9 kolom -->
@@ -87,7 +91,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Surveyor :</td>
-							<td><input <?php echo $readonly; ?> type="text" name="" class="form-control" id="" value="<?= ''; ?>"></td>
+							<td><input <?php echo $readonly; ?> type="text" name="syid" class="form-control" id="syid" value="<?= ''; ?>"></td>
 							<td class="text-right">Survey Date :</td>
 							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="svsurdat" id="svsurdat" class="form-control" value="<?= ''; ?>"></td>
 							<td></td>
@@ -130,11 +134,13 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 						<h3><i class="fa fa-table"></i> Form Input Estimation Detail</h3>
 					</div>
 					<div class="widget-content">
-						<form id="formDetail" class="form-horizontal" role="form">
+						<form method="post" id="formDetail" class="form-horizontal" role="form"  enctype="multipart/form-data">
 							<fieldset>
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Location</label>
 									<div class="col-sm-8">
+										<input type="hidden" name="det_crno" id="det_crno">
+										<input type="hidden" name="det_svid" id="det_svid">
 										<input type="hidden" name="rpid" id="rpid">
 										<?= $lccode_dropdown; ?>
 									</div>
@@ -224,7 +230,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Total Cost</label>
 									<div class="col-sm-8">
-										<input type="text" name="rdtotal" class="form-control" id="rdtotal">
+										<input type="text" name="rdtotala" class="form-control" id="rdtotala">
 									</div>
 								</div>
 
@@ -249,7 +255,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 								</div>
 								<div class="form-group">
 									<div class="col-sm-offset-4 col-sm-8">
-										<button type="button" id="saveDetail" class="btn btn-primary" disabled=""><i class="fa fa-check-circle"></i> Save</button>
+										<button type="submit" id="saveDetail" class="btn btn-primary" disabled=""><i class="fa fa-check-circle"></i> Save</button>
 									</div>
 								</div>
 							</fieldset>

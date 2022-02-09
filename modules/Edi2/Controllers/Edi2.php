@@ -1,54 +1,62 @@
 <?php
+
 namespace Modules\Edi2\Controllers;
+
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class Edi2 extends \CodeIgniter\Controller
 {
 	private $client;
 	public function __construct()
 	{
-		helper(['url','form','app']);
+		helper(['url', 'form', 'app']);
 		$this->client = api_connect();
 	}
 
 	public function index()
 	{
-		check_exp_time();
 		$module = service('uri')->getSegment(1);
 		has_privilege($module, "_view");
-		define("has_insert", has_privilege_check($module, '_insert'));
-		define("has_approval", has_privilege_check($module, '_approval'));
-		define("has_edit", has_privilege_check($module, '_update'));
-		define("has_delete", has_privilege_check($module, '_delete'));
-		define("has_print", has_privilege_check($module, '_printpdf'));
+		$token = get_token_item();
 
+				$token = get_token_item();
+		$user_id = $token['id'];
+		$group_id = $token['groupId'];
+		$prcode = $token['prcode'];
+
+		if (($group_id == 1) || ($group_id == 2)) {
+			$data['prcode'] = $prcode;
+			$data['cucode'] = $prcode;
+		} else {
+			$data['prcode'] = '0';
+			$data['cucode'] = '0';
+		}
+		$data['group_id'] = $group_id;
+		return view('Modules\Edi2\Views\add', $data);
+	}
+
+	public function view($code)
+	{
 		$token = get_token_item();
 		$user_id = $token['id'];
 		$group_id = $token['groupId'];
-		// $prcode = $token['prcode'];
+		$prcode = $token['prcode'];
 
-		$data = [];
-		$offset=0;
-		$limit=100;
-
-		// $response = $this->client->request('GET','companies/list',[
-		// 	'headers' => [
-		// 		'Accept' => 'application/json',
-		// 		'Authorization' => session()->get('login_token')
-		// 	]
-		// ]);
-
-		// $result = json_decode($response->getBody()->getContents(),true);	
-
-		// $data['data'] = isset($result['data']['datas'])?$result['data']['datas']:"";
+		if (($group_id == 1) || ($group_id == 2)) {
+			$data['prcode'] = $prcode;
+			$data['cucode'] = $prcode;
+		} else {
+			$data['prcode'] = '0';
+			$data['cucode'] = '0';
+		}
+		$data['group_id'] = $group_id;
+		return view('Modules\Edi2\Views\view', $data);
+	}
 
 
-		// $data['prcode'] = $prcode;
-		// $data['cucode'] = $prcode;
-		// echo dd($data);
-		// return view('Modules\PraIn\Views\tab_base',$data);
-		$data['data'] = "";
-		$data['page_title'] = "EDI Format 2";
-		$data['page_subtitle'] = "EDI Format 2";
-		return view('Modules\Edi2\Views\index',$data);
+	public function printEDI()
+	{
 	}
 }

@@ -31,6 +31,23 @@
 	$(document).ready(function(){
 		$(".sub-menu li.active").parent().parent().addClass('active');
 		$(".sub-menu li.active").parent().show();
+
+		// check session timeout
+		function checkSession() {
+			$.ajax({
+				url: "<?=site_url('is_timeout')?>",
+				type:"POST",
+				dataType:"json",
+				success: function(json) {
+					if(json==true) {
+						window.location.href = "<?=site_url('logout')?>";
+					}
+				}
+			});
+		}
+		setInterval(function(){
+			checkSession();
+		}, 60000);
 	});
 </script>
 

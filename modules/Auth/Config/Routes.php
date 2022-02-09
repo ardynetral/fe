@@ -10,3 +10,4 @@ $routes->add('/activate', '\Modules\Auth\Controllers\Auth::activate');
 $routes->add('/change_password', '\Modules\Auth\Controllers\Auth::change_password');
 $routes->post('/update_new_password', '\Modules\Auth\Controllers\Auth::update_new_password');
 $routes->get('/logout', '\Modules\Auth\Controllers\Auth::logout');
+$routes->add('/is_timeout', '\Modules\Auth\Controllers\Auth::is_timeout');

@@ -23,7 +23,7 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $baseURL = 'http://202.157.185.83/smartdepo';
+	public $baseURL = 'https://localhost/fe';
 	/**
 	 * --------------------------------------------------------------------------
 	 * Index File
@@ -107,7 +107,8 @@ class App extends BaseConfig
 	 *
 	 * @var string
 	 */
-	public $appTimezone = 'America/Chicago';
+	// public $appTimezone = 'America/Chicago';
+	public $appTimezone = 'Asia/Jakarta';
 
 	/**
 	 * --------------------------------------------------------------------------

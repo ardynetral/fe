@@ -218,7 +218,26 @@ class Auth extends \CodeIgniter\Controller
 		return redirect()->to(site_url());
 	}
 
-
+	public function is_timeout()
+	{
+		if($this->request->isAjax()) 
+		{
+			$timeout = false;
+			if(session()->get('login_token')!="") {
+				// $token = get_token_item();
+				// $exp = $token['exp'];
+				// $date = new DateTime();
+				// $date->setTimestamp($exp);
+				// $token_exp = $date->format('Y-m-d H:i:s');
+				$exp_time = session()->get('exp_time');
+				$now = date("Y-m-d H:i:s");
+				 if($now>=$exp_time) {
+					$timeout = true;
+				 }	
+			}
+			echo json_encode($timeout);die();
+		}
+	}
 
 
 }

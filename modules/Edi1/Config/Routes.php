@@ -1,7 +1,5 @@
 <?php
 
-$routes->add('/edi1', '\Modules\Edi1\Controllers\Edi1::index', ['filter' => 'login']);
-// $routes->add('/prain/view/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::view/$1', ['filter' => 'login']);
-// $routes->add('/prain/add', '\Modules\PraIn\Controllers\PraIn::add', ['filter' => 'login']);
-// $routes->add('/prain/edit/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::edit/$1', ['filter' => 'login']);
-// $routes->add('/prain/delete/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::delete/$1', ['filter' => 'login']);
+$routes->add('edi1', '\Modules\Edi1\Controllers\Edi1::index', ['filter' => 'login']);
+$routes->add('edi1/view/(:alphanum)', '\Modules\Edi1\Controllers\Edi1::view/$1', ['filter' => 'login']);
+$routes->add('edi1/printEDI', '\Modules\Edi1\Controllers\Edi1::printEDI', ['filter' => 'login']);

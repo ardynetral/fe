@@ -24,7 +24,7 @@ $(document).ready(function() {
 		format:'dd-mm-yyyy',
 		startDate: '-5y'
 	});
-
+	$(".tanggal").datepicker('setDate',new Date());
 	// $("#cpipratgl").datepicker("disable");
 	if($("#liftoffcharge").val("1")) {
 		$("#liftoffcharge").prop('checked',true);
@@ -519,6 +519,7 @@ $(document).ready(function() {
 	// save detailContainer
 	$("#saveDetail").on("click", function(e){
 		e.preventDefault();
+		var act = $(this).data('act');
 		var cpife = $("input:radio[name=cpife]:checked").val();
 		var formData = "praid=" + $("#praid").val();
 		formData += "&cpopr=" + $("#prcode").val();
@@ -549,8 +550,12 @@ $(document).ready(function() {
 					});	
 					
 					$("#formDetail").trigger("reset");
-					$("#ccode").select2().select2('val',"");					
-					loadTableContainer($("#praid").val());
+					$("#ccode").select2().select2('val',"");
+					if(act=="edit") {
+						editLoadTableContainer($("#praid").val());
+					} else {
+						loadTableContainer($("#praid").val());
+					}					
 
 				} else {
 
@@ -565,6 +570,18 @@ $(document).ready(function() {
 
 	});
 
+	$("#addContainer").on("click", function(e){
+		e.preventDefault();
+		var praid = $("#pra_id").val();
+		$("#formDetail").trigger("reset");
+		$("#pra_id").val(praid);
+		$("#ccode").select2().select2('val',"");
+		$("#crno").removeAttr("readonly");
+		$("#crno").focus();
+		$("#saveDetail").show();
+		$("#updateDetail").hide();
+	});
+
 	$('#detTable tbody').on('click', '.edit', function(e){
 		e.preventDefault();
 		$("#formDetail").trigger("reset");
@@ -573,6 +590,7 @@ $(document).ready(function() {
 	    var cpife = $('input:radio[name=cpife]');
 	    var typedo = $("input:radio[name=typedo]:checked").val();
 	    var vesprcode = $("#vesprcode").val();
+	    $("#crno").prop("readonly",true);
 		$("#prcode").select2().select2('val','');
 		$("#cucode").val("");
 		$.ajax({
@@ -599,6 +617,8 @@ $(document).ready(function() {
 					}
 
 
+					$("#saveDetail").hide();
+					$("#updateDetail").show();
 					// $("#prcode").select2().select2('val',json.cr.cpopr);
 					// $("#cucode").val(json.cr.cpcust);
 					$("#pracrnoid").val(json.cr.pracrnoid);
@@ -635,6 +655,7 @@ $(document).ready(function() {
 		$("#formDetail").trigger("reset");
 		var crid = $(this).data("crid");
 	    var cpife = $('input:radio[name=cpife]');
+	    $("#crno").prop("readonly",true);
 		$.ajax({
 			url:"<?=site_url('prain/get_one_container/');?>"+crid,
 			type:"POST",
@@ -978,10 +999,22 @@ function loadTableContainer(praid) {
 		}
 	});
 }
+
+function editLoadTableContainer(praid) {
+	$('#detTable tbody').html("");
+	$.ajax({
+		url: "<?=site_url('prain/edit_get_container/')?>"+praid,
+		dataType: "json",
+		success: function(json) {
+			$('#detTable tbody').html(json);
+		}
+	});
+}
+
 function loadTableContainer2(praid) {
 	$('#detTable tbody').html("");
 	$.ajax({
-		url: "<?=site_url('prain/get_container_by_praid2/')?>"+praid,
+		url: "<?=site_url('prain/get_container_by_praid/')?>"+praid,
 		dataType: "json",
 		success: function(json) {
 			$('#detTable tbody').html(json);

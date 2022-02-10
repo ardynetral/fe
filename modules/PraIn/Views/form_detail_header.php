@@ -87,13 +87,8 @@ $group_id = $token['groupId'];
 			</div>								
 			<div class="form-group">
 				<div class="col-sm-offset-4 col-sm-8">
-					<?php if(isset($act)&&$act=="add"):?>
-					<button type="button" id="saveDetail" class="btn btn-primary" disabled><i class="fa fa-check-circle"></i> Save</button>
-					<?php elseif((isset($act)&&$act=="edit")&&($data['orderPraContainers']==null)):?>
-						<button type="button" id="saveDetail" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>
-					<?php else:?>
-						<button type="button" id="updateDetail" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>
-					<?php endif; ?>
+					<button type="button" id="saveDetail" class="btn btn-primary" data-act="add" disabled><i class="fa fa-check-circle"></i> Save</button>
+					<a href="<?=site_url('prain');?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Back</a>
 				</div>
 			</div>						
 		</fieldset>

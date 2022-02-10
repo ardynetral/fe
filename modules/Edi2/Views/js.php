@@ -29,7 +29,7 @@
 		$('.select-pr').select2();
 
 		$("#printEDI").on("click", function(e) {
-			window.open("<?php echo site_url('edi1/printEDI'); ?>", '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+			window.open("<?php echo site_url('edi2/printEDI'); ?>", '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 			e.preventDefault();
 		});
 

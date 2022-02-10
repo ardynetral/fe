@@ -36,55 +36,34 @@ class PraIn extends \CodeIgniter\Controller
 		$offset=0;
 		$limit=100;
 		// order pra
-		if($group_id == 4) {
-			$response1 = $this->client->request('GET','orderPras/getAllData',[
-				'headers' => [
-					'Accept' => 'application/json',
-					'Authorization' => session()->get('login_token')
-				],
-				'query' => [
-					'offset' => $offset,
-					'limit'	=> $limit,
-					'pracode' => 'PI'
-				]
-			]);
+		$response1 = $this->client->request('GET','orderPras/getAllData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'offset' => $offset,
+				'limit'	=> $limit,
+				'pracode' => 'PI'
+			]
+		]);
+		$result_pra = json_decode($response1->getBody()->getContents(),true);	
 
-			$result_pra = json_decode($response1->getBody()->getContents(),true);	
-
-			$data['data_pra'] = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
-		} else {
-			$response1 = $this->client->request('GET','orderPras/getAllData',[
-				'headers' => [
-					'Accept' => 'application/json',
-					'Authorization' => session()->get('login_token')
-				],
-				'query' => [
-					'offset' => $offset,
-					'limit'	=> $limit,
-					'pracode' => 'PI'
-				]
-			]);		
-			$result_pra = json_decode($response1->getBody()->getContents(),true);	
+		if($group_id == 1) 
+		{
 			$datas = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
-
 			// Jika EMKL (User_group==1)
 			$data_pra = array();
-			if(($datas !="") && ($group_id==1)) {
-				foreach($datas as $dt) {
-					if($user_id==$dt['crtby']) {
-						$data_pra[] = $dt;
-					}
+			foreach($datas as $dt) {
+				if($user_id==$dt['crtby']) {
+					$data_pra[] = $dt;
 				}
-			// jika Principal
-			} else if(($datas !="") && ($group_id==2)) {
-				foreach($datas as $dt) {
-					if($prcode==$dt['cpopr']) {
-						$data_pra[] = $dt;
-					}
-				}
-			}	
-
+			}
 			$data['data_pra'] = $data_pra;
+		} 
+		else 
+		{
+			$data['data_pra'] = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
 		}
 
 		$data['prcode'] = $prcode;

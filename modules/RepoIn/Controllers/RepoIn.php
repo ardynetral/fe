@@ -1195,7 +1195,8 @@ class RepoIn extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		//print_r($result);		die();
+		//print_r($result);
+		//die();
 		// $recept = recept_by_praid($praid);
 		if (isset($result['data'][0]) && (count($result['data'][0])) > 0) {
 			$qrcode = $this->generate_qrcode($result['data'][0]['cpid']);
@@ -1219,6 +1220,13 @@ class RepoIn extends \CodeIgniter\Controller
 			$CPIPRATGL = $result['data'][0]['cpipratgl'];
 			$CPIRECEPTNO = $result['data'][0]['cpireceptno'];
 			// $QRCODE_CONTENT = $qrcode['content'];
+			$CRTARAK = $result['data'][0]['crtarak'];
+			$CRTARAL = $result['data'][0]['crtaral'];
+			$CRMANUF = $result['data'][0]['crmanuf'];
+			$CRMANDAT = $result['data'][0]['crmandat'];
+			$CRLASTCOND = $result['data'][0]['crlastcond'];
+			$CPIDRIVER = $result['data'][0]['cpidriver'];
+			$CPIDRIVER = $result['data'][0]['cpidriver'];
 		} else {
 			$CRNO = "";
 			$CODE = "";
@@ -1240,6 +1248,12 @@ class RepoIn extends \CodeIgniter\Controller
 			$QRCODE_CONTENT = "";
 			$CPIRECEPTNO = "";
 			$CPIPRATGL = "";
+			$CRTARAK  = "";
+			$CRTARAL  = "";
+			$CRMANUF  = "";
+			$CRMANDAT = "";
+			$CRLASTCOND = "";
+			$CPIDRIVER = "";
 		}
 
 		$result = json_decode($response->getBody()->getContents(), true);
@@ -1251,12 +1265,12 @@ class RepoIn extends \CodeIgniter\Controller
 		$html .= '
 		<html>
 			<head>
-				<title>Order PraIn | Print Kitir</title>
+				<title>Gate In | Print EIR-IN</title>
 				<link href="' . base_url() . '/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 				<style>			
 					.page-header{display:block;margin-bottom:20px;line-height:0.3;}
 					table{line-height:1.75;display:block;}
-					table td{font-weight:bold;}
+					table td{font-weight:bold;font-size:12px;}
 					.t-right{text-align:right;}
 					.t-left{text-align:left;}
 					.t-center{text-align:center;}
@@ -1270,7 +1284,7 @@ class RepoIn extends \CodeIgniter\Controller
 			        @media print {
 			            @page {
 			                margin: 0 auto;
-			                sheet-size: 300px 250mm;
+			                sheet-size: 300px 275mm;
 			            }
 			            html {
 			                direction: rtl;
@@ -1291,83 +1305,105 @@ class RepoIn extends \CodeIgniter\Controller
 			<div class="wrapper">
 
 			<div class="page-header t-center">
+				<h5 style="line-height:1.2;font-weight:bold;padding-top:20px;">PT.CONTINDO RAYA</h5>
 				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR BONGKAR</h3>
+				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">REPO IN</h3>
 				<h4 style="text-decoration: underline;line-height:0.5;">' . $REFIN . '</h3>
 				<img src="' . $QRCODE_IMG . '" style="height:120px;">
 				<h5 style="text-decoration: underline;line-height:0.5;">' . $CPID . '</h4>
 			</div>
 		';
 		$html .= '
-			<table border-spacing: 0; border-collapse: collapse; width="100%">	
-				<tr>
-					<td colspan="4" >NO. ' . $CPIORDERNO . '
-					</td>
+				<table border-spacing: 0; border-collapse: collapse; width="100%">	
+					<tr>
+						<td>PRINCIPAL</td>
+						<td colspan="3">:&nbsp;' . $PRINCIPAL . '</td>
+					</tr>
+					<tr>
+						<td style="width:40%;">CONTAINER NO.</td>
+						<td colspan="3"><h5 style="line-height:1.2;font-weight:bold;padding-top:20px;">:&nbsp;' . $CRNO . '</h5></td>
+					</tr>
+					<tr>
+						<td style="width:40%;">DATE</td>
+						<td colspan="3">:&nbsp;' . date('d-m-Y', strtotime($CPIPRATGL)) . '</td>
+					</tr>
+					<tr>
+						<td>TIPE</td>
+						<td colspan="3">:&nbsp;' . $CODE . '/' . $TYPE . '</td>
+					</tr>					
+					<tr>
+						<td>SIZE</td>
+						<td colspan="3">:&nbsp;' . $LENGTH  . '/' . $HEIGHT . ' </td>
+					</tr>
+					<tr>
+						<td>TARA</td>
+						<td colspan="3">:&nbsp;' . $CRTARAK . '/' . $CRTARAL . ' </td>
+					</tr>
+
+					<tr>
+						<td>MAN.DATE </td>
+						<td colspan="3">:&nbsp;' . $CRMANDAT . ' </td>
+					</tr>
+					<tr>
+						<td>CONDITION</td>
+						<td colspan="3">:&nbsp;' . $CRLASTCOND . '</td>
+					</tr>
+					<tr>
+						<td>CLEANING</td>
+						<td colspan="3">:&nbsp;</td>
+					</tr>
+					<tr>
+						<td>EMKL</td>
+						<td colspan="3" style="font-weight:normal">:&nbsp;' . $SHIPPER . '</td>
+					</tr>
+					<tr>
+						<td>LOAD STATUS</td>
+						<td colspan="3">:&nbsp;</td>
+					</tr>					
+					<tr>
+						<td>EX VESSEL</td>
+						<td colspan="3">:&nbsp;' . $VESSEL . '/' . $VOY . '</td>
+					</tr>
+					<tr>
+						<td>NO POLISI</td>
+						<td colspan="3">:&nbsp;' . $NOPOL . '</td>
+					</tr>
+					<tr>
+						<td>DRIVER</td>
+						<td colspan="3">:&nbsp;' . $CPIDRIVER . '</td>
+					</tr>		
+					<tr>
+						<td>REMARK</td>
+						<td colspan="3">:&nbsp;' . $REMARK . '</td>
+					</tr>			
+
+
+					<tr rowspan="3">&nbsp;</tr>
+
+				</table>
+				<br>
+				<table border-spacing: 0; border-collapse: collapse; width="100%">	
+					<tr>
+						<td width="33%">TRUCKER</td>
+						<td width="33%" class="t-center">SURVEYOR</td>
+						<td width="33%">PETUGAS</td>
+					</tr>
 					
-				</tr>
-				<tr>
-				<td colspan="4" >( ' . date("d/m/Y", strtotime($CPIPRATGL)) . ' )</td>
-				</tr>
-				<tr>
-					<td style="width:40%;">CONTAINER#</td>
-					<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">' . $CRNO . '</h5></td>
-				</tr>
-				<tr>
-					<td>PRINCIPAL</td>
-					<td colspan="3">' . $PRINCIPAL . '</td>
-				</tr>
-				<tr>
-					<td>SIZE</td>
-					<td colspan="3">' . $CODE . ' ' . $LENGTH . '/' . $HEIGHT . '</td>
-				</tr>
-				
-			</table>
-			<br>
-			<table style="border-spacing: 3px; border-collapse: separate;" width="100%">
-				
-				<tr>
-					<td>VESSEL</td>
-					<td colspan="3">' . $VESSEL . '</td>
-				</tr>
-				<tr>
-					<td>EXPIRED</td>
-					<td colspan="3"></td>
-				</tr>
-				<tr>
-					<td>REMARK</td>
-					<td colspan="3">' . $REMARK . '</td>
-				</tr>
-				<tr>
-					<td>TRUCK ID</td>
-					<td colspan="3"></td>
-				</tr>	
-				<tr  rowspan="4">
-					<td colspan="4">&nbsp;</td>
-				</tr>
-				
-			</table>
-			
-			<table width="100%">	
-				<tr>
-					<td>SURVEYOR</td>
-					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
-				</tr>
-				<tr  rowspan="4">
-					<td colspan="4">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>KERANI</td>
-					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
-				</tr>
-				<tr  rowspan="4">
-					<td colspan="4">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>GATE OFFICER</td>
-					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
-				</tr>
-			</table>
-			</div>
-		';
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>	
+					<tr>
+						<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+						<td class="t-center">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+						<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+					</tr>	
+				</table>
+				</div>
+			';
+
+
 		$html .= '
 		</body>
 		</html>

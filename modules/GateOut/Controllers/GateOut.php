@@ -312,16 +312,16 @@ class GateOut extends \CodeIgniter\Controller
 		return $data;
 	}
 
-	public function print_eir_out($cpoorderno,$cpid) 
+	public function print_eir_out($cpoorderno, $cpid)
 	{
-		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80,236]]);
-		$header = $this->get_data_print($cpoorderno,$cpid);
+		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80, 236]]);
+		$header = $this->get_data_print($cpoorderno, $cpid);
 		// echo var_dump($header);
 		$CPIEIR  = str_repeat("0", 8 - strlen($header['cpoeir'])) . $header['cpoeir'];
 		$QR_FORMAT = $header['crno'] . $CPIEIR;
 		$QRCODE = $this->generate_qrcode($QR_FORMAT);
 		// print_r($header);die();
-		$QRCODE_IMG = ROOTPATH .'/public/media/qrcode/'.$QRCODE['content'] . '.png';
+		$QRCODE_IMG = ROOTPATH . '/public/media/qrcode/' . $QRCODE['content'] . '.png';
 
 		$html = '';
 
@@ -329,7 +329,7 @@ class GateOut extends \CodeIgniter\Controller
 		<html>
 			<head>
 				<title>Gate In | Print EIR-OUT</title>
-				<link href="'.base_url().'/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+				<link href="' . base_url() . '/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 				<style>			
 					.page-header{display:block;margin-bottom:20px;line-height:0.3;}
 					table{line-height:1.75;display:block;}
@@ -370,94 +370,113 @@ class GateOut extends \CodeIgniter\Controller
 			<div class="page-header t-center">
 				<h5 style="line-height:1.2;font-weight:bold;padding-top:20px;">TANDA TERIMA<br>CONTAINER</h5>
 				<img src="' . $QRCODE_IMG . '" style="height:120px;">
-				<h5 style="text-decoration: underline;line-height:0.5;">EIR OUT.'.$CPIEIR.'</h5>
+				<h5 style="text-decoration: underline;line-height:0.5;">EIR OUT.' . $CPIEIR . '</h5>
 			</div>
-		';		
-		$html .='
+		';
+		$html .= '
 			<table border-spacing: 0; border-collapse: collapse; width="100%">	
-				<tr>
-					<td style="width:40%;">DATE/TIME</td>
-					<td colspan="3">:&nbsp;'.date('d-m-Y', strtotime($header['cpopratgl'])).'/'.$header['cpojam'].'</td>
-				</tr>				
-				<tr>
-					<td style="width:40%;">CONTAINER NO.</td>
-					<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">:&nbsp;'.$header['crno'].'</h5></td>
-				</tr>
-				<tr>
-					<td>TYPE</td>
-					<td colspan="3">:&nbsp;'.$header['ctcode'].'</td>
-				</tr>					
-				<tr>
-					<td>SIZE</td>
-					<td colspan="3">:&nbsp;'.$header['cclength'].'/'.$header['ccheight'].'</td>
-				</tr>
-				<tr>
-					<td>LOAD STATUS</td>
-					<td colspan="3">:&nbsp;</td>
-				</tr>					
-				<tr>
-					<td>PRINCIPAL</td>
-					<td colspan="3">:&nbsp;'.$header['cpopr1'].'</td>
-				</tr>
-				<tr>
-					<td>EX VESSEL</td>
-					<td colspan="3">:&nbsp;'.$header['vesid'].'</td>
-				</tr>
-				<tr>
-					<td>NO POLISI</td>
-					<td colspan="3">:&nbsp;'.$header['cponopol'].'</td>
-				</tr>
-				<tr>
-					<td>TRUCKER</td>
-					<td colspan="3">:&nbsp;'.$header['cpotruck'].'</td>
-				</tr>
-				<tr>
-					<td>DRIVER</td>
-					<td colspan="3">:&nbsp;'.$header['cpodriver'].'</td>
-				</tr>				
-				<tr>
-					<td>CONDITION</td>
-					<td colspan="3">:&nbsp;'.$header['crlastcond'].'</td>
-				</tr>
-				<tr>
-					<td>CLEANING</td>
-					<td colspan="3">:&nbsp;</td>
-				</tr>
-				<tr>
-					<td colspan="3">Telah kami terima dan survey</td>
-					<td>:&nbsp;Y/T</td>
-				</tr>
+					<tr>
+						<td>PRINCIPAL</td>
+						<td colspan="3">:&nbsp;' . $header['cpopr1'] . '</td>
+					</tr>
+					<tr>
+						<td style="width:40%;">CONTAINER NO.</td>
+						<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:bold;">:&nbsp;' . $header['crno'] . '</h5></td>
+					</tr>	
+
+					<tr>
+						<td style="width:40%;">DATE/TIME</td>
+						<td colspan="3">:&nbsp;' . date('d-m-Y', strtotime($header['cpopratgl'])) . '/' . $header['cpojam'] . '</td>
+					</tr>				
+
+					<tr>
+						<td>TYPE</td>
+						<td colspan="3">:&nbsp;' . $header['ctcode'] . '/' . $header['cccode'] . '</td>
+					</tr>					
+					<tr>
+						<td>SIZE</td>
+						<td colspan="3">:&nbsp;' . $header['cclength'] . '/' . $header['ccheight'] . '</td>
+					</tr>
+
+					<tr>
+						<td>TARA</td>
+						<td colspan="3">:&nbsp;' . $header['crtarak'] . '/' . $header['crtaral'] . ' </td>
+					</tr>
+
+					<tr>
+						<td>MAN.DATE </td>
+						<td colspan="3">:&nbsp;' . $header['crmandat'] . ' </td>
+					</tr>
+					<tr>
+						<td>CONDITION</td>
+						<td colspan="3">:&nbsp;' . $header['crlastcond'] . '</td>
+					</tr>
+					<tr>
+						<td style="width:40%;">SURVEY DATE</td>
+						<td colspan="3">:&nbsp;' . date('d-m-Y', strtotime($header['svsurdat'])) . '</td>
+					</tr>	
+
+					<tr>
+						<td>RECEIVER</td>
+						<td colspan="3">:&nbsp;' . $header['cporeceiv'] . '</td>
+					</tr>
+
+					<tr>
+						<td style="width:40%;">SEAL NO.</td>
+						<td colspan="3">:&nbsp;' . $header['cposeal'] . '</td>
+					</tr>					
+					<tr>
+						<td>VESSEL</td>
+						<td colspan="3">:&nbsp;' . $header['cpoves'] . '/' . $header['cpovoyid'] . '</td>
+					</tr>
+					<tr>
+						<td>LOAD STATUS</td>
+						<td colspan="3">:&nbsp;</td>
+					</tr>
+					
+
+					<tr>
+						<td>NO POLISI</td>
+						<td colspan="3">:&nbsp;' . $header['cponopol'] . '</td>
+					</tr>
+					<tr>
+						<td>DRIVER</td>
+						<td colspan="3">:&nbsp;' . $header['cpodriver'] . '</td>
+					</tr>				
+					
+					<tr>
+						<td>REMARK</td>
+						<td colspan="3">:&nbsp;' . $header['cporemark'] . '</td>
+					</tr>
 			</table>
 			<br>
-			<table width="100%">	
+			<table border-spacing: 0; border-collapse: collapse; width="100%">	
 				<tr>
-					<td>TRUCKER</td>
-					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
+					<td width="33%">TRUCKER</td>
+					<td width="33%" class="t-center">SURVEYOR</td>
+					<td width="33%">PETUGAS</td>
 				</tr>
-				<tr  rowspan="4">
-					<td colspan="4">&nbsp;</td>
-				</tr>
+				
 				<tr>
-					<td>SURVEYOR</td>
-					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
-				</tr>
-				<tr  rowspan="4">
-					<td colspan="4">&nbsp;</td>
-				</tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>	
 				<tr>
-					<td>PETUGAS</td>
-					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
-				</tr>
+					<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+					<td class="t-center">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+					<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+				</tr>	
 			</table>			
 			</div>
-		';		
-		$html .='
+		';
+		$html .= '
 		</body>
 		</html>
 		';
 		$mpdf->WriteHTML($html);
 		$mpdf->Output();
-		die();		
+		die();
 	}
 
     public function generate_qrcode($data)

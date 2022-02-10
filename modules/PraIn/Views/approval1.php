@@ -225,7 +225,7 @@
 			<div class="widget widget-table">
 				<div class="widget-content">
 				<p class="alert alert-warning text-center">
-					<a href="<?=site_url('prain/edit/'.$data['praid']);?>" class="btn btn-success btn-md">Input Container</a>
+					Data Container masih kosong!
 				</p>
 				</div>
 			</div>
@@ -342,15 +342,7 @@
 								<label class="col-sm-4 control-label text-right">Cleaning Type</label>
 								<div class="col-sm-4">
 									<label class="control-inline fancy-checkbox custom-color-green">
-										<select name="cleaning_type" id="cleaning_type" class="form-control">
-											<option value="Water Wash" selected>Water Wash</option>
-											<option value="Steam Wash">Steam Wash</option>
-											<option value="Meat Bone">Meat Bone</option>
-											<option value="Debrish Remove">Debrish Remove</option>
-											<option value="Mark Remove">Mark Remove</option>
-											<option value="Chemical Clean">Chemical Clean</option>
-											<option value="Sweeping">Sweeping</option>
-										</select>
+										<?= cleaning_method("cleaning_type", "WW"); ?>
 									</label>
 								</div>
 								<div class="col-sm-4">

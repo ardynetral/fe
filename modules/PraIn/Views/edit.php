@@ -235,21 +235,6 @@
 		</div>	
 
 <!-- CONTAINERS -->
-<?php if($data['orderPraContainers']==null): ?>
-
-	<div class="row">
-		<div class="col-sm-12">
-			<div class="widget widget-table">
-				<div class="widget-content">
-				<p class="alert alert-warning text-center">
-					<a href="<?=site_url('prain/edit/'.$data['praid']);?>" class="btn btn-success btn-md">Input Container</a>
-				</p>
-				</div>
-			</div>
-		</div>
-	</div>
-
-<?php else: ?>	
 
 		<div class="row">
 			<div class="col-sm-4">
@@ -267,7 +252,7 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label text-right">Container No. </label>
 								<div class="col-sm-8">
-									<input type="hidden" name="praid" class="form-control" id="praid" value="<?=@$praid?>">
+ 									<input type="hidden" name="pra_id" class="form-control" id="pra_id" value="<?=@$data['praid']?>">
 									<input type="text" name="crno" class="form-control" id="crno" readonly="">
 									<i class="err-crno text-danger"></i>
 								</div>
@@ -319,41 +304,6 @@
 									</label>
 								</div>	
 							</div>
-<!-- 							<div class="form-group" style="display:none;">
-								<label class="col-sm-4 control-label text-right">Deposit</label>
-								<div class="col-sm-2">
-									<label class="fancy-checkbox custom-color-green">
-										<p></p>
-										<input type="checkbox" name="deposit" id="deposit" value="0">
-										<span></span>
-									</label>
-								</div>
-								<div class="col-sm-6">
-									<input type="text" name="biaya_clean" id="biaya_clean" class="form-control" value="0" readonly>
-								</div>
-							</div>	
-							<div class="form-group">
-								<label class="col-sm-4 control-label text-right">Lift Off</label>
-								<div class="col-sm-8">
-									<input type="text" name="biaya_lolo" id="biaya_lolo" value="0" class="form-control">
-								</div>	
-							</div>	
-							<div class="form-group">
-								<label class="col-sm-4 control-label text-right">Cleaning Type</label>
-								<div class="col-sm-8">
-									<label class="control-inline fancy-checkbox custom-color-green">
-										<select name="cleaning_type" id="cleaning_type" class="form-control">
-											<option value="Water Wash" selected>Water Wash</option>
-											<option value="Steam Wash">Steam Wash</option>
-											<option value="Meat Bone">Meat Bone</option>
-											<option value="Debrish Remove">Debrish Remove</option>
-											<option value="Mark Remove">Mark Remove</option>
-											<option value="Chemical Clean">Chemical Clean</option>
-											<option value="Sweeping">Sweeping</option>
-										</select>
-									</label>
-								</div>	
-							</div>	 -->																						
 							<div class="form-group">
 								<label class="col-sm-4 control-label text-right">Remark</label>
 								<div class="col-sm-8">
@@ -362,7 +312,8 @@
 							</div>								
 							<div class="form-group">
 								<div class="col-sm-offset-4 col-sm-8">
-									<button type="button" id="updateDetail" class="btn btn-info"><i class="fa fa-pencil"></i> Update Container</button>
+									<button type="button" id="saveDetail" class="btn btn-info" style="display:none;" data-act="edit"><i class="fa fa-pencil"></i> Save Container</button>
+									<button type="button" id="updateDetail" class="btn btn-info" style="display:none;"><i class="fa fa-pencil"></i> Update Container</button>
 								</div>
 							</div>						
 						</fieldset>
@@ -377,6 +328,8 @@
 						<h3><i class="fa fa-table"></i> List Order Pra Container</h3>
 					</div>
 					<div class="widget-content">
+						<button type="button" id="addContainer" class="btn btn-success"><i class="fa fa-plus"></i> Add Container</button>
+						<br>
 						<table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
@@ -386,7 +339,10 @@
 									<th>Type</th>
 									<th>Length</th>
 									<th>Height</th>
+									<th>Principal</th>
+									<th>F/E</th>
 									<th>Remark</th>
+									<th>GateIn Date</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -407,9 +363,12 @@
 											<td><?=$row['ctcode']?></td>
 											<td><?=$row['cclength']?></td>
 											<td><?=$row['ccheight']?></td>
+											<td><?=$row['cpopr']?></td>
+											<td><?=((isset($row['cpife'])&&$row['cpife']==1)?'Full':'Empty')?></td>
 											<td><?=$row['cpiremark']?></td>
+											<td><?=$row['cpigatedate']?></td>
 											<td>
-												<a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a>
+												<a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">edit</a>
 												<a href="#" id="deleteContainer" class="btn btn-xs btn-danger delete" data-crid="<?=$row['pracrnoid']?>">delete</a>
 											</td>
 										</tr>
@@ -436,7 +395,6 @@
 			</div>
 		</div>	
 
-<?php endif; ?>		
 		
 		<!-- END CONTAINER -->
 

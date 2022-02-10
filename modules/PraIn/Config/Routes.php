@@ -27,6 +27,7 @@ $routes->add('/prain/get_container_by_praid/(:alphanum)', '\Modules\PraIn\Contro
 // utk page edit
 $routes->add('/prain/get_container_by_praid2/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::get_container_by_praid2/$1', ['filter' => 'login']);
 $routes->add('/prain/edit_container', '\Modules\PraIn\Controllers\PraIn::edit_container', ['filter' => 'login']);
+$routes->add('/prain/edit_get_container/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::edit_get_container/$1', ['filter' => 'login']);
 $routes->add('/prain/checkContainerNumber', '\Modules\PraIn\Controllers\PraIn::checkContainerNumber', ['filter' => 'login']);
 $routes->add('/prain/delete_container/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::delete_container/$1', ['filter' => 'login']);
 $routes->add('/prain/final_order/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::final_order/$1', ['filter' => 'login']);

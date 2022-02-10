@@ -522,7 +522,7 @@
 						</table>						
 					</div>
 					<div class="widget-footer text-center">
-						<a href="<?=site_url('repoin');?>" class="btn btn-default">Kembali</a>
+						<a href="<?=site_url('repoout');?>" class="btn btn-default">Kembali</a>
 					</div>
 				</div>
 			</div>

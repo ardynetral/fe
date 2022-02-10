@@ -241,8 +241,8 @@ class RepoOut extends \CodeIgniter\Controller
 				'ctcode' => $_POST['ctcode'],
 				'cclength' => $_POST['cclength'],
 				'ccheight' => $_POST['ccheight'],
-				'cpofe' => $_POST['cpofe'],
-				'cpishold' => $_POST['cpishold'],
+				'repofe' => $_POST['cpIfe'],
+				'reposhold' => $_POST['cpishold'],
 				'reporemark' => $_POST['reporemark'],
 				'sealno' => $_POST['sealno']
 			];
@@ -338,8 +338,8 @@ class RepoOut extends \CodeIgniter\Controller
 				'ctcode' => $_POST['ctcode'],
 				'cclength' => $_POST['cclength'],
 				'ccheight' => $_POST['ccheight'],
-				'cpife' => $_POST['cpife'],
-				'cpishold' => $_POST['cpishold'],
+				'repofe' => $_POST['cpife'],
+				'reposhold' => $_POST['cpishold'],
 				'reporemark' => $_POST['reporemark'],
 				'sealno' => $_POST['sealno']
 			];

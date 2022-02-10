@@ -524,7 +524,7 @@
 						</table>						
 					</div>
 					<div class="widget-footer text-center">
-						<a href="<?=site_url('repoin');?>" class="btn btn-default" id="">Kembali</a>
+						<a href="<?=site_url('repoout');?>" class="btn btn-default" id="">Kembali</a>
 						<a href="#" class="btn btn-danger" id="updateNewData"><i class="fa fa-save"></i> Save All</a>
 					</div>					
 				</div>
@@ -534,7 +534,7 @@
 	</div>
 </div>
 
-<?= $this->include('\Modules\RepoIn\Views\form_detail_header');?>
+<?= $this->include('\Modules\RepoOut\Views\form_detail_header');?>
 
 <?= $this->endSection();?>
 

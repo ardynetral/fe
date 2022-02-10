@@ -479,7 +479,7 @@
 					</div>
 					<div class="widget-footer text-center">
 						<p>
-						<a href="<?=site_url('repoin');?>" class="btn btn-default" id="">Kembali</a>
+						<a href="<?=site_url('repoout');?>" class="btn btn-default" id="">Kembali</a>
 						<a href="#" class="btn btn-success" id="cetakKwitansi"><i class="fa fa-print"></i> Cetak Kwitansi</a>
 						</p>
 					</div>					

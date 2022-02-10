@@ -549,15 +549,15 @@ class GateIn extends \CodeIgniter\Controller
 		die();		
 	}
 
-	public function print_eir_in($crno) 
+	public function print_eir_in($crno)
 	{
-		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80,236]]);
+		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80, 236]]);
 		$header = $this->get_data_gatein2($crno);
 		$CPIEIR  = str_repeat("0", 8 - strlen($header['cpieir'])) . $header['cpieir'];
 		$QR_FORMAT = $header['crno'] . $CPIEIR;
 		$QRCODE = $this->generate_qrcode($QR_FORMAT);
 		// print_r($header);die();
-		$QRCODE_IMG = ROOTPATH .'/public/media/qrcode/'.$QRCODE['content'] . '.png';
+		$QRCODE_IMG = ROOTPATH . '/public/media/qrcode/' . $QRCODE['content'] . '.png';
 
 		$html = '';
 
@@ -565,7 +565,7 @@ class GateIn extends \CodeIgniter\Controller
 		<html>
 			<head>
 				<title>Gate In | Print EIR-IN</title>
-				<link href="'.base_url().'/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+				<link href="' . base_url() . '/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 				<style>			
 					.page-header{display:block;margin-bottom:20px;line-height:0.3;}
 					table{line-height:1.75;display:block;}
@@ -583,7 +583,7 @@ class GateIn extends \CodeIgniter\Controller
 			        @media print {
 			            @page {
 			                margin: 0 auto;
-			                sheet-size: 300px 250mm;
+			                sheet-size: 300px 275mm;
 			            }
 			            html {
 			                direction: rtl;
@@ -604,74 +604,90 @@ class GateIn extends \CodeIgniter\Controller
 			<div class="wrapper">
 
 			<div class="page-header t-center">
+			<h5 style="line-height:1.2;font-weight:bold;padding-top:20px;">PT.CONTINDO RAYA</h5>
 				<h5 style="line-height:1.2;font-weight:bold;padding-top:20px;">TANDA TERIMA<br>CONTAINER</h5>
 				<img src="' . $QRCODE_IMG . '" style="height:120px;">
-				<h5 style="text-decoration: underline;line-height:0.5;">EIR IN.'.$CPIEIR.'</h5>
+
+				<h5 style="text-decoration: underline;line-height:0.5;">EIR IN.' . $CPIEIR . '</h5>
 			</div>
-		';		
-		$html .='
+		';
+		$html .= '
 			<table border-spacing: 0; border-collapse: collapse; width="100%">	
 				<tr>
-					<td style="width:40%;">DATE/TIME</td>
-					<td colspan="3">:&nbsp;'.date('d-m-Y', strtotime($header['cpipratgl'])).'/'.$header['cpijam'].'</td>
-				</tr>				
-				<tr>
-					<td style="width:40%;">CONTAINER NO.</td>
-					<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">:&nbsp;'.$header['crno'].'</h5></td>
+					<td>PRINCIPAL</td>
+					<td colspan="3">:&nbsp;' . $header['cpopr'] . '</td>
 				</tr>
 				<tr>
-					<td>TYPE</td>
-					<td colspan="3">:&nbsp;'.$header['ctcode'].'</td>
+					<td style="width:40%;">CONTAINER NO.</td>
+					<td colspan="3"><h5 style="line-height:1.2;font-weight:bold;padding-top:20px;">:&nbsp;' . $header['crno'] . '</h5></td>
+				</tr>
+				<tr>
+					<td style="width:40%;">DATE</td>
+					<td colspan="3">:&nbsp;' . date('d-m-Y', strtotime($header['cpitgl'])) . '/' . $header['cpijam'] .  '</td>
+				</tr>
+				<tr>
+					<td>TIPE</td>
+					<td colspan="3">:&nbsp;' . $header['ctcode'] . '/' . $header['cccode'] . '</td>
 				</tr>					
 				<tr>
 					<td>SIZE</td>
-					<td colspan="3">:&nbsp;'.$header['cclength'].'/'.$header['ccheight'].'</td>
+					<td colspan="3">:&nbsp;' . $header['cclength'] . '/' . $header['ccheight'] . ' </td>
 				</tr>
 				<tr>
-					<td>LOAD STATUS</td>
-					<td colspan="3">:&nbsp;</td>
-				</tr>					
-				<tr>
-					<td>PRINCIPAL</td>
-					<td colspan="3">:&nbsp;'.$header['cpopr'].'</td>
+					<td>TARA</td>
+					<td colspan="3">:&nbsp;' . $header['crtarak'] . '/' . $header['crtaral'] . ' </td>
 				</tr>
+
 				<tr>
-					<td>EX VESSEL</td>
-					<td colspan="3">:&nbsp;'.$header['vesid'].'</td>
+					<td>MAN.DATE </td>
+					<td colspan="3">:&nbsp;' . $header['crmandat'] . ' </td>
 				</tr>
-				<tr>
-					<td>NO POLISI</td>
-					<td colspan="3">:&nbsp;'.$header['cpinopol'].'</td>
-				</tr>
-				<tr>
-					<td>TRUCKER</td>
-					<td colspan="3">:&nbsp;'.$header['cpitruck'].'</td>
-				</tr>
-				<tr>
-					<td>DRIVER</td>
-					<td colspan="3">:&nbsp;'.$header['cpidriver'].'</td>
-				</tr>				
 				<tr>
 					<td>CONDITION</td>
-					<td colspan="3">:&nbsp;'.$header['crlastcond'].'</td>
+					<td colspan="3">:&nbsp;' . $header['crlastcond'] . '</td>
 				</tr>
 				<tr>
 					<td>CLEANING</td>
 					<td colspan="3">:&nbsp;</td>
 				</tr>
 				<tr>
-					<td colspan="3">Telah kami terima dan survey</td>
-					<td>:&nbsp;Y/T</td>
+					<td>EMKL</td>
+					<td colspan="3" style="font-weight:normal">:&nbsp;' . $header['cpideliver'] . '</td>
 				</tr>
+				<tr>
+					<td>LOAD STATUS</td>
+					<td colspan="3">:&nbsp;' . strtoupper($header['cpife']) . '</td>
+				</tr>					
+				<tr>
+					<td>EX VESSEL</td>
+					<td colspan="3">:&nbsp;' . $header['vesid'] . '/' . $header['cpivoy'] . '</td>
+				</tr>
+				<tr>
+					<td>NO POLISI</td>
+					<td colspan="3">:&nbsp;' . $header['cpinopol'] . '</td>
+				</tr>
+				<tr>
+					<td>DRIVER</td>
+					<td colspan="3">:&nbsp;' . $header['cpidriver'] . '</td>
+				</tr>				
+
+
+				<tr rowspan="3">&nbsp;</tr>
+
 			</table>
 			<br>
-			<table width="100%">	
+			<table border-spacing: 0; border-collapse: collapse; width="100%">	
 				<tr>
 					<td width="33%">TRUCKER</td>
 					<td width="33%" class="t-center">SURVEYOR</td>
 					<td width="33%">PETUGAS</td>
 				</tr>
-				<tr><td colspan="3" height="15" width="100%"></td></tr>
+				
+				<tr>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+					<td>&nbsp;</td>
+				</tr>	
 				<tr>
 					<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
 					<td class="t-center">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
@@ -679,14 +695,17 @@ class GateIn extends \CodeIgniter\Controller
 				</tr>	
 			</table>
 			</div>
-		';		
-		$html .='
+		';
+		$html .= '
 		</body>
 		</html>
 		';
 		$mpdf->WriteHTML($html);
+		$filrname =  $header['crno'] . strtotime($header['cpitgl']) . $header['cpijam'];
+		$filename = $filrname . ".pdf"; //You might be not adding the extension, 
+		//$mpdf->Output($filename);
 		$mpdf->Output();
-		die();		
+		die();
 	}
 
     public function generate_qrcode($data)

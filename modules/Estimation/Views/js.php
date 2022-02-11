@@ -26,6 +26,10 @@
 			"paging": false,
 			"info": false,
 		});
+		// $("#tblList_edit").DataTable({
+		// 	"paging": false,
+		// 	"info": false,
+		// });		
 		// datePicker
 		$(".tanggal").datepicker({
 			autoclose: true,
@@ -179,7 +183,7 @@
 			e.preventDefault();
 			var svid = $(this).data('svid');
 			var rpid = $(this).data('rpid');
-			var rpver = $(this).data('rpver');
+			var rdno = $(this).data('rdno');
 			Swal.fire({
 				title: 'Are you sure?',
 				icon: 'warning',
@@ -189,17 +193,17 @@
 				confirmButtonText: 'Yes, delete it!'
 			}).then((result) => {
 				if (result.isConfirmed) {
-					delete_data(svid,rpid,rpver);
+					delete_data(svid,rpid,rdno);
 				}
 			});
 
 		});
 
-		function delete_data(svid,rpid,rpver) {
+		function delete_data(svid,rpid,rdno) {
 			$.ajax({
 				url: "<?php echo site_url('estimation/delete_detail'); ?>",
 				type: "POST",
-				data: { "svid":svid, "rpid":rpid, "rpver":rpver },
+				data: { "svid":svid, "rpid":rpid, "rdno":rdno },
 				dataType: 'json',
 				success: function(json) {
 					if (json.message == "success") {
@@ -222,9 +226,11 @@
 
 		$("#addDetail").on("click", function(e){
 			var det_crno = $("#det_crno").val();
+			var tblRow = parseInt($("#tblList_add tr").length);
 			$("#saveDetail").prop('disabled', false);
 			$("#formDetail").trigger("reset");
-			$("#det_crno").val(crno);
+			$("#det_crno").val(det_crno);
+			$("#rpid").val(tblRow);
 			$("#lccode").select2().select2('val','');
 			$("#cmcode").select2().select2('val','');
 			$("#dycode").select2().select2('val','');
@@ -301,32 +307,39 @@
 			})
 		});
 
-		$("#updateDetail").on("click", function(e) {
-			e.preventDefault();
-			var cpife = $("input:radio[name=cpife]:checked").val();
-			var formData = "praid=" + $("#praid").val();
-			formData += "&pracrnoid=" + $("#pracrnoid").val();
-			formData += "&crno=" + $("#crno").val();
-			formData += "&ccode=" + $("#ccode").val();
-			formData += "&ctcode=" + $("#ctcode").val();
-			formData += "&cclength=" + $("#cclength").val();
-			formData += "&ccheight=" + $("#ccheight").val();
-			formData += "&cpife=" + cpife;
-			formData += "&cpishold=" + $("#cpishold").val();
-			formData += "&cpiremark=" + $("#cpiremark").val();
+		$("#addDetail").on("click", function(e){
+			var det_crno = $("#det_crno").val();
+			var tblRow = parseInt($("#tblList_add tr").length);
+			$("#saveDetail").prop('disabled', false);
+			$("#formDetail").trigger("reset");
+			$("#det_crno").val(det_crno);
+			$("#rpid").val(tblRow);
+			$("#lccode").select2().select2('val','');
+			$("#cmcode").select2().select2('val','');
+			$("#dycode").select2().select2('val','');
+			$("#rmcode").select2().select2('val','');			
+		});
 
+		// save detailContainer
+		$("#formUpdateDetail").on("submit", function(e) {
+			e.preventDefault();
 			$.ajax({
-				url: "<?php echo site_url('estimation/edit_container'); ?>",
+				url: "<?php echo site_url('estimation/update_detail'); ?>",
 				type: "POST",
-				data: formData,
+				data: new FormData(this),
+	            processData: false,
+	            contentType: false,
+	            cache: false,		
 				dataType: 'json',
 				success: function(json) {
-					if (json.message == "success") {
+					if (json.status == "success") {
+						$("#tblList_edit tbody").html("");
 						Swal.fire({
 							icon: 'success',
 							title: "Success",
 							html: '<div class="text-success">' + json.message + '</div>'
 						});
+						$("#tblList_edit tbody").html(json.data);
 					} else {
 						Swal.fire({
 							icon: 'error',
@@ -336,7 +349,6 @@
 					}
 				}
 			});
-
 		});
 
 		$("#rpcrno").on("keyup", function() {
@@ -431,6 +443,62 @@
 	  //           $set_rdcalmtd.filter('[value=Male]').prop('checked', true);
 	  //       }				
 		});
+		$("#tblList_edit tbody").on("click",".edit", function(e){
+			e.preventDefault();
+			$("#saveDetail").prop("disabled",true);
+			var row = $(this).closest("tr");
+			var rpid = row.find(".no").text();
+			var lccode = row.find(".lccode").text();
+			var cmcode = row.find(".cmcode").text();
+			var dycode = row.find(".dycode").text();
+			var rmcode = row.find(".rmcode").text();
+			var rdcalmtd = row.find(".rdcalmtd").text();
+			var rdsize = row.find(".rdsize").text();
+			var muname = row.find(".muname").text();
+			var rdqtyact = row.find(".rdqty").text();
+			var rdmhr = row.find(".rdmhr").text();
+			var tucode = row.find(".curr_symbol").text();
+			var rdmat = row.find(".rdmat span").text();
+			var curr_code = "";
+			if(tucode=="IDR") {	curr_code="001"; } 
+			else if(tucode=="USD") { curr_code="002"; } 
+			else if(tucode=="JPY") { curr_code="003"; }
+			else if(tucode=="SGD") { curr_code="004"; }
+			else if(tucode=="EUD") { curr_code="005"; }
+			$("#rpid").val(rpid);
+			$("#lccode").select2().select2('val',lccode);
+			$("#cmcode").select2().select2('val',cmcode);
+			$("#dycode").select2().select2('val',dycode);
+			$("#rmcode").select2().select2('val',rmcode);
+			$("#rdsize").val(rdsize);
+			$("#muname").val(muname);
+			$("#rdqtyact").val(rdqtyact);
+			$("#rdmhr").val(rdmhr);
+			$("#tucode").val(curr_code);
+			$("#rdmat").val(rdmat);
+			$("input[name=rdcalmtd][value=" + rdcalmtd + "]").prop('checked', true);
+			// var $set_rdcalmtd = $('input:radio[name=rdcalmtd]');
+			// $("input[name=rdcalmtd][value=" + cmcode + "]").prop('checked', true);
+	  //       if($set_rdcalmtd.is(':checked') === false) {
+	  //           $set_rdcalmtd.filter('[value=Male]').prop('checked', true);
+	  //       }	
+		  $("#fileList").html("");
+	  		loadFileList($("#rpcrno").val());			
+		});
+
+		function loadFileList(crno) {
+			$.ajax({
+				url: "<?= site_url('estimation/getFileList/'); ?>" + crno,
+				type: "POST",
+				dataType: "JSON",
+				success: function(json) {
+					// if (json != "") {
+						$("#fileList").html(json);
+					// }
+
+				}
+			});			
+		}
 
 		// End Step 2
 		$('#ctTable tbody').on("click", ".print_order", function(e) {

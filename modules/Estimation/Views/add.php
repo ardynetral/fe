@@ -197,7 +197,22 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Measurement Unit</label>
 									<div class="col-sm-8">
-										<input type="text" name="muname" class="form-control" id="muname">
+										<!-- <input type="text" name="muname" class="form-control" id="muname"> -->
+										<select name="muname" class="form-control" id="muname">
+											<option value=""> - select - </option>
+											<option value="%">%</option>
+											<option value="20">20</option>
+											<option value="40">40</option>
+											<option value="cm">cm</option>
+											<option value="cm2">cm2</option>
+											<option value="ft">ft</option>
+											<option value="ft2">ft2</option>
+											<option value="m">m</option>
+											<option value="m2">m2</option>
+											<option value="mm">mm</option>
+											<option value="pc">pc</option>
+											<option value="pcs">pcs</option>
+										</select>
 									</div>
 								</div>
 								<div class="form-group">
@@ -230,7 +245,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Total Cost</label>
 									<div class="col-sm-8">
-										<input type="text" name="rdtotala" class="form-control" id="rdtotala">
+										<input type="text" name="rdtotal" class="form-control" id="rdtotal">
 									</div>
 								</div>
 

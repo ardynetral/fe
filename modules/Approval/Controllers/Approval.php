@@ -51,18 +51,18 @@ class Approval extends \CodeIgniter\Controller
             $record[] = $v['RPVER'];
             $record[] = $v['RPTGLAPPVPR'];
 			
-			$btn_list .= '<a href="#" id="" class="btn btn-xs btn-primary btn-tbl" data-praid="">view</a>';	
-			if(has_privilege_check($module, '_update')==true):
-				$btn_list .= '<a href="#" id="editPraIn" class="btn btn-xs btn-success btn-tbl">edit</a>';
-			endif;
+			$btn_list .= '<a href="#" id="" class="btn btn-xs btn-primary btn-tbl" data-crno="" data-svid="" data-rpid="">view</a>';	
+			// if(has_privilege_check($module, '_update')==true):
+			// 	$btn_list .= '<a href="#" id="editPraIn" class="btn btn-xs btn-success btn-tbl">edit</a>';
+			// endif;
 			
-			if(has_privilege_check($module, '_printpdf')==true):
-				$btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl" data-praid="">print</a>';
-			 endif;
+			// if(has_privilege_check($module, '_printpdf')==true):
+			// 	$btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl" data-praid="">print</a>';
+			//  endif;
 
-			if(has_privilege_check($module, '_delete')==true):
-				$btn_list .= '<a href="#" id="deletePraIn" class="btn btn-xs btn-danger btn-tbl">delete</a>';
-			endif;
+			// if(has_privilege_check($module, '_delete')==true):
+			// 	$btn_list .= '<a href="#" id="deletePraIn" class="btn btn-xs btn-danger btn-tbl">delete</a>';
+			// endif;
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
 
@@ -87,33 +87,8 @@ class Approval extends \CodeIgniter\Controller
 		$token = get_token_item();
 		$user_id = $token['id'];
 		$group_id = $token['groupId'];
-		// $data = [];
-		// $offset=0;
-		// $limit=100;
-
-		// $response1 = $this->client->request('GET','approval/getAll',[
-		// 	'headers' => [
-		// 		'Accept' => 'application/json',
-		// 		'Authorization' => session()->get('login_token')
-		// 	],
-		// 	'query' => [
-		// 		'offset' => $offset,
-		// 		'limit'	=> $limit
-		// 	]
-		// ]);
-
-		// $result_pra = json_decode($response1->getBody()->getContents(),true);	
-
-		// $data['data'] = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
 
 		$data = [];
-		// $paging = new MyPaging();
-		// $limit = 10;
-		// $endpoint = 'dataListReports/listAllApprovals';
-		// $data['data'] = $paging->paginate($endpoint,$limit,'approval');
-		// $data['pager'] = $paging->pager;
-		// $data['nomor'] = $paging->nomor($this->request->getVar('page_approval'), $limit);
-
 		$data['page_title'] = "Approval";
 		$data['page_subtitle'] = "Approval Page";
 		return view('Modules\Approval\Views\index',$data);
@@ -126,6 +101,137 @@ class Approval extends \CodeIgniter\Controller
 		$data['act'] = "Add";
 		$data['page_title'] = "Approval";
 		$data['page_subtitle'] = "Approval Page";
+		$data['lccode_dropdown'] = $this->lccode_dropdown();
+		$data['cmcode_dropdown'] = $this->cmcode_dropdown();
+		$data['dycode_dropdown'] = $this->dycode_dropdown();
+		$data['rmcode_dropdown'] = $this->rmcode_dropdown();		
 		return view('Modules\Approval\Views\add',$data);
 	}
+
+	// DROPDOwN
+	public function lccode_dropdown($selected = "")
+	{
+
+		$data = [];
+		$response = $this->client->request('GET', 'locations/list', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json' => [
+				'start' => 0,
+				'rows' => 2000,
+				'search' => "",
+				'orderColumn' => "lccode",
+				'orderType' => "ASC"
+
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+
+		$res = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="lccode" id="lccode" class="select-lccode">';
+		$option .= '<option value="">-select-</option>';
+		foreach ($res as $r) {
+			$option .= "<option value='" . $r['lccode'] . "'" . ((isset($selected) && $selected == $r['lccode']) ? ' selected' : '') . ">" . $r['lccode'] . "</option>";
+		}
+		$option .= "</select>";
+		return $option;
+		die();
+	}
+
+	public function cmcode_dropdown($selected = "")
+	{
+		$data = [];
+		$response = $this->client->request('GET', 'components/list', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json' => [
+				'start' => 0,
+				'rows' => 2000
+
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+
+		$option = "";
+		// return $option;
+		// die();
+		$res = $result['data']['datas'];
+		$option .= '<select name="cmcode" id="cmcode" class="select-cmcode">';
+		$option .= '<option value="">-select-</option>';
+		foreach ($res as $r) {
+			$option .= "<option value='" . $r['cmcode'] . "'" . ((isset($selected) && $selected == $r['cmcode']) ? ' selected' : '') . ">" . $r['cmcode'] . "</option>";
+		}
+		$option .= "</select>";
+
+		return $option;
+		die();
+	}
+
+	public function dycode_dropdown($selected = "")
+	{
+
+		$data = [];
+		$response = $this->client->request('GET', 'damagetype/list', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json' => [
+				'start' => 0,
+				'rows' => 2000,
+				'search' => "",
+				'orderColumn' => "dycode",
+				'orderType' => "ASC"
+
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		$res = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="dycode" id="dycode" class="select-dycode">';
+		$option .= '<option value="">-select-</option>';
+		foreach ($res as $r) {
+			$option .= "<option value='" . $r['dycode'] . "'" . ((isset($selected) && $selected == $r['dycode']) ? ' selected' : '') . ">" . $r['dycode'] . "</option>";
+		}
+		$option .= "</select>";
+		return $option;
+		die();
+	}
+
+	public function rmcode_dropdown($selected = "")
+	{
+
+		$data = [];
+		$response = $this->client->request('GET', 'repair_methods/getAllData', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'offset' => 0,
+				'limit' => 2000
+
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		$res = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="rmcode" id="rmcode" class="select-rmcode">';
+		$option .= '<option value="">-select-</option>';
+		foreach ($res as $r) {
+			$option .= "<option value='" . $r['rmcode'] . "'" . ((isset($selected) && $selected == $r['rmcode']) ? ' selected' : '') . ">" . $r['rmcode'] . "</option>";
+		}
+		$option .= "</select>";
+		return $option;
+		die();
+	}	
 }

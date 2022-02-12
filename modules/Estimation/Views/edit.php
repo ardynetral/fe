@@ -50,7 +50,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 					<tbody>
 						<tr>
 							<td class="text-right" width="130">Container No :</td>
-							<td><input type="text" name="rpcrno" class="form-control" id="rpcrno" value="<?= $header['crno']; ?>">
+							<td><input type="text" name="rpcrno" class="form-control" id="rpcrno" value="<?= $header['crno']; ?>" readonly>
 								<i class="err-crno text-danger"></i></td>
 							<td class="text-right">EOR No :</td>
 							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="rpnoest" id="rpnoest" class="form-control" value="<?= $header['rpnoest']; ?>"></td>
@@ -59,25 +59,25 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Date :</td>
-							<td><input type="text" name="rptglest" class="form-control" id="rptglest" value="<?= date('d-m-Y',strtotime($header['rptglest'])); ?>"></td>
+							<td><input type="text" name="rptglest" class="form-control" id="rptglest" value="<?= date('d-m-Y',strtotime($header['rptglest'])); ?>" readonly></td>
 							<td class="text-right">Time :</td>
-							<td colspan="3"><input type="text" name="rpjamest" id="rpjamest" class="form-control" value="<?= '' ?>"></td>
+							<td colspan="3"><input type="text" name="rpjamest" id="rpjamest" class="form-control" value="<?= date('H:i:s',strtotime($header['rptglest'])); ?>" readonly></td>
 							<td></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">ID Code :</td>
-							<td><input <?php echo $readonly; ?> type="text" name="cccode" class="form-control" id="cccode" value="<?= ''; ?>"></td>
+							<td><input <?php echo $readonly; ?> type="text" name="cccode" class="form-control" id="cccode" value="<?= $header['cccode']; ?>"></td>
 							<td class="text-right">Type :</td>
-							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="ctcode" id="ctcode" class="form-control" value="<?= ''; ?>"></td>
+							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="ctcode" id="ctcode" class="form-control" value="<?= $header['ctcode']; ?>"></td>
 							<td></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Lenght :</td>
-							<td><input <?php echo $readonly; ?> type="text" name="cclength" class="form-control" id="cclength" value="<?= ''; ?>"></td>
+							<td><input <?php echo $readonly; ?> type="text" name="cclength" class="form-control" id="cclength" value="<?= $header['cclength']; ?>"></td>
 							<td class="text-right">Height :</td>
-							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="ccheight" id="ccheight" class="form-control" value="<?= ''; ?>"></td>
+							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="ccheight" id="ccheight" class="form-control" value="<?= $header['ccheight']; ?>"></td>
 							<td></td>
 							<td></td>
 						</tr>
@@ -108,7 +108,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 						<tr>
 							<td colspan="6"></td>
 						</tr>
-						<tr>
+<?php /*						<tr>
 							<td></td>
 							<td colspan="5">
 								<?php if (isset($act) && ($act == 'view')) : ?>
@@ -121,6 +121,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 								<?php endif; ?>
 							</td>
 						</tr>
+*/?>
 					</tbody>
 				</table>
 			</fieldset>
@@ -253,11 +254,11 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<label class="col-sm-4 control-label text-right">Account</label>
 									<div class="col-sm-8">
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdaccount" id="rdaccount" value="1" checked="">
+											<input type="radio" name="rdaccount" id="rdaccount" value="O">
 											<span><i></i>O</span>
 										</label>
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdaccount" id="rdaccount" value="0">
+											<input type="radio" name="rdaccount" id="rdaccount" value="U">
 											<span><i></i>U</span>
 										</label>
 									</div>
@@ -265,7 +266,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">File Upload</label>
 									<div class="col-sm-6">
-										<input type="file" name="files[]" class="form-control" id="files" multiple="true" required="">
+										<input type="file" name="files[]" class="form-control" id="files" multiple="true">
 									</div>
 								</div>
 								<div class="form-group">
@@ -285,7 +286,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 
 			<!-- List Final Estimation -->
 			<div class="col-lg-8">
-				<button type="button" id="addDetail" class="btn btn-success"><i class="fa fa-list"></i> Add Detail</button>
+				<p><button type="button" id="addDetail" class="btn btn-success"><i class="fa fa-plus"></i> Add Detail</button></p>
 				<div class="widget widget-table">
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> List Final Estimation</h3>
@@ -319,9 +320,14 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 							} else {
 								$no=1;
 								foreach($detail as $row) {
+									if($row['rdaccount']=='user') {$rdaccount="U";}
+									else if($row['rdaccount']=='owner') {$rdaccount="O";}
+									else {$rdaccount="i";}
 									echo '<tr>';
 									echo '<td class="no">'.$no.'</td>';
 									echo '<td class="lccode" style="display:none">'.$row['lccode'].'</td>';
+									echo '<td class="crno" style="display:none">'.$row['rpcrno'].'</td>';
+									echo '<td class="svid" style="display:none">'.$row['svid'].'</td>';
 									echo '<td class="cmcode">'.$row['cmcode'].'</td>';
 									echo '<td class="dycode">'.$row['dycode'].'</td>';
 									echo '<td class="rmcode">'.$row['rmcode'].'</td>';
@@ -335,6 +341,8 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									echo '<td class="rddesc">'.$row['rddesc'].'</td>';
 									echo '<td class="rdlab">'.number_format($row['rdlab'],2).'<span style="display:none;">'.$row['rdlab'].'</span></td>';
 									echo '<td class="rdmat">'.number_format($row['rdmat'],2).'<span style="display:none;">'.$row['rdmat'].'</span></td>';
+									echo '<td class="rdaccount" style="display:none;">'.$rdaccount.'</td>';
+									echo '<td class="rdtotal" style="display:none">'.$row['rdtotal'].'</td>';
 									echo '<td>
 											<a href="#" class="btn btn-primary btn-xs edit">edit</a>
 											<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'">delete</a></td>';
@@ -349,6 +357,9 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 				</div>
 			</div>
 		</div>
+	</div>
+	<div class="widget-footer text-center">
+		<a href="<?= site_url('estimation') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> BACK</a>
 	</div>
 </div>
 

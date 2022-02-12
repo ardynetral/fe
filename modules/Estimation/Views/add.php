@@ -253,11 +253,11 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<label class="col-sm-4 control-label text-right">Account</label>
 									<div class="col-sm-8">
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdaccount" id="rdaccount" value="1" checked="">
+											<input type="radio" name="rdaccount" id="rdaccount" value="O" checked="">
 											<span><i></i>O</span>
 										</label>
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdaccount" id="rdaccount" value="0">
+											<input type="radio" name="rdaccount" id="rdaccount" value="U">
 											<span><i></i>U</span>
 										</label>
 									</div>

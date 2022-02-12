@@ -331,7 +331,6 @@ class Estimation extends \CodeIgniter\Controller
 		$dt_estimasi = $this->getOneEstimasi($CRNO);
 		$header = $dt_estimasi['dataOne'][0];
 		$detail = $dt_estimasi['dataTwo'];
-		// echo var_dump($header);die();
 		$data['status'] = "success";
 		$data['header'] = $header;
 		$data['detail'] = $detail;	
@@ -455,8 +454,17 @@ class Estimation extends \CodeIgniter\Controller
 				"name" => "flag",
 				"contents" => "1"
 			];
+			// echo var_dump($_FILES);die();
+			if($_FILES["files"]['name'][0] =="") {
 
-			if($_FILES["files"] !="") {
+				$form_params[] = [
+					'name' => 'file',
+					'contents'	=> "",
+					'filename'	=> "",
+				];	
+
+			} else {
+
 				foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name) {
 					if(is_array($_FILES["files"]["tmp_name"])) {
 						$form_params[] = [
@@ -489,7 +497,7 @@ class Estimation extends \CodeIgniter\Controller
 			$data_detail = $this->getDetListByCrno($this->request->getPost('det_crno'));
 			$data['status'] = "success";	
 			$data['message'] = "Berhasil menyimpan data";
-			$data['data'] = $this->fill_table_detail($data_detail);
+			$data['data'] = $this->fill_table_edit_detail($data_detail);
 			echo json_encode($data);
 			die();				
 		}
@@ -603,6 +611,9 @@ class Estimation extends \CodeIgniter\Controller
 		} else {
 			$no=1;
 			foreach($data as $row) {
+				if($row['rdaccount']=='user') {$rdaccount="U";}
+				else if($row['rdaccount']=='owner') {$rdaccount="O";}
+				else {$rdaccount="i";}				
 				$html .= '<tr>';
 				$html .= '<td class="no">'.$no.'</td>';
 				$html .= '<td class="lccode" style="display:none">'.$row['lccode'].'</td>';
@@ -619,6 +630,8 @@ class Estimation extends \CodeIgniter\Controller
 				$html .= '<td class="rddesc">'.$row['rddesc'].'</td>';
 				$html .= '<td class="rdlab">'.number_format($row['rdlab'],2).'<span style="display:none;">'.$row['rdlab'].'</span></td>';
 				$html .= '<td class="rdmat">'.number_format($row['rdmat'],2).'<span style="display:none;">'.$row['rdmat'].'</span></td>';
+				$html .= '<td class="rdaccount" style="display:none;">'.$rdaccount.'</td>';
+				$html .= '<td class="rdtotal" style="display:none;">'.$row['rdtotal'].'</td>';
 				$html .= '<td>
 						<a href="#" class="btn btn-primary btn-xs view">view</a>
 						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'">delete</a></td>';
@@ -629,7 +642,46 @@ class Estimation extends \CodeIgniter\Controller
 
 		return $html;
 	}
+	public function fill_table_edit_detail($data) {
+		$html = "";
+		if($data=="") {
+			$html="";
+		} else {
+			$no=1;
+			foreach($data as $row) {
+				if($row['rdaccount']=='user') {$rdaccount="U";}
+				else if($row['rdaccount']=='owner') {$rdaccount="O";}
+				else {$rdaccount="i";}				
+				$html .= '<tr>';
+				$html .= '<td class="no">'.$no.'</td>';
+				$html .= '<td class="crno" style="display:none">'.$row['rpcrno'].'</td>';
+				$html .= '<td class="svid" style="display:none">'.$row['svid'].'</td>';
+				$html .= '<td class="lccode" style="display:none">'.$row['lccode'].'</td>';
+				$html .= '<td class="cmcode">'.$row['cmcode'].'</td>';
+				$html .= '<td class="dycode">'.$row['dycode'].'</td>';
+				$html .= '<td class="rmcode">'.$row['rmcode'].'</td>';
+				$html .= '<td class="rdcalmtd">'.$row['rdcalmtd'].'</td>';
+				$html .= '<td class="rdmhr"></td>';
+				$html .= '<td class="rdsize">'.$row['rdsize'].'</td>';
+				$html .= '<td class="muname">'.$row['muname'].'</td>';
+				$html .= '<td class="rdqty">'.$row['rdqty'].'</td>';
+				$html .= '<td class="rdmhr">'.$row['rdmhr'].'</td>';
+				$html .= '<td class="curr_symbol">'.$row['curr_symbol'].'</td>';
+				$html .= '<td class="rddesc">'.$row['rddesc'].'</td>';
+				$html .= '<td class="rdlab">'.number_format($row['rdlab'],2).'<span style="display:none;">'.$row['rdlab'].'</span></td>';
+				$html .= '<td class="rdmat">'.number_format($row['rdmat'],2).'<span style="display:none;">'.$row['rdmat'].'</span></td>';
+				$html .= '<td class="rdaccount" style="display:none;">'.$rdaccount.'</td>';
+				$html .= '<td class="rdtotal" style="display:none;">'.$row['rdtotal'].'</td>';
+				$html .= '<td>
+						<a href="#" class="btn btn-primary btn-xs edit">view</a>
+						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'">delete</a></td>';
+				$html .= '</tr>';
+				$no++;
+			}
+		}
 
+		return $html;
+	}
 	public function delete_detail() 
 	{
 		if($this->request->isAjax()) {
@@ -660,6 +712,74 @@ class Estimation extends \CodeIgniter\Controller
 			echo json_encode($data);
 			die();
 		}
+	}
+
+	public function print($crno) 
+	{
+		$data = $this->getOneEstimasi($crno);
+		$header = $data['dataOne'][0];
+		$detail = $data['dataTwo'];
+		$html = '';
+		$html .= '
+		<html>
+			<head>
+				<title>Order PraIn</title>
+
+				<style>
+					body{font-family: Arial;font-size:12px;}
+					.page-header{display:block;padding:0;min-height:30px;}
+					h2{font-weight:normal;line-height:.5;}
+					.head-left{float:left;width:200px;padding:0px;}
+					.head-right{float:left;padding:0px;margin-left:200px;text-align: right;}
+
+					.tbl_head, .tbl_det_prain, .tbl-borderless{border-spacing: 0;border-collapse: collapse;}
+					.tbl_head_prain td{border-collapse: collapse;}
+					.t-right{text-align:right;}
+					.t-left{text-align:left;}
+					.t-center{text-align:center;}
+
+					.tbl_head td, .tbl_det_prain th,.tbl_det_prain td {
+						border:1px solid #000000!important;
+						border-spacing: 0;
+						border-collapse: collapse;
+						padding:5px;
+
+					}					
+					.tbl-borderless td {
+						border:none!important;
+						border-spacing: 0;
+						border-collapse: collapse;
+					}
+					.line-space{border-bottom:1px solid #000000;margin:30px 0;}
+				</style>
+			</head>
+			<body>
+		';
+
+		$html .= '<table class="t_header" width="100%">';
+		$html .= '<tr><td>
+				 <img src="" style="height:100px;">
+				 </td>
+				 <td width="20%" class="t-right">ESTIMATE OF REPAIRS</td></tr>';
+
+		$html .= '<tr><td colspan="2"></td></tr>';
+		$html .= '</table>';
+
+		$html .= '<table class="t_body">';
+		$html .= '</table>';		
+
+		$html .= '<table class="t_footer">';
+		$html .= '</table>';		
+
+		$html .='
+		</body>
+		</html>
+		';
+
+		$mpdf->WriteHTML($html);
+		$mpdf->Output();
+		// echo $html;
+		die();	
 	}
 
 	// DROPDOwN

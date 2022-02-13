@@ -128,7 +128,7 @@ class Estimation extends \CodeIgniter\Controller
 			
 			if(isset($result['status']) && $result['status']=="Failled") {
 				$data['status'] = "Failled";	
-				$data['message'] = "Gagal menyimpan data" . $result['status'];
+				$data['message'] = "Gagal menyimpan data";
 				echo json_encode($data);
 				die();	
 			}	
@@ -824,7 +824,7 @@ class Estimation extends \CodeIgniter\Controller
 		<tr>
 		<td style="vertical-align:bottom;">
 			<table class="tbl_det">
-			<tr><td width="130">EOR/EIR NUMBER</td><td width="130">'.$header['cpieir'].'</td></tr>			
+			<tr><td width="130">EOR/EIR NUMBER</td><td width="130">'.$header['rpnoest'].'</td></tr>			
 			<tr><td>ESTIMATE DATE</td><td>'.date('d-m-Y',strtotime($header['rptglest'])).' '.date('H:i:s',strtotime($header['rptglest'])).'</td></tr>			
 			<tr><td>RETURN DATE</td><td></td></tr>			
 			<tr><td>TERM/ORIGINAL PORT</td><td></td></tr>			

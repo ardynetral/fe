@@ -11,7 +11,7 @@
 
 <div class="widget">
 	<div class="widget-header">
-		<h3><i class="fa fa-edit"></i> <?= ((isset($act)) && ($act != "") ? $act : "") ?> Estimation</h3>
+		<h3><i class="fa fa-edit"></i> <?= ((isset($act)) && ($act != "") ? $act : "") ?> Approval</h3>
 	</div>
 	<div class="widget-content">
 
@@ -45,15 +45,15 @@
 							<td><input type="text" name="rpcrno" class="form-control" id="rpcrno" value="<?= ''; ?>">
 								<i class="err-crno text-danger"></i></td>
 							<td class="text-right">EOR No :</td>
-							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="rpnoest" id="rpnoest" class="form-control" value="<?= ''; ?>"></td>
+							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="rpnoest" id="rpnoest" class="form-control" value="<?= ''; ?>" readonly></td>
 							<td></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Date :</td>
-							<td><input type="text" name="rptglest" class="form-control" id="rptglest" value="<?= ''; ?>"></td>
+							<td><input type="text" name="rptglest" class="form-control" id="rptglest" value="<?= ''; ?>" readonly></td>
 							<td class="text-right">Time :</td>
-							<td colspan="3"><input type="text" name="rpjamest" id="rpjamest" class="form-control" value="<?= date('H:i:s'); ?>"></td>
+							<td colspan="3"><input type="text" name="rpjamest" id="rpjamest" class="form-control" value="<?= date('H:i:s'); ?>" readonly></td>
 							<td></td>
 							<td></td>
 						</tr>
@@ -103,14 +103,6 @@
 						<tr>
 							<td></td>
 							<td colspan="5">
-								<?php if (isset($act) && ($act == 'view')) : ?>
-									<button type="button" id="cancel" class="btn btn-default"><i class="fa fa-ban"></i> Back</button>
-								<?php else : ?>
-									<button type="submit" id="nextEstimasi" class="btn btn-primary"><i class="fa fa-arrow-circle-o-right"></i>Next Estimasi</button>&nbsp;
-									<button type="button" id="finalEstimasi" class="btn btn-primary"  data-toggle="modal" data-target="#myModal"><i class="fa fa-check-circle"></i> Final Estimasi</button>&nbsp;
-
-									<a href="<?= site_url('approval') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
-								<?php endif; ?>
 							</td>
 						</tr>
 					</tbody>
@@ -245,11 +237,11 @@
 									<label class="col-sm-4 control-label text-right">Account</label>
 									<div class="col-sm-8">
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdaccount" id="rdaccount" value="O" checked="">
+											<input type="radio" name="rdaccount" id="rdaccount" value="O">
 											<span><i></i>O</span>
 										</label>
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdaccount" id="rdaccount" value="U">
+											<input type="radio" name="rdaccount" id="rdaccount" value="U" checked="">
 											<span><i></i>U</span>
 										</label>
 									</div>
@@ -257,7 +249,7 @@
 								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">File Upload</label>
 									<div class="col-sm-6">
-										<input type="file" name="files[]" class="form-control" id="files" multiple="true" required="">
+										<input type="file" name="files[]" class="form-control" id="files" multiple="true">
 									</div>
 								</div>
 								<div class="form-group">
@@ -273,7 +265,13 @@
 
 			<!-- List Final Estimation -->
 			<div class="col-lg-8">
-				<p><button type="button" id="addDetail" class="btn btn-success"><i class="fa fa-plus"></i> Add Detail</button></p>
+				<p>
+					<button type="button" id="addDetail" class="btn btn-success"><i class="fa fa-plus"></i> Add Detail</button>
+					<a href="#" id="nextEstimasi" class="btn btn-primary" data-svid=""><i class="fa fa-arrow-circle-o-right"></i>Next Estimasi</a>&nbsp;
+					<button type="button" id="finalEstimasi" class="btn btn-primary"  data-toggle="modal" data-target="#myModal"><i class="fa fa-check-circle"></i> Final Estimasi</button>&nbsp;
+
+					<a href="<?= site_url('approval') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+				</p>
 				<div class="widget widget-table">
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> List Final Estimation</h3>

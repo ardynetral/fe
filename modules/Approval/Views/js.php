@@ -22,7 +22,7 @@ $(document).ready(function() {
 			e.preventDefault();
 
 			$.ajax({
-				url: "<?php echo site_url('estimation/add'); ?>",
+				url: "<?php echo site_url('approval/add'); ?>",
 				type: "POST",
 				data: new FormData(this),
 	            processData: false,
@@ -49,11 +49,37 @@ $(document).ready(function() {
 			});
 		});
 
+		$("#nextEstimasi").on("click", function(e){
+			e.preventDefault();
+			var svid = $("#svid").val();
+			$.ajax({
+				url: "<?=site_url('approval/next_estimasi/')?>" + svid,
+				type: "POST",
+				dataType: "json",
+				success: function(json){
+					if(json.status=="success") {
+						Swal.fire({
+							icon: 'success',
+							title: "Success",
+							html: '<div class="text-success">' + json.message + '</div>'
+						});						
+					} else {
+						Swal.fire({
+							icon: 'warning',
+							title: "Alert",
+							html: '<div class="text-danger">' + json.message + '</div>'
+						});						
+					}
+				}
+			});
+		});
+
 		$('#tblList_add tbody').on('click', '.delete', function(e) {
 			e.preventDefault();
 			var svid = $(this).data('svid');
 			var rpid = $(this).data('rpid');
 			var rdno = $(this).data('rdno');
+			var crno = $(this).data('crno');
 			Swal.fire({
 				title: 'Are you sure?',
 				icon: 'warning',
@@ -63,36 +89,32 @@ $(document).ready(function() {
 				confirmButtonText: 'Yes, delete it!'
 			}).then((result) => {
 				if (result.isConfirmed) {
-					delete_data(svid,rpid,rdno);
+					delete_data(svid,rpid,rdno,crno);
 				}
 			});
 
 		});
 
-		function delete_data(svid,rpid,rdno) {
-			$.ajax({
-				url: "<?php echo site_url('estimation/delete_detail'); ?>",
-				type: "POST",
-				data: { "svid":svid, "rpid":rpid, "rdno":rdno },
-				dataType: 'json',
-				success: function(json) {
-					if (json.message == "success") {
-						Swal.fire({
-							icon: 'success',
-							title: "Success",
-							html: '<div class="text-success">' + json.message + '</div>'
-						});
-						window.location.href = "<?php echo site_url('city'); ?>";
-					} else {
-						Swal.fire({
-							icon: 'error',
-							title: "Error",
-							html: '<div class="text-danger">' + json.message + '</div>'
-						});
-					}
+		$('#tblList_edit tbody').on('click', '.delete', function(e) {
+			e.preventDefault();
+			var svid = $(this).data('svid');
+			var rpid = $(this).data('rpid');
+			var rdno = $(this).data('rdno');
+			var crno = $(this).data('crno');
+			Swal.fire({
+				title: 'Are you sure?',
+				icon: 'warning',
+				showCancelButton: true,
+				confirmButtonColor: '#3085d6',
+				cancelButtonColor: '#d33',
+				confirmButtonText: 'Yes, delete it!'
+			}).then((result) => {
+				if (result.isConfirmed) {
+					delete_data_edit(svid,rpid,rdno,crno);
 				}
 			});
-		}
+
+		});
 
 		$("#addDetail").on("click", function(e){
 			var det_crno = $("#det_crno").val();
@@ -112,7 +134,7 @@ $(document).ready(function() {
 			e.preventDefault();
 			$("#tblList_add tbody").html("");
 			$.ajax({
-				url: "<?php echo site_url('estimation/save_detail'); ?>",
+				url: "<?php echo site_url('approval/save_detail'); ?>",
 				type: "POST",
 				data: new FormData(this),
 	            processData: false,
@@ -126,6 +148,7 @@ $(document).ready(function() {
 							title: "Success",
 							html: '<div class="text-success">' + json.message + '</div>'
 						});
+						$("#formDetail").trigger("reset");
 						$("#tblList_add tbody").html(json.data);
 					} else {
 						Swal.fire({
@@ -139,24 +162,51 @@ $(document).ready(function() {
 
 		});
 
-		$("#addDetail").on("click", function(e){
-			var det_crno = $("#det_crno").val();
-			var tblRow = parseInt($("#tblList_add tr").length);
-			$("#saveDetail").prop('disabled', false);
-			$("#formDetail").trigger("reset");
-			$("#det_crno").val(det_crno);
-			$("#rpid").val(tblRow);
-			$("#lccode").select2().select2('val','');
-			$("#cmcode").select2().select2('val','');
-			$("#dycode").select2().select2('val','');
-			$("#rmcode").select2().select2('val','');			
-		});
+	$("#addDetail").on("click", function(e){
+		var det_crno = $("#rpcrno").val();
+		var det_svid = $("#svid").val();
+		var tblRow = parseInt($("#tblList_add tr").length);
+		$("#saveDetail").show();
+		$("#saveDetail").prop("disabled",false);
+		$("#updateDetail").hide();
+		$("#updateDetail").prop("disabled",true);
+		$("#formDetail").trigger("reset");
+		$("#det_crno").val(det_crno);
+		$("#rpid").val(tblRow);
+		$("#lccode").select2().select2('val','');
+		$("#cmcode").select2().select2('val','');
+		$("#dycode").select2().select2('val','');
+		$("#rmcode").select2().select2('val','');			
+	});
+
+	$("#addDetailEdit").on("click", function(e){
+		var det_crno = $("#rpcrno").val();
+		var det_svid = $("#svid").val();
+		var tblRow = parseInt($("#tblList_edit tr").length);
+		$("#act").val("add");
+		// $("#formUpdateDetail").attr("id","formInsertEditDetail");
+		$("#saveDetail").show();
+		$("#saveDetail").prop("disabled",false);
+		$("#updateDetail").hide();
+		$("#updateDetail").prop("disabled",true);
+		$("#formDetail").trigger("reset");
+		$("#det_crno").val(det_crno);
+		$("#det_svid").val(det_svid);
+		$("#rpid").val(tblRow);
+		$("#lccode").select2().select2('val','');
+		$("#cmcode").select2().select2('val','');
+		$("#dycode").select2().select2('val','');
+		$("#rmcode").select2().select2('val','');			
+	});
 
 		// save detailContainer
 		$("#formUpdateDetail").on("submit", function(e) {
 			e.preventDefault();
+			var url="";
+			if($("#act").val()=="add") { url = "<?php echo site_url('approval/save_detail'); ?>"; }
+			else if($("#act").val()=="edit") { url = "<?php echo site_url('approval/update_detail'); ?>"; }
 			$.ajax({
-				url: "<?php echo site_url('estimation/update_detail'); ?>",
+				url: url,
 				type: "POST",
 				data: new FormData(this),
 	            processData: false,
@@ -183,6 +233,36 @@ $(document).ready(function() {
 			});
 		});
 
+		// save detailContainer
+		$("#formFinalEstimasi").on("submit", function(e) {
+			e.preventDefault();
+			$.ajax({
+				url: "<?php echo site_url('approval/final_estimasi'); ?>",
+				type: "POST",
+				data: new FormData(this),
+	            processData: false,
+	            contentType: false,
+	            cache: false,		
+				dataType: 'json',
+				success: function(json) {
+					if (json.status == "success") {
+						Swal.fire({
+							icon: 'success',
+							title: "Success",
+							html: '<div class="text-success">' + json.message + '</div>'
+						});
+						window.location.href= "<?=site_url('approval');?>";
+					} else {
+						Swal.fire({
+							icon: 'error',
+							title: "Error",
+							html: '<div class="text-danger">' + json.message + '</div>'
+						});
+					}
+				}
+			});
+		});
+
 		$("#rpcrno").on("keyup", function() {
 			var crno = $("#rpcrno").val();
 			var status = "";
@@ -192,7 +272,7 @@ $(document).ready(function() {
 			$("#rpcrno").val(crno);				
 			$(this).val($(this).val().toUpperCase());
 			$.ajax({
-				url: "<?= site_url('estimation/getDataEstimasi'); ?>",
+				url: "<?= site_url('approval/getDataEstimasi'); ?>",
 				type: "POST",
 				data: { "crno": crno },
 				dataType: "JSON",
@@ -211,8 +291,10 @@ $(document).ready(function() {
 						var rptglest = $.format.date(json.header.rptglest,"dd-MM-yyyy")
 						var svsurdat = $.format.date(json.header.svsurdat,"dd-MM-yyyy")
 						$("#det_crno").val(crno);
+						$("#final_crno").val(crno);
 						$("#svid").val(json.header.svid);
 						$("#det_svid").val(json.header.svid);
+						$("#final_svid").val(json.header.svid);
 						$("#syid").val(json.header.syid);
 						$("#rpcrton").val(json.header.svcrton);
 						$("#rpcrtby").val(json.header.svcrtby);
@@ -275,7 +357,11 @@ $(document).ready(function() {
 
 		$("#tblList_edit tbody").on("click",".edit", function(e){
 			e.preventDefault();
-			$("#saveDetail").prop("disabled",false);
+			$("#act").val("edit");
+			$("#saveDetail").hide();
+			$("#saveDetail").prop("disabled",true);
+			$("#updateDetail").show();
+			$("#updateDetail").prop("disabled",false);
 			var row = $(this).closest("tr");
 			var crno = row.find(".crno").text();
 			var svid = row.find(".svid").text();
@@ -316,21 +402,8 @@ $(document).ready(function() {
 			$("#rdtotal").val(rdtotal);
 			$("input[name=rdcalmtd][value=" + rdcalmtd + "]").prop('checked', true);
 			$("input[name=rdaccount][value=" + rdaccount + "]").prop('checked', true);
-
-		  	$("#fileList").html("");
-			
+			  $("#fileList").html("");		
 		});
-
-		function loadFileList(crno) {
-			$.ajax({
-				url: "<?= site_url('estimation/getFileList/'); ?>" + crno,
-				type: "POST",
-				dataType: "JSON",
-				success: function(json) {
-					$("#fileList").html(json);
-				}
-			});			
-		}
 
 	// check file size while upload
 	$('#files').bind('change', function() {
@@ -347,6 +420,17 @@ $(document).ready(function() {
 
 	});
 
+	$("#ctTable tbody").on("click", ".print", function(e) {
+		e.preventDefault();
+		var crno = $(this).data("crno");
+		window.open("<?=site_url('approval/print/'); ?>" + crno, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	});
+
+	$("#print").on("click", function(e) {
+		e.preventDefault();
+		var crno = $(this).data("crno");
+		window.open("<?=site_url('approval/print/'); ?>" + crno, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	});
 	runDataTables();
 	var table = $('#ctTable').DataTable({
         "processing": true,
@@ -370,6 +454,65 @@ $(document).ready(function() {
 
 });
 
+function loadFileList(crno) {
+	$.ajax({
+		url: "<?= site_url('approval/getFileList/'); ?>" + crno,
+		type: "POST",
+		dataType: "JSON",
+		success: function(json) {
+			$("#fileList").html(json);
+		}
+	});			
+}
+
+function delete_data(svid,rpid,rdno,crno) {
+	$.ajax({
+		url: "<?php echo site_url('approval/delete_detail'); ?>",
+		type: "POST",
+		data: { "svid":svid, "rpid":rpid, "rdno":rdno, "crno":crno },
+		dataType: 'json',
+		success: function(json) {
+			if (json.status == "success") {
+				Swal.fire({
+					icon: 'success',
+					title: "Success",
+					html: '<div class="text-success">' + json.message + '</div>'
+				});
+				$("#tblList_add tbody").html(json.data);
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: "Error",
+					html: '<div class="text-danger">' + json.message + '</div>'
+				});
+			}
+		}
+	});
+}
+function delete_data_edit(svid,rpid,rdno,crno) {
+	$.ajax({
+		url: "<?php echo site_url('approval/delete_detail_edit'); ?>",
+		type: "POST",
+		data: { "svid":svid, "rpid":rpid, "rdno":rdno, "crno":crno },
+		dataType: 'json',
+		success: function(json) {
+			if (json.status == "success") {
+				Swal.fire({
+					icon: 'success',
+					title: "Success",
+					html: '<div class="text-success">' + json.message + '</div>'
+				});
+				$("#tblList_edit tbody").html(json.data);
+			} else {
+				Swal.fire({
+					icon: 'error',
+					title: "Error",
+					html: '<div class="text-danger">' + json.message + '</div>'
+				});
+			}
+		}
+	});
+}
 function runDataTables() {		
     $.fn.dataTable.pipeline = function ( opts ) { 
         var conf = $.extend({

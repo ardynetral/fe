@@ -55,9 +55,7 @@ class Estimation extends \CodeIgniter\Controller
 				$btn_list .= '<a href="'.site_url('estimation/edit/').$v['RPCRNO'].'" id="editPraIn" class="btn btn-xs btn-success btn-tbl">edit</a>';
 			endif;
 			
-			// if(has_privilege_check($module, '_printpdf')==true):
-			// 	$btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl" data-praid="">print</a>';
-			//  endif;
+			$btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl print" data-crno="'.$v['RPCRNO'].'">print</a>';
 
 			// if(has_privilege_check($module, '_delete')==true):
 			// 	$btn_list .= '<a href="#" id="deletePraIn" class="btn btn-xs btn-danger btn-tbl">delete</a>';
@@ -287,6 +285,28 @@ class Estimation extends \CodeIgniter\Controller
 				}
 			}
 
+			// if($_FILES["files"]['name'][0] =="") {
+
+			// 	$form_params[] = [
+			// 		'name' => 'file',
+			// 		'contents'	=> "",
+			// 		'filename'	=> "",
+			// 	];	
+
+			// } else {
+
+			// 	foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name) {
+			// 		if(is_array($_FILES["files"]["tmp_name"])) {
+			// 			$form_params[] = [
+			// 				'name' => 'file',
+			// 				'contents'	=> fopen($_FILES["files"]['tmp_name'][$key],'r'),
+			// 				'filename'	=> $_FILES["files"]['name'][$key],
+			// 			];
+			// 			continue;
+			// 		}
+			// 	}
+			// }
+			
 			$response = $this->client->request('POST', 'estimasi/createDetail', [
 				'headers' => [
 					'Accept' => 'application/json',
@@ -307,7 +327,8 @@ class Estimation extends \CodeIgniter\Controller
 			$data_detail = $this->getDetListByCrno($this->request->getPost('det_crno'));
 			$data['status'] = "success";	
 			$data['message'] = "Berhasil menyimpan data";
-			$data['data'] = $this->fill_table_detail($data_detail);
+			$data['data'] = ((isset($_POST['act'])&&$_POST['act']=="add")?$this->fill_table_edit_detail($data_detail):$this->fill_table_detail($data_detail));
+			// $data['data'] = ;
 			echo json_encode($data);
 			die();
 		}	
@@ -633,8 +654,7 @@ class Estimation extends \CodeIgniter\Controller
 				$html .= '<td class="rdaccount" style="display:none;">'.$rdaccount.'</td>';
 				$html .= '<td class="rdtotal" style="display:none;">'.$row['rdtotal'].'</td>';
 				$html .= '<td>
-						<a href="#" class="btn btn-primary btn-xs view">view</a>
-						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'">delete</a></td>';
+						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 				$html .= '</tr>';
 				$no++;
 			}
@@ -674,7 +694,7 @@ class Estimation extends \CodeIgniter\Controller
 				$html .= '<td class="rdtotal" style="display:none;">'.$row['rdtotal'].'</td>';
 				$html .= '<td>
 						<a href="#" class="btn btn-primary btn-xs edit">view</a>
-						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'">delete</a></td>';
+						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 				$html .= '</tr>';
 				$no++;
 			}
@@ -709,36 +729,69 @@ class Estimation extends \CodeIgniter\Controller
 
 			$data['status'] = "success";
 			$data['message'] = "Berhasil hapus data";
+			$data_detail = $this->getDetListByCrno($this->request->getPost('crno'));
+			$data['data'] = $this->fill_table_detail($data_detail);			
 			echo json_encode($data);
 			die();
 		}
 	}
+	public function delete_detail_edit() 
+	{
+		if($this->request->isAjax()) {
 
+			$response = $this->client->request('DELETE', 'estimasi/delete', [
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'json' => [
+					'SVID' => $_POST['svid'],
+					'RPID' => $_POST['rpid'],
+					'RDNO' => $_POST['rdno']
+				]
+			]);
+
+			$result = json_decode($response->getBody()->getContents(), true);
+			// echo var_dump($result);die();
+			if(isset($result['status']) && ($result['status']=="Failled")) {
+				$data['status'] = "Failled";
+				$data['message'] = "Gagal hapus data";
+				echo json_encode($data);
+				die();
+			}
+
+			$data['status'] = "success";
+			$data['message'] = "Berhasil hapus data";
+			$data_detail = $this->getDetListByCrno($this->request->getPost('crno'));
+			$data['data'] = $this->fill_table_edit_detail($data_detail);			
+			echo json_encode($data);
+			die();
+		}
+	}
 	public function print($crno) 
 	{
+		$mpdf = new \Mpdf\Mpdf();
+
 		$data = $this->getOneEstimasi($crno);
 		$header = $data['dataOne'][0];
 		$detail = $data['dataTwo'];
+		// dd($header);
 		$html = '';
 		$html .= '
 		<html>
 			<head>
-				<title>Order PraIn</title>
+				<title>Estimation</title>
 
 				<style>
 					body{font-family: Arial;font-size:12px;}
-					.page-header{display:block;padding:0;min-height:30px;}
 					h2{font-weight:normal;line-height:.5;}
-					.head-left{float:left;width:200px;padding:0px;}
-					.head-right{float:left;padding:0px;margin-left:200px;text-align: right;}
-
-					.tbl_head, .tbl_det_prain, .tbl-borderless{border-spacing: 0;border-collapse: collapse;}
+					.tbl_head, .tbl_det, .tbl-borderless{border-spacing: 0;border-collapse: collapse;}
 					.tbl_head_prain td{border-collapse: collapse;}
 					.t-right{text-align:right;}
 					.t-left{text-align:left;}
 					.t-center{text-align:center;}
 
-					.tbl_head td, .tbl_det_prain th,.tbl_det_prain td {
+					.tbl_head td, .tbl_det th,.tbl_det td {
 						border:1px solid #000000!important;
 						border-spacing: 0;
 						border-collapse: collapse;
@@ -758,18 +811,132 @@ class Estimation extends \CodeIgniter\Controller
 
 		$html .= '<table class="t_header" width="100%">';
 		$html .= '<tr><td>
-				 <img src="" style="height:100px;">
+				 <img src="'. ROOTPATH .'/public/media/img/LOGO_CONTINDO.png" style="height:60px;">
 				 </td>
 				 <td width="20%" class="t-right">ESTIMATE OF REPAIRS</td></tr>';
 
-		$html .= '<tr><td colspan="2"></td></tr>';
-		$html .= '</table>';
+		$html .= '<tr><td colspan="2">JL. BY PASS KM 8, PADANG SUMATERA BARAT
+				 +62 751 61600 &nbsp; +62 751 61097</td></tr>';
+		$html .= '</table><h2>&nbsp;</h2>';
 
-		$html .= '<table class="t_body">';
-		$html .= '</table>';		
+		$html .= '
+		<table width="100%" style="padding:0;margin:0;border-spacing: 0;border-collapse: collapse;">
+		<tr>
+		<td style="vertical-align:bottom;">
+			<table class="tbl_det">
+			<tr><td width="130">EOR/EIR NUMBER</td><td width="130">'.$header['cpieir'].'</td></tr>			
+			<tr><td>ESTIMATE DATE</td><td>'.date('d-m-Y',strtotime($header['rptglest'])).' '.date('H:i:s',strtotime($header['rptglest'])).'</td></tr>			
+			<tr><td>RETURN DATE</td><td></td></tr>			
+			<tr><td>TERM/ORIGINAL PORT</td><td></td></tr>			
+			<tr><td>ORIGINAL PORT</td><td></td></tr>			
+			<tr><td>TARA</td><td></td></tr>			
+			</table>		
+		</td>
+		<td width="30%"></td>
+		<td>
+			<table class="tbl_det">
+			<tr><td width="130">CONT. NUMBER </td><td width="130">'.$header['crno'].'</td></tr>			
+			<tr><td>EQUIPMENT DESCRIP</td><td>'.$header['cclength'].' '.$header['ccheight'].' '.$header['ctcode'].'</td></tr>			
+			<tr><td>INSPECTED AT</td><td></td></tr>			
+			<tr><td>CONDITION</td><td>'.$header['svcond'].'</td></tr>			
+			<tr><td>CUSTOMER</td><td>'.$header['cpopr'].'</td></tr>	
+			<tr><td>CONT. OPERATOR</td><td>'.$header['cpopr'].'</td></tr>			
+			<tr><td>EX VESSEL/VOY</td><td></td></tr>			
+			<tr><td>ON HIRE DATE</td><td></td></tr>			
+			<tr><td>MANUFACTURE DATE</td><td></td></tr>					
+			</table>
+		</td>
+		</tr>
+		</table>';		
+		
+		$html .= '<table class="tbl_det" width="100%">
+		<tr>
+		<th rowspan="2">No.</th>
+		<th rowspan="2">LOCATION</th>
+		<th rowspan="2">DESCRIPTION OF WORK</th>
+		<th colspan="2">LABOUR</th>
+		<th rowspan="2">MATERIAL COST</th>
+		<th rowspan="2">TOTAL</th>
+		<th rowspan="2">A/C</th>
+		</tr>
+		<tr>
+		<th>HRS</th>
+		<th>COST</th>
+		</tr>';
 
-		$html .= '<table class="t_footer">';
-		$html .= '</table>';		
+		$no=1;
+		$tot_rdmhr_o = 0;
+		$tot_rdmhr_u = 0;
+		$tot_rdlab_o = 0;
+		$tot_rdlab_u = 0;	
+		$tot_rdmat_o = 0;
+		$tot_rdmat_u = 0;
+		$tot_rdtotal_o = 0;
+		$tot_rdtotal_u = 0;					
+		foreach($detail as $det) {
+			if($det['rdaccount']=="user") {
+				$account = "U";
+				$tot_rdmhr_u = $tot_rdmhr_u+(double)$det['rdmhr'];
+				$tot_rdlab_u = $tot_rdlab_u+(double)$det['rdlab'];	
+				$tot_rdmat_u = $tot_rdmat_u+(int)$det['rdmat'];
+				$tot_rdtotal_u = $tot_rdtotal_u+(int)$det['rdtotal'];					
+			} else if($det['rdaccount']=="owner") {
+				$account = "O";
+				$tot_rdmhr_o = $tot_rdmhr_o+(double)$det['rdmhr'];
+				$tot_rdlab_o = $tot_rdlab_o+(double)$det['rdlab'];	
+				$tot_rdmat_o = $tot_rdmat_o+(int)$det['rdmat'];
+				$tot_rdtotal_o = $tot_rdtotal_o+(int)$det['rdtotal'];
+			} else {
+				$account = "i";
+			}
+
+		$html .= '<tr>
+		<td>'.$no.'</td>
+		<td>'.$det['lccode'].'</td>
+		<td>'.$det['rddesc'].'</td>
+		<td class="t-right">'.$det['rdmhr'].'</td>
+		<td class="t-right">'.number_format($det['rdlab'],0).'</td>
+		<td class="t-right">'.number_format($det['rdmat'],0).'</td>
+		<td class="t-right">'.number_format($det['rdtotal'],0).'</td>
+		<td class="t-center">'.$account.'</td>
+		</tr>';
+		$no++;
+		}
+
+		$html .='
+		<tr>
+		<td></td><td></td>
+		<td class="t-right">Total Owner Account(IDR)</td>
+		<td class="t-right">'.$tot_rdmhr_o.'</td><td class="t-right">'.$tot_rdlab_o.'</td><td class="t-right">'.$tot_rdmat_o.'</td><td class="t-right">'.$tot_rdtotal_o.'</td><td></td>
+		</tr>
+		<tr>
+		<td></td><td></td>
+		<td class="t-right">Total Owner Account(IDR)</td>
+		<td class="t-right">'.$tot_rdmhr_u.'</td><td class="t-right">'.number_format($tot_rdlab_u,0).'</td><td class="t-right">'.number_format($tot_rdmat_u,0).'</td><td class="t-right">'.number_format($tot_rdtotal_u,0).'</td><td></td>
+		</tr>';
+
+		$html .='</table>';	
+
+		$html .= '
+		<table style="border-spacing: 0; border-collapse: collapse;width:100%; margin-top:40px;">	
+			<tr>
+				<td width="33%" class="t-center">For Receiving Party</td>
+				<td width="33%" class="t-center">For Delivering Party</td>
+				<td width="33%" class="t-center">Repair Approved By</td>
+			</tr>
+			
+			<tr>
+				<td height="60">&nbsp;</td>
+				<td>&nbsp;</td>
+				<td>&nbsp;</td>
+			</tr>	
+			<tr>
+				<td class="t-center">_______________________</td>
+				<td class="t-center">_______________________</td>
+				<td class="t-center">_______________________</td>
+			</tr>	
+		</table>';
+		
 
 		$html .='
 		</body>

@@ -53,6 +53,7 @@ $(document).ready(function() {
 		var svid = $(this).data('svid');
 		var rpid = $(this).data('rpid');
 		var rdno = $(this).data('rdno');
+		var crno = $(this).data('crno');
 		Swal.fire({
 			title: 'Are you sure?',
 			icon: 'warning',
@@ -62,26 +63,45 @@ $(document).ready(function() {
 			confirmButtonText: 'Yes, delete it!'
 		}).then((result) => {
 			if (result.isConfirmed) {
-				delete_data(svid,rpid,rdno);
+				delete_data(svid,rpid,rdno,crno);
 			}
 		});
 
 	});
+	$('#tblList_edit tbody').on('click', '.delete', function(e) {
+		e.preventDefault();
+		var svid = $(this).data('svid');
+		var rpid = $(this).data('rpid');
+		var rdno = $(this).data('rdno');
+		var crno = $(this).data('crno');
+		Swal.fire({
+			title: 'Are you sure?',
+			icon: 'warning',
+			showCancelButton: true,
+			confirmButtonColor: '#3085d6',
+			cancelButtonColor: '#d33',
+			confirmButtonText: 'Yes, delete it!'
+		}).then((result) => {
+			if (result.isConfirmed) {
+				delete_data_edit(svid,rpid,rdno,crno);
+			}
+		});
 
-	function delete_data(svid,rpid,rdno) {
+	});
+	function delete_data(svid,rpid,rdno,crno) {
 		$.ajax({
 			url: "<?php echo site_url('estimation/delete_detail'); ?>",
 			type: "POST",
-			data: { "svid":svid, "rpid":rpid, "rdno":rdno },
+			data: { "svid":svid, "rpid":rpid, "rdno":rdno, "crno":crno },
 			dataType: 'json',
 			success: function(json) {
-				if (json.message == "success") {
+				if (json.status == "success") {
 					Swal.fire({
 						icon: 'success',
 						title: "Success",
 						html: '<div class="text-success">' + json.message + '</div>'
 					});
-					window.location.href = "<?php echo site_url('city'); ?>";
+					$("#tblList_add tbody").html(json.data);
 				} else {
 					Swal.fire({
 						icon: 'error',
@@ -93,19 +113,30 @@ $(document).ready(function() {
 		});
 	}
 
-	$("#addDetail").on("click", function(e){
-		var det_crno = $("#det_crno").val();
-		var tblRow = parseInt($("#tblList_add tr").length);
-		$("#saveDetail").prop('disabled', false);
-		$("#formDetail").trigger("reset");
-		$("#det_crno").val(det_crno);
-		$("#rpid").val(tblRow);
-		$("#lccode").select2().select2('val','');
-		$("#cmcode").select2().select2('val','');
-		$("#dycode").select2().select2('val','');
-		$("#rmcode").select2().select2('val','');			
-	});
-
+	function delete_data_edit(svid,rpid,rdno,crno) {
+		$.ajax({
+			url: "<?php echo site_url('estimation/delete_detail_edit'); ?>",
+			type: "POST",
+			data: { "svid":svid, "rpid":rpid, "rdno":rdno, "crno":crno },
+			dataType: 'json',
+			success: function(json) {
+				if (json.status == "success") {
+					Swal.fire({
+						icon: 'success',
+						title: "Success",
+						html: '<div class="text-success">' + json.message + '</div>'
+					});
+					$("#tblList_edit tbody").html(json.data);
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: "Error",
+						html: '<div class="text-danger">' + json.message + '</div>'
+					});
+				}
+			}
+		});
+	}
 	// save detailContainer
 	$("#formDetail").on("submit", function(e) {
 		e.preventDefault();
@@ -179,9 +210,13 @@ $(document).ready(function() {
 	// });
 
 	$("#addDetail").on("click", function(e){
-		var det_crno = $("#det_crno").val();
+		var det_crno = $("#rpcrno").val();
+		var det_svid = $("#svid").val();
 		var tblRow = parseInt($("#tblList_add tr").length);
-		$("#saveDetail").prop('disabled', false);
+		$("#saveDetail").show();
+		$("#saveDetail").prop("disabled",false);
+		$("#updateDetail").hide();
+		$("#updateDetail").prop("disabled",true);
 		$("#formDetail").trigger("reset");
 		$("#det_crno").val(det_crno);
 		$("#rpid").val(tblRow);
@@ -191,11 +226,48 @@ $(document).ready(function() {
 		$("#rmcode").select2().select2('val','');			
 	});
 
+	// $("#addDetail").on("click", function(e){
+	// 	var det_crno = $("#rpcrno").val();
+	// 	var det_svid = $("#svid").val();
+	// 	var tblRow = parseInt($("#tblList_add tr").length);
+	// 	$("#saveDetail").prop('disabled', false);
+	// 	$("#formDetail").trigger("reset");
+	// 	$("#det_crno").val(det_crno);
+	// 	$("#det_svid").val(det_svid);
+	// 	$("#rpid").val(tblRow);
+	// 	$("#lccode").select2().select2('val','');
+	// 	$("#cmcode").select2().select2('val','');
+	// 	$("#dycode").select2().select2('val','');
+	// 	$("#rmcode").select2().select2('val','');			
+	// });
+
+	$("#addDetailEdit").on("click", function(e){
+		var det_crno = $("#rpcrno").val();
+		var det_svid = $("#svid").val();
+		var tblRow = parseInt($("#tblList_edit tr").length);
+		$("#act").val("add");
+		// $("#formUpdateDetail").attr("id","formInsertEditDetail");
+		$("#saveDetail").show();
+		$("#saveDetail").prop("disabled",false);
+		$("#updateDetail").hide();
+		$("#updateDetail").prop("disabled",true);
+		$("#formDetail").trigger("reset");
+		$("#det_crno").val(det_crno);
+		$("#det_svid").val(det_svid);
+		$("#rpid").val(tblRow);
+		$("#lccode").select2().select2('val','');
+		$("#cmcode").select2().select2('val','');
+		$("#dycode").select2().select2('val','');
+		$("#rmcode").select2().select2('val','');			
+	});
 	// save detailContainer
 	$("#formUpdateDetail").on("submit", function(e) {
 		e.preventDefault();
+		var url="";
+		if($("#act").val()=="add") { url = "<?php echo site_url('estimation/save_detail'); ?>"; }
+		else if($("#act").val()=="edit") { url = "<?php echo site_url('estimation/update_detail'); ?>"; }
 		$.ajax({
-			url: "<?php echo site_url('estimation/update_detail'); ?>",
+			url: url,
 			type: "POST",
 			data: new FormData(this),
             processData: false,
@@ -314,7 +386,11 @@ $(document).ready(function() {
 
 	$("#tblList_edit tbody").on("click",".edit", function(e){
 		e.preventDefault();
-		$("#saveDetail").prop("disabled",false);
+		$("#act").val("edit");
+		$("#saveDetail").hide();
+		$("#saveDetail").prop("disabled",true);
+		$("#updateDetail").show();
+		$("#updateDetail").prop("disabled",false);
 		var row = $(this).closest("tr");
 		var crno = row.find(".crno").text();
 		var svid = row.find(".svid").text();
@@ -383,12 +459,16 @@ $(document).ready(function() {
 
 	});
 	// End Step 2
-	$('#ctTable tbody').on("click", ".print_order", function(e) {
+	$("#ctTable tbody").on("click", ".print", function(e) {
 		e.preventDefault();
-		var praid = $(this).data("praid");
-		window.open("<?php echo site_url('estimation/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+		var crno = $(this).data("crno");
+		window.open("<?=site_url('estimation/print/'); ?>" + crno, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
-
+	$("#print").on("click", function(e) {
+		e.preventDefault();
+		var crno = $(this).data("crno");
+		window.open("<?=site_url('estimation/print/'); ?>" + crno, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	});
 	runDataTables();
 	var table = $('#ctTable').DataTable({
 		"processing": true,

@@ -12,3 +12,5 @@ $routes->add('/estimation/save_detail', '\Modules\Estimation\Controllers\Estimat
 $routes->add('/estimation/update_detail', '\Modules\Estimation\Controllers\Estimation::update_detail', ['filter' => 'login']);
 $routes->add('/estimation/getFileList/(:alphanum)', '\Modules\Estimation\Controllers\Estimation::getFileList/$1', ['filter' => 'login']);
 $routes->add('/estimation/delete_detail', '\Modules\Estimation\Controllers\Estimation::delete_detail', ['filter' => 'login']);
+$routes->add('/estimation/delete_detail_edit', '\Modules\Estimation\Controllers\Estimation::delete_detail_edit', ['filter' => 'login']);
+$routes->add('/estimation/print/(:alphanum)', '\Modules\Estimation\Controllers\Estimation::print/$1', ['filter' => 'login']);

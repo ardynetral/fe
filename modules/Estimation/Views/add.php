@@ -53,15 +53,15 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 							<td><input type="text" name="rpcrno" class="form-control" id="rpcrno" value="<?= ''; ?>">
 								<i class="err-crno text-danger"></i></td>
 							<td class="text-right">EOR No :</td>
-							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="rpnoest" id="rpnoest" class="form-control" value="<?= ''; ?>"></td>
+							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="rpnoest" id="rpnoest" class="form-control" value="<?= ''; ?>" readonly></td>
 							<td></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Date :</td>
-							<td><input type="text" name="rptglest" class="form-control" id="rptglest" value="<?= ''; ?>"></td>
+							<td><input type="text" name="rptglest" class="form-control" id="rptglest" value="<?= ''; ?>" readonly></td>
 							<td class="text-right">Time :</td>
-							<td colspan="3"><input type="text" name="rpjamest" id="rpjamest" class="form-control" value="<?= date('H:i:s'); ?>"></td>
+							<td colspan="3"><input type="text" name="rpjamest" id="rpjamest" class="form-control" value="<?= date('H:i:s'); ?>" readonly></td>
 							<td></td>
 							<td></td>
 						</tr>
@@ -253,11 +253,11 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<label class="col-sm-4 control-label text-right">Account</label>
 									<div class="col-sm-8">
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdaccount" id="rdaccount" value="O" checked="">
+											<input type="radio" name="rdaccount" id="rdaccount" value="O">
 											<span><i></i>O</span>
 										</label>
 										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdaccount" id="rdaccount" value="U">
+											<input type="radio" name="rdaccount" id="rdaccount" value="U" checked="">
 											<span><i></i>U</span>
 										</label>
 									</div>
@@ -281,7 +281,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 
 			<!-- List Final Estimation -->
 			<div class="col-lg-8">
-				<button type="button" id="addDetail" class="btn btn-success"><i class="fa fa-list"></i> Add Detail</button>
+				<p><button type="button" id="addDetail" class="btn btn-success"><i class="fa fa-plus"></i> Add Detail</button></p>
 				<div class="widget widget-table">
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> List Final Estimation</h3>

@@ -108,6 +108,12 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 						<tr>
 							<td colspan="6"></td>
 						</tr>
+						<tr>
+							<td></td>
+							<td colspan="5">
+								
+							</td>
+						</tr>
 <?php /*						<tr>
 							<td></td>
 							<td colspan="5">
@@ -140,6 +146,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Location</label>
 									<div class="col-sm-8">
+										<input type="hidden" name="act" id="act" value="edit">
 										<input type="hidden" name="det_crno" id="det_crno">
 										<input type="hidden" name="det_svid" id="det_svid">
 										<input type="hidden" name="rpid" id="rpid">
@@ -275,7 +282,8 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 								</div>
 								<div class="form-group">
 									<div class="col-sm-offset-4 col-sm-8">
-										<button type="submit" id="updateDetail" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>
+										<button type="submit" id="updateDetail" class="btn btn-primary" style="display:none;"><i class="fa fa-check-circle"></i> Update</button>
+										<button type="submit" id="saveDetail" class="btn btn-primary" style="display:none;"><i class="fa fa-check-circle"></i> Save</button>
 									</div>
 								</div>
 							</fieldset>
@@ -286,7 +294,10 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 
 			<!-- List Final Estimation -->
 			<div class="col-lg-8">
-				<p><button type="button" id="addDetail" class="btn btn-success"><i class="fa fa-plus"></i> Add Detail</button></p>
+				<p>
+					<button type="button" id="addDetailEdit" class="btn btn-success"><i class="fa fa-plus"></i> Add Detail</button>
+					<a href="#" id="print" class="btn btn-info btn-tbl" data-crno="<?=$header['crno']?>"><i class="fa fa-print"></i>&nbsp;Print</a>
+				</p>
 				<div class="widget widget-table">
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> List Final Estimation</h3>
@@ -345,7 +356,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									echo '<td class="rdtotal" style="display:none">'.$row['rdtotal'].'</td>';
 									echo '<td>
 											<a href="#" class="btn btn-primary btn-xs edit">edit</a>
-											<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'">delete</a></td>';
+											<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 									echo '</tr>';
 									$no++;
 								}

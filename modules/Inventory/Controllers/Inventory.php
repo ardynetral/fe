@@ -32,7 +32,7 @@ class Inventory extends \CodeIgniter\Controller
 			$data['cucode'] = '0';
 		}
 		$data['group_id'] = $group_id;
-		return view('Modules\Inventory\Views\add', $data);
+		return view('Modules\Inventory\Views\index', $data);
 	}
 
 	public function view($code)

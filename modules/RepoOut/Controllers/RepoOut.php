@@ -241,7 +241,7 @@ class RepoOut extends \CodeIgniter\Controller
 				'ctcode' => $_POST['ctcode'],
 				'cclength' => $_POST['cclength'],
 				'ccheight' => $_POST['ccheight'],
-				'repofe' => $_POST['cpIfe'],
+				'repofe' => $_POST['cpife'],
 				'reposhold' => $_POST['cpishold'],
 				'reporemark' => $_POST['reporemark'],
 				'sealno' => $_POST['sealno']
@@ -1131,10 +1131,10 @@ class RepoOut extends \CodeIgniter\Controller
 	{
 		$t_container = $this->get_container($_POST['crno']);
 		$header = $this->getOneRepo($_POST['repo_orderno']);
-		// echo var_dump($header);
 		$cprocess_params = [
 			"crno" => $_POST['crno'],
-		    "cpofe" => $_POST['cpofe'],
+			"cporefout" => $header['data']['reautno'],
+		    "cpofe" => $_POST['cpife'],
 		    "cporemark" => $_POST['cpiremark'],
 		    "cpopr1" => $header['data']['cpopr'],				    
 		    "cpcust1" => $header['data']['cpcust'],					    
@@ -1143,14 +1143,15 @@ class RepoOut extends \CodeIgniter\Controller
 		    "cpoves" => $header['data']['recpives'],
 		    "cpoloaddat" => date('Y-m-d',strtotime($_POST['cpidisdat'])),
 		    "cpojam" => $_POST['cpijam'],
-		    // "cporeceiv" => $_POST['cpideliver'],
+		    "cporeceiv" => $header['data']['repovendor'],
 		    "cpoorderno" => $header['data']['reorderno'],
 		    "cpovoy" => $header['data']['recpivoyid'],
+		    "cpoterm" => "MTY",
+		    "cposeal" => $_POST['sealno'],
 			"cpid" => $t_container['crcpid'],
 		];	
-
 		// Container Process
-		$cp_response = $this->client->request('PUT','gateout/updateGateOut',[
+		$cp_response = $this->client->request('PUT','gateout/repoOutUpdateCP',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')

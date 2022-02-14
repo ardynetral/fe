@@ -183,9 +183,10 @@ class Approval extends \CodeIgniter\Controller
 				echo json_encode($data);
 				die();	
 			}	
-
+			$dt_estimasi = $this->getOneEstimasi($_POST['crno']);
 			$data['status'] = "success";	
 			$data['message'] = "Berhasil menyimpan data";
+			$data['header'] = $dt_estimasi['dataOne'][0];
 			echo json_encode($data);
 			die();
 		}
@@ -789,6 +790,27 @@ class Approval extends \CodeIgniter\Controller
 			die();
 		}
 	}
+
+	public function getFileToPrint($crno) 
+	{
+		$response = $this->client->request('GET', 'estimasi/getFileDetail', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'crno' => $crno
+			]
+		]);	
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		if($result['data'] == NULL) {
+			$data = "";			
+		} 
+		return $result['data'];
+
+	}
+
 	public function print($crno) 
 	{
 		$mpdf = new \Mpdf\Mpdf();
@@ -796,13 +818,14 @@ class Approval extends \CodeIgniter\Controller
 		$data = $this->getOneEstimasi($crno);
 		$header = $data['dataOne'][0];
 		$detail = $data['dataTwo'];
-		// dd($header);
+		$files = $this->getFileToPrint($crno);
+		// dd($files);
 		$html = '';
 		$html .= '
 		<html>
 			<head>
 				<title>Approval</title>
-
+				<link href="'.base_url().'/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 				<style>
 					body{font-family: Arial;font-size:12px;}
 					h2{font-weight:normal;line-height:.5;}
@@ -825,6 +848,9 @@ class Approval extends \CodeIgniter\Controller
 						border-collapse: collapse;
 					}
 					.line-space{border-bottom:1px solid #000000;margin:30px 0;}
+					.img-container{display:block;}
+					.img-box{float:left;width:47%;padding:10px;}
+					.img-box img{display:inline-block;}
 				</style>
 			</head>
 			<body>
@@ -956,8 +982,21 @@ class Approval extends \CodeIgniter\Controller
 				<td class="t-center">_______________________</td>
 				<td class="t-center">_______________________</td>
 			</tr>	
-		</table>';
+		</table>
+		<p>&nbsp;</p>
+		';
 		
+		if($files != NULL) {
+			$html .= '<p style="page-break-before: always;">&nbsp;</p>';
+			$html .= '<h3>Files:</h3>';
+			$html .= '<div class="img-container">';
+			foreach($files as $row) {
+			$html .= '<div class="img-box">';
+			$html .= '<img src="'.$row['url'].'">';
+			$html .= '</div>';
+			}			
+			$html .= '</div>';
+		}
 
 		$html .='
 		</body>

@@ -52,9 +52,11 @@ $(document).ready(function() {
 		$("#nextEstimasi").on("click", function(e){
 			e.preventDefault();
 			var svid = $("#svid").val();
+			var crno = $("#rpcrno").val();
 			$.ajax({
 				url: "<?=site_url('approval/next_estimasi/')?>" + svid,
 				type: "POST",
+				data: { "crno":crno },
 				dataType: "json",
 				success: function(json){
 					if(json.status=="success") {
@@ -62,7 +64,8 @@ $(document).ready(function() {
 							icon: 'success',
 							title: "Success",
 							html: '<div class="text-success">' + json.message + '</div>'
-						});						
+						});	
+						$("#rpver").val(json.header.rpver);					
 					} else {
 						Swal.fire({
 							icon: 'warning',
@@ -126,7 +129,9 @@ $(document).ready(function() {
 			$("#lccode").select2().select2('val','');
 			$("#cmcode").select2().select2('val','');
 			$("#dycode").select2().select2('val','');
-			$("#rmcode").select2().select2('val','');			
+			$("#rmcode").select2().select2('val','');	
+			$("#lccode").select2().select2('focus',true);
+
 		});
 
 		// save detailContainer
@@ -479,6 +484,8 @@ function delete_data(svid,rpid,rdno,crno) {
 					html: '<div class="text-success">' + json.message + '</div>'
 				});
 				$("#tblList_add tbody").html(json.data);
+				$("#saveDetail").hide();
+				$("#updateDetail").hide();
 			} else {
 				Swal.fire({
 					icon: 'error',
@@ -503,6 +510,8 @@ function delete_data_edit(svid,rpid,rdno,crno) {
 					html: '<div class="text-success">' + json.message + '</div>'
 				});
 				$("#tblList_edit tbody").html(json.data);
+				$("#saveDetail").hide();
+				$("#updateDetail").hide();				
 			} else {
 				Swal.fire({
 					icon: 'error',

@@ -2,9 +2,7 @@
 	var selectedDate;
 	$(document).ready(function() {
 
-		$(".tanggal").datepicker({
-			autoclose: true,
-		});
+		$("#startDate").datepicker('setDate', new Date());
 
 		// SELECT2
 		$('.select-pr').select2();

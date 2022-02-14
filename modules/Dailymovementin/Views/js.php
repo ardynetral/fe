@@ -2,9 +2,8 @@
 	var selectedDate;
 	$(document).ready(function() {
 
-		$(".tanggal").datepicker({
-			autoclose: true,
-		});
+		$("#startDate").datepicker('setDate', new Date());
+		$("#endDate").datepicker('setDate', new Date());
 
 		$('#timepicker1').timepicker({
 			defaultTime: false,

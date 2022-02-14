@@ -2,27 +2,32 @@
 
 <?= $this->section('content') ?>
 
+
 <div class="content">
 	<div class="main-header">
 		<h2>Status Report</h2>
 		<em>Status Report page</em>
 	</div>
+	<div class="main-content">
 
-
-	<?php if (session()->getFlashdata('sukses')) : ?>
-		<div class="alert alert-success alert-dismissable">
-			<a href="" class="close">×</a>
-			<strong><?= session()->getFlashdata('sukses'); ?></strong>
+		<div class="widget">
+			<div class="widget-header"></div>
+			<div class="rows">
+				<a href="" id="printPdf" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print To PDF</a>
+				<button type="button" id="printExl" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print To CSV</button>
+			</div>
 		</div>
-	<?php endif; ?>
 
+	</div>
 </div>
+
 
 <?= $this->endSection(); ?>
 
-<!-- JS -->
+<!-- Load JS -->
+
 <?= $this->Section('script_js'); ?>
 
-<?= $this->include('\Modules\Principal\Views\js'); ?>
+<?= $this->include('\Modules\Statusreport\Views\js'); ?>
 
 <?= $this->endSection(); ?>

@@ -56,8 +56,8 @@ class RepoOut extends \CodeIgniter\Controller
 
 			$btn_list .= '<a href="' . site_url() . '/repoout/view/' . $reorderno . '" class="btn btn-xs btn-primary btn-tbl">Cetak kitir</a>';
 			$btn_list .= '<a href="' . site_url() . '/repoout/edit/' . $reorderno . '" class="btn btn-xs btn-success btn-tbl">Edit</a>';
-			$btn_list .= '<a href="' . site_url() . '/repoout/proforma/' . $reorderno . '" class="btn btn-xs btn-success btn-tbl">Proforma</a>';
-			$btn_list .= '<a href="#" class="btn btn-xs btn-success btn-tbl">Invoice</a>';
+			// $btn_list .= '<a href="' . site_url() . '/repoout/proforma/' . $reorderno . '" class="btn btn-xs btn-success btn-tbl">Proforma</a>';
+			// $btn_list .= '<a href="#" class="btn btn-xs btn-success btn-tbl">Invoice</a>';
 			// $btn_list .= '<a href="#" data-repoid="'.$v['reorderno'].'" class="btn btn-xs btn-info print_order btn-tbl">Print Kitir</a>';
 			$btn_list .= '<a href="#" id="" class="btn btn-xs btn-danger btn-tbl delete" data-kode="' . $reorderno . '">Delete</a>';
 			$record[] = '<div>' . $btn_list . '</div>';
@@ -98,8 +98,13 @@ class RepoOut extends \CodeIgniter\Controller
 		$datarepo = $this->getOneRepo($reorderno);
 		$data['data'] = $datarepo['data'];
 		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
-		// echo var_dump($data['data']);die();
 		$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
+		$data['from_depo_dropdown'] = $this->depo_dropdown("retfrom","DEPO CONTINDO");
+		$data['from_port_dropdown'] = $this->port_dropdown("retfrom",$datarepo['data']['replace1']);
+		$data['from_city_dropdown'] = $this->city_dropdown("retfrom",$datarepo['data']['retfrom']);
+		$data['to_depo_dropdown'] = $this->depo_dropdown("retto","DEPO CONTINDO");
+		$data['to_port_dropdown'] = $this->port_dropdown("retto",$datarepo['data']['replace1']);
+		$data['to_city_dropdown'] = $this->city_dropdown("retto",$datarepo['data']['replace1']);		
 		return view('Modules\RepoOut\Views\view', $data);
 	}
 
@@ -395,7 +400,7 @@ class RepoOut extends \CodeIgniter\Controller
 		check_exp_time();
 
 		if ($this->request->isAJAX()) {
-
+			check_exp_time();
 			$reformat = [
 				'redate' => date('Y-m-d', strtotime($_POST['redate'])),
 				'redline' => date('Y-m-d', strtotime($_POST['redline']))
@@ -432,6 +437,7 @@ class RepoOut extends \CodeIgniter\Controller
 		$datarepo = $this->getOneRepo($reorderno);
 		$data['data'] = $datarepo['data'];
 		$data['repoid'] = $datarepo['data']['repoid'];
+		$data['reorderno'] = $datarepo['data']['reorderno'];
 		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
 		$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
 		$data['from_depo_dropdown'] = $this->depo_dropdown("retfrom","DEPO CONTINDO");
@@ -450,13 +456,19 @@ class RepoOut extends \CodeIgniter\Controller
 		$data['data'] = $datarepo['data'];
 		$data['repoid'] = $datarepo['data']['repoid'];
 		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
+		$data['from_depo_dropdown'] = $this->depo_dropdown("retfrom","DEPO CONTINDO");
+		$data['from_port_dropdown'] = $this->port_dropdown("retfrom","");
+		$data['from_city_dropdown'] = $this->city_dropdown("retfrom","");
+		$data['to_depo_dropdown'] = $this->depo_dropdown("retto","DEPO CONTINDO");
+		$data['to_port_dropdown'] = $this->port_dropdown("retto","");
+		$data['to_city_dropdown'] = $this->city_dropdown("retto","");		
 		return view('Modules\RepoOut\Views\proforma', $data);
 	}
 
 	public function delete($code)
 	{
-		check_exp_time();
 		if ($this->request->isAJAX()) {
+		check_exp_time();
 			$response = $this->client->request('DELETE', 'orderContainerRepos/deleteData', [
 				'headers' => [
 					'Accept' => 'application/json',
@@ -506,8 +518,8 @@ class RepoOut extends \CodeIgniter\Controller
 
 	public function delete_container($code)
 	{
-		check_exp_time();
 		if ($this->request->isAJAX()) {
+		check_exp_time();
 			$response = $this->client->request('DELETE', 'orderRepoContainer/deleteData', [
 				'headers' => [
 					'Accept' => 'application/json',
@@ -892,15 +904,13 @@ class RepoOut extends \CodeIgniter\Controller
 
 	public function cetak_kitir($crno = "", $reorderno = "", $praid = "")
 	{
-
 		$generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
 		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80, 236]]);
-		// $mpdf->showImageErrors = true;
 		$query_params = [
 			"crno" => trim($crno),
 			"cpoorderno" => trim($reorderno)
 		];
-		//print_r($query_params);
+
 		$response = $this->client->request('GET', 'containerProcess/getKitirRepoGateOut', [
 			'headers' => [
 				'Accept' => 'application/json',
@@ -910,49 +920,42 @@ class RepoOut extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		// print_r($result);		die();
-		// $recept = recept_by_praid($praid);
+		// dd($result);
 		if (isset($result['data'][0]) && (count($result['data'][0])) > 0) {
 			$qrcode = $this->generate_qrcode($result['data'][0]['cpid']);
 			$CRNO = $result['data'][0]['crno'];
-			$REFIN = $result['data'][0]['cporefout'];
 			$CPID = $result['data'][0]['cpid'];
-			$LENGTH = $result['data'][0]['cclength'];
-			$HEIGHT = $result['data'][0]['ccheight'];
-			$CPIORDERNO = $result['data'][0]['cpoorderno'];
 			$TYPE = $result['data'][0]['cccode'];
-			$CODE = $result['data'][0]['ctcode'];
-			$PRINCIPAL = $result['data'][0]['cpopr1'];
-			$SHIPPER = $result['data'][0]['cporeceiv'];
-			$VESSEL = $result['data'][0]['vesid'];
-			$VOY = $result['data'][0]['cpovoyid'];
+			$CODE = $result['data'][0]['ctcode'];			
+			$SIZE = $result['data'][0]['cclength'] ."/". $result['data'][0]['ccheight'];
 			$DATE = $result['data'][0]['cpopratgl'];
-			$DESTINATION = "";
-			$REMARK = $result['data'][0]['cporemark'];
-			$NOPOL = $result['data'][0]['cponopol'];
+			$TARA = $result['data'][0]['crtarak'] ."/". $result['data'][0]['crtaral'];
+			$PRINCIPAL = $result['data'][0]['cpopr1'];
+			$EMKL = $result['data'][0]['cporeceiv'];
+			$VESSEL = $result['data'][0]['cpoves'] ."/". $result['data'][0]['cpovoyid'];
+			$MANDATE = $result['data'][0]['crmandat'];
+			$SEALNO = $result['data'][0]['cposeal'];
+			$REMARK = $result['data'][0]['cporemark']=="undefined"?"-":$result['data'][0]['cporemark'];
+			$CRLASTCOND = $result['data'][0]['crlastcond'];
 			$QRCODE_IMG = ROOTPATH . '/public/media/qrcode/' . $qrcode['content'] . '.png';
-			$CPIPRATGL = $result['data'][0]['cpopratgl'];
-			// $QRCODE_CONTENT = $qrcode['content'];
+			$QRCODE_CONTENT = $qrcode['content'];
 		} else {
 			$CRNO = "";
-			$CODE = "";
 			$CPID = "";
-			$REFIN = "";
-			$LENGTH = "";
-			$HEIGHT = "";
-			$CPIORDERNO = "";
 			$TYPE = "";
-			$PRINCIPAL = "";
-			$SHIPPER = "";
-			$VESSEL = "";
-			$VOY = "";
+			$CODE = "";				
+			$SIZE = "";
 			$DATE = "";
-			$DESTINATION = "";
+			$TARA = "";
+			$PRINCIPAL = "";
+			$EMKL = "";
+			$VESSEL = "";
+			$MANDATE = "";
+			$SEALNO = "";
 			$REMARK = "";
-			$NOPOL = "";
+			$CRLASTCOND = "";
 			$QRCODE_IMG = "";
 			$QRCODE_CONTENT = "";
-			$CPIPRATGL = "";
 		}
 
 		$result = json_decode($response->getBody()->getContents(), true);
@@ -964,7 +967,7 @@ class RepoOut extends \CodeIgniter\Controller
 		$html .= '
 		<html>
 			<head>
-				<title>Order PraIn | Print Kitir</title>
+				<title>Repo Out | Print kitir</title>
 				<link href="' . base_url() . '/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 				<style>			
 					.page-header{display:block;margin-bottom:20px;line-height:0.3;}
@@ -983,7 +986,7 @@ class RepoOut extends \CodeIgniter\Controller
 			        @media print {
 			            @page {
 			                margin: 0 auto;
-			                sheet-size: 300px 250mm;
+			                sheet-size: 300px 275mm;
 			            }
 			            html {
 			                direction: rtl;
@@ -1004,79 +1007,92 @@ class RepoOut extends \CodeIgniter\Controller
 			<div class="wrapper">
 
 			<div class="page-header t-center">
-				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR MUAT</h3>
-				<h4 style="text-decoration: underline;line-height:0.5;">' . $REFIN . '</h3>
+				<h5 style="line-height:1.2;font-weight:bold;padding-top:10px;">PT.CONTINDO RAYA</h5>
+				<h5 style="line-height:0.5;font-weight:bold;padding-top:5px;">KITIR MUAT</h5>
+				<h5 style="line-height:0.5;font-weight:bold;padding-top:5px;">REPO OUT</h5>
 				<img src="' . $QRCODE_IMG . '" style="height:120px;">
 				<h5 style="text-decoration: underline;line-height:0.5;">' . $CPID . '</h4>
 			</div>
 		';
 		$html .= '
-			<table border-spacing: 0; border-collapse: collapse; width="100%">	
-				<tr>
-					<td colspan="4" >NO. ' . $CPIORDERNO . '
-					</td>
+				<table border-spacing: 0; border-collapse: collapse; width="100%">	
+					<tr>
+						<td>PRINCIPAL</td>
+						<td colspan="3">:&nbsp;' . $PRINCIPAL . '</td>
+					</tr>
+					<tr>
+						<td style="width:40%;">CONTAINER NO.</td>
+						<td colspan="3"><h5 style="line-height:1.2;font-weight:bold;padding-top:20px;">:&nbsp;' . $CRNO . '</h5></td>
+					</tr>
+					<tr>
+						<td style="width:40%;">DATE</td>
+						<td colspan="3">:&nbsp;' . date('d-m-Y', strtotime($DATE)) . '</td>
+					</tr>
+					<tr>
+						<td>TIPE</td>
+						<td colspan="3">:&nbsp;' . $CODE . '/' . $TYPE . '</td>
+					</tr>					
+					<tr>
+						<td>SIZE</td>
+						<td colspan="3">:&nbsp;' . $SIZE . ' </td>
+					</tr>
+					<tr>
+						<td>TARA</td>
+						<td colspan="3">:&nbsp;' . $TARA . ' </td>
+					</tr>
+
+					<tr>
+						<td>MAN.DATE </td>
+						<td colspan="3">:&nbsp;' . $MANDATE . ' </td>
+					</tr>
+					<tr>
+						<td>CONDITION</td>
+						<td colspan="3">:&nbsp;' . $CRLASTCOND . '</td>
+					</tr>
+					<tr>
+						<td>EMKL</td>
+						<td colspan="3" style="font-weight:normal">:&nbsp;' . $EMKL . '</td>
+					</tr>
+					<tr>
+						<td>LOAD STATUS</td>
+						<td colspan="3">:&nbsp;</td>
+					</tr>					
+					<tr>
+						<td>EX VESSEL</td>
+						<td colspan="3">:&nbsp;' . $VESSEL . '</td>
+					</tr>
+					<tr>
+						<td>REMARK</td>
+						<td colspan="3">:&nbsp;' . $REMARK . '</td>
+					</tr>			
+
+
+					<tr rowspan="3">&nbsp;</tr>
+
+				</table>
+				<br>
+				<table border-spacing: 0; border-collapse: collapse; width="100%">	
+					<tr>
+						<td width="33%">TRUCKER</td>
+						<td width="33%" class="t-center">SURVEYOR</td>
+						<td width="33%">PETUGAS</td>
+					</tr>
 					
-				</tr>
-				<tr>
-				<td colspan="4" >( ' . date("d/m/Y", strtotime($CPIPRATGL)) . ' )</td>
-				</tr>
-				<tr>
-					<td style="width:40%;">CONTAINER#</td>
-					<td colspan="3">:&nbsp;' . $CRNO . '</td>
-				</tr>
-				<tr>
-					<td>PRINCIPAL</td>
-					<td colspan="3">:&nbsp;' . $PRINCIPAL . '</td>
-				</tr>
-				<tr>
-					<td>SIZE</td>
-					<td colspan="3">:&nbsp;' . $CODE . ' ' . $LENGTH . '/' . $HEIGHT . '</td>
-				</tr>
-						
-				<tr>
-					<td>VESSEL</td>
-					<td colspan="3">:&nbsp;' . $VESSEL . '</td>
-				</tr>
-				<tr>
-					<td>EXPIRED</td>
-					<td colspan="3">:&nbsp;</td>
-				</tr>
-				<tr>
-					<td>REMARK</td>
-					<td colspan="3">:&nbsp;' . $REMARK . '</td>
-				</tr>
-				<tr>
-					<td>TRUCK ID</td>
-					<td colspan="3">:&nbsp;'.$NOPOL.'</td>
-				</tr>	
-				<tr  rowspan="4">
-					<td colspan="4">&nbsp;</td>
-				</tr>
-				
-			</table>
-			
-			<table width="100%">	
-				<tr>
-					<td>SURVEYOR</td>
-					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
-				</tr>
-				<tr  rowspan="4">
-					<td colspan="4">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>KERANI</td>
-					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
-				</tr>
-				<tr  rowspan="4">
-					<td colspan="4">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>GATE OFFICER</td>
-					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
-				</tr>
-			</table>
-			</div>
-		';
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>	
+					<tr>
+						<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+						<td class="t-center">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+						<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+					</tr>	
+				</table>
+				</div>
+			';
+
+
 		$html .= '
 		</body>
 		</html>

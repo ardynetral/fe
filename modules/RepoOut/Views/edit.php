@@ -46,9 +46,6 @@
 										<div class="col-sm-7">
 											<select name="retype" id="retype" class="selects">
 												<option value="">- select -</option>
-				<!-- 								<option value="11">DEPOT to DEPOT (OUT)</option>
-												<option value="12">DEPOT to PORT</option>
-												<option value="13">DEPOT to INTERCITY</option> -->
 												<option value="11" <?=(isset($data['retype'])&&($data['retype']=='11')?'selected':'');?>>DEPOT to DEPOT</option>
 												<option value="12" <?=(isset($data['retype'])&&($data['retype']=='12')?'selected':'');?>>DEPOT to PORT</option>
 												<option value="13" <?=(isset($data['retype'])&&($data['retype']=='13')?'selected':'');?>>DEPOT to INTERCITY</option>
@@ -496,6 +493,7 @@
 									<th>F/E</th>
 									<th>Hold/Release</th>
 									<th>Remark</th>
+									<th>Seal No</th>
 									<th></th>
 								</tr>
 							</thead>
@@ -512,6 +510,7 @@
 									<td><?=((isset($c['repofe'])&&$c['repofe']==1)?'Full':'Empty');?></td>
 									<td><?=((isset($c['reposhold'])&&$c['reposhold']==1)?'Hold':'Release');?></td>
 									<td><?=$c['reporemark'];?></td>
+									<td><?=$c['sealno'];?></td>
 									<td>
 										<a href='#' class='btn btn-xs btn-danger delete' data-kode="<?=$c['repocrnoid']?>">delete</a>
 									</td>									

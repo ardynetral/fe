@@ -12,6 +12,7 @@
 			<th>F/E</th>
 			<th>Hold/Release</th>
 			<th>Remark</th>
+			<th>Seal No</th>
 			<th></th>
 		</tr>
 	</thead>

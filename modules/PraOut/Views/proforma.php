@@ -30,12 +30,12 @@
 									<label for="cpidisdat" class="col-sm-5 control-label text-right">Loading Date</label>
 									<div class="col-sm-7">
 										<div class="input-group">
-											<input type="text" name="cpidisdat" id="cpidisdat" class="form-control tanggal" value="<?=$data['cpidisdat']?>">
+											<input type="text" name="cpidisdat" id="cpidisdat" class="form-control" value="<?=$data['cpidisdat']?>" readonly>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>									
 									</div>
 								</div>									
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift On Charged in Depot</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">

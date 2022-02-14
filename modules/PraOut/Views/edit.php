@@ -38,7 +38,7 @@
 									</div>
 								</div>
 								
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift On Charged in Depot</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
@@ -139,13 +139,13 @@
 									<!-- <label class="col-sm-2 control-label">hh:mm:ss</label> -->
 								</div>					
 											
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="cpives" class="col-sm-4 control-label text-right">Vessel</label>
 									<div class="col-sm-6">
 										<?=vessel_dropdown($data['cpives']);?>
 									</div>
 								</div>															
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="cpivoyid" class="col-sm-4 control-label text-right">Voyage</label>
 									<div class="col-sm-6">
 										<!-- <input type="text" name="name" class="form-control" id="name"> -->
@@ -153,7 +153,7 @@
 										<input type="text" id="cpivoyid" name="cpivoyid" class="form-control" value="<?=$data['cpivoyid']?>">
 									</div>
 								</div>								
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="vesopr" class="col-sm-4 control-label text-right">Vessel Operator</label>
 									<div class="col-sm-6">
 										<input type="text" name="vesopr" class="form-control" id="vesopr" value="<?=@$data['vessels']['vesopr'];?>" readonly>

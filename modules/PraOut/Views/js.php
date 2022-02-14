@@ -576,7 +576,7 @@ $(document).ready(function() {
 	    var cpife = $('input:radio[name=cpife]');
 	    // var typedo = $("input:radio[name=typedo]:checked").val();
 	    var vesprcode = $("#vesprcode").val();
-		$("#prcode").select2().select2('val','');
+		// $("#prcode").select2().select2('val','');
 		$("#cucode").val("");
 		$.ajax({
 			url:"<?=site_url('praout/get_one_container/');?>"+crid,
@@ -605,13 +605,15 @@ $(document).ready(function() {
 
 					// $("#prcode").select2().select2('val',json.cr.cpopr);
 					// $("#cucode").val(json.cr.cpcust);
+					$(".select-pr").select2('enable',false);
+					$(".select-pr").select2().select2('val',json.prcode);
+					$("#cucode").val(json.prcode);
 					$("#pracrnoid").val(json.cr.pracrnoid);
 					$("#crno").val(json.cr.crno);
 					$("#ccode").select2().select2('val',json.cr.cccode);
 					$("#ctcode").val(json.cr.ctcode);
 					$("#cclength").val(json.cr.cclength);
 					$("#ccheight").val(json.cr.ccheight);
-
 				    if(json.cr.cpife=="1") {
 				        cpife.filter('[value=1]').prop('checked', true);
 				    }else if(json.cr.cpife=="0"){
@@ -656,6 +658,9 @@ $(document).ready(function() {
 					$("#cclength").val(json.cr.cclength);
 					$("#ccheight").val(json.cr.ccheight);
 
+					$(".select-pr").select2().select2('val',json.prcode);
+					$("#cucode").val(json.prcode);
+					
 				    if(json.cr.cpife=="1") {
 				        cpife.filter('[value=1]').prop('checked', true);
 				    }else if(json.cr.cpife=="0"){
@@ -871,6 +876,7 @@ $(document).ready(function() {
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});
 					$(this).hide();
+					$("#approval2").prop("disabled", true);
 					window.location.href = "<?php echo site_url('praout'); ?>";
 				} else {
 					Swal.fire({
@@ -878,6 +884,7 @@ $(document).ready(function() {
 					  title: "Error",
 					  html: '<div class="text-danger">'+json.message+'</div>'
 					});						
+					$("#approval2").prop("disabled", false);
 				}
 			}			
 		});

@@ -1,14 +1,9 @@
 <script type="text/javascript">
 	var selectedDate;
 	$(document).ready(function() {
-
-		$(".tanggal").datepicker({
-			autoclose: true,
-		});
-
+		$("#startDate").datepicker('setDate', new Date());
 		// SELECT2
 		$('.select-pr').select2();
-
 		$("#printPdf").on("click", function(e) {
 			window.open("<?php echo site_url('summaryconttype/reportPdf'); ?>", '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 			e.preventDefault();

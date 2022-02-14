@@ -33,25 +33,7 @@ class Statusreport extends \CodeIgniter\Controller
 			$data['cucode'] = '0';
 		}
 		$data['group_id'] = $group_id;
-		return view('Modules\Statusreport\Views\add', $data);
-	}
-
-	public function view($code)
-	{
-		$token = get_token_item();
-		$user_id = $token['id'];
-		$group_id = $token['groupId'];
-		$prcode = $token['prcode'];
-
-		if (($group_id == 1) || ($group_id == 2)) {
-			$data['prcode'] = $prcode;
-			$data['cucode'] = $prcode;
-		} else {
-			$data['prcode'] = '0';
-			$data['cucode'] = '0';
-		}
-		$data['group_id'] = $group_id;
-		return view('Modules\Statusreport\Views\view', $data);
+		return view('Modules\Statusreport\Views\index', $data);
 	}
 
 

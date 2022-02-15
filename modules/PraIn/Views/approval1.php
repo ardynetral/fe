@@ -64,7 +64,7 @@
 											<span>SOC</span>
 										</label>											
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="radio" name="typedo" id="" value="4" <?=(isset($data['type_do'])&&($data['type_do']==4)?'checked':'');?> required>
+											<input type="radio" name="typedo" id="" value="4" checked required>
 											<span>ex Import</span>
 										</label>
 
@@ -202,7 +202,20 @@
 									<div class="col-sm-6">
 										<input type="file" name="files[]" class="form-control" id="files" multiple="true">
 									</div>
-								</div>								
+								</div>
+								<?php if($data['files']!=""):?>
+								<div class="form-group">
+									<label for="cpideliver" class="col-sm-4 control-label text-right">&nbsp;</label>
+									<div class="col-sm-6 alert alert-info">
+										<p><b>Files uploaded:</b></p><br>
+										<?php $i=1; foreach($data['files'] as $f):?>
+											<a href="<?=$f['url']; ?>" target="_blank" class="btn btn-default">File <?=$i; ?></a>&nbsp;
+											<hr>
+										<?php $i++;
+										endforeach;?>								
+									</div>
+								</div>	
+								<?php endif;?>																	
 							</div>	
 							<input type="hidden" name="appv1_update" class="form-control" id="appv1_update" value="<?=(isset($act)&&($act=='approval1')?'1':'0')?>" readonly="">
 						</fieldset>

@@ -1648,6 +1648,7 @@ class PraIn extends \CodeIgniter\Controller
 		foreach($result['data']['datas'] as $row){
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
+				<td><a href='#' id='editContainer' class='btn btn-xs btn-danger delete' data-crid='".$row['pracrnoid']."'>delete</a></td>
 				<td>".$i."</td>
 				<td>".$row['crno']."</td>
 				<td>".$row['cccode']."</td>
@@ -1658,11 +1659,8 @@ class PraIn extends \CodeIgniter\Controller
 				<td>".((isset($row['cpife'])&&$row['cpife']==1)?'Full':'Empty')."</td>
 				<td>".$row['cpiremark']."</td>
 				<td></td>
-				<td>";
-
-				$html .= "<a href='#' id='editContainer' class='btn btn-xs btn-danger delete' data-crid='".$row['pracrnoid']."'>delete</a>";
-
-			$html .= "</td>
+				";
+			$html .= "
 				</tr>";
 			$i++; 
 		}
@@ -1691,7 +1689,12 @@ class PraIn extends \CodeIgniter\Controller
 		foreach($result['data']['datas'] as $row){
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
-				<td>".$i."</td>
+				<td>
+				<a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$row['pracrnoid']."'>edit</a>
+				<a href='#' id='editContainer' class='btn btn-xs btn-danger delete' data-crid='".$row['pracrnoid']."'>delete</a>
+				</td>";
+
+			$html .= "<td>".$i."</td>
 				<td>".$row['crno']."</td>
 				<td>".$row['cccode']."</td>
 				<td>".$row['ctcode']."</td>
@@ -1700,14 +1703,8 @@ class PraIn extends \CodeIgniter\Controller
 				<td>".((isset($row['cpopr'])&&$row['cpopr']!="")?$row['cpopr']:'-')."</td>
 				<td>".((isset($row['cpife'])&&$row['cpife']==1)?'Full':'Empty')."</td>
 				<td>".$row['cpiremark']."</td>
-				<td></td>
-				<td>";
-
-				$html .= "<a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$row['pracrnoid']."'>edit</a>";
-				$html .= "<a href='#' id='editContainer' class='btn btn-xs btn-danger delete' data-crid='".$row['pracrnoid']."'>delete</a>";
-
-			$html .= "</td>
-				</tr>";
+				<td></td>";
+			$html .= "</tr>";
 			$i++; 
 		}
 
@@ -1735,6 +1732,10 @@ class PraIn extends \CodeIgniter\Controller
 		foreach($result['data']['datas'] as $row){
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
+			<td>
+			<a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$row['pracrnoid']."'>edit</a>&nbsp;
+			<a href='#' id='deleteContainer' class='btn btn-xs btn-danger delete' data-crid='".$row['pracrnoid']."'>delete</a>
+			</td>		
 				<td>".$i."</td>
 				<td>".$row['crno']."</td>
 				<td>".$row['cccode']."</td>
@@ -1745,10 +1746,8 @@ class PraIn extends \CodeIgniter\Controller
 				<td>".((isset($row['cpife'])&&$row['cpife']==1)?'Full':'Empty')."</td>
 				<td>".$row['cpiremark']."</td>
 				<td></td>
-				<td>";
-			$html .= "<a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$row['pracrnoid']."'>edit</a>&nbsp;";
-			$html .= "<a href='#' id='deleteContainer' class='btn btn-xs btn-danger delete' data-crid='".$row['pracrnoid']."'>delete</a>";			
-			$html .= "</td>
+				";
+			$html .= "
 				</tr>";
 			$i++; 
 		}
@@ -1785,6 +1784,7 @@ class PraIn extends \CodeIgniter\Controller
 		foreach($result['data']['datas'] as $row){
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
+				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."'>edit</a></td>			
 				<td>".$i."</td>
 				<td>".$row['crno']."</td>
 				<td>".$row['cccode']."</td>
@@ -1796,7 +1796,6 @@ class PraIn extends \CodeIgniter\Controller
 				<td>".$row['biaya_clean']."</td>
 				<td>".$row['biaya_lain']."</td>
 				<td>".$row['cpiremark']."</td>
-				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."'>edit</a></td>
 				</tr>";
 			$i++; 
 			$subtotal = $row['biaya_lolo'];

@@ -48,22 +48,25 @@ class PraOut extends \CodeIgniter\Controller
 			]
 		]);
 		$result_pra = json_decode($response1->getBody()->getContents(),true);	
-
-		if($group_id == 1) 
-		{
-			$datas = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
+		if((isset($result_pra['status'])&&($result_pra['status']=="Failled")) || (isset($result_pra['data']['datas'])&&$result_pra['data']['datas']==null)) {
+			$data['data_pra'] = "";
+		} else {
 			// Jika EMKL (User_group==1)
-			$data_pra = array();
-			foreach($datas as $dt) {
-				if($user_id==$dt['crtby']) {
-					$data_pra[] = $dt;
+			if($group_id == 1) 
+			{
+				$datas = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
+				$data_pra = array();
+				foreach($datas as $dt) {
+					if($user_id==$dt['crtby']) {
+						$data_pra[] = $dt;
+					}
 				}
+				$data['data_pra'] = $data_pra;
+			} 
+			else 
+			{
+				$data['data_pra'] = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
 			}
-			$data['data_pra'] = $data_pra;
-		} 
-		else 
-		{
-			$data['data_pra'] = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
 		}
 
 		$data['prcode'] = $prcode;
@@ -578,7 +581,7 @@ class PraOut extends \CodeIgniter\Controller
 		    {  	
 		    	// jika kontaner sudah ada di depo
 		    	$container = $this->get_container($_POST['crno']);
-		    	if (($container['crlastact'] == "CO" &&  $container['crlastcond'] == "AC") ||  $container['lastact'] == "AC") {
+		    	if (($container['crlastact'] == "CO" &&  $container['crlastcond'] == "AC") || $container['lastact'] == "AC") {
 
 					$response = $this->client->request('POST','orderPraContainers/createNewData',[
 						'headers' => [
@@ -1500,6 +1503,14 @@ cpid,
 		foreach($result['data']['datas'] as $row){
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
+				<td>";
+
+				if(isset($act)&&($act=='edit')):
+				$html .= "<a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$row['pracrnoid']."'>edit</a>";
+				endif;
+			$html .= "</td>";
+
+			$html .= "
 				<td>".$i."</td>
 				<td>".$row['crno']."</td>
 				<td>".$row['cccode']."</td>
@@ -1511,13 +1522,7 @@ cpid,
 				<td>".$row['cpiremark']."</td>
 				<td>".$row['sealno']."</td>
 				<td></td>
-				<td>";
 
-				if(isset($act)&&($act=='edit')):
-				$html .= "<a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$row['pracrnoid']."'>edit</a>";
-				endif;
-
-			$html .= "</td>
 				</tr>";
 			$i++; 
 		}
@@ -1567,6 +1572,7 @@ cpid,
 		foreach($result['data']['datas'] as $row){
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
+				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."'>edit</a></td>
 				<td>".$i."</td>
 				<td>".$row['crno']."</td>
 				<td>".$row['cccode']."</td>
@@ -1577,7 +1583,6 @@ cpid,
 				<td>".$row['biaya_lolo']."</td>
 				<td>".$row['cpiremark']."</td>
 				<td>".$row['sealno']."</td>
-				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."'>edit</a></td>
 				</tr>";
 			$i++; 
 			$total_lolo = $total_lolo+$row['biaya_lolo'];	
@@ -1846,21 +1851,21 @@ cpid,
 		$recept = recept_by_praid($praid);
 
 		if (isset($result['data'][0]) && (count($result['data'][0])) > 0) {
-			$INVOICE_NUMBER  = 'KW' . date("Ymd", strtotime($result['data'][0]['cpipratgl'])) . str_repeat("0", 8 - strlen($recept['praid'])) . $recept['praid'];
+			$INVOICE_NUMBER  = 'KW' . date("Ymd", strtotime($result['data'][0]['cpopratgl'])) . str_repeat("0", 8 - strlen($recept['praid'])) . $recept['praid'];
 			$qrcode = $this->generate_qrcode($result['data'][0]['cpid']);
 			$CRNO = $result['data'][0]['crno'];
-			$REFIN = $result['data'][0]['cporefin'];
+			$REFIN = $result['data'][0]['cporefout'];
 			$CPID = $result['data'][0]['cpid'];
 			$LENGTH = $result['data'][0]['cclength'];
 			$HEIGHT = $result['data'][0]['ccheight'];
 			$CPIORDERNO = $result['data'][0]['cpoorderno'];
 			$TYPE = $result['data'][0]['cccode'];
 			$CODE = $result['data'][0]['ctcode'];
-			$PRINCIPAL = $result['data'][0]['prcode'];
-			$SHIPPER = $result['data'][0]['cpodeliver'];
+			$PRINCIPAL = $result['data'][0]['cpopr1'];
+			$SHIPPER = $result['data'][0]['cporeceiv'];
 			$VESSEL = $result['data'][0]['vesid'];
-			$VOY = $result['data'][0]['cpovoy'];
-			$DATE = $result['data'][0]['cpodisdat'];
+			$VOY = $result['data'][0]['cpovoyid'];
+			$DATE = $result['data'][0]['cpoloaddat'];
 			$DESTINATION = "";
 			$REMARK = $result['data'][0]['cporemark'];
 			$NOPOL = $result['data'][0]['cponopol'];

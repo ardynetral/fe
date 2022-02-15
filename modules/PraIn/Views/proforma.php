@@ -40,7 +40,7 @@
 									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="<?=$data['liftoffcharge']?>" <?=(isset($data['liftoffcharge'])&&($data['liftoffcharge']==1)?'':'checked');?> readOnly>
+											<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="<?=$data['liftoffcharge']?>" <?=(isset($data['liftoffcharge'])&&($data['liftoffcharge']==1)?'':'checked');?> disabled>
 											<span></span>
 										</label>
 									</div>
@@ -304,7 +304,9 @@
 								
 								<p class="text-right"><b>Bukti Transfer</b><br>
 									<?php foreach($bukti_bayar['files'] as $file):?>
-									<img src="<?=$file['url']; ?>" style="width:200px;">
+									<a href="<?=$file['url']; ?>" target="_blank">
+										<img src="<?=$file['url']; ?>" style="width:200px;">
+									</a>
 									<?php endforeach; ?>
 								</p>
 
@@ -363,7 +365,7 @@
 								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">Bukti Transfer</label>
 									<div class="col-sm-6">
-										<input type="file" name="files" class="form-control" id="files" accept="image/*">
+										<input type="file" name="files" class="form-control file-bukti" id="fileBukti" accept="image/*">
 									</div>
 								</div>
 								<div class="form-group">

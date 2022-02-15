@@ -332,7 +332,7 @@
 						<button type="button" id="addContainer" class="btn btn-success"><i class="fa fa-plus"></i> Add Container</button>
 						<br>
 						<div class="table-responsive">
-						<table id="detTable" class="table table-hover table-bordered" style="width:100%;">
+						<table id="detTable" class="table table-hover table-bordered v-scroll" style="width:100%;">
 							<thead>
 								<tr>
 									<th></th>

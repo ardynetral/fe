@@ -33,7 +33,7 @@
 									<div class="form-group">
 										<label for="cpopr " class="col-sm-5 control-label text-right">Principal</label>
 										<div class="col-sm-4">
-											<?=principal_dropdown($data['cpopr']);?>
+											<input type="text" name="cpcust" id="cpcust" class="form-control" value="<?=$data['cpopr']?>" readonly>
 										</div>
 									</div>
 									<div class="form-group">
@@ -45,7 +45,7 @@
 									<div class="form-group">
 										<label for="cucode" class="col-sm-5 control-label text-right">Repo Type</label>
 										<div class="col-sm-7">
-											<select name="retype" id="retype" class="selects">
+											<select name="retype" id="retype" class="selects" disabled>
 												<option value="">- select -</option>
 				<!-- 								<option value="11">DEPOT to DEPOT (OUT)</option>
 												<option value="12">DEPOT to PORT</option>
@@ -92,7 +92,7 @@
 										<label for="repodisdat" class="col-sm-5 control-label text-right">Discharge Date</label>
 										<div class="col-sm-7">
 											<div class="input-group">
-												<input type="text" name="repodisdat" id="repodisdat" class="form-control tanggal" value="<?=date('d-m-Y',strtotime($data['redate']))?>">
+												<input type="text" name="repodisdat" id="repodisdat" class="form-control" value="<?=date('d-m-Y',strtotime($data['redate']))?>" readonly>
 												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 											</div>									
 										</div>
@@ -100,20 +100,20 @@
 									<div class="form-group">
 										<label for="readdr" class="col-sm-5 control-label text-right">Address</label>
 										<div class="col-sm-7">
-											<textarea class="form-control" style="resize: none;" rows="3" cols="32" name="readdr" id="readdr"><?=$data['readdr']?></textarea>
+											<textarea class="form-control" style="resize: none;" rows="3" cols="32" name="readdr" id="readdr" readonly><?=$data['readdr']?></textarea>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="recity" class="col-sm-5 control-label text-right">City</label>
 										<div class="col-sm-7">
-											<?=city_dropdown("recity",$data['recity'])?>
+											<input type="text" name="redline" id="redline" class="form-control" value="<?=@$recity;?>" readonly>
 										</div>
 									</div>
 									<div class="form-group">
 										<label for="redline" class="col-sm-5 control-label text-right">Deadline</label>
 										<div class="col-sm-7">
 											<div class="input-group">
-												<input type="text" name="redline" id="redline" class="form-control tanggal" value="<?=date('d-m-Y',strtotime($data['redline']))?>" required>
+												<input type="text" name="redline" id="redline" class="form-control" value="<?=date('d-m-Y',strtotime($data['redline']))?>" readonly>
 												<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 											</div>									
 										</div>
@@ -122,7 +122,7 @@
 										<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
 										<div class="col-sm-7">
 											<label class="control-inline fancy-checkbox custom-color-green">
-												<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="1" checked>
+												<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="1" checked disabled>
 												<span></span>
 											</label>
 										</div>
@@ -130,7 +130,7 @@
 									<div class="form-group">
 										<label for="repoves" class="col-sm-5 control-label text-right">Ex Vessel</label>
 										<div class="col-sm-7">
-											<?=repoves_dropdown($data['recpives']);?>
+											<input type="text" class="form-control" id="repovoyid" name="repovoyid" value="<?=$data['recpives']?>" readonly>
 										</div>
 									</div>		
 									<div class="form-group">
@@ -138,7 +138,7 @@
 										<div class="col-sm-7">
 											<!-- <input type="text" name="name" class="form-control" id="name"> -->
 											<!-- <?=voyage_dropdown(); ?> -->
-											<input type="text" class="form-control" id="repovoyid" name="repovoyid" value="<?=$data['recpivoyid']?>">
+											<input type="text" class="form-control" id="repovoyid" name="repovoyid" value="<?=$data['recpivoyid']?>" readonly>
 										</div>
 									</div>		
 									<div class="form-group" style="display:none;">
@@ -181,19 +181,19 @@
 									<div class="form-group">
 										<label for="reautno" class="col-sm-4 control-label text-right">Authorized No</label>
 										<div class="col-sm-6">
-											<input type="text" name="reautno" class="form-control" id="reautno" value="<?=$data['reautno']?>" required>
+											<input type="text" name="reautno" class="form-control" id="reautno" value="<?=$data['reautno']?>"  readonly>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Repo Vendor</label>
 										<div class="col-sm-6">
-											<input type="text" name="cpicargo" class="form-control" id="cpicargo">
+											<input type="text" name="cpicargo" class="form-control" id="cpicargo" readonly>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Billing Type</label>
 										<div class="col-sm-6">
-											<select name="rebill" id="rebill" class="">
+											<select name="rebill" id="rebill" class="" disabled>
 												<option value="0">- select -</option>
 												<option value="Breakdown" <?=(isset($data['rebill'])&&($data['rebill']=='Breakdown')?'selected':'');?>>Breakdown</option>
 												<option value="Package" <?=(isset($data['rebill'])&&($data['rebill']=='Package')?'selected':'');?>>Package</option>
@@ -208,7 +208,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>		
 											<div class="col-sm-4">
-												<input type="text" name="relift" class="form-control" id="relift" value="0" required>
+												<input type="text" name="relift" class="form-control" id="relift" value="0"  readonly>
 											</div>
 										</div>
 										<div class="form-group">
@@ -217,7 +217,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="redoc" class="form-control" id="redoc" value="0" required>
+												<input type="text" name="redoc" class="form-control" id="redoc" value="0"  readonly>
 											</div>
 										</div>
 										<div class="form-group">
@@ -226,7 +226,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="re20" class="form-control" id="re20" value="0" value="<?=$data['re20']?>" required>
+												<input type="text" name="re20" class="form-control" id="re20" value="0" value="<?=$data['re20']?>"  readonly>
 											</div>
 										</div>
 										<div class="form-group">
@@ -235,7 +235,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="retot20" class="form-control" id="retot20" value="<?=$data['retot20']?>"required>
+												<input type="text" name="retot20" class="form-control" id="retot20" value="<?=$data['retot20']?>" readonly>
 											</div>
 										</div>
 										<div class="form-group">
@@ -244,7 +244,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>
 											<div class="col-sm-4">
-												<input type="text" name="re40" class="form-control" id="re40" value="<?=$data['re40']?>" required>
+												<input type="text" name="re40" class="form-control" id="re40" value="<?=$data['re40']?>"  readonly>
 											</div>
 										</div>
 										<div class="form-group">
@@ -253,7 +253,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="retot40" class="form-control" id="retot40" value="<?=$data['retot40']?>" required>
+												<input type="text" name="retot40" class="form-control" id="retot40" value="<?=$data['retot40']?>"  readonly>
 											</div>
 										</div>
 										<div class="form-group">
@@ -262,7 +262,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="re45" class="form-control" id="re45" value="<?=$data['re45']?>" required>
+												<input type="text" name="re45" class="form-control" id="re45" value="<?=$data['re45']?>"  readonly>
 											</div>
 										</div>
 										<div class="form-group">
@@ -271,7 +271,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="retot45" class="form-control" id="retot45" value="<?=$data['retot45']?>" required>
+												<input type="text" name="retot45" class="form-control" id="retot45" value="<?=$data['retot45']?>"  readonly>
 											</div>
 										</div>
 										<div class="form-group">
@@ -280,7 +280,7 @@
 												<input type="text" name="" class="form-control" id="" value="SUBTOT" readonly>
 											</div>
 											<div class="col-sm-4">
-												<input type="text" name="subtotbreak" class="form-control" id="subtotbreak" value="<?=$data['subtotbreak']?>" requirereadonly>
+												<input type="text" name="subtotbreak" class="form-control" id="subtotbreak" value="<?=$data['subtotbreak']?>" require readonly>
 											</div>
 										</div>				
 									</div>
@@ -292,7 +292,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="recpack20" class="form-control" id="recpack20" value="<?=$data['recpack20']?>" required>
+												<input type="text" name="recpack20" class="form-control" id="recpack20" value="<?=$data['recpack20']?>"  readonly>
 											</div>
 										</div>
 										<div class="form-group">
@@ -301,7 +301,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>
 											<div class="col-sm-4">
-												<input type="text" name="recpacktot20" class="form-control" id="recpacktot20" value="<?=$data['recpacktot20']?>" required>
+												<input type="text" name="recpacktot20" class="form-control" id="recpacktot20" value="<?=$data['recpacktot20']?>"  readonly>
 											</div>
 										</div>
 										<div class="form-group">
@@ -310,7 +310,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="recpack40" class="form-control" id="recpack40" value="<?=$data['recpack40']?>">
+												<input type="text" name="recpack40" class="form-control" id="recpack40" value="<?=$data['recpack40']?>" readonly>
 											</div>
 										</div>
 										<div class="form-group">
@@ -319,7 +319,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>			
 											<div class="col-sm-4">
-												<input type="text" name="recpacktot40" class="form-control" id="recpacktot40" value="<?=$data['recpacktot40']?>" >
+												<input type="text" name="recpacktot40" class="form-control" id="recpacktot40" value="<?=$data['recpacktot40']?>" readonly >
 											</div>
 										</div>
 										<div class="form-group">
@@ -328,7 +328,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>			
 											<div class="col-sm-4">
-												<input type="text" name="recpack45" class="form-control" id="recpack45" value="<?=$data['recpack45']?>">
+												<input type="text" name="recpack45" class="form-control" id="recpack45" value="<?=$data['recpack45']?>" readonly>
 											</div>
 										</div>
 										<div class="form-group">
@@ -337,7 +337,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="recpacktot45" class="form-control" id="recpacktot45" value="<?=$data['recpacktot45']?>" >
+												<input type="text" name="recpacktot45" class="form-control" id="recpacktot45" value="<?=$data['recpacktot45']?>" readonly >
 											</div>
 										</div>
 										<div class="form-group">
@@ -365,13 +365,13 @@
 												<div class="form-group">
 													<label for="code" class="col-sm-2 control-label text-right">20"</label>
 													<div class="col-sm-8">
-														<input type="text" name="std20" class="form-control" id="std20" value="<?=@$QTY['std20']?>">
+														<input type="text" name="std20" class="form-control" id="std20" value="<?=@$QTY['std20']?>" readonly>
 													</div>
 												</div>								
 												<div class="form-group">
 													<label for="code" class="col-sm-2 control-label text-right">40"</label>
 													<div class="col-sm-8">
-														<input type="text" name="std40" class="form-control" id="std40" value="<?=@$QTY['std40']?>">
+														<input type="text" name="std40" class="form-control" id="std40" value="<?=@$QTY['std40']?>" readonly>
 													</div>
 												</div>												
 											</div>
@@ -380,19 +380,19 @@
 												<div class="form-group">
 													<label for="code" class="col-sm-2 control-label text-right">20"</label>
 													<div class="col-sm-8">
-														<input type="text" name="hc20" class="form-control" id="hc20" value="<?=@$QTY['hc20']?>">
+														<input type="text" name="hc20" class="form-control" id="hc20" value="<?=@$QTY['hc20']?>" readonly>
 													</div>
 												</div>								
 												<div class="form-group">
 													<label for="code" class="col-sm-2 control-label text-right">40"</label>
 													<div class="col-sm-8">
-														<input type="text" name="hc40" class="form-control" id="hc40" value="<?=@$QTY['hc40']?>">
+														<input type="text" name="hc40" class="form-control" id="hc40" value="<?=@$QTY['hc40']?>" readonly>
 													</div>
 												</div>
 												<div class="form-group">
 													<label for="code" class="col-sm-2 control-label text-right">45"</label>
 													<div class="col-sm-8">
-														<input type="text" name="hc45" class="form-control" id="hc45" value="<?=@$QTY['hc45']?>">
+														<input type="text" name="hc45" class="form-control" id="hc45" value="<?=@$QTY['hc45']?>" readonly>
 													</div>
 												</div>											
 											</div>										
@@ -411,7 +411,7 @@
 													<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 												</div>								
 												<div class="col-sm-4">
-													<input type="text" name="reother1" class="form-control" id="reother1" value="<?=$data['reother1']?>" required>
+													<input type="text" name="reother1" class="form-control" id="reother1" value="<?=$data['reother1']?>"  readonly>
 												</div>
 											</div>
 
@@ -423,7 +423,7 @@
 													<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 												</div>								
 												<div class="col-sm-4">
-													<input type="text" name="reother2" class="form-control" id="reother2"  value="<?=$data['reother2']?>" required>
+													<input type="text" name="reother2" class="form-control" id="reother2"  value="<?=$data['reother2']?>"  readonly>
 												</div>
 											</div>	
 
@@ -433,7 +433,7 @@
 												<label for="liftoffcharge" class="col-sm-5 control-label text-right">Will Be Charge</label>
 												<div class="col-sm-7">
 													<label class="control-inline fancy-checkbox custom-color-green">
-														<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="0">
+														<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="0" disabled>
 														<span></span>
 													</label>
 												</div>
@@ -442,7 +442,7 @@
 												<label for="liftoffcharge" class="col-sm-5 control-label text-right">By Depot</label>
 												<div class="col-sm-7">
 													<label class="control-inline fancy-checkbox custom-color-green">
-														<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="0">
+														<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="0" disabled>
 														<span></span>
 													</label>
 												</div>
@@ -454,9 +454,9 @@
 												</div>								
 												<div class="col-sm-4">
 													<?php if($data['rebill']=='Breakdown'):?>
-													<input type="text" name="totbreak" class="form-control" id="totbreak" value="<?=$data['totbreak']?>" required>
+													<input type="text" name="totbreak" class="form-control" id="totbreak" value="<?=$data['totbreak']?>"  readonly>
 													<?php elseif($data['rebill']=='Package'):?>
-													<input type="text" name="totpack" class="form-control" id="totpack" value="<?=$data['totpack']?>" required>
+													<input type="text" name="totpack" class="form-control" id="totpack" value="<?=$data['totpack']?>"  readonly>
 													<?php endif; ?>
 												</div>
 											</div>																						
@@ -480,10 +480,12 @@
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> Repo Container</h3>
 					</div>
-					<div class="widget-content">					
+					<div class="widget-content">
+						<div class="table-responsive">					
 						<table id="rcTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
+									<th></th>
 									<th>No.</th>
 									<th>Container #</th>
 									<th>ID Code</th>
@@ -494,7 +496,6 @@
 									<th>Hold/Release</th>
 									<th>Remark</th>
 									<th>Gate In Date</th>
-									<th></th>
 								</tr>
 							</thead>
 							
@@ -502,6 +503,9 @@
 							<tbody id="listOrderPra">
 								<?php $no=1; foreach($containers as $c):?>
 								<tr>
+									<td>
+										<a href='#' class='btn btn-xs btn-info cetak_kitir'	data-crno="<?=$c['crno']?>">cetak kitir</a>
+									</td>									
 									<td><?=$no;?></td>
 									<td><?=$c['crno'];?></td>
 									<td><?=$c['cccode'];?></td>
@@ -512,16 +516,14 @@
 									<td><?=((isset($c['reposhold'])&&$c['reposhold']==1)?'Hold':'Release');?></td>
 									<td><?=$c['reporemark'];?></td>
 									<td><?=$c['repogatedate'];?></td>
-									<td>
-										<a href='#' class='btn btn-xs btn-info cetak_kitir'	data-crno="<?=$c['crno']?>">cetak kitir</a>
-									</td>									
 								</tr>
 								<?php $no++; endforeach; ?>
 							</tbody>
 							<?php else:?>
 								<tr><td colspan="9">Data Container kosong.</td></tr>
 							<?php endif?>
-						</table>						
+						</table>	
+						</div>					
 					</div>
 					<div class="widget-footer text-center">
 						<a href="<?=site_url('repoin');?>" class="btn btn-default">Kembali</a>

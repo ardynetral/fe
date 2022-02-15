@@ -350,6 +350,7 @@
 						<table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
+									<th></th>
 									<th>No.</th>
 									<th>Container #</th>
 									<th>ID Code</th>
@@ -358,7 +359,6 @@
 									<th>Height</th>
 									<th>Remark</th>
 									<th>Seal No</th>
-									<th></th>
 								</tr>
 							</thead>
 							
@@ -377,6 +377,7 @@
 										$subtotal = $row['biaya_lolo'];
 									?>
 										<tr>
+											<td><a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a></td>
 											<td><?=$i;?></td>
 											<td><?=$row['crno'];?></td>
 											<td><?=$row['cccode']?></td>
@@ -385,7 +386,6 @@
 											<td><?=$row['ccheight']?></td>
 											<td><?=$row['cpiremark']?></td>
 											<td><?=$row['sealno']?></td>
-											<td><a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a></td>
 										</tr>
 									<?php 
 									$i++; 

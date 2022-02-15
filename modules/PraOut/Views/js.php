@@ -2,8 +2,6 @@
 $(document).ready(function() {
 	// Error Message element
 	$(".err-crno").hide(); //container number check
-	// $("#update").hide();
-	// $("#updateDetail").hide();
 	$("#editOrderFrame").hide();
 	// SELECT2
 	$('.select-pr').select2();
@@ -30,6 +28,9 @@ $(document).ready(function() {
 		$("#liftoffcharge").prop('checked',true);
 	}
 
+	// set default CPIFE=empty
+	$('input:radio[name=cpife]').filter('[value=0]').prop('checked', true);
+
 	$("#addOrder").on('click', function(e){
 		e.preventDefault();
 		$("#save").show();
@@ -40,52 +41,8 @@ $(document).ready(function() {
 		window.location.href = "#OrderPra";
 	});
 
-	// Preview Upload files
-	// function imagesPreview(input, locationPreview) {
- //        if (input.files) {
- //            var filesAmount = input.files.length;
- //            var alink = [];
- //            for (i = 0; i < filesAmount; i++) {
- //                var reader = new FileReader();
- //                var no_file = i+1;
- //                reader.onload = function(event) {
- //                	// alink[i] = event.target.result;
- //                	$("a").attr('href', event.target.result)
- //                }
- //                $($.parseHTML(no_file+'.&nbsp;<a href="" target="_blank">'+input.files[i].name+'</a><br>')).appendTo(locationPreview);
- //                reader.readAsDataURL(input.files[i]);
- //            }
- //        }
- //    }   
- //    $("#files").on("change", function(){
- //    	$("div.imgPreview").html("");
- // 		imagesPreview(this, 'div.imgPreview');
- //    });
-
 	$("form#fPraInOrder").on("submit", function(e){
 		e.preventDefault();			
-		// console.log($('input#files')[0].files[]);
-		// window.scrollTo(xCoord, yCoord);
-		// var files = $("#files")[0].files;
-		// var formData = "cpiorderno=" + $("#cpiorderno").val();
-		// formData += "&cpiopr=" + $("#prcode").val();
-		// formData += "&cpicust=" + $("#cucode").val();
-
-		// formData += "&cpidish=" + $("#cpidish").val();
-		// formData += "&cpidisdat=" + $("#cpidisdat").val();
-		// formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		// formData += "&cpdepo=" + $("#cpdepo").val();
-		// formData += "&cpipratgl=" + $("#cpipratgl").val();
-		// formData += "&cpirefin=" + $("#cpirefin").val();
-		// formData += "&cpijam=" + $("#cpijam").val();
-		// formData += "&cpives=" + $("#cpives").val();
-		// formData += "&cpivoyid=" + $("#cpivoyid").val();
-		// formData += "&cpicargo=" + $("#cpicargo").val();
-		// formData += "&cpideliver=" + $("#cpideliver").val();
-		// formData += "&files=" + files;
-
-		// console.log(files);
-
 		$.ajax({
 			url: "<?php echo site_url('praout/add'); ?>",
 			type: "POST",
@@ -214,22 +171,6 @@ $(document).ready(function() {
 
 	$("form#fEditPraIn").on("submit",function(e){
 		e.preventDefault();
-		// var formData = "cpiorderno=" + $("#cpiorderno").val();
-		// formData += "&praid=" + $("#praid").val();
-		// formData += "&cpiopr=" + $("#prcode").val();
-		// formData += "&cpicust=" + $("#cucode").val();
-		// formData += "&cpidish=" + $("#cpidish").val();
-		// formData += "&cpidisdat=" + $("#cpidisdat").val();
-		// formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		// formData += "&cpdepo=" + $("#cpdepo").val();
-		// formData += "&cpipratgl=" + $("#cpipratgl").val();
-		// formData += "&cpirefin=" + $("#cpirefin").val();
-		// formData += "&cpijam=" + $("#cpijam").val();
-		// formData += "&cpives=" + $("#cpives").val();
-		// formData += "&cpivoyid=" + $("#cpivoyid").val();
-		// formData += "&cpicargo=" + $("#cpicargo").val();
-		// formData += "&cpideliver=" + $("#cpideliver").val();
-		// console.log(formData);
 		$.ajax({
 			url: "<?php echo site_url('praout/edit/'); ?>"+$("#praid").val(),
 			type: "POST",
@@ -272,6 +213,7 @@ $(document).ready(function() {
 		$("#cancel").hide();
 		$("#editOrderFrame").show();
 		disableFormOrder();
+		$('input:radio[name=cpife]').filter('[value=0]').prop('checked', true);
 		$.ajax({
 			url: "<?php echo site_url('praout/ajax_view/'); ?>"+praid,
 			type: "POST",
@@ -279,9 +221,6 @@ $(document).ready(function() {
 			// data:"praid="+praid,
 			success: function(json) {
 				if(json.status === "success") {
-					// console.log("data: "+json.dt_header.cpidish);
-// "praid":42,"cpiorderno":"PI000D100000024","cpopr":"CMA","cpcust":"MIF","cpidish":"BEN","cpidisdat":"2021-09-01","liftoffcharge":0,"cpdepo":"11A25","cpipratgl":"2021-09-13","cpirefin":"","cpijam":"","cpivoyid":123,"cpives":"ARMADA SEJATI","cpicargo":"","cpideliver":"","cpilunas":0,"voyages":{"voyid":123,"vesid":"SINAR BATAM","voyno":"V246"},"vessels":{"vesid":"ARMADA SEJATI","vesopr":"SPIL","cncode":"ID","vestitle":"ARMADA SEJATI"
-					// $("#cpidish option[value="+json.dt_header.cpidish+"]").attr("selected","selected");
 					$("#praid").val(json.dt_header.praid);
 					$("#cpidish").select2().select2('val',json.dt_header.cpidish);
 					$("#prcode").select2().select2('val',json.dt_header.cpopr);
@@ -349,6 +288,7 @@ $(document).ready(function() {
 		}
 
 		arr[index] = "<tr>"+
+		"<td><a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='"+item.pracrnoid+"'>edit</a><a href='#' id='deleteContainer' class='btn btn-xs btn-danger'>delete</a></td>"+
 		"<td>"+num+"</td>"+
 		"<td>"+item.crno+"</td>"+
 		"<td>"+item.cccode+"</td>"+
@@ -360,7 +300,6 @@ $(document).ready(function() {
 		"<td>"+item.cpiremark+"</td>"+
 		"<td>"+item.sealno+"</td>"+
 		"<td></td>"+
-		"<td><a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='"+item.pracrnoid+"'>edit</a><a href='#' id='deleteContainer' class='btn btn-xs btn-danger'>delete</a></td>"+
 		"</tr>";
 	}
 
@@ -575,6 +514,7 @@ $(document).ready(function() {
 		var crid = $(this).data("crid");
 	    var cpife = $('input:radio[name=cpife]');
 	    // var typedo = $("input:radio[name=typedo]:checked").val();
+	    cpife.filter('[value=0]').prop('checked', true);
 	    var vesprcode = $("#vesprcode").val();
 		// $("#prcode").select2().select2('val','');
 		$("#cucode").val("");
@@ -585,26 +525,7 @@ $(document).ready(function() {
 			dataType:"JSON",
 			success: function(json){	
 				if(json.message=="success") {
-					// if(typedo=="1") {
-					// 	if((vesprcode=="MRT")||(vesprcode=="CR")) {
-					// 		// $("#prcode").select2().select2('val',vesprcode);
-					// 		// $("#cucode").val(vesprcode);
-					// 		// $("#prcode").select2('disable');
-					// 		$("#biaya_lolo").val(json.biaya_lolo);
-					// 	} else {
-					// 		// $("#vesprcode").val("");
-					// 		// $("#prcode").select2('enable');
-					// 		$("#biaya_lolo").val('0');
-					// 	}
-					// } else {
-					// 	// $("#prcode").select2('enable');
-					// 	$("#prcode").select2().select2('val','');
-					// }
-
 					$("#biaya_lolo").val(json.biaya_lolo);
-
-					// $("#prcode").select2().select2('val',json.cr.cpopr);
-					// $("#cucode").val(json.cr.cpcust);
 					$(".select-pr").select2('enable',false);
 					$(".select-pr").select2().select2('val',json.prcode);
 					$("#cucode").val(json.prcode);
@@ -642,6 +563,7 @@ $(document).ready(function() {
 		$("#formDetail").trigger("reset");
 		var crid = $(this).data("crid");
 	    var cpife = $('input:radio[name=cpife]');
+	    cpife.filter('[value=0]').prop('checked', true);
 		$.ajax({
 			url:"<?=site_url('praout/get_one_container/');?>"+crid,
 			type:"POST",
@@ -1028,6 +950,30 @@ $('#files').bind('change', function() {
 	this.value='';
   }
 
+});
+
+// check gambar
+$('#fileBukti').bind('change', function() {
+	if(this.files[0].size > 524288) {
+	Swal.fire({
+	  icon: 'error',
+	  title: "MAX 512 KB",
+	  html: '<div class="text-danger">File terlalu besar!</div>'
+	});
+	this.value='';
+	} 
+
+	var file = this.files[0];
+	var fileType = file["type"];
+	var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+	if ($.inArray(fileType, validImageTypes) < 0) {
+		Swal.fire({
+		  icon: 'error',
+		  title: "Ops",
+		  html: '<div class="text-danger">Hanya boleh upload gambar!</div>'
+		});	 
+		this.value='';   
+	}  		
 });
 
 function runDataTables() {		

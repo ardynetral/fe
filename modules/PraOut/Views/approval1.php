@@ -172,7 +172,19 @@
 									<div class="col-sm-6">
 										<input type="file" name="files[]" class="form-control" id="files" multiple="true">
 									</div>
-								</div>								
+								</div>
+								<?php if($data['files']!=""):?>
+								<div class="form-group">
+									<label for="cpideliver" class="col-sm-4 control-label text-right">&nbsp;</label>
+									<div class="col-sm-6 alert alert-info">
+										<b>Files uploaded:</b><br>
+										<?php $i=1; foreach($data['files'] as $f):?>
+											<a href="<?=$f['url']; ?>" class="btn btn-default" target="_blank"><i class="fa fa-file"></i>&nbsp;File-<?=$i?></a>
+										<?php $i++;
+										endforeach;?>								
+									</div>
+								</div>	
+								<?php endif;?>																
 							</div>	
 							<input type="hidden" name="appv1_update" class="form-control" id="appv1_update" value="<?=(isset($act)&&($act=='approval1')?'1':'0')?>" readonly="">
 						</fieldset>
@@ -217,7 +229,7 @@
 						<input type="hidden" name="pracrnoid" id="pracrnoid">
 						<fieldset>
 							
-							<?php if(($group_id==4 || $group_id==3)): ?>
+							<?php if($group_id!=1): ?>
 							
 							<div class="form-group">
 								<label for="prcode" class="col-sm-4 control-label text-right">Principal</label>
@@ -345,9 +357,11 @@
 						<h3><i class="fa fa-table"></i> List Order Pra Container</h3>
 					</div>
 					<div class="widget-content">
+						<div class="table-responsive">
 						<table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
+									<th></th>
 									<th>No.</th>
 									<th>Container #</th>
 									<th>ID Code</th>
@@ -359,7 +373,6 @@
 									<!-- <th>Deposit</th> -->
 									<th>Remark</th>
 									<th>Seal No</th>
-									<th></th>
 								</tr>
 							</thead>
 							
@@ -377,6 +390,7 @@
 									foreach($orderPraContainers as $row): 
 									?>
 										<tr>
+											<td><a href="#" id="editContainer" class="btn btn-xs btn-info view" data-crid="<?=$row['pracrnoid']?>">view</a></td>
 											<td><?=$i;?></td>
 											<td><?=$row['crno'];?></td>
 											<td><?=$row['cccode']?></td>
@@ -387,7 +401,6 @@
 											<td><?=$row['biaya_lolo'];?></td>
 											<td><?=$row['cpiremark']?></td>
 											<td><?=$row['sealno']?></td>
-											<td><a href="#" id="editContainer" class="btn btn-xs btn-info view" data-crid="<?=$row['pracrnoid']?>">view</a></td>
 										</tr>
 									<?php 
 									$i++; 
@@ -402,7 +415,7 @@
 								<input type="hidden" name="subtotal_bill" id="subtotal_bill" value="<?=$total?>">
 							</tbody>
 						</table>
-
+						</div>
 
 					</div>
 

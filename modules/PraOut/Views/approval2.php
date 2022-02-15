@@ -113,6 +113,18 @@
 										<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=$data['cpideliver']?>" readonly>
 									</div>
 								</div>
+								<?php if($data['files']!=""):?>
+								<div class="form-group">
+									<label for="cpideliver" class="col-sm-4 control-label text-right">&nbsp;</label>
+									<div class="col-sm-6 alert alert-info">
+										<b>Files uploaded:</b><br>
+										<?php $i=1; foreach($data['files'] as $f):?>
+											<a href="<?=$f['url']; ?>" class="btn btn-default" target="_blank"><i class="fa fa-file"></i>&nbsp;File-<?=$i?></a>
+										<?php $i++;
+										endforeach;?>								
+									</div>
+								</div>	
+								<?php endif;?>								
 							</div>	
 
 						</fieldset>
@@ -212,7 +224,9 @@
 								
 								<p class="text-right"><b>Bukti Transfer</b><br>
 									<?php foreach($bukti_bayar['files'] as $file):?>
-									<img src="<?=$file['url']; ?>" style="width:200px;">
+									<a href="<?=$file['url']; ?>" target="_blank">
+										<img src="<?=$file['url']; ?>" style="width:200px;">
+									</a>
 									<?php endforeach; ?>
 								</p>
 
@@ -233,6 +247,7 @@
 						<h3><i class="fa fa-table"></i> Order Pra Container</h3>
 					</div>
 					<div class="widget-content">
+						<div class="table-responsive">
 						<table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
@@ -287,6 +302,7 @@
 
 							</tbody>
 						</table>
+						</div>
 						<table class="tbl-form" width="100%">
 							<tbody>
 								<?php

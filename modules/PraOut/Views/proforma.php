@@ -39,7 +39,7 @@
 									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift On Charged in Depot</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
-											<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="<?=$data['liftoffcharge']?>" <?=(isset($data['liftoffcharge'])&&($data['liftoffcharge']==1)?'':'checked');?> readOnly>
+											<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="<?=$data['liftoffcharge']?>" <?=(isset($data['liftoffcharge'])&&($data['liftoffcharge']==1)?'':'checked');?> disabled>
 											<span></span>
 										</label>
 									</div>
@@ -162,6 +162,18 @@
 										<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=$data['cpideliver']?>" readonly>
 									</div>
 								</div>
+								<?php if($data['files']!=""):?>
+								<div class="form-group">
+									<label for="cpideliver" class="col-sm-4 control-label text-right">&nbsp;</label>
+									<div class="col-sm-6 alert alert-info">
+										<b>Files uploaded:</b><br>
+										<?php $i=1; foreach($data['files'] as $f):?>
+											<a href="<?=$f['url']; ?>" class="btn btn-default" target="_blank"><i class="fa fa-file"></i>&nbsp;File-<?=$i?></a>
+										<?php $i++;
+										endforeach;?>								
+									</div>
+								</div>	
+								<?php endif;?>								
 							</div>	
 
 						</fieldset>
@@ -262,7 +274,9 @@
 								
 								<p class="text-right"><b>Bukti Transfer</b><br>
 									<?php foreach($bukti_bayar['files'] as $file):?>
-									<img src="<?=$file['url']; ?>" style="width:200px;">
+									<a href="<?=$file['url']; ?>" target="_blank">
+										<img src="<?=$file['url']; ?>" style="width:200px;">
+									</a>
 									<?php endforeach; ?>
 								</p>
 
@@ -319,7 +333,7 @@
 								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">Bukti Transfer</label>
 									<div class="col-sm-6">
-										<input type="file" name="files" class="form-control" id="files" accept="image/*">
+										<input type="file" name="files" class="form-control" id="fileBukti" accept="image/*">
 									</div>
 								</div>
 								<div class="form-group">
@@ -348,6 +362,7 @@
 						<h3><i class="fa fa-table"></i> Order Pra Container</h3>
 					</div>
 					<div class="widget-content">
+						<div class="table-responsive">
 						<table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
@@ -405,6 +420,7 @@
 								<?php endif; ?>
 							</tbody>
 						</table>
+						</div>
 						<table class="tbl-form" width="100%">
 							<tbody>
 								<?php

@@ -30,6 +30,9 @@ $(document).ready(function() {
 		$("#liftoffcharge").prop('checked',true);
 	}
 
+	// set default CPIFE=empty
+	$('input:radio[name=cpife]').filter('[value=0]').prop('checked', true);
+
 	$("#addOrder").on('click', function(e){
 		e.preventDefault();
 		$("#save").show();
@@ -155,6 +158,10 @@ $(document).ready(function() {
 				}
 			}
 		});	
+	});
+
+	$(".bukti-bayar").on("click",function(e){
+		window.open("", '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
 	$("#liftoffcharge").on("change", function(){
@@ -577,6 +584,7 @@ $(document).ready(function() {
 	$("#addContainer").on("click", function(e){
 		e.preventDefault();
 		var praid = $("#pra_id").val();
+		var cpife = $("#cpife").val();
 		$("#formDetail").trigger("reset");
 		$("#pra_id").val(praid);
 		$("#ccode").select2().select2('val',"");
@@ -584,6 +592,7 @@ $(document).ready(function() {
 		$("#crno").focus();
 		$("#saveDetail").show();
 		$("#updateDetail").hide();
+		$('input:radio[name=cpife]').filter('[value=0]').prop('checked', true);
 	});
 
 	$('#detTable tbody').on('click', '.edit', function(e){
@@ -1040,17 +1049,42 @@ function loadTableContainerAppv1(praid) {
 // check file size while upload
 $('#files').bind('change', function() {
 
-  //this.files[0].size gets the size of your file.
-  if(this.files[0].size > 524288) {
+	//this.files[0].size gets the size of your file.
+	if(this.files[0].size > 524288) {
 	Swal.fire({
 	  icon: 'error',
 	  title: "MAX 512 KB",
 	  html: '<div class="text-danger">File terlalu besar!</div>'
 	});
 	this.value='';
-  }
-
+	} 
 });
+// check gambar
+$('#fileBukti').bind('change', function() {
+
+	//this.files[0].size gets the size of your file.
+	if(this.files[0].size > 524288) {
+	Swal.fire({
+	  icon: 'error',
+	  title: "MAX 512 KB",
+	  html: '<div class="text-danger">File terlalu besar!</div>'
+	});
+	this.value='';
+	} 
+
+	var file = this.files[0];
+	var fileType = file["type"];
+	var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+	if ($.inArray(fileType, validImageTypes) < 0) {
+		Swal.fire({
+		  icon: 'error',
+		  title: "Ops",
+		  html: '<div class="text-danger">Hanya boleh upload gambar!</div>'
+		});	 
+		this.value='';   
+	}  		
+});
+
 
 function runDataTables() {		
     $.fn.dataTable.pipeline = function ( opts ) { 

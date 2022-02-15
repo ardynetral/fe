@@ -56,8 +56,8 @@ class RepoIn extends \CodeIgniter\Controller
 
 			$btn_list .= '<a href="' . site_url() . '/repoin/view/' . $reorderno . '" class="btn btn-xs btn-primary btn-tbl">Cetak kitir</a>';
 			$btn_list .= '<a href="' . site_url() . '/repoin/edit/' . $reorderno . '" class="btn btn-xs btn-success btn-tbl">Edit</a>';
-			$btn_list .= '<a href="' . site_url() . '/repoin/proforma/' . $reorderno . '" class="btn btn-xs btn-success btn-tbl">Proforma</a>';
-			$btn_list .= '<a href="#" class="btn btn-xs btn-success btn-tbl">Invoice</a>';
+			// $btn_list .= '<a href="' . site_url() . '/repoin/proforma/' . $reorderno . '" class="btn btn-xs btn-success btn-tbl">Proforma</a>';
+			// $btn_list .= '<a href="#" class="btn btn-xs btn-success btn-tbl">Invoice</a>';
 			// $btn_list .= '<a href="#" data-repoid="'.$v['reorderno'].'" class="btn btn-xs btn-info print_order btn-tbl">Print Kitir</a>';
 			$btn_list .= '<a href="#" id="" class="btn btn-xs btn-danger btn-tbl delete" data-kode="' . $reorderno . '">Delete</a>';
 			$record[] = '<div>' . $btn_list . '</div>';

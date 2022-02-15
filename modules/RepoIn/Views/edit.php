@@ -484,9 +484,11 @@
 					<div class="widget-content">
 						<p><button class="btn btn-success" data-toggle="modal" data-target="#myModal" id="insertContainer"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
 						</p>
+						<div class="table-responsive">
 						<table id="rcTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
+									<th></th>
 									<th>No.</th>
 									<th>Container #</th>
 									<th>ID Code</th>
@@ -496,13 +498,15 @@
 									<th>F/E</th>
 									<th>Hold/Release</th>
 									<th>Remark</th>
-									<th></th>
 								</tr>
 							</thead>
 							<?php if($containers!=""):?>
 							<tbody id="listOrderPra">
 								<?php $no=1; foreach($containers as $c):?>
 								<tr>
+									<td>
+										<a href='#' class='btn btn-xs btn-danger delete' data-kode="<?=$c['repocrnoid']?>">delete</a>
+									</td>									
 									<td><?=$no;?></td>
 									<td><?=$c['crno'];?></td>
 									<td><?=$c['cccode'];?></td>
@@ -512,16 +516,14 @@
 									<td><?=((isset($c['repofe'])&&$c['repofe']==1)?'Full':'Empty');?></td>
 									<td><?=((isset($c['reposhold'])&&$c['reposhold']==1)?'Hold':'Release');?></td>
 									<td><?=$c['reporemark'];?></td>
-									<td>
-										<a href='#' class='btn btn-xs btn-danger delete' data-kode="<?=$c['repocrnoid']?>">delete</a>
-									</td>									
 								</tr>
 								<?php $no++; endforeach; ?>
 							</tbody>
 							<?php else:?>
 								<tr><td colspan="9">Data Container kosong.</td></tr>
 							<?php endif?>
-						</table>						
+						</table>
+						</div>						
 					</div>
 					<div class="widget-footer text-center">
 						<a href="<?=site_url('repoin');?>" class="btn btn-default" id="">Kembali</a>

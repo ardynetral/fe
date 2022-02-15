@@ -100,6 +100,7 @@ class RepoIn extends \CodeIgniter\Controller
 		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
 		// echo var_dump($data['data']);die();
 		$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
+		$data['recity'] = $this->getCity($datarepo['data']['recity']);
 		return view('Modules\RepoIn\Views\view', $data);
 	}
 
@@ -1496,6 +1497,26 @@ class RepoIn extends \CodeIgniter\Controller
 		$option .="</select>";
 		return $option; 
 		die();			
+	}
+	public function getCity($id) {
+		$response = $this->client->request('GET','city/listOne',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json'=>[
+				'cityId'=>$id
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(),true);
+		if(isset($result['data'])) {
+			$city = $result['data']['city_name'];
+		} else {
+			$city = "";
+		}
+
+		return $city;
 	}
 
 	public function city_dropdown($varname,$selected="") 

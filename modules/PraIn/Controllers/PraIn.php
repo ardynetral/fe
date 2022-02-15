@@ -48,7 +48,8 @@ class PraIn extends \CodeIgniter\Controller
 			]
 		]);
 		$result_pra = json_decode($response1->getBody()->getContents(),true);	
-		if($result_pra['status']=="Failled") {
+		// dd($result_pra);
+		if((isset($result_pra['status'])&&($result_pra['status']=="Failled")) || (isset($result_pra['data']['datas'])&&$result_pra['data']['datas']==null)) {
 			$data['data_pra'] = "";
 		} else {
 			if($group_id == 1) 

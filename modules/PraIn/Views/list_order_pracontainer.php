@@ -1,6 +1,7 @@
 <table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 	<thead>
 		<tr>
+			<th></th>
 			<th>No.</th>
 			<th>Container #</th>
 			<th>ID Code</th>
@@ -11,7 +12,6 @@
 			<th>F/E</th>
 			<th>Remark</th>
 			<th>GateIn Date</th>
-			<th></th>
 		</tr>
 	</thead>
 	
@@ -22,6 +22,13 @@
 
 			<?php $i=1; foreach($data_prac as $row): ?>
 				<tr>
+					<td>
+						<?php if(isset($act)&&($act=='add')):?>
+						<a href="#" id="viewContainer" class="btn btn-xs btn-primary view" data-crid="<?=$row['pracrnoid']?>">view</a>
+						<?php else:?>
+						<a href="#" id="editContainer" class="btn btn-xs btn-primary edit" data-crid="<?=$row['pracrnoid']?>">edit</a>
+						<?php endif; ?>
+					</td>
 					<td><?=$i;?></td>
 					<td><?=$row['crno'];?></td>
 					<td><?=$row['cccode']?></td>
@@ -32,13 +39,6 @@
 					<td><?=((isset($row['cpife'])&&$row['cpife']==1)?'Full':'Empty')?></td>
 					<td><?=$row['cpiremark']?></td>
 					<td></td>
-					<td>
-						<?php if(isset($act)&&($act=='add')):?>
-						<a href="#" id="viewContainer" class="btn btn-xs btn-primary view" data-crid="<?=$row['pracrnoid']?>">view</a>
-						<?php else:?>
-						<a href="#" id="editContainer" class="btn btn-xs btn-primary edit" data-crid="<?=$row['pracrnoid']?>">edit</a>
-						<?php endif; ?>
-					</td>
 				</tr>
 			<?php $i++; endforeach; ?>
 		<?php endif; ?>

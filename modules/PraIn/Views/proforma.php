@@ -30,7 +30,7 @@
 									<label for="cpidisdat" class="col-sm-5 control-label text-right">Discharge Date</label>
 									<div class="col-sm-7">
 										<div class="input-group">
-											<input type="text" name="cpidisdat" id="cpidisdat" class="form-control tanggal" value="<?=$data['cpidisdat']?>">
+											<input type="text" name="cpidisdat" id="cpidisdat" class="form-control" value="<?=$data['cpidisdat']?>" readonly>
 											<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 										</div>									
 									</div>
@@ -191,6 +191,19 @@
 										<input type="text" name="cpideliver" class="form-control" id="cpideliver" value="<?=$data['cpideliver']?>" readonly>
 									</div>
 								</div>
+								<?php if($data['files']!=""):?>
+								<div class="form-group">
+									<label for="cpideliver" class="col-sm-4 control-label text-right">&nbsp;</label>
+									<div class="col-sm-6 alert alert-info">
+										<p><b>Files uploaded:</b></p><br>
+										<?php $i=1; foreach($data['files'] as $f):?>
+											<a href="<?=$f['url']; ?>" target="_blank" class="btn btn-default">File <?=$i; ?></a>&nbsp;
+											<hr>
+										<?php $i++;
+										endforeach;?>								
+									</div>
+								</div>	
+								<?php endif;?>									
 							</div>	
 
 						</fieldset>

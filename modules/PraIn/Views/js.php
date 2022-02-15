@@ -348,6 +348,7 @@ $(document).ready(function() {
 		}
 
 		arr[index] = "<tr>"+
+		"<td><a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='"+item.pracrnoid+"'>edit</a><a href='#' id='deleteContainer' class='btn btn-xs btn-danger'>delete</a></td>"+
 		"<td>"+num+"</td>"+
 		"<td>"+item.crno+"</td>"+
 		"<td>"+item.cccode+"</td>"+
@@ -358,7 +359,6 @@ $(document).ready(function() {
 		"<td>"+cpishold+"</td>"+
 		"<td>"+item.cpiremark+"</td>"+
 		"<td></td>"+
-		"<td><a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='"+item.pracrnoid+"'>edit</a><a href='#' id='deleteContainer' class='btn btn-xs btn-danger'>delete</a></td>"+
 		"</tr>";
 	}
 
@@ -443,11 +443,15 @@ $(document).ready(function() {
 						$("#deposit").prop('checked',true);
 						$("#deposit").val("1");						
 						$("#biaya_clean").val(json.biaya_clean);
+						if(typedo==4) {
+							$("#biaya_lain").attr("readonly","readonly");
+						}
 					} else {
 						$("#deposit").val("0");						
 						$("#deposit").prop('checked',false);
 						$("#deposit").attr("disabled","disabled");
 						$("#biaya_clean").val("0");
+						$("#biaya_lain").removeAttr("readonly");
 					}
 
 					if(typedo!="1") {

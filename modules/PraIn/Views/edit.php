@@ -211,9 +211,9 @@
 								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">&nbsp;</label>
 									<div class="col-sm-6 alert alert-info">
-										<b>Files uploaded:</b><br>
+										<p><b>Files uploaded:</b></p><br>
 										<?php $i=1; foreach($data['files'] as $f):?>
-											<a href="<?=$f['url']; ?>" target="_blank"><?=$f['url']; ?></a>
+											<a href="<?=$f['url']; ?>" target="_blank" class="btn btn-default">File <?=$i; ?></a>&nbsp;
 											<hr>
 										<?php $i++;
 										endforeach;?>								
@@ -309,7 +309,8 @@
 								<div class="col-sm-8">
 									<input type="text" name="cpiremark" id="cpiremark" class="form-control">
 								</div>	
-							</div>								
+							</div>	
+
 							<div class="form-group">
 								<div class="col-sm-offset-4 col-sm-8">
 									<button type="button" id="saveDetail" class="btn btn-info" style="display:none;" data-act="edit"><i class="fa fa-pencil"></i> Save Container</button>

@@ -267,7 +267,7 @@
 			<div class="col-lg-8">
 				<p>
 					<button type="button" id="addDetail" class="btn btn-success"><i class="fa fa-plus"></i> Add Detail</button>
-					<a href="#" id="nextEstimasi" class="btn btn-primary" data-svid=""><i class="fa fa-arrow-circle-o-right"></i>Next Estimasi</a>&nbsp;
+					<a href="#" id="nextEstimasi" class="btn btn-primary" data-svid=""><i class="fa fa-arrow-circle-o-right"></i>Revisi Estimasi</a>&nbsp;
 					<button type="button" id="finalEstimasi" class="btn btn-primary"  data-toggle="modal" data-target="#myModal"><i class="fa fa-check-circle"></i> Final Estimasi</button>&nbsp;
 
 					<a href="<?= site_url('approval') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>

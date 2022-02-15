@@ -38,7 +38,7 @@
 									</div>
 								</div>
 								
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift On Charged in Depot</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
@@ -151,7 +151,7 @@
 									<div class="col-sm-6">
 										<!-- <input type="text" name="name" class="form-control" id="name"> -->
 										<!-- <?=voyage_dropdown(); ?> -->
-										<input type="text" id="cpivoyid" name="cpivoyid" class="form-control" value="<?=$data['cpivoyid']?>">
+										<input type="text" id="cpivoyid" name="cpivoyid" class="form-control" value="<?=$data['cpivoyid']?>" readonly>
 									</div>
 								</div>								
 								<div class="form-group">
@@ -195,7 +195,7 @@
 			<div class="widget widget-table">
 				<div class="widget-content">
 				<p class="alert alert-warning text-center">
-					<a href="<?=site_url('praout/edit/'.$data['praid']);?>" class="btn btn-success btn-md">Input Container</a>
+					Data Container masih kosong!
 				</p>
 				</div>
 			</div>
@@ -312,18 +312,16 @@
 								<label class="col-sm-4 control-label text-right">Cleaning Type</label>
 								<div class="col-sm-8">
 									<label class="control-inline fancy-checkbox custom-color-green">
-										<select name="cleaning_type" id="cleaning_type" class="form-control">
-											<option value="Water Wash" selected>Water Wash</option>
-											<option value="Steam Wash">Steam Wash</option>
-											<option value="Meat Bone">Meat Bone</option>
-											<option value="Debrish Remove">Debrish Remove</option>
-											<option value="Mark Remove">Mark Remove</option>
-											<option value="Chemical Clean">Chemical Clean</option>
-											<option value="Sweeping">Sweeping</option>
-										</select>
+										<?= cleaning_method("cleaning_type", "WW"); ?>
 									</label>
 								</div>	
-							</div>																							
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label text-right">Seal Number</label>
+								<div class="col-sm-8">
+									<input type="text" name="sealno" id="sealno" class="form-control">
+								</div>	
+							</div>								
 							<div class="form-group">
 								<label class="col-sm-4 control-label text-right">Remark</label>
 								<div class="col-sm-8">
@@ -389,7 +387,7 @@
 											<td><?=$row['biaya_lolo'];?></td>
 											<td><?=$row['cpiremark']?></td>
 											<td><?=$row['sealno']?></td>
-											<td><a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a></td>
+											<td><a href="#" id="editContainer" class="btn btn-xs btn-info view" data-crid="<?=$row['pracrnoid']?>">view</a></td>
 										</tr>
 									<?php 
 									$i++; 

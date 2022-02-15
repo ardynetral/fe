@@ -29,7 +29,7 @@
 									<label class="col-sm-3 control-label">* Port Country</label>
 								</div>	
 								<div class="form-group">
-									<label for="cpidisdat" class="col-sm-5 control-label text-right">Discharge Date</label>
+									<label for="cpidisdat" class="col-sm-5 control-label text-right">Loading Date</label>
 									<div class="col-sm-7">
 										<div class="input-group">
 											<input type="text" name="cpidisdat" id="cpidisdat" class="form-control" value="<?=$data['cpidisdat']?>" readonly="">
@@ -37,7 +37,7 @@
 										</div>									
 									</div>
 								</div>
-								<div class="form-group">
+								<div class="form-group" style="display:none;">
 									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">

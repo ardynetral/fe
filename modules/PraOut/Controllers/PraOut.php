@@ -1539,7 +1539,7 @@ cpid,
 		$result = json_decode($response->getBody()->getContents(), true);	
 		return $result['data'];
 	}
-	
+
 	// Get Container list Approval-1
 	public function appv1_containers($praid) 
 	{
@@ -1591,61 +1591,300 @@ cpid,
 		echo json_encode($html);
 		die();
 	}
-	public function cetak_kitir($crno="",$cpiorderno="",$praid="")
+	// public function cetak_kitir($crno="",$cpiorderno="",$praid="")
+	// {
+
+	// 	$generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+	// 	$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80,236]]);
+	// 	// $mpdf->showImageErrors = true;
+	// 	$query_params = [
+	// 		"crno" => $crno,
+	// 		"cpoorderno" => $cpiorderno
+	// 	];
+
+	// 	$response = $this->client->request('GET','containerProcess/getKitirPraOut',[
+	// 		'headers' => [
+	// 			'Accept' => 'application/json',
+	// 			'Authorization' => session()->get('login_token')
+	// 		],
+	// 		'query' => $query_params,
+	// 	]);
+		
+	// 	$result = json_decode($response->getBody()->getContents(),true);
+	// 	dd($result);
+	// 	$recept = recept_by_praid($praid);
+
+	// 	if(isset($result['data'][0])&&(count($result['data'][0])) > 0){
+	// 		$qrcode = $this->generate_qrcode($result['data'][0]['cpid']);
+	// 		$CRNO = $result['data'][0]['crno'];
+	// 		$REFOUT = $result['data'][0]['cporefout'];
+	// 		$CPID = $result['data'][0]['cpid'];
+	// 		$LENGTH = $result['data'][0]['cclength'];
+	// 		$HEIGHT = $result['data'][0]['ccheight'];
+	// 		$CPOORDERNO = $result['data'][0]['cpoorderno'];
+	// 		$TYPE = $result['data'][0]['cccode'];
+	// 		$CODE = $result['data'][0]['ctcode'];
+	// 		$PRINCIPAL = $result['data'][0]['cpopr1'];
+	// 		$SHIPPER = $result['data'][0]['cporeceiv'];
+	// 		$VESSEL = $result['data'][0]['cpoves'];
+	// 		$VOY = $result['data'][0]['cpovoyid'];
+	// 		$DATE = $result['data'][0]['cpoloaddat'];
+	// 		$DESTINATION = "";
+	// 		$REMARK = $result['data'][0]['cporemark'];
+	// 		$NOPOL = $result['data'][0]['cponopol'];
+	// 		$QRCODE_IMG = ROOTPATH .'/public/media/qrcode/'.$qrcode['content'] . '.png';
+	// 		$CPOPRATGL = $result['data'][0]['cpopratgl'];
+	// 		$CPORECEPTNO = $result['data'][0]['cporeceptno'];
+	// 		$CPORECEIV = $result['data'][0]['cporeceiv'];
+	// 		// $QRCODE_CONTENT = $qrcode['content'];
+	// 	} else {
+	// 		$CRNO = "";
+	// 		$REFOUT = "";
+	// 		$CPID = "";
+	// 		$LENGTH = "";
+	// 		$HEIGHT = "";
+	// 		$CPOORDERNO = "";
+	// 		$TYPE = "";
+	// 		$CODE = "";
+	// 		$PRINCIPAL = "";
+	// 		$SHIPPER = "";
+	// 		$VESSEL = "";
+	// 		$VOY = "";
+	// 		$DATE = "";
+	// 		$DESTINATION = "";
+	// 		$REMARK = "";
+	// 		$NOPOL = "";
+	// 		$QRCODE_IMG = "";
+	// 		$CPOPRATGL = "";
+	// 		$CPORECEPTNO = "";
+	// 		$CPORECEIV = "";
+	// 	}
+
+	// 	$result = json_decode($response->getBody()->getContents(), true);
+			
+	// 	$barcode = $generator->getBarcode($crno, $generator::TYPE_CODE_128);		
+		
+	// 	$html = '';
+
+	// 	$html .= '
+	// 	<html>
+	// 		<head>
+	// 			<title>Order PraOut | Print Kitir</title>
+	// 			<link href="'.base_url().'/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	// 			<style>			
+	// 				.page-header{display:block;margin-bottom:20px;line-height:0.3;}
+	// 				table{line-height:1.75;display:block;}
+	// 				table td{font-weight:bold;font-size:12px;}
+	// 				.t-right{text-align:right;}
+	// 				.t-left{text-align:left;}
+	// 				.t-center{text-align:center;}
+	// 				.bordered {
+	// 					border:1px solid #666666;
+	// 					padding:3px;
+	// 				}
+	// 				.kotak1{border:1px solid #000000;padding:3px;width:20%;text-align:center;}
+	// 				.kotak2{border:1px solid #ffffff;padding:3px;width:20%;text-align:center;}
+	// 				.kotak3{border:1px solid #000000;padding:3px;width:20%;text-align:center;}
+	// 		        @media print {
+	// 		            @page {
+	// 		                margin: 0 auto;
+	// 		                sheet-size: 300px 250mm;
+	// 		            }
+	// 		            html {
+	// 		                direction: rtl;
+	// 		            }
+	// 		            html,body{margin:0;padding:0}
+	// 		            .wrapper {
+	// 		                width: 250px;
+	// 		                margin: auto;
+	// 		                text-align: justify;
+	// 		            }
+	// 		           .t-center{text-align: center;}
+	// 		           .t-right{text-align: right;}
+	// 		        }						
+	// 			</style>
+	// 		</head>
+	// 	';
+	// 	$html .= '<body onload="window.print()">
+	// 		<div class="wrapper">
+
+	// 		<div class="page-header t-center">
+	// 			<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR MUAT</h3>
+	// 			<h4 style="text-decoration: underline;line-height:0.5;">'.$REFOUT.'</h3>
+	// 			<img src="' . $QRCODE_IMG . '" style="height:120px;">
+	// 			<h5 style="text-decoration: underline;line-height:0.5;">'.$CPID.'</h4>
+	// 		</div>
+	// 	';		
+	// 	$html .='
+	// 		<table border-spacing: 0; border-collapse: collapse; width="100%">	
+	// 			<tr>
+	// 				<td colspan="2" style="font-weight:normal;">NO. '.$CPOORDERNO.'
+	// 				</td>
+	// 				<td colspan="2" style="font-weight:normal;text-align:right;">( '.date("d/m/Y",strtotime($CPOPRATGL)).' )</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td style="width:40%;">CONTAINER NO.</td>
+	// 				<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">:&nbsp;'.$CRNO.'</h5></td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>PRINCIPAL</td>
+	// 				<td colspan="3">:&nbsp;'.$PRINCIPAL.'</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>L/OFF RECEIPT</td>
+	// 				<td colspan="3">:&nbsp;'.$CPORECEPTNO.'</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>DET RECEIPT</td>
+	// 				<td colspan="3">:</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>SIZE</td>
+	// 				<td colspan="3">:&nbsp;'.$CODE.' '.$LENGTH.'/'.$HEIGHT.'</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>DELIVERER</td>
+	// 				<td colspan="3">:</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td colspan="4" style="padding-bottom:10px;"><h5 style="font-weight:normal;">'.$CPORECEIV.'</h5></td>
+	// 			</tr>
+	// 			<tr  rowspan="4">
+	// 				<td colspan="4">&nbsp;</td>
+	// 			</tr>				
+	// 		</table>
+	// 		<table style="border-spacing: 3px; border-collapse: separate;" width="100%">
+	// 			<tr>
+	// 				<td width="40%">CONDITION</td>
+	// 				<td class="kotak3">AC</td>
+	// 				<td class="kotak3">AU</td>
+	// 				<td class="kotak3">DN</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>CLEANING</td>
+	// 				<td class="kotak3">WW</td>
+	// 				<td class="kotak3">SC</td>
+	// 				<td class="kotak3">CC</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>REPAIR</td>
+	// 				<td class="kotak3">Y</td>
+	// 				<td class="kotak3">N</td>
+	// 				<td class="">&nbsp;</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>VESSEL</td>
+	// 				<td colspan="3">:&nbsp;'.$VESSEL.'</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>EXPIRED</td>
+	// 				<td colspan="3">:&nbsp;</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>REMARK</td>
+	// 				<td colspan="3">:&nbsp;'.$REMARK.'</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>TRUCK ID</td>
+	// 				<td colspan="3">:&nbsp;'.$NOPOL.'</td>
+	// 			</tr>		
+	// 		</table>
+	// 		<table width="100%">	
+	// 			<tr>
+	// 				<td>SURVEYOR</td>
+	// 				<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
+	// 			</tr>
+	// 			<tr  rowspan="4">
+	// 				<td colspan="4">&nbsp;</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>KERANI</td>
+	// 				<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
+	// 			</tr>
+	// 			<tr  rowspan="4">
+	// 				<td colspan="4">&nbsp;</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>GATE OFFICER</td>
+	// 				<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
+	// 			</tr>
+	// 		</table>
+	// 		</div>
+	// 	';		
+	// 	$html .='
+	// 	</body>
+	// 	</html>
+	// 	';
+	// 	$mpdf->WriteHTML($html);
+	// 	$mpdf->Output();
+	// 	// echo $html;
+	// 	die();			
+	// }
+
+	public function cetak_kitir($crno = "", $cpiorderno = "", $praid = "")
 	{
 
 		$generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
-		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80,236]]);
+		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80, 236]]);
 		// $mpdf->showImageErrors = true;
 		$query_params = [
 			"crno" => $crno,
 			"cpoorderno" => $cpiorderno
 		];
 
-		$response = $this->client->request('GET','containerProcess/getKitirPraOut',[
+		$response = $this->client->request('GET', 'containerProcess/getKitirPraOut', [
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
 			],
 			'query' => $query_params,
 		]);
-		
-		$result = json_decode($response->getBody()->getContents(),true);
-		// dd($result);
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		// print_r($result);die();
+		//die();
 		$recept = recept_by_praid($praid);
 
-		if(isset($result['data'][0])&&(count($result['data'][0])) > 0){
+		if (isset($result['data'][0]) && (count($result['data'][0])) > 0) {
+			$INVOICE_NUMBER  = 'KW' . date("Ymd", strtotime($result['data'][0]['cpipratgl'])) . str_repeat("0", 8 - strlen($recept['praid'])) . $recept['praid'];
 			$qrcode = $this->generate_qrcode($result['data'][0]['cpid']);
 			$CRNO = $result['data'][0]['crno'];
-			$REFOUT = $result['data'][0]['cporefout'];
+			$REFIN = $result['data'][0]['cporefin'];
 			$CPID = $result['data'][0]['cpid'];
 			$LENGTH = $result['data'][0]['cclength'];
 			$HEIGHT = $result['data'][0]['ccheight'];
-			$CPOORDERNO = $result['data'][0]['cpoorderno'];
+			$CPIORDERNO = $result['data'][0]['cpoorderno'];
 			$TYPE = $result['data'][0]['cccode'];
 			$CODE = $result['data'][0]['ctcode'];
-			$PRINCIPAL = $result['data'][0]['cpopr1'];
-			$SHIPPER = $result['data'][0]['cporeceiv'];
-			$VESSEL = $result['data'][0]['cpoves'];
-			$VOY = $result['data'][0]['cpovoyid'];
-			$DATE = $result['data'][0]['cpoloaddat'];
+			$PRINCIPAL = $result['data'][0]['prcode'];
+			$SHIPPER = $result['data'][0]['cpodeliver'];
+			$VESSEL = $result['data'][0]['vesid'];
+			$VOY = $result['data'][0]['cpovoy'];
+			$DATE = $result['data'][0]['cpodisdat'];
 			$DESTINATION = "";
 			$REMARK = $result['data'][0]['cporemark'];
 			$NOPOL = $result['data'][0]['cponopol'];
-			$QRCODE_IMG = ROOTPATH .'/public/media/qrcode/'.$qrcode['content'] . '.png';
-			$CPOPRATGL = $result['data'][0]['cpopratgl'];
-			$CPORECEPTNO = $result['data'][0]['cporeceptno'];
-			$CPORECEIV = $result['data'][0]['cporeceiv'];
+			$QRCODE_IMG = ROOTPATH . '/public/media/qrcode/' . $qrcode['content'] . '.png';
+			$CPIPRATGL = $result['data'][0]['cpopratgl'];
+			$CPIRECEPTNO = $result['data'][0]['cporeceptno'];
 			// $QRCODE_CONTENT = $qrcode['content'];
+			$CRTARAK = $result['data'][0]['crtarak'];
+			$CRTARAL = $result['data'][0]['crtaral'];
+			$CRMANUF = $result['data'][0]['crmanuf'];
+			$CRMANDAT = $result['data'][0]['crmandat'];
+			$CRLASTCOND = $result['data'][0]['crlastcond'];
+			$CPIDRIVER = $result['data'][0]['cpodriver'];
+			$CPIDRIVER = $result['data'][0]['cpodriver'];
 		} else {
+			$INVOICE_NUMBER = "";
 			$CRNO = "";
-			$REFOUT = "";
+			$CODE = "";
 			$CPID = "";
+			$REFIN = "";
 			$LENGTH = "";
 			$HEIGHT = "";
-			$CPOORDERNO = "";
+			$CPIORDERNO = "";
 			$TYPE = "";
-			$CODE = "";
 			$PRINCIPAL = "";
 			$SHIPPER = "";
 			$VESSEL = "";
@@ -1655,22 +1894,30 @@ cpid,
 			$REMARK = "";
 			$NOPOL = "";
 			$QRCODE_IMG = "";
-			$CPOPRATGL = "";
-			$CPORECEPTNO = "";
-			$CPORECEIV = "";
+			$QRCODE_CONTENT = "";
+			$CPIRECEPTNO = "";
+			$CPIPRATGL = "";
+			$CRTARAK  = "";
+			$CRTARAL  = "";
+			$CRMANUF  = "";
+			$CRMANDAT = "";
+			$CRLASTCOND = "";
+			$CPIDRIVER = "";
 		}
 
+
+
 		$result = json_decode($response->getBody()->getContents(), true);
-			
-		$barcode = $generator->getBarcode($crno, $generator::TYPE_CODE_128);		
-		
+
+		$barcode = $generator->getBarcode($crno, $generator::TYPE_CODE_128);
+
 		$html = '';
 
 		$html .= '
 		<html>
 			<head>
 				<title>Order PraOut | Print Kitir</title>
-				<link href="'.base_url().'/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+				<link href="' . base_url() . '/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 				<style>			
 					.page-header{display:block;margin-bottom:20px;line-height:0.3;}
 					table{line-height:1.75;display:block;}
@@ -1709,117 +1956,120 @@ cpid,
 			<div class="wrapper">
 
 			<div class="page-header t-center">
+				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">PT.CONTINDO RAYA</h3>
 				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR MUAT</h3>
-				<h4 style="text-decoration: underline;line-height:0.5;">'.$REFOUT.'</h3>
+				<h4 style="text-decoration: underline;line-height:0.5;">' . $REFIN . '</h3>
 				<img src="' . $QRCODE_IMG . '" style="height:120px;">
-				<h5 style="text-decoration: underline;line-height:0.5;">'.$CPID.'</h4>
+				<h5 style="text-decoration: underline;line-height:0.5;">' . $CPID . '</h4>
 			</div>
-		';		
-		$html .='
-			<table border-spacing: 0; border-collapse: collapse; width="100%">	
-				<tr>
-					<td colspan="2" style="font-weight:normal;">NO. '.$CPOORDERNO.'
-					</td>
-					<td colspan="2" style="font-weight:normal;text-align:right;">( '.date("d/m/Y",strtotime($CPOPRATGL)).' )</td>
-				</tr>
-				<tr>
-					<td style="width:40%;">CONTAINER NO.</td>
-					<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">:&nbsp;'.$CRNO.'</h5></td>
-				</tr>
-				<tr>
-					<td>PRINCIPAL</td>
-					<td colspan="3">:&nbsp;'.$PRINCIPAL.'</td>
-				</tr>
-				<tr>
-					<td>L/OFF RECEIPT</td>
-					<td colspan="3">:&nbsp;'.$CPORECEPTNO.'</td>
-				</tr>
-				<tr>
-					<td>DET RECEIPT</td>
-					<td colspan="3">:</td>
-				</tr>
-				<tr>
-					<td>SIZE</td>
-					<td colspan="3">:&nbsp;'.$CODE.' '.$LENGTH.'/'.$HEIGHT.'</td>
-				</tr>
-				<tr>
-					<td>DELIVERER</td>
-					<td colspan="3">:</td>
-				</tr>
-				<tr>
-					<td colspan="4" style="padding-bottom:10px;"><h5 style="font-weight:normal;">'.$CPORECEIV.'</h5></td>
-				</tr>
-				<tr  rowspan="4">
-					<td colspan="4">&nbsp;</td>
-				</tr>				
-			</table>
-			<table style="border-spacing: 3px; border-collapse: separate;" width="100%">
-				<tr>
-					<td width="40%">CONDITION</td>
-					<td class="kotak3">AC</td>
-					<td class="kotak3">AU</td>
-					<td class="kotak3">DN</td>
-				</tr>
-				<tr>
-					<td>CLEANING</td>
-					<td class="kotak3">WW</td>
-					<td class="kotak3">SC</td>
-					<td class="kotak3">CC</td>
-				</tr>
-				<tr>
-					<td>REPAIR</td>
-					<td class="kotak3">Y</td>
-					<td class="kotak3">N</td>
-					<td class="">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>VESSEL</td>
-					<td colspan="3">:&nbsp;'.$VESSEL.'</td>
-				</tr>
-				<tr>
-					<td>EXPIRED</td>
-					<td colspan="3">:&nbsp;</td>
-				</tr>
-				<tr>
-					<td>REMARK</td>
-					<td colspan="3">:&nbsp;'.$REMARK.'</td>
-				</tr>
-				<tr>
-					<td>TRUCK ID</td>
-					<td colspan="3">:&nbsp;'.$NOPOL.'</td>
-				</tr>		
-			</table>
-			<table width="100%">	
-				<tr>
-					<td>SURVEYOR</td>
-					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
-				</tr>
-				<tr  rowspan="4">
-					<td colspan="4">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>KERANI</td>
-					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
-				</tr>
-				<tr  rowspan="4">
-					<td colspan="4">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>GATE OFFICER</td>
-					<td colspan="3">&nbsp;&nbsp;( _____________ )</td>
-				</tr>
-			</table>
-			</div>
-		';		
-		$html .='
+		';
+
+		$html .= '
+				<table border-spacing: 0; border-collapse: collapse; width="100%">	
+					<tr>
+						<td>PRINCIPAL</td>
+						<td colspan="3">:&nbsp;' . $PRINCIPAL . '</td>
+					</tr>
+					<tr>
+						<td style="width:40%;">CONTAINER NO.</td>
+						<td colspan="3"><h5 style="line-height:1.2;font-weight:bold;padding-top:20px;">:&nbsp;' . $CRNO . '</h5></td>
+					</tr>
+					<tr>
+						<td style="width:40%;">DATE</td>
+						<td colspan="3">:&nbsp;' . date('d-m-Y', strtotime($CPIPRATGL)) . '</td>
+					</tr>
+					<tr>
+						<td>TIPE</td>
+						<td colspan="3">:&nbsp;' . $CODE . '/' . $TYPE . '</td>
+					</tr>					
+					<tr>
+						<td>SIZE</td>
+						<td colspan="3">:&nbsp;' . $LENGTH  . '/' . $HEIGHT . ' </td>
+					</tr>
+					<tr>
+						<td>TARA</td>
+						<td colspan="3">:&nbsp;' . $CRTARAK . '/' . $CRTARAL . ' </td>
+					</tr>
+
+					<tr>
+						<td>MAN.DATE </td>
+						<td colspan="3">:&nbsp;' . $CRMANDAT . ' </td>
+					</tr>
+					<tr>
+						<td>CONDITION</td>
+						<td colspan="3">:&nbsp;' . $CRLASTCOND . '</td>
+					</tr>
+					<tr>
+						<td>CLEANING</td>
+						<td colspan="3">:&nbsp;</td>
+					</tr>
+					<tr>
+						<td>EMKL</td>
+						<td colspan="3" style="font-weight:normal">:&nbsp;' . $SHIPPER . '</td>
+					</tr>
+					<tr>
+						<td>INVOICE NUM.</td>
+						<td colspan="3" style="font-weight:normal">:&nbsp;' . $INVOICE_NUMBER . '</td>
+					</tr>
+
+					
+					<tr>
+						<td>LOAD STATUS</td>
+						<td colspan="3">:&nbsp;</td>
+					</tr>					
+					<tr>
+						<td>EX VESSEL</td>
+						<td colspan="3"  style="font-weight:normal">:&nbsp;' . $VESSEL . '/' . $VOY . '</td>
+					</tr>
+					<tr>
+						<td>NO POLISI</td>
+						<td colspan="3">:&nbsp;' . $NOPOL . '</td>
+					</tr>
+					<tr>
+						<td>DRIVER</td>
+						<td colspan="3">:&nbsp;' . $CPIDRIVER . '</td>
+					</tr>		
+					<tr>
+						<td>REMARK</td>
+						<td colspan="3"  style="font-weight:normal">:&nbsp;' . $REMARK . '</td>
+					</tr>			
+
+
+					<tr rowspan="3">&nbsp;</tr>
+
+				</table>
+				<br>
+				<table border-spacing: 0; border-collapse: collapse; width="100%">	
+					<tr>
+						<td width="33%">TRUCKER</td>
+						<td width="33%" class="t-center">SURVEYOR</td>
+						<td width="33%">PETUGAS</td>
+					</tr>
+					
+					<tr>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+						<td>&nbsp;</td>
+					</tr>	
+					<tr>
+						<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+						<td class="t-center">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+						<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+					</tr>	
+				</table>
+				</div>
+		';
+
+
+		$html .= '
 		</body>
 		</html>
 		';
 		$mpdf->WriteHTML($html);
 		$mpdf->Output();
 		// echo $html;
-		die();			
-	}
+		die();
+	}	
 
 	// Proforma Print invoice 1
 	public function print_invoice1_old($id) 

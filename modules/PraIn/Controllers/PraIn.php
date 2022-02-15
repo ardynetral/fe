@@ -48,22 +48,26 @@ class PraIn extends \CodeIgniter\Controller
 			]
 		]);
 		$result_pra = json_decode($response1->getBody()->getContents(),true);	
-
-		if($group_id == 1) 
-		{
-			$datas = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
-			// Jika EMKL (User_group==1)
-			$data_pra = array();
-			foreach($datas as $dt) {
-				if($user_id==$dt['crtby']) {
-					$data_pra[] = $dt;
+		if($result_pra['status']=="Failled") {
+			$data['data_pra'] = "";
+		} else {
+			if($group_id == 1) 
+			{
+				$datas = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
+				// Jika EMKL (User_group==1)
+				$data_pra = array();
+				foreach($datas as $dt) {
+					if($user_id==$dt['crtby']) {
+						$data_pra[] = $dt;
+					}
+					else {}
 				}
-			}
-			$data['data_pra'] = $data_pra;
-		} 
-		else 
-		{
-			$data['data_pra'] = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
+				$data['data_pra'] = $data_pra;
+			} 
+			else 
+			{
+				$data['data_pra'] = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
+			}	
 		}
 
 		$data['prcode'] = $prcode;

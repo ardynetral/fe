@@ -247,7 +247,7 @@
 						<input type="hidden" name="pracrnoid" id="pracrnoid">
 						<fieldset>
 							
-							<?php if(($group_id==4 || $group_id==3)): ?>
+							<?php if($group_id!=1): ?>
 							
 							<div class="form-group">
 								<label for="prcode" class="col-sm-4 control-label text-right">Principal</label>
@@ -372,9 +372,11 @@
 						<h3><i class="fa fa-table"></i> List Order Pra Container</h3>
 					</div>
 					<div class="widget-content">
+						<div class="table-responsive">
 						<table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
+									<th></th>
 									<th>No.</th>
 									<th>Container #</th>
 									<th>ID Code</th>
@@ -386,7 +388,6 @@
 									<th>Deposit</th>
 									<th>Cleaning</th>
 									<th>Remark</th>
-									<th></th>
 								</tr>
 							</thead>
 							
@@ -407,6 +408,7 @@
 									foreach($orderPraContainers as $row): 
 									?>
 										<tr>
+											<td><a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a></td>
 											<td><?=$i;?></td>
 											<td><?=$row['crno'];?></td>
 											<td><?=$row['cccode']?></td>
@@ -418,7 +420,6 @@
 											<td><?=$row['biaya_clean'];?></td>
 											<td><?=$row['biaya_lain'];?></td>
 											<td><?=$row['cpiremark']?></td>
-											<td><a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">view</a></td>
 										</tr>
 									<?php 
 									$i++; 
@@ -439,7 +440,7 @@
 								
 							</tbody>
 						</table>
-
+						</div>
 
 					</div>
 

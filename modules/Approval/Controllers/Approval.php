@@ -127,14 +127,25 @@ class Approval extends \CodeIgniter\Controller
 
 	public function final_estimasi() 
 	{
+		$detail = $this->getDetListByCrno($_POST['final_crno']);
+		$totalrmhr = 0;
+		$totallab=0;
+		$totalcost=0;
+		$total=0;
+		foreach($detail as $det) {
+			$totalrmhr = $totalrmhr+(int)$det['rdmhr'];
+			$totallab = $totallab+(int)$det['rdlab'];
+			$totalcost = $totalcost+(int)$det['rdmat'];
+			$total = $total+(int)$det['rdtotal'];
+		}
 		$form_params = [
 			"crno" => $_POST['final_crno'],
 			"svid" => $_POST['final_svid'],
 			"autno" => $_POST['autno'],
-			"totalrmhr" => isset($_POST['final_totalrmhr'])?$_POST['final_totalrmhr']:0,
-			"totallab" => isset($_POST['final_totallab'])?$_POST['final_totallab']:0,
-			"totalcost" => isset($_POST['final_totalcost'])?$_POST['final_totalcost']:0,
-			"total" => isset($_POST['final_total'])?$_POST['final_total']:0
+			"totalrmhr" => $totalrmhr,
+			"totallab" => $totallab,
+			"totalcost" => $totalcost,
+			"total" => $total
 		];
 
 		if($this->request->isAjax()) {
@@ -143,9 +154,7 @@ class Approval extends \CodeIgniter\Controller
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
 				],
-				'form_params' => [
-					'svid' => $form_params
-				]
+				'form_params' => $form_params
 			]);	
 
 			$result = json_decode($response->getBody()->getContents(), true);
@@ -613,7 +622,24 @@ class Approval extends \CodeIgniter\Controller
 			$data = $result['data']['dataTwo'];
 			return $data;
 		}
+		
+		$response = $this->client->request('GET', 'estimasi/listOneCrno', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'crno' => $CRNO
+			]
+		]);	
+		$result = json_decode($response->getBody()->getContents(), true);
+		if($result['data']['dataOne']==null) {
+			$data = "";
+		}
+		$data = $result['data']['dataTwo'];
+		return $data;		
 	}
+
 	public function getFileList($crno) 
 	{
 		if($this->request->isAjax()) {

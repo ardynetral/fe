@@ -1526,6 +1526,20 @@ cpid,
 		die();
 	}
 
+	public function get_debitur($cucode) {
+		$response = $this->client->request('GET','debiturs/getDetailData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'form_params' => [
+				'cucode' => $cucode,
+			]
+		]);	
+		$result = json_decode($response->getBody()->getContents(), true);	
+		return $result['data'];
+	}
+	
 	// Get Container list Approval-1
 	public function appv1_containers($praid) 
 	{
@@ -2052,13 +2066,13 @@ cpid,
 
 		$result = json_decode($response->getBody()->getContents(),true);		
 		$header = $result['data']['datas'][0];
+		// dd($header);
 
 		$pratgl = $header['cpipratgl'];
 		$recept = recept_by_praid($header['praid']);
 		$debitur = $this->get_debitur($header['cpideliver']);
 		$detail = $header['orderPraContainers'];
 		$depo = $this->get_depo($header['cpdepo']);
-		// echo var_dump($debitur);die();
 		if($recept==""){
 			$invoice_number ="-";	
 		} else {

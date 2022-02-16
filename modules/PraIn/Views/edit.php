@@ -329,10 +329,10 @@
 						<h3><i class="fa fa-table"></i> List Order Pra Container</h3>
 					</div>
 					<div class="widget-content">
-						<button type="button" id="addContainer" class="btn btn-success"><i class="fa fa-plus"></i> Add Container</button>
+						<p><button type="button" id="addContainer" class="btn btn-success"><i class="fa fa-plus"></i> Add Container</button></p>
 						<br>
-						<div class="table-responsive">
-						<table id="detTable" class="table table-hover table-bordered v-scroll" style="width:100%;">
+						<div class="table-responsive vscroll">
+						<table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
 									<th></th>

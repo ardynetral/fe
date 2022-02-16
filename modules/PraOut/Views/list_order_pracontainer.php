@@ -1,4 +1,4 @@
-<div class="table-responsive">
+<div class="table-responsive vscroll">
 <table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 	<thead>
 		<tr>

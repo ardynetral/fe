@@ -59,25 +59,25 @@
 									<div class="form-group">
 										<label  class="col-sm-5 control-label text-right">From</label>
 										<div id="fromDepoBlok" class="col-sm-7 <?=(isset($data['retype'])&&($data['retype']=='21')?'':'hideBlock')?>">
-											<?=depo_dropdown2("retfrom",$data['retfrom'])?>
+											<?= $from_depo_dropdown ?>
 										</div>
 										<div id="fromPortBlok" class="col-sm-7 <?=(isset($data['retype'])&&($data['retype']=='22')?'':'hideBlock')?>">
-											<?=port_dropdown("retfrom",$data['retfrom'])?>
+											<?= $from_port_dropdown ?>
 										</div>						
 										<div id="fromCityBlok" class="col-sm-7 <?=(isset($data['retype'])&&($data['retype']=='23')?'':'hideBlock')?>">
-											<?=city_dropdown("retfrom",$data['retfrom'])?>
+											<?= $from_city_dropdown ?>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-5 control-label text-right">To</label>
 										<div id="toDepoBlok" class="col-sm-7">
-											<?=depo_dropdown2("retto",$data['retto'])?>
+											<?= $to_depo_dropdown ?>
 										</div>
 										<div id="toPortBlok" class="col-sm-7 hideBlock">
-											<?=port_dropdown("retto",$data['retto'])?>
+											<?= $to_port_dropdown ?>
 										</div>						
 										<div id="toCityBlok" class="col-sm-7 hideBlock">
-											<?=city_dropdown("retto",$data['retto'])?>
+											<?= $to_city_dropdown ?>
 										</div>
 									</div>
 
@@ -187,7 +187,7 @@
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Repo Vendor</label>
 										<div class="col-sm-6">
-											<input type="text" name="cpicargo" class="form-control" id="cpicargo" readonly>
+											<input type="text" name="cpicargo" class="form-control" id="cpicargo" value="<?=$data['repovendor']?>" readonly>
 										</div>
 									</div>
 									<div class="form-group">

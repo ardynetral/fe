@@ -274,6 +274,7 @@
 						<h3><i class="fa fa-table"></i> Order Pra Container</h3>
 					</div>
 					<div class="widget-content">
+						<div class="table-responsive vscroll">
 						<table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
@@ -330,6 +331,7 @@
 
 							</tbody>
 						</table>
+						</div>
 						<table class="tbl-form" width="100%">
 							<tbody>
 								<tr>

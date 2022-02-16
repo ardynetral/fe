@@ -200,7 +200,7 @@ $(document).ready(function() {
 		});			
 	});
 
-	$('#ctTable tbody').on('click', 'tbody .delete_btn', function(){
+	$('#ctTable').on('click', 'tbody .delete_btn', function(){
 		let crno = $(this).attr('crno');
 		let cpiorderno = $(this).attr('cpiorderno');
 		let rpid = $(this).attr('rpid');
@@ -346,13 +346,15 @@ $(document).ready(function() {
 	    return false;
 	});
 
-	// DATATABLE
 	runDataTables();
 	var table = $('#ctTable').DataTable({
         "processing": true,
         "serverSide": true,
         "autoWidth": false,
         "fixedColumns": true,
+        "language": {
+		     "processing": '<Processing...'
+		},
         "ajax": $.fn.dataTable.pipeline( {
             url: '<?=site_url('survey/list_data');?>',
             pages: 5  
@@ -362,12 +364,11 @@ $(document).ready(function() {
         PaginationType : "bootstrap", 
         oLanguage: { "sSearch": "",
             "sLengthMenu" : "_MENU_ &nbsp;"}
-	});
+    });
 	
 	$('.dataTables_filter input').attr("placeholder", "Search");
     $('.DTTT_container').css('display','none');
-    $('.DTTT').css('display','none');
-    // END DATATABLE	
+    $('.DTTT').css('display','none');	
 
 });
 
@@ -438,11 +439,15 @@ function runDataTables() {
                     "dataType": "json",
                     "cache": false,
 					"beforeSend": function(){
-						$('#ctTable > tbody').html(
+						// Here, manually add the loading message.
+				          $('#ctTable > tbody').html(
 				            '<tr class="odd">' +
 				              '<td valign="top" colspan="6" class="dataTables_empty">Loading&hellip; <i class="fa fa-gear fa-1x fa-spin"></i></td>' +
 				            '</tr>'
 				          );
+						// $("#spinner").show();
+						// $("#SearchSC").attr("disabled","disabled");
+						// $("#SearchSC").append('<i class="fa fa-gear fa-1x fa-spin"></i>');
 					},
                     "success": function (json) {
 						$("#spinner").hide();
@@ -469,5 +474,43 @@ function runDataTables() {
             }
         }
     } 	   
+
+    $('#CRNO').keyup(function() {
+    	crno = $(this).val();
+    	if (crno.length == 11) {
+	    	$.ajax({
+				url:"<?=site_url('survey/checkValid');?>",
+				type:"POST",
+				data: "CRNO="+crno,
+				dataType:"JSON",
+				success: function(res){
+					if (res.err == false) {
+						for (const [key, value] of Object.entries(res.data)) {
+							if (key == 'cpife' || key == 'cpiterm' ) {
+								$("input[name="+key.toUpperCase()+"][value='"+value+"']").prop("checked",true);
+							}else if( key=='cpichrgbb' || key=='cpipaidbb' || key=='crcdp' || key=='cracep' || key=='crcsc'){
+								const checked = (value == 1? true:false);
+								$(`#${key.toUpperCase()}`).prop("checked", checked);
+							} else {
+								$(`#${key.toUpperCase()}`).val(value)
+							}
+						}
+						$('#LECONTRACTNO').val(res.data.prcode)
+						$('#CPIPRANO').val(res.data.cpiorderno)
+						$("#saveData").removeAttr("disabled");
+					} else {
+						$('#form_input')[0].reset();
+						Swal.fire({
+						  icon: 'error',
+						  title: "Error",
+						  html: '<div class="text-danger"> Container Number is '+res.status.toUpperCase()+'</div>'
+						});	
+					}
+				}
+			});
+    	} else if(crno.length == 0){
+			$('#form_input')[0].reset();
+    	}
+	});
 }
 </script>

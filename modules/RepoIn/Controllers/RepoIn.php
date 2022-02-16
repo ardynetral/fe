@@ -99,6 +99,12 @@ class RepoIn extends \CodeIgniter\Controller
 		$data['data'] = $datarepo['data'];
 		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
 		// echo var_dump($data['data']);die();
+		$data['from_depo_dropdown'] = $this->depo_dropdown("retfrom","DEPO CONTINDO");
+		$data['from_port_dropdown'] = $this->port_dropdown("retfrom",$datarepo['data']['replace1']);
+		$data['from_city_dropdown'] = $this->city_dropdown("retfrom",$datarepo['data']['replace1']);
+		$data['to_depo_dropdown'] = $this->depo_dropdown("retto","DEPO CONTINDO");
+		$data['to_port_dropdown'] = $this->port_dropdown("retto",$datarepo['data']['retto']);
+		$data['to_city_dropdown'] = $this->city_dropdown("retto",$datarepo['data']['retto']);			
 		$data['QTY'] = hitungHCSTD($this->getRepoContainers($datarepo['data']['repoid']));
 		$data['recity'] = $this->getCity($datarepo['data']['recity']);
 		return view('Modules\RepoIn\Views\view', $data);
@@ -245,7 +251,7 @@ class RepoIn extends \CodeIgniter\Controller
 				'cpijam' => $_POST['cpijam'],
 				'cpives' => $_POST['recpives'],
 				'cpiremark' => $_POST['cpiremark'],
-				'cpideliver' => $_POST['cpideliver'],
+				'cpideliver' => $_POST['repovendor'],
 				'cpivoyid' => $_POST['recpivoyid'],
 				'cpivoy' => $_POST['cpivoy'],
 				// detail
@@ -936,245 +942,245 @@ class RepoIn extends \CodeIgniter\Controller
 		return $status;
 	}
 
-	public function cetak_kitir($crno = "", $reorderno = "", $praid = "")
-	{
+	// public function cetak_kitir($crno = "", $reorderno = "", $praid = "")
+	// {
 
-		$generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
-		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80, 236]]);
-		// $mpdf->showImageErrors = true;
-		$query_params = [
-			"crno" => trim($crno),
-			"cpiorderno" => trim($reorderno)
-		];
-		//print_r($query_params);
-		$response = $this->client->request('GET', 'containerProcess/getKitirPepoIn', [
-			'headers' => [
-				'Accept' => 'application/json',
-				'Authorization' => session()->get('login_token')
-			],
-			'query' => $query_params,
-		]);
+	// 	$generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+	// 	$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80, 236]]);
+	// 	// $mpdf->showImageErrors = true;
+	// 	$query_params = [
+	// 		"crno" => trim($crno),
+	// 		"cpiorderno" => trim($reorderno)
+	// 	];
+	// 	//print_r($query_params);
+	// 	$response = $this->client->request('GET', 'containerProcess/getKitirPepoIn', [
+	// 		'headers' => [
+	// 			'Accept' => 'application/json',
+	// 			'Authorization' => session()->get('login_token')
+	// 		],
+	// 		'query' => $query_params,
+	// 	]);
 
-		$result = json_decode($response->getBody()->getContents(), true);
-		//print_r($result);		die();
-		// $recept = recept_by_praid($praid);
-		if (isset($result['data'][0]) && (count($result['data'][0])) > 0) {
-			$qrcode = $this->generate_qrcode($result['data'][0]['cpid']);
-			$CRNO = $result['data'][0]['crno'];
-			$REFIN = $result['data'][0]['cpirefin'];
-			$CPID = $result['data'][0]['cpid'];
-			$LENGTH = $result['data'][0]['cclength'];
-			$HEIGHT = $result['data'][0]['ccheight'];
-			$CPIORDERNO = $result['data'][0]['cpiorderno'];
-			$TYPE = $result['data'][0]['cccode'];
-			$CODE = $result['data'][0]['ctcode'];
-			$PRINCIPAL = $result['data'][0]['prcode'];
-			$SHIPPER = $result['data'][0]['cpideliver'];
-			$VESSEL = $result['data'][0]['vesid'];
-			$VOY = $result['data'][0]['cpivoy'];
-			$DATE = $result['data'][0]['cpidisdat'];
-			$DESTINATION = "";
-			$REMARK = $result['data'][0]['cpiremark'];
-			$NOPOL = $result['data'][0]['cpinopol'];
-			$QRCODE_IMG = ROOTPATH . '/public/media/qrcode/' . $qrcode['content'] . '.png';
-			$CPIPRATGL = $result['data'][0]['cpipratgl'];
-			$CPIRECEPTNO = $result['data'][0]['cpireceptno'];
-			// $QRCODE_CONTENT = $qrcode['content'];
-		} else {
-			$CRNO = "";
-			$CODE = "";
-			$CPID = "";
-			$REFIN = "";
-			$LENGTH = "";
-			$HEIGHT = "";
-			$CPIORDERNO = "";
-			$TYPE = "";
-			$PRINCIPAL = "";
-			$SHIPPER = "";
-			$VESSEL = "";
-			$VOY = "";
-			$DATE = "";
-			$DESTINATION = "";
-			$REMARK = "";
-			$NOPOL = "";
-			$QRCODE_IMG = "";
-			$QRCODE_CONTENT = "";
-			$CPIRECEPTNO = "";
-			$CPIPRATGL = "";
-		}
+	// 	$result = json_decode($response->getBody()->getContents(), true);
+	// 	//print_r($result);		die();
+	// 	// $recept = recept_by_praid($praid);
+	// 	if (isset($result['data'][0]) && (count($result['data'][0])) > 0) {
+	// 		$qrcode = $this->generate_qrcode($result['data'][0]['cpid']);
+	// 		$CRNO = $result['data'][0]['crno'];
+	// 		$REFIN = $result['data'][0]['cpirefin'];
+	// 		$CPID = $result['data'][0]['cpid'];
+	// 		$LENGTH = $result['data'][0]['cclength'];
+	// 		$HEIGHT = $result['data'][0]['ccheight'];
+	// 		$CPIORDERNO = $result['data'][0]['cpiorderno'];
+	// 		$TYPE = $result['data'][0]['cccode'];
+	// 		$CODE = $result['data'][0]['ctcode'];
+	// 		$PRINCIPAL = $result['data'][0]['prcode'];
+	// 		$SHIPPER = $result['data'][0]['cpideliver'];
+	// 		$VESSEL = $result['data'][0]['vesid'];
+	// 		$VOY = $result['data'][0]['cpivoy'];
+	// 		$DATE = $result['data'][0]['cpidisdat'];
+	// 		$DESTINATION = "";
+	// 		$REMARK = $result['data'][0]['cpiremark'];
+	// 		$NOPOL = $result['data'][0]['cpinopol'];
+	// 		$QRCODE_IMG = ROOTPATH . '/public/media/qrcode/' . $qrcode['content'] . '.png';
+	// 		$CPIPRATGL = $result['data'][0]['cpipratgl'];
+	// 		$CPIRECEPTNO = $result['data'][0]['cpireceptno'];
+	// 		// $QRCODE_CONTENT = $qrcode['content'];
+	// 	} else {
+	// 		$CRNO = "";
+	// 		$CODE = "";
+	// 		$CPID = "";
+	// 		$REFIN = "";
+	// 		$LENGTH = "";
+	// 		$HEIGHT = "";
+	// 		$CPIORDERNO = "";
+	// 		$TYPE = "";
+	// 		$PRINCIPAL = "";
+	// 		$SHIPPER = "";
+	// 		$VESSEL = "";
+	// 		$VOY = "";
+	// 		$DATE = "";
+	// 		$DESTINATION = "";
+	// 		$REMARK = "";
+	// 		$NOPOL = "";
+	// 		$QRCODE_IMG = "";
+	// 		$QRCODE_CONTENT = "";
+	// 		$CPIRECEPTNO = "";
+	// 		$CPIPRATGL = "";
+	// 	}
 
-		$result = json_decode($response->getBody()->getContents(), true);
+	// 	$result = json_decode($response->getBody()->getContents(), true);
 
-		$barcode = $generator->getBarcode($crno, $generator::TYPE_CODE_128);
+	// 	$barcode = $generator->getBarcode($crno, $generator::TYPE_CODE_128);
 
-		$html = '';
+	// 	$html = '';
 
-		$html .= '
-		<html>
-			<head>
-				<title>Order PraIn | Print Kitir</title>
-				<link href="' . base_url() . '/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-				<style>			
-					.page-header{display:block;margin-bottom:20px;line-height:0.3;}
-					table{line-height:1.75;display:block;}
-					table td{font-weight:bold;}
-					.t-right{text-align:right;}
-					.t-left{text-align:left;}
-					.t-center{text-align:center;}
-					.bordered {
-						border:1px solid #666666;
-						padding:3px;
-					}
-					.kotak1{border:1px solid #000000;padding:3px;width:20%;text-align:center;}
-					.kotak2{border:1px solid #ffffff;padding:3px;width:20%;text-align:center;}
-					.kotak3{border:1px solid #000000;padding:3px;width:20%;text-align:center;}
-			        @media print {
-			            @page {
-			                margin: 0 auto;
-			                sheet-size: 300px 250mm;
-			            }
-			            html {
-			                direction: rtl;
-			            }
-			            html,body{margin:0;padding:0}
-			            .wrapper {
-			                width: 250px;
-			                margin: auto;
-			                text-align: justify;
-			            }
-			           .t-center{text-align: center;}
-			           .t-right{text-align: right;}
-			        }						
-				</style>
-			</head>
-		';
-		$html .= '<body onload="window.print()">
-			<div class="wrapper">
+	// 	$html .= '
+	// 	<html>
+	// 		<head>
+	// 			<title>Order PraIn | Print Kitir</title>
+	// 			<link href="' . base_url() . '/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+	// 			<style>			
+	// 				.page-header{display:block;margin-bottom:20px;line-height:0.3;}
+	// 				table{line-height:1.75;display:block;}
+	// 				table td{font-weight:bold;}
+	// 				.t-right{text-align:right;}
+	// 				.t-left{text-align:left;}
+	// 				.t-center{text-align:center;}
+	// 				.bordered {
+	// 					border:1px solid #666666;
+	// 					padding:3px;
+	// 				}
+	// 				.kotak1{border:1px solid #000000;padding:3px;width:20%;text-align:center;}
+	// 				.kotak2{border:1px solid #ffffff;padding:3px;width:20%;text-align:center;}
+	// 				.kotak3{border:1px solid #000000;padding:3px;width:20%;text-align:center;}
+	// 		        @media print {
+	// 		            @page {
+	// 		                margin: 0 auto;
+	// 		                sheet-size: 300px 250mm;
+	// 		            }
+	// 		            html {
+	// 		                direction: rtl;
+	// 		            }
+	// 		            html,body{margin:0;padding:0}
+	// 		            .wrapper {
+	// 		                width: 250px;
+	// 		                margin: auto;
+	// 		                text-align: justify;
+	// 		            }
+	// 		           .t-center{text-align: center;}
+	// 		           .t-right{text-align: right;}
+	// 		        }						
+	// 			</style>
+	// 		</head>
+	// 	';
+	// 	$html .= '<body onload="window.print()">
+	// 		<div class="wrapper">
 
-			<div class="page-header t-center">
-				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR BONGKAR</h3>
-				<h4 style="text-decoration: underline;line-height:0.5;">' . $REFIN . '</h3>
-				<img src="' . $QRCODE_IMG . '" style="height:120px;">
-				<h5 style="text-decoration: underline;line-height:0.5;">' . $CPID . '</h4>
-			</div>
-		';
-		$html .= '
-			<table border-spacing: 0; border-collapse: collapse; width="100%">	
-				<tr>
-					<td colspan="2" style="font-weight:normal;">NO. ' . $CPIORDERNO . '
-					</td>
-					<td colspan="2" style="font-weight:normal;text-align:right;">( ' . date("d/m/Y", strtotime($CPIPRATGL)) . ' )</td>
-				</tr>
-				<tr>
-					<td style="width:40%;">CONTAINER NO.</td>
-					<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">' . $CRNO . '</h5></td>
-				</tr>
-				<tr>
-					<td>PRINCIPAL</td>
-					<td colspan="3">' . $PRINCIPAL . '</td>
-				</tr>
-				<tr>
-					<td>L/OFF</td>
-					<td colspan="3">' . $CPIRECEPTNO . '</td>
-				</tr>
-				<tr>
-					<td>SIZE</td>
-					<td colspan="3">' . $CODE . ' ' . $LENGTH . '/' . $HEIGHT . '</td>
-				</tr>
-				<tr>
-					<td style="width:40%;">PARTY</td>
+	// 		<div class="page-header t-center">
+	// 			<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR BONGKAR</h3>
+	// 			<h4 style="text-decoration: underline;line-height:0.5;">' . $REFIN . '</h3>
+	// 			<img src="' . $QRCODE_IMG . '" style="height:120px;">
+	// 			<h5 style="text-decoration: underline;line-height:0.5;">' . $CPID . '</h4>
+	// 		</div>
+	// 	';
+	// 	$html .= '
+	// 		<table border-spacing: 0; border-collapse: collapse; width="100%">	
+	// 			<tr>
+	// 				<td colspan="2" style="font-weight:normal;">NO. ' . $CPIORDERNO . '
+	// 				</td>
+	// 				<td colspan="2" style="font-weight:normal;text-align:right;">( ' . date("d/m/Y", strtotime($CPIPRATGL)) . ' )</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td style="width:40%;">CONTAINER NO.</td>
+	// 				<td colspan="3"> <h5 style="margin:0;padding:0;font-weight:normal;">' . $CRNO . '</h5></td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>PRINCIPAL</td>
+	// 				<td colspan="3">' . $PRINCIPAL . '</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>L/OFF</td>
+	// 				<td colspan="3">' . $CPIRECEPTNO . '</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>SIZE</td>
+	// 				<td colspan="3">' . $CODE . ' ' . $LENGTH . '/' . $HEIGHT . '</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td style="width:40%;">PARTY</td>
 					
-					<td class="kotak1">20</td>
-					<td class="kotak1">40</td>
-					<td class="kotak1">45</td>
+	// 				<td class="kotak1">20</td>
+	// 				<td class="kotak1">40</td>
+	// 				<td class="kotak1">45</td>
 					
-				</tr>
-				<tr>
-					<td>GP STD</td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>					
-				</tr>
-				<tr>
-					<td>GP HC</td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>	
-				</tr>
-				<tr>
-					<td>NON GP STD</td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>	
-				</tr>
-				<tr>
-					<td>NON GP HC</td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>
-					<td class="kotak2"></td>	
-				</tr>
-			</table>
-			<br>
-			<table style="border-spacing: 3px; border-collapse: separate;" width="100%">
-				<tr>
-					<td width="40%">CONDITION</td>
-					<td class="kotak3">AC</td>
-					<td class="kotak3">AU</td>
-					<td class="kotak3">DN</td>
-				</tr>
-				<tr>
-					<td>CLEANING</td>
-					<td class="kotak3">WW</td>
-					<td class="kotak3">SC</td>
-					<td class="kotak3">CC</td>
-				</tr>
-				<tr>
-					<td>REPAIR</td>
-					<td class="kotak3">Y</td>
-					<td class="kotak3">N</td>
-					<td class="">&nbsp;</td>
-				</tr>
-				<tr>
-					<td>VESSEL</td>
-					<td colspan="3">' . $VESSEL . '</td>
-				</tr>
-				<tr>
-					<td>EXPIRED</td>
-					<td colspan="3"></td>
-				</tr>
-				<tr>
-					<td>REMARK</td>
-					<td colspan="3">' . $REMARK . '</td>
-				</tr>
-				<tr>
-					<td>TRUCK ID</td>
-					<td colspan="3"></td>
-				</tr>		
-			</table>
-			<table width="100%">	
-				<tr>
-					<td width="33%">SURVEYOR</td>
-					<td width="33%" class="t-center">YARDMAN</td>
-					<td width="33%">INVENTORY</td>
-				</tr>
-				<tr><td colspan="3" height="15" width="100%"></td></tr>
-				<tr>
-					<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-					<td class="t-center">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-					<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-				</tr>	
-			</table>
-			</div>
-		';
-		$html .= '
-		</body>
-		</html>
-		';
-		$mpdf->WriteHTML($html);
-		$mpdf->Output();
-		// echo $html;
-		die();
-	}
+	// 			</tr>
+	// 			<tr>
+	// 				<td>GP STD</td>
+	// 				<td class="kotak2"></td>
+	// 				<td class="kotak2"></td>
+	// 				<td class="kotak2"></td>					
+	// 			</tr>
+	// 			<tr>
+	// 				<td>GP HC</td>
+	// 				<td class="kotak2"></td>
+	// 				<td class="kotak2"></td>
+	// 				<td class="kotak2"></td>	
+	// 			</tr>
+	// 			<tr>
+	// 				<td>NON GP STD</td>
+	// 				<td class="kotak2"></td>
+	// 				<td class="kotak2"></td>
+	// 				<td class="kotak2"></td>	
+	// 			</tr>
+	// 			<tr>
+	// 				<td>NON GP HC</td>
+	// 				<td class="kotak2"></td>
+	// 				<td class="kotak2"></td>
+	// 				<td class="kotak2"></td>	
+	// 			</tr>
+	// 		</table>
+	// 		<br>
+	// 		<table style="border-spacing: 3px; border-collapse: separate;" width="100%">
+	// 			<tr>
+	// 				<td width="40%">CONDITION</td>
+	// 				<td class="kotak3">AC</td>
+	// 				<td class="kotak3">AU</td>
+	// 				<td class="kotak3">DN</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>CLEANING</td>
+	// 				<td class="kotak3">WW</td>
+	// 				<td class="kotak3">SC</td>
+	// 				<td class="kotak3">CC</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>REPAIR</td>
+	// 				<td class="kotak3">Y</td>
+	// 				<td class="kotak3">N</td>
+	// 				<td class="">&nbsp;</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>VESSEL</td>
+	// 				<td colspan="3">' . $VESSEL . '</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>EXPIRED</td>
+	// 				<td colspan="3"></td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>REMARK</td>
+	// 				<td colspan="3">' . $REMARK . '</td>
+	// 			</tr>
+	// 			<tr>
+	// 				<td>TRUCK ID</td>
+	// 				<td colspan="3"></td>
+	// 			</tr>		
+	// 		</table>
+	// 		<table width="100%">	
+	// 			<tr>
+	// 				<td width="33%">SURVEYOR</td>
+	// 				<td width="33%" class="t-center">YARDMAN</td>
+	// 				<td width="33%">INVENTORY</td>
+	// 			</tr>
+	// 			<tr><td colspan="3" height="15" width="100%"></td></tr>
+	// 			<tr>
+	// 				<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+	// 				<td class="t-center">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+	// 				<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+	// 			</tr>	
+	// 		</table>
+	// 		</div>
+	// 	';
+	// 	$html .= '
+	// 	</body>
+	// 	</html>
+	// 	';
+	// 	$mpdf->WriteHTML($html);
+	// 	$mpdf->Output();
+	// 	// echo $html;
+	// 	die();
+	// }
 
 	public function cetak_kitir_new($crno = "", $reorderno = "", $praid = "")
 	{
@@ -1196,7 +1202,7 @@ class RepoIn extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		//print_r($result);
+		// print_r($result);die();
 		//die();
 		// $recept = recept_by_praid($praid);
 		if (isset($result['data'][0]) && (count($result['data'][0])) > 0) {
@@ -1210,12 +1216,12 @@ class RepoIn extends \CodeIgniter\Controller
 			$TYPE = $result['data'][0]['cccode'];
 			$CODE = $result['data'][0]['ctcode'];
 			$PRINCIPAL = $result['data'][0]['prcode'];
-			$SHIPPER = $result['data'][0]['cpideliver'];
+			$EMKL = $result['data'][0]['repovendor'];
 			$VESSEL = $result['data'][0]['vesid'];
-			$VOY = $result['data'][0]['cpivoy'];
+			$VOY = $result['data'][0]['voyno'];
 			$DATE = $result['data'][0]['cpidisdat'];
 			$DESTINATION = "";
-			$REMARK = $result['data'][0]['cpiremark'];
+			$REMARK = $result['data'][0]['retype'];
 			$NOPOL = $result['data'][0]['cpinopol'];
 			$QRCODE_IMG = ROOTPATH . '/public/media/qrcode/' . $qrcode['content'] . '.png';
 			$CPIPRATGL = $result['data'][0]['cpipratgl'];
@@ -1238,7 +1244,7 @@ class RepoIn extends \CodeIgniter\Controller
 			$CPIORDERNO = "";
 			$TYPE = "";
 			$PRINCIPAL = "";
-			$SHIPPER = "";
+			$EMKL = "";
 			$VESSEL = "";
 			$VOY = "";
 			$DATE = "";
@@ -1346,16 +1352,12 @@ class RepoIn extends \CodeIgniter\Controller
 						<td colspan="3">:&nbsp;' . $CRMANDAT . ' </td>
 					</tr>
 					<tr>
-						<td>CONDITION</td>
-						<td colspan="3">:&nbsp;' . $CRLASTCOND . '</td>
-					</tr>
-					<tr>
 						<td>CLEANING</td>
 						<td colspan="3">:&nbsp;</td>
 					</tr>
 					<tr>
 						<td>EMKL</td>
-						<td colspan="3" style="font-weight:normal">:&nbsp;' . $SHIPPER . '</td>
+						<td colspan="3" style="font-weight:normal">:&nbsp;' . $EMKL . '</td>
 					</tr>
 					<tr>
 						<td>LOAD STATUS</td>
@@ -1382,12 +1384,12 @@ class RepoIn extends \CodeIgniter\Controller
 					<tr rowspan="3">&nbsp;</tr>
 
 				</table>
-				<br>
+				<br><br>
 				<table border-spacing: 0; border-collapse: collapse; width="100%">	
 					<tr>
-						<td width="33%">TRUCKER</td>
-						<td width="33%" class="t-center">SURVEYOR</td>
-						<td width="33%">PETUGAS</td>
+						<td width="30%">TRUCKER</td>
+						<td width="" class="t-center">SURVEYOR</td>
+						<td width="30%" class="t-right">GATE OFF</td>
 					</tr>
 					
 					<tr>
@@ -1398,7 +1400,7 @@ class RepoIn extends \CodeIgniter\Controller
 					<tr>
 						<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
 						<td class="t-center">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
-						<td>(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
+						<td class="t-right">(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)</td>
 					</tr>	
 				</table>
 				</div>

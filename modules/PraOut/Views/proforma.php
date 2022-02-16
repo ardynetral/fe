@@ -291,7 +291,8 @@
 						<div class="alert alert-danger text-center">
 							<p class="lead">Segera lakukan Pembayaran sejumlah<br>
 							<b>Rp. <?=number_format($recept['total_tagihan'],2)?>.</b><br>
-							ke Rekening : 1230985 (BANK MANDIRI)</p>
+							ke No rek PT.Contindo Raya <br>
+							BANK MANDIRI : 111.00.3355558.8</p>							
 						</div>		
 					</div>
 					<div class="col-sm-6">
@@ -362,7 +363,7 @@
 						<h3><i class="fa fa-table"></i> Order Pra Container</h3>
 					</div>
 					<div class="widget-content">
-						<div class="table-responsive">
+						<div class="table-responsive vscroll">
 						<table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>

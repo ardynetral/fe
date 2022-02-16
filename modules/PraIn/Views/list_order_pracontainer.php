@@ -1,3 +1,4 @@
+<div class="table-responsive vscroll">
 <table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 	<thead>
 		<tr>
@@ -44,6 +45,7 @@
 		<?php endif; ?>
 	</tbody>
 </table>
+</div>
 <p class="text-center">
 	<a href="<?=site_url('prain')?>" class="btn btn-default">&nbsp;<i class="fa fa-refresh"></i>&nbsp;BACK&nbsp;</a>
 </p>

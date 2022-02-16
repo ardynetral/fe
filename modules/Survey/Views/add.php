@@ -45,6 +45,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 					<!-- 9 kolom -->
 					<input type="hidden" name="UPDATE_ID" value="<?= @$crno; ?>">
 					<input type="hidden" name="SVID" class="form-control" id="SVID" value="<?= @$svid; ?>">
+					<input type="hidden" name="SYID" class="form-control" id="SYID" value="<?= $uname; ?>">
 					<tbody>
 						<tr>
 							<td class="text-right" width="130">Container No :</td>
@@ -208,39 +209,6 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 							<td></td>
 
 						</tr>
-
-						<?php if (@$details['datas']['crlastact'] == 'WS') { ?>
-							<tr>
-								<th class="text-right">Survey Result :</th>
-								<td colspan="3"></td>
-								<td class="text-right">Vehicle ID :</td>
-								<td><input <?php echo $readonly; ?> type="text" name="CPINOPOL" id="CPINOPOL" class="form-control" value="<?= @$details['datas']['cpinopol']; ?>"></td>
-							</tr>
-							<tr>
-								<td class="text-right" width="130">Survey Date :</td>
-								<td><input type="text" name="SVSURDAT" class="form-control" id="SVSURDAT" value="<?= @$details['datas']['svsurdat']; ?>"></td>
-								<td></td>
-								<td></td>
-								<td class="text-right">Remark :</td>
-								<td><textarea <?php echo $readonly; ?> name="CPIREMARK" id="CPIREMARK" rows="2" class="form-control" style="resize: none!important;"><?= @$details['datas']['cpiremark']; ?></textarea></td>
-							</tr>
-							<tr>
-								<td class="text-right" width="130">Condition :</td>
-								<td><input type="text" name="SVCOND" class="form-control" id="SVCOND" value="<?= @$details['datas']['svcond']; ?>"></td>
-								<td></td>
-								<td></td>
-								<td class="text-right"></td>
-								<td></td>
-							</tr>
-							<tr>
-								<td class="text-right" width="130">Surveyor :</td>
-								<td><input type="text" name="SYID" class="form-control" id="" value="<?= $uname; ?>"></td>
-								<td></td>
-								<td></td>
-								<td class="text-right">Notes :</td>
-								<td><textarea name="CPINOTES" rows="2" class="form-control" style="resize: none!important;"><?= @$details['datas']['cpinotes']; ?></textarea></td>
-							</tr>
-						<?php } ?>
 						<tr>
 							<td></td>
 							<td colspan="5">

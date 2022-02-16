@@ -203,12 +203,12 @@ class Survey extends \CodeIgniter\Controller
 			'query' => []
 		]);
 		$result = json_decode($getsvid->getBody()->getContents(), true);	
-		if(isset($_POST['SVID']) && ($_POST['SVID']=="" || $_POST['SVID']==NULL)) {
+		if($_POST['SVID']=="" || $_POST['SVID']==null) {
 			$SVID = $result['data'];
 		} else {
 			$SVID = $_POST['SVID'];
 		}
-
+		// echo $SVID . " - " . $result['data'];die();
 		$form_params = array(
 			"CRNO" => $this->request->getPost('CRNO'),
 		    "CPIORDERNO" => $this->request->getPost('CPIPRANO'),

@@ -14,7 +14,7 @@ class Survey extends \CodeIgniter\Controller
 
 	function list_data(){		
 		$module = service('uri')->getSegment(1);		
-		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+		$search = ($this->request->getPost('search[value]') != "")?$this->request->getPost('search[value]'):"";
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
         // $sort_dir = $this->get_sort_dir();		
@@ -27,7 +27,7 @@ class Survey extends \CodeIgniter\Controller
 				'query' => [
 					'offset' => (int)$offset,
 					'limit'	=> (int)$limit,
-					'search' => $search
+					'search' => (string)$search
 				]
 			]);
 
@@ -90,12 +90,12 @@ class Survey extends \CodeIgniter\Controller
 		// $prcode = $token['prcode'];
 
 		$data = [];
-		$paging = new MyPaging();
-		$limit = 10;
-		$endpoint = 'dataListReports/listAllSurveis';
-		$data['data'] = $paging->paginate($endpoint,$limit,'survey');
-		$data['pager'] = $paging->pager;
-		$data['nomor'] = $paging->nomor($this->request->getVar('page_survey'), $limit);		
+		// $paging = new MyPaging();
+		// $limit = 10;
+		// $endpoint = 'dataListReports/listAllSurveis';
+		// $data['data'] = $paging->paginate($endpoint,$limit,'survey');
+		// $data['pager'] = $paging->pager;
+		// $data['nomor'] = $paging->nomor($this->request->getVar('page_survey'), $limit);		
 		$data['page_title'] = "Survey";
 		$data['page_subtitle'] = "Survey Page";
 		return view('Modules\Survey\Views\index',$data);

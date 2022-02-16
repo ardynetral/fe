@@ -389,7 +389,7 @@ $(document).ready(function() {
 		formData += "&cpijam=" + $("#repojam").val();
 		formData += "&recpives=" + $("#recpives").val();
 		formData += "&cpiremark=" + $("#cpiremark").val();
-		formData += "&cpideliver=" + $("#cpideliver").val();
+		formData += "&repovendor=" + $("#repovendor").val();
 		formData += "&recpivoyid=" + $("#recpivoyid").val();
 		formData += "&cpivoy=" + $("#voyno").val();
 		// detail

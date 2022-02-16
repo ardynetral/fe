@@ -202,7 +202,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 								</select>
 							</td>
 							<td class="text-right">Cleaning :</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?= ''; ?>"></td>
+							<td><?=cleaning_method("RMCODE","WW")?></td>
 							<td></td>
 							<td></td>
 

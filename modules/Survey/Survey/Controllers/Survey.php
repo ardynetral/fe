@@ -259,8 +259,7 @@ class Survey extends \CodeIgniter\Controller
 		    "CRTIER" => ($this->request->getPost('CRTIER')!=''?$this->request->getPost('CRTIER'):'0'),
 		    "CPIREMARK" => $this->request->getPost('CPIREMARK'),
 		    "CPINOTES" => $this->request->getPost('CPINOTES'),
-		    "CRMANUF" => $this->request->getPost('CRMANUF'),
-			"RMCODE" => $this->request->getPost('RMCODE'));
+		    "CRMANUF" => $this->request->getPost('CRMANUF'));
 
 		if ($this->request->getPost('UPDATE_ID') == '') {
 			$response = $this->client->request('POST','survey/createNew',[

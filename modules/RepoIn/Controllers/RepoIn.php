@@ -250,7 +250,7 @@ class RepoIn extends \CodeIgniter\Controller
 				'cpipratgl' => date('Y-m-d', strtotime($_POST['cpipratgl'])),
 				'cpijam' => $_POST['cpijam'],
 				'cpives' => $_POST['recpives'],
-				'cpiremark' => $_POST['reporemark'],
+				'cpiremark' => $_POST['cpiremark'],
 				'cpideliver' => $_POST['repovendor'],
 				'cpivoyid' => $_POST['recpivoyid'],
 				'cpivoy' => $_POST['cpivoy'],

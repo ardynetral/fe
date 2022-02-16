@@ -187,7 +187,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 							<td class="text-right" width="130">Manufacture :</td>
 							<td><input type="text" name="CRMANUF" id="CRMANUF" class="form-control" value="<?= @$details['datas']['crmanuf']; ?>"></td>
 							<td class="text-right">Manufacture Date :</td>
-							<td><input type="text" name="MANUFDATE" id="MANUFDATE" class="form-control" value="<?= @$details['datas']['manufdate']; ?>"></td>
+							<td><input type="text" name="CRCMANDAT" id="CRCMANDAT" class="form-control" value="<?= @$details['datas']['CRCMANDAT']; ?>"></td>
 							<td></td>
 							<td></td>
 						</tr>

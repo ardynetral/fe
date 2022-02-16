@@ -14,7 +14,7 @@ class Survey extends \CodeIgniter\Controller
 
 	function list_data(){		
 		$module = service('uri')->getSegment(1);		
-		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+		$search = ($this->request->getPost('search[value]') != "")?$this->request->getPost('search[value]'):"";
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
         // $sort_dir = $this->get_sort_dir();		
@@ -27,7 +27,7 @@ class Survey extends \CodeIgniter\Controller
 				'query' => [
 					'offset' => (int)$offset,
 					'limit'	=> (int)$limit,
-					'search' => $search
+					'search' => (string)$search
 				]
 			]);
 
@@ -194,6 +194,7 @@ class Survey extends \CodeIgniter\Controller
 		// $input = $this->request->getPost('PRCODE');
 		$token = get_token_item();
 		$date = date('Y-m-d');
+		// jika kontainer baru maka jalankan getSVID
 		$getsvid = $this->client->request('GET','survey/getSVID',[
 			'headers' => [
 				'Accept' => 'application/json',
@@ -202,7 +203,12 @@ class Survey extends \CodeIgniter\Controller
 			'query' => []
 		]);
 		$result = json_decode($getsvid->getBody()->getContents(), true);	
-		$SVID = $result['data'];
+		if(isset($_POST['SVID']) && ($_POST['SVID']=="" || $_POST['SVID']==NULL)) {
+			$SVID = $result['data'];
+		} else {
+			$SVID = $_POST['SVID'];
+		}
+
 		$form_params = array(
 			"CRNO" => $this->request->getPost('CRNO'),
 		    "CPIORDERNO" => $this->request->getPost('CPIPRANO'),
@@ -262,7 +268,7 @@ class Survey extends \CodeIgniter\Controller
 		    "CRMANUF" => $this->request->getPost('CRMANUF'),
 			"RMCODE" => $this->request->getPost('RMCODE'));
 
-		if ($this->request->getPost('UPDATE_ID') == '') {
+		// if ($this->request->getPost('UPDATE_ID') == '') {
 			$response = $this->client->request('POST','survey/createNew',[
 				'headers' => [
 					'Accept' => 'application/json',
@@ -271,16 +277,17 @@ class Survey extends \CodeIgniter\Controller
 				'json' => $form_params,
 			]);
 			$type = 'insert';
-		} else {
-			$response = $this->client->request('PUT','survey/updateData',[
-				'headers' => [
-					'Accept' => 'application/json',
-					'Authorization' => session()->get('login_token')
-				],
-				'json' => $form_params,
-			]);
-			$type = 'update';
-		}
+		// } 
+		// else {
+		// 	$response = $this->client->request('PUT','survey/updateData',[
+		// 		'headers' => [
+		// 			'Accept' => 'application/json',
+		// 			'Authorization' => session()->get('login_token')
+		// 		],
+		// 		'json' => $form_params,
+		// 	]);
+		// 	$type = 'update';
+		// }
 		$result = json_decode($response->getBody()->getContents(), true);
 		
 		$err = ($result['message']== "Success Insert Data" || $result['message'] == "Success Update Data")?false:true;

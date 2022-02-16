@@ -44,6 +44,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 				<table class="tbl-form" width="100%">
 					<!-- 9 kolom -->
 					<input type="hidden" name="UPDATE_ID" value="<?= @$crno; ?>">
+					<input type="hidden" name="SVID" class="form-control" id="SVID" value="<?= @$svid; ?>">
 					<tbody>
 						<tr>
 							<td class="text-right" width="130">Container No :</td>

@@ -250,7 +250,7 @@ class RepoIn extends \CodeIgniter\Controller
 				'cpipratgl' => date('Y-m-d', strtotime($_POST['cpipratgl'])),
 				'cpijam' => $_POST['cpijam'],
 				'cpives' => $_POST['recpives'],
-				'cpiremark' => $_POST['cpiremark'],
+				'cpiremark' => $_POST['reporemark'],
 				'cpideliver' => $_POST['repovendor'],
 				'cpivoyid' => $_POST['recpivoyid'],
 				'cpivoy' => $_POST['cpivoy'],
@@ -262,7 +262,7 @@ class RepoIn extends \CodeIgniter\Controller
 				'ccheight' => $_POST['ccheight'],
 				'cpife' => $_POST['cpife'],
 				'cpishold' => $_POST['cpishold'],
-				'reporemark' => $_POST['reporemark']
+				// 'reporemark' => $_POST['reporemark']
 			];
 
 			// echo var_dump($_POST);die();
@@ -1221,7 +1221,7 @@ class RepoIn extends \CodeIgniter\Controller
 			$VOY = $result['data'][0]['voyno'];
 			$DATE = $result['data'][0]['cpidisdat'];
 			$DESTINATION = "";
-			$REMARK = $result['data'][0]['retype'];
+			$REMARK = $result['data'][0]['cpiremark'];
 			$NOPOL = $result['data'][0]['cpinopol'];
 			$QRCODE_IMG = ROOTPATH . '/public/media/qrcode/' . $qrcode['content'] . '.png';
 			$CPIPRATGL = $result['data'][0]['cpipratgl'];
@@ -1234,6 +1234,7 @@ class RepoIn extends \CodeIgniter\Controller
 			$CRLASTCOND = $result['data'][0]['crlastcond'];
 			$CPIDRIVER = $result['data'][0]['cpidriver'];
 			$CPIDRIVER = $result['data'][0]['cpidriver'];
+			$LOAD_STATUS = $result['data'][0]['cpife'];
 		} else {
 			$CRNO = "";
 			$CODE = "";
@@ -1261,6 +1262,7 @@ class RepoIn extends \CodeIgniter\Controller
 			$CRMANDAT = "";
 			$CRLASTCOND = "";
 			$CPIDRIVER = "";
+			$LOAD_STATUS = "";
 		}
 
 		$result = json_decode($response->getBody()->getContents(), true);
@@ -1361,7 +1363,7 @@ class RepoIn extends \CodeIgniter\Controller
 					</tr>
 					<tr>
 						<td>LOAD STATUS</td>
-						<td colspan="3">:&nbsp;</td>
+						<td colspan="3">:&nbsp;' . $LOAD_STATUS . '</td>
 					</tr>					
 					<tr>
 						<td>EX VESSEL</td>

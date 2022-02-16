@@ -388,7 +388,7 @@ $(document).ready(function() {
 		formData += "&cpipratgl=" + $("#redate").val();
 		formData += "&cpijam=" + $("#repojam").val();
 		formData += "&recpives=" + $("#recpives").val();
-		formData += "&cpiremark=" + $("#cpiremark").val();
+		formData += "&cpiremark=" + $("#reporemark").val();
 		formData += "&repovendor=" + $("#repovendor").val();
 		formData += "&recpivoyid=" + $("#recpivoyid").val();
 		formData += "&cpivoy=" + $("#voyno").val();
@@ -400,7 +400,7 @@ $(document).ready(function() {
 		formData += "&ccheight=" + $("#ccheight").val();
 		formData += "&cpife=" + $("#cpife").val();
 		formData += "&cpishold=" + $("#cpishold").val();
-		formData += "&reporemark=" + $("#reporemark").val();
+		// formData += "&reporemark=" + $("#reporemark").val();
 		
 		$.ajax({
 			url: "<?php echo site_url('repoin/addcontainer'); ?>",
@@ -442,7 +442,7 @@ $(document).ready(function() {
 	$("#updateDetail").on("click", function(e){
 		e.preventDefault();
 		// header
-		var formData = "repoid=" + $("#repoid").val();
+				var formData = "repoid=" + $("#repoid").val();
 		formData += "&cpiorderno=" + $("#reorderno").val();
 		formData += "&cpopr=" + $("#cpopr").val();
 		formData += "&cpcust=" + $("#cpcust").val();
@@ -452,8 +452,8 @@ $(document).ready(function() {
 		formData += "&cpipratgl=" + $("#redate").val();
 		formData += "&cpijam=" + $("#repojam").val();
 		formData += "&recpives=" + $("#recpives").val();
-		formData += "&cpiremark=" + $("#cpiremark").val();
-		formData += "&cpideliver=" + $("#cpideliver").val();
+		formData += "&cpiremark=" + $("#reporemark").val();
+		formData += "&repovendor=" + $("#repovendor").val();
 		formData += "&recpivoyid=" + $("#recpivoyid").val();
 		formData += "&cpivoy=" + $("#voyno").val();
 		// detail
@@ -464,7 +464,7 @@ $(document).ready(function() {
 		formData += "&ccheight=" + $("#ccheight").val();
 		formData += "&cpife=" + $("#cpife").val();
 		formData += "&cpishold=" + $("#cpishold").val();
-		formData += "&reporemark=" + $("#reporemark").val();
+		// formData += "&reporemark=" + $("#reporemark").val();
 		
 		$.ajax({
 			url: "<?php echo site_url('repoin/updatecontainer'); ?>",

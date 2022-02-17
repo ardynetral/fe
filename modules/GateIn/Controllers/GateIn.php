@@ -680,7 +680,7 @@ class GateIn extends \CodeIgniter\Controller
 				<tr>
 					<td width="33%">TRUCKER</td>
 					<td width="33%" class="t-center">SURVEYOR</td>
-					<td width="33%">PETUGAS</td>
+					<td width="33%">GATE OFF</td>
 				</tr>
 				
 				<tr>

@@ -1,7 +1,7 @@
 <?php
 namespace Modules\Survey\Controllers;
 
-use App\Libraries\MyPaging;
+// use App\Libraries\MyPaging;
 
 class Survey extends \CodeIgniter\Controller
 {
@@ -224,7 +224,7 @@ class Survey extends \CodeIgniter\Controller
 		    // "SVCRTBY" => $this->request->getPost('SVCRTBY'),
 		    "SVCRTBY" => $token['username'],
 		    "SVNOTES" => $this->request->getPost('SVNOTES'),
-		    "CRCMANDAT" => $this->request->getPost('CRCMANDAT'),
+		    "CRCMANDAT" => $this->request->getPost('CRMANDAT'),
 		    "CPICHRGBB" => $this->request->getPost('CPICHRGBB'),
 		    "CPIPAIDBB" => $this->request->getPost('CPIPAIDBB'),
 		    "CRCDP" => $this->request->getPost('CRCDP'),
@@ -278,9 +278,16 @@ class Survey extends \CodeIgniter\Controller
 		$validate = $this->validate([
             'CRTARAK'		=> 'required',
             'CRLASTCOND'	=> 'required',
-            'CRCMANDAT'		=> 'required',
+            'CRMANDAT'		=> 'required',
             'RMCODE'		=> 'required'
-        ]);			
+        	],
+            [
+            'CRTARAK'		=> ['required' => 'TARE field required'],
+            'CRLASTCOND'	=> ['required' => 'LAST CONDITION field required'],
+            'CRMANDAT'		=> ['required' => 'MANUFACTURE DATE field required'],
+            'RMCODE'		=> ['required' => 'CLEANING field required']
+	        ]
+    	);			
 
 	    if ($validate)
 	    {

@@ -766,7 +766,7 @@ class PraIn extends \CodeIgniter\Controller
 		
 		    if ($this->request->getMethod() === 'post' && $validate)
 		    {
-
+		    	// Update tabel OrderPraContainer
 				$response = $this->client->request('PUT','orderPraContainers/updateData',[
 					'headers' => [
 						'Accept' => 'application/json',
@@ -782,6 +782,29 @@ class PraIn extends \CodeIgniter\Controller
 					$data['message'] = $result['message'];
 					echo json_encode($data);die();				
 				}
+
+				// UPDATE TABEL CONTAINER 
+				$resp_ct = $this->client->request('POST','containers/update',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'json' => [
+						'crNo' => $this->request->getPost('crno'),
+						'dset' =>  [
+							"cccode" => $_POST['ccode'],
+							"mtcode" => $_POST['ctcode']
+						]
+					]
+				]);
+		
+				$result_ct = json_decode($resp_ct->getBody()->getContents(), true);	
+
+				// if(isset($result_ct['status']) && ($result_ct['status']=="Failled"))
+				// {
+				// 	$data['message'] = $result_ct['message'];
+				// 	echo json_encode($data);die();				
+				// }
 
 				session()->setFlashdata('sukses','Success, Containers Saved.');
 				$data['message'] = "success";
@@ -1011,6 +1034,12 @@ class PraIn extends \CodeIgniter\Controller
 					'Authorization' => session()->get('login_token')
 				],
 				'form_params' => [
+					'cccode' => $this->request->getPost('cccode'),
+					'mtcode' =>$this->request->getPost('ctcode'),
+					'cclength' =>$this->request->getPost('cclength'),
+					'ccheight' =>$this->request->getPost('ccheight'),
+					'cpife' =>$this->request->getPost('cpife'),
+					'cpiremark' =>$this->request->getPost('cpiremark'),
 					'pracrnoid' => $_POST['pracrnoid'],
 					'cpopr' => $_POST['cpopr'],
 					'cpcust' => $_POST['cpcust'],
@@ -1029,7 +1058,30 @@ class PraIn extends \CodeIgniter\Controller
 				$data['message'] = $result['message'];
 				echo json_encode($data);die();				
 			}
-			
+
+			// UPDATE TABEL CONTAINER 
+			$resp_ct = $this->client->request('POST','containers/update',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'json' => [
+					'crNo' => $this->request->getPost('crno'),
+					'dset' =>  [
+						"cccode" => $this->request->getPost('cccode'),
+						"mtcode" =>$this->request->getPost('ctcode')
+					]
+				]
+			]);
+	
+			$result_ct = json_decode($resp_ct->getBody()->getContents(), true);	
+
+			// if(isset($result_ct['status']) && ($result_ct['status']=="Failled"))
+			// {
+			// 	$data['message'] = $result_ct['message'];
+			// 	echo json_encode($data);die();				
+			// }
+
 			$data['message'] = 'success';
 			$data['message_body'] = "Principal berhasil ditambahkan";
 			echo json_encode($data);die();				

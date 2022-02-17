@@ -12,13 +12,13 @@ class Approval extends \CodeIgniter\Controller
 		$this->client = api_connect();
 	}
 
-	function list_data(){		
+	function list_data()
+	{		
 		$module = service('uri')->getSegment(1);
-		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+		$search = ($this->request->getPost('search[value]') != "")?$this->request->getPost('search[value]'):"";
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
-        // $sort_dir = $this->get_sort_dir();		
-		// PULL data from API
+
 		$response = $this->client->request('GET','dataListReports/listAllApprovals',[
 				'headers' => [
 					'Accept' => 'application/json',
@@ -26,7 +26,8 @@ class Approval extends \CodeIgniter\Controller
 				],
 				'query' => [
 					'offset' => (int)$offset,
-					'limit'	=> (int)$limit
+					'limit'	=> (int)$limit,
+					'search' => $search
 				]
 			]);
 
@@ -52,15 +53,9 @@ class Approval extends \CodeIgniter\Controller
             $record[] = $v['RPTGLAPPVPR'];
 			
 			$btn_list .= '<a href="'.site_url('approval/view/').$v['CRNO'].'" id="" class="btn btn-xs btn-primary btn-tbl">view</a>';	
-			// if(has_privilege_check($module, '_update')==true):
-			// 	$btn_list .= '<a href="#" id="editPraIn" class="btn btn-xs btn-success btn-tbl">edit</a>';
-			// endif;
 			
 			$btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl print" data-crno="'.$v['CRNO'].'">print</a>';
 
-			// if(has_privilege_check($module, '_delete')==true):
-			// 	$btn_list .= '<a href="#" id="deletePraIn" class="btn btn-xs btn-danger btn-tbl">delete</a>';
-			// endif;
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
 
@@ -683,6 +678,8 @@ class Approval extends \CodeIgniter\Controller
 				else if($row['rdaccount']=='owner') {$rdaccount="O";}
 				else {$rdaccount="i";}				
 				$html .= '<tr>';
+				$html .= '<td>
+						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 				$html .= '<td class="no">'.$no.'</td>';
 				$html .= '<td class="lccode" style="display:none">'.$row['lccode'].'</td>';
 				$html .= '<td class="cmcode">'.$row['cmcode'].'</td>';
@@ -700,8 +697,6 @@ class Approval extends \CodeIgniter\Controller
 				$html .= '<td class="rdmat">'.number_format($row['rdmat'],2).'<span style="display:none;">'.$row['rdmat'].'</span></td>';
 				$html .= '<td class="rdaccount" style="display:none;">'.$rdaccount.'</td>';
 				$html .= '<td class="rdtotal" style="display:none;">'.$row['rdtotal'].'</td>';
-				$html .= '<td>
-						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 				$html .= '</tr>';
 				$no++;
 			}
@@ -720,6 +715,9 @@ class Approval extends \CodeIgniter\Controller
 				else if($row['rdaccount']=='owner') {$rdaccount="O";}
 				else {$rdaccount="i";}				
 				$html .= '<tr>';
+				$html .= '<td>
+						<a href="#" class="btn btn-primary btn-xs edit">edit</a>
+						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 				$html .= '<td class="no">'.$no.'</td>';
 				$html .= '<td class="crno" style="display:none">'.$row['rpcrno'].'</td>';
 				$html .= '<td class="svid" style="display:none">'.$row['svid'].'</td>';
@@ -739,9 +737,6 @@ class Approval extends \CodeIgniter\Controller
 				$html .= '<td class="rdmat">'.number_format($row['rdmat'],2).'<span style="display:none;">'.$row['rdmat'].'</span></td>';
 				$html .= '<td class="rdaccount" style="display:none;">'.$rdaccount.'</td>';
 				$html .= '<td class="rdtotal" style="display:none;">'.$row['rdtotal'].'</td>';
-				$html .= '<td>
-						<a href="#" class="btn btn-primary btn-xs edit">edit</a>
-						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 				$html .= '</tr>';
 				$no++;
 			}

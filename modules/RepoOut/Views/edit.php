@@ -481,6 +481,7 @@
 					<div class="widget-content">
 						<p><button class="btn btn-success" data-toggle="modal" data-target="#myModal" id="insertContainer"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
 						</p>
+						<div class="table-responsive vscroll">
 						<table id="rcTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
@@ -520,7 +521,8 @@
 							<?php else:?>
 								<tr><td colspan="9">Data Container kosong.</td></tr>
 							<?php endif?>
-						</table>						
+						</table>
+						</div>						
 					</div>
 					<div class="widget-footer text-center">
 						<a href="<?=site_url('repoout');?>" class="btn btn-default" id="">Kembali</a>

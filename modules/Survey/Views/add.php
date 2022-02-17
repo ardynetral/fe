@@ -160,8 +160,10 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 							<td></td>
 						</tr>
 						<tr>
-							<td class="text-right" width="130">Tare (Kgs) :</td>
-							<td><input type="text" name="CRTARAK" id="CRTARAK" class="form-control" value="<?= @$details['datas']['crtarak']; ?>" required></td>
+							<td class="text-right" width="130">Tare (Kgs) <span class="text-danger">**</span> :</td>
+							<td>
+								<input type="text" name="CRTARAK" id="CRTARAK" class="form-control" value="<?= @$details['datas']['crtarak']; ?>" required>
+							</td>
 							<td class="text-right">Tare (Lbs) :</td>
 							<td><input type="text" name="CRTARAL" id="CRTARAL" class="form-control" value="<?= @$details['datas']['crtaral']; ?>" readonly></td>
 							<td></td>
@@ -186,7 +188,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 						<tr>
 							<input type="hidden" name="CRMANUF" id="CRMANUF" class="form-control" value="<?= @$details['datas']['crmanuf']; ?>">
 
-							<td class="text-right" width="130">Condition Box :</td>
+							<td class="text-right" width="130">Condition Box  <span class="text-danger"><b>**</b></span>:</td>
 							<td>
 								<select name="CRLASTCOND" id="CRLASTCOND" class="input form-control" required>
 									<option value="">Select Value</option>
@@ -197,13 +199,13 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<option value='DJ' <?php echo $select = (@$details['datas']['crlastcond'] == 'DJ') ? 'selected="selected"' : ''; ?>>DJ</option>
 								</select>
 							</td>
-							<td class="text-right">Manufacture Date :</td>
-							<td><input type="text" name="CRCMANDAT" id="CRCMANDAT" class="form-control" value="<?= @$details['datas']['crmandat']; ?>" required></td>
+							<td class="text-right">Manufacture Date  <span class="text-danger">**</span>:</td>
+							<td><input type="text" name="CRMANDAT" id="CRMANDAT" class="form-control" value="<?= @$details['datas']['crmandat']; ?>" required></td>
 							<td></td>
 							<td></td>
 						</tr>
 						<tr>
-							<td class="text-right">Cleaning :</td>
+							<td class="text-right">Cleaning  <span class="text-danger">**</span>:</td>
 							<td><?=cleaning_method("RMCODE","WW")?></td>
 							<td class="text-right" width="130"></td>
 							<td></td>

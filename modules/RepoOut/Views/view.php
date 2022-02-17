@@ -463,7 +463,8 @@
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> Repo Container</h3>
 					</div>
-					<div class="widget-content">					
+					<div class="widget-content">
+						<div class="table-responsive vscroll">					
 						<table id="rcTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
@@ -502,7 +503,8 @@
 							<?php else:?>
 								<tr><td colspan="9">Data Container kosong.</td></tr>
 							<?php endif?>
-						</table>						
+						</table>	
+						</div>					
 					</div>
 					<div class="widget-footer text-center">
 						<a href="<?=site_url('repoout');?>" class="btn btn-default">Kembali</a>

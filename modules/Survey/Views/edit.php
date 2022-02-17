@@ -195,7 +195,7 @@ if(isset($data) && ($data!='')) {
 							<td class="text-right" width="130">Manufacture :</td>
 							<td><input type="text" name="CRMANUF" id="CRMANUF" class="form-control" value="<?='';?>"></td>
 							<td class="text-right">Manufacture Date :</td>
-							<td ><input type="text" name="MANUFDATE" id="MANUFDATE" class="form-control" value="<?='';?>"></td>
+							<td ><input type="text" name="CRCMANDAT" id="CRCMANDAT" class="form-control" value="<?='';?>"></td>
 							<td class="text-right">Seal No :</td>
 							<td ><input type="text" name="CPISEAL" id="CPISEAL" class="form-control" value="<?='';?>"></td>
 						</tr>	
@@ -234,7 +234,7 @@ if(isset($data) && ($data!='')) {
 						<tr>
 							<td class="text-right" width="130">Condition Box :</td>
 							<td>
-								<select name="CRLASTCOND" class="input"  >
+								<select name="CRLASTCOND" class="input form-control">
                                   <option value="">Select Value</option>
                                   <option value='AX'>AX</option>
                                   <option value='AC'>AC</option>

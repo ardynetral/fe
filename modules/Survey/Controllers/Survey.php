@@ -266,9 +266,24 @@ class Survey extends \CodeIgniter\Controller
 		    "CPIREMARK" => $this->request->getPost('CPIREMARK'),
 		    "CPINOTES" => $this->request->getPost('CPINOTES'),
 		    "CRMANUF" => $this->request->getPost('CRMANUF'),
-			"RMCODE" => $this->request->getPost('RMCODE'));
+			"RMCODE" => $this->request->getPost('RMCODE')
+		);
 
-		// if ($this->request->getPost('UPDATE_ID') == '') {
+		if ($this->request->getPost('UPDATE_ID') == '') {
+			$type = 'insert';
+		} else {
+			$type = 'update';
+		}
+
+		$validate = $this->validate([
+            'CRTARAK'		=> 'required',
+            'CRLASTCOND'	=> 'required',
+            'CRCMANDAT'		=> 'required',
+            'RMCODE'		=> 'required'
+        ]);			
+
+	    if ($validate)
+	    {
 			$response = $this->client->request('POST','survey/createNew',[
 				'headers' => [
 					'Accept' => 'application/json',
@@ -276,24 +291,17 @@ class Survey extends \CodeIgniter\Controller
 				],
 				'json' => $form_params,
 			]);
-			$type = 'insert';
-		// } 
-		// else {
-		// 	$response = $this->client->request('PUT','survey/updateData',[
-		// 		'headers' => [
-		// 			'Accept' => 'application/json',
-		// 			'Authorization' => session()->get('login_token')
-		// 		],
-		// 		'json' => $form_params,
-		// 	]);
-		// 	$type = 'update';
-		// }
-		$result = json_decode($response->getBody()->getContents(), true);
-		
-		$err = ($result['message']== "Success Insert Data" || $result['message'] == "Success Update Data")?false:true;
-		// $err = false;
-		$resp = array('method'=>$type, 'err'=>$err,'message'=>'Success '.$type.' Data', 'api'=>@$result);
-		echo json_encode($resp);
+			$result = json_decode($response->getBody()->getContents(), true);	
+			$err = ($result['message']== "Success Insert Data" || $result['message'] == "Success Update Data")?false:true;
+			$resp = array('method'=>$type, 'err'=>$err,'message'=>'Success '.$type.' Data', 'api'=>@$result);
+			echo json_encode($resp);
+
+		} else {
+
+			$err = true;
+			$resp = array('method'=>$type, 'err'=>$err,'message'=>\Config\Services::validation()->listErrors());
+	    	echo json_encode($resp);die();					
+		}			
 	}
 
 	public function delete(){

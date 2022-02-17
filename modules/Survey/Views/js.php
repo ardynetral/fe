@@ -12,7 +12,7 @@ $(document).ready(function() {
 	$('.select-vessel').select2();
 	$('.select-voyage').select2();
 	$('.select-ccode').select2();
-	$('#CRLASTCOND').select2();
+	// $('#CRLASTCOND').select2();
 	$("input:radio[name=CPIFE]").prop('disabled', true);
 	$("input:radio[name=CPITERM]").prop('disabled', true);
 	$("#CPICHRGBB").prop('disabled', true);
@@ -20,7 +20,7 @@ $(document).ready(function() {
 	$("#CRCDP").prop('disabled', true);
 	$("#CRACEP").prop('disabled', true);
 	$("#CRCSC").prop('disabled', true);
-
+	$("#RMCODE").attr("required",true);
 	// datePicker
 	$(".tanggal").datepicker({
 		autoclose:true,

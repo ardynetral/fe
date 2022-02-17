@@ -134,8 +134,8 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<input <?php echo $readonly; ?> type="checkbox" name="CRCSC" id="CRCSC" value="<?= @$details['datas']['crcsc']; ?>" <?php echo $checked = (@$details['datas']['crcdp'] == 1) ? 'checked="checked"' : '' ?>>
 									<span></span></label>
 							</td>
-							<td class="text-right">Term :</td>
-							<td>
+							<td class="text-right" style="display: none;">Term :</td>
+							<td  style="display: none;">
 								<label class="control-inline fancy-radio custom-bgcolor-green">
 									<input <?php echo $readonly; ?> type="radio" name="CPITERM" id="CY" value="CY" <?php echo $checked = (@$details['datas']['cpiterm'] == 'CY') ? 'checked="checked"' : ''; ?>>
 									<span><i></i>CY</span>
@@ -153,48 +153,42 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 
 						<tr>
 							<td class="text-right" width="130">Weight (Kgs) :</td>
-							<td><input type="text" name="CRWEIGHTK" id="CRWEIGHTK" class="form-control" value="<?= @$details['datas']['crweightk']; ?>"></td>
+							<td><input type="text" name="CRWEIGHTK" id="CRWEIGHTK" class="form-control" value="<?= @$details['datas']['crweightk']; ?>" readonly></td>
 							<td class="text-right">Weight (Lbs) :</td>
-							<td><input type="text" name="CRWEIGHTL" id="CRWEIGHTL" class="form-control" value="<?= @$details['datas']['crweightl']; ?>"></td>
+							<td><input type="text" name="CRWEIGHTL" id="CRWEIGHTL" class="form-control" value="<?= @$details['datas']['crweightl']; ?>" readonly></td>
 							<td></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Tare (Kgs) :</td>
-							<td><input type="text" name="CRTARAK" id="CRTARAK" class="form-control" value="<?= @$details['datas']['crtarak']; ?>"></td>
+							<td><input type="text" name="CRTARAK" id="CRTARAK" class="form-control" value="<?= @$details['datas']['crtarak']; ?>" required></td>
 							<td class="text-right">Tare (Lbs) :</td>
-							<td><input type="text" name="CRTARAL" id="CRTARAL" class="form-control" value="<?= @$details['datas']['crtaral']; ?>"></td>
+							<td><input type="text" name="CRTARAL" id="CRTARAL" class="form-control" value="<?= @$details['datas']['crtaral']; ?>" readonly></td>
 							<td></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Netto (Kgs) :</td>
-							<td><input type="text" name="CRNETK" id="CRNETK" class="form-control" value="<?= @$details['datas']['crnetk']; ?>"></td>
+							<td><input type="text" name="CRNETK" id="CRNETK" class="form-control" value="<?= @$details['datas']['crnetk']; ?>" readonly></td>
 							<td class="text-right">Netto (Lbs) :</td>
-							<td><input type="text" name="CRNETL" id="CRNETL" class="form-control" value="<?= @$details['datas']['crnetl']; ?>"></td>
+							<td><input type="text" name="CRNETL" id="CRNETL" class="form-control" value="<?= @$details['datas']['crnetl']; ?>" readonly></td>
 							<td></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Volume (Cbm) :</td>
-							<td><input type="text" name="CRVOL" id="CRVOL" class="form-control" value="<?= @$details['datas']['crvol']; ?>"></td>
+							<td><input type="text" name="CRVOL" id="CRVOL" class="form-control" value="<?= @$details['datas']['crvol']; ?>" readonly></td>
 							<td class="text-right">Material :</td>
-							<td><input type="text" name="MTCODE1" id="MTCODE1" class="form-control" value="<?= @$details['datas']['mtcode1']; ?>"></td>
+							<td><input type="text" name="MTCODE1" id="MTCODE1" class="form-control" value="<?= @$details['datas']['mtcode1']; ?>" readonly></td>
 							<td></td>
 							<td></td>
 						</tr>
 						<tr>
-							<td class="text-right" width="130">Manufacture :</td>
-							<td><input type="text" name="CRMANUF" id="CRMANUF" class="form-control" value="<?= @$details['datas']['crmanuf']; ?>"></td>
-							<td class="text-right">Manufacture Date :</td>
-							<td><input type="text" name="CRCMANDAT" id="CRCMANDAT" class="form-control" value="<?= @$details['datas']['CRCMANDAT']; ?>"></td>
-							<td></td>
-							<td></td>
-						</tr>
-						<tr>
+							<input type="hidden" name="CRMANUF" id="CRMANUF" class="form-control" value="<?= @$details['datas']['crmanuf']; ?>">
+
 							<td class="text-right" width="130">Condition Box :</td>
 							<td>
-								<select name="CRLASTCOND" id="CRLASTCOND" class="input">
+								<select name="CRLASTCOND" id="CRLASTCOND" class="input form-control" required>
 									<option value="">Select Value</option>
 									<option value='AX' <?php echo $select = (@$details['datas']['crlastcond'] == 'AX') ? 'selected="selected"' : ''; ?>>AX</option>
 									<option value='AC' <?php echo $select = (@$details['datas']['crlastcond'] == 'AC') ? 'selected="selected"' : ''; ?>>AC</option>
@@ -203,8 +197,16 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<option value='DJ' <?php echo $select = (@$details['datas']['crlastcond'] == 'DJ') ? 'selected="selected"' : ''; ?>>DJ</option>
 								</select>
 							</td>
+							<td class="text-right">Manufacture Date :</td>
+							<td><input type="text" name="CRCMANDAT" id="CRCMANDAT" class="form-control" value="<?= @$details['datas']['crmandat']; ?>" required></td>
+							<td></td>
+							<td></td>
+						</tr>
+						<tr>
 							<td class="text-right">Cleaning :</td>
 							<td><?=cleaning_method("RMCODE","WW")?></td>
+							<td class="text-right" width="130"></td>
+							<td></td>
 							<td></td>
 							<td></td>
 

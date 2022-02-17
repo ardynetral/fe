@@ -277,10 +277,11 @@
 						<h3><i class="fa fa-table"></i> List Final Estimation</h3>
 					</div>
 					<div class="widget-content">
-						<div class="table-responsive">
+						<div class="table-responsive vscroll">
 						<table class="table" id="tblList_add">
 							<thead>
 								<tr>
+									<th></th>
 									<th>No</th>
 									<th>COM</th>
 									<th>DT</th>
@@ -295,7 +296,6 @@
 									<th>DESC</th>
 									<th>Lab. Cost</th>
 									<th>Mat. Cost</th>
-									<th></th>
 								</tr>
 							</thead>
 							<tbody>

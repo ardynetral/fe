@@ -256,6 +256,7 @@ $(document).ready(function() {
 							title: "Success",
 							html: '<div class="text-success">' + json.message + '</div>'
 						});
+						loadPrint($("#crno").val());
 						window.location.href= "<?=site_url('approval');?>";
 					} else {
 						Swal.fire({
@@ -428,14 +429,16 @@ $(document).ready(function() {
 	$("#ctTable tbody").on("click", ".print", function(e) {
 		e.preventDefault();
 		var crno = $(this).data("crno");
-		window.open("<?=site_url('approval/print/'); ?>" + crno, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+		loadPrint(crno);
 	});
 
 	$("#print").on("click", function(e) {
 		e.preventDefault();
 		var crno = $(this).data("crno");
-		window.open("<?=site_url('approval/print/'); ?>" + crno, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+		loadPrint(crno);
 	});
+
+	// DATATABLE
 	runDataTables();
 	var table = $('#ctTable').DataTable({
         "processing": true,
@@ -451,13 +454,18 @@ $(document).ready(function() {
         PaginationType : "bootstrap", 
         oLanguage: { "sSearch": "",
             "sLengthMenu" : "_MENU_ &nbsp;"}
-    });
+	});
 	
 	$('.dataTables_filter input').attr("placeholder", "Search");
     $('.DTTT_container').css('display','none');
     $('.DTTT').css('display','none');
+    // END DATATABLE
 
 });
+
+function loadPrint(crno) {
+	window.open("<?=site_url('approval/print/'); ?>" + crno, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');		
+}
 
 function loadFileList(crno) {
 	$.ajax({
@@ -496,6 +504,7 @@ function delete_data(svid,rpid,rdno,crno) {
 		}
 	});
 }
+
 function delete_data_edit(svid,rpid,rdno,crno) {
 	$.ajax({
 		url: "<?php echo site_url('approval/delete_detail_edit'); ?>",
@@ -522,6 +531,7 @@ function delete_data_edit(svid,rpid,rdno,crno) {
 		}
 	});
 }
+
 function runDataTables() {		
     $.fn.dataTable.pipeline = function ( opts ) { 
         var conf = $.extend({
@@ -589,9 +599,11 @@ function runDataTables() {
                     "dataType": "json",
                     "cache": false,
 					"beforeSend": function(){
-						$("#spinner").show();
-						$("#SearchSC").attr("disabled","disabled");
-						$("#SearchSC").append('<i class="fa fa-gear fa-1x fa-spin"></i>');
+						$('#ctTable > tbody').html(
+				            '<tr class="odd">' +
+				              '<td valign="top" colspan="6" class="dataTables_empty">Loading&hellip; <i class="fa fa-gear fa-1x fa-spin"></i></td>' +
+				            '</tr>'
+				          );
 					},
                     "success": function (json) {
 						$("#spinner").hide();

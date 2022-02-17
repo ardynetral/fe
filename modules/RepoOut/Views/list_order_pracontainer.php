@@ -1,5 +1,6 @@
 <p><button class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
 </p>
+<div class="table-responsive vscroll">
 <table id="rcTable" class="table table-hover table-bordered" style="width:100%;">
 	<thead>
 		<tr>
@@ -21,3 +22,4 @@
 
 	</tbody>
 </table>
+</div>

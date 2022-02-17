@@ -335,7 +335,7 @@ class RepoIn extends \CodeIgniter\Controller
 				'cpijam' => $_POST['cpijam'],
 				'cpives' => $_POST['recpives'],
 				'cpiremark' => $_POST['cpiremark'],
-				'cpideliver' => $_POST['cpideliver'],
+				'cpideliver' => $_POST['repovendor'],
 				'cpivoyid' => $_POST['recpivoyid'],
 				'cpivoy' => $_POST['cpivoy'],
 				// detail
@@ -346,7 +346,7 @@ class RepoIn extends \CodeIgniter\Controller
 				'ccheight' => $_POST['ccheight'],
 				'cpife' => $_POST['cpife'],
 				'cpishold' => $_POST['cpishold'],
-				'reporemark' => $_POST['reporemark']
+				// 'reporemark' => $_POST['reporemark']
 			];
 
 			// echo var_dump($_POST);die();

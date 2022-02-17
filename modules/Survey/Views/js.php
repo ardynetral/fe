@@ -1,3 +1,5 @@
+<script src="<?php echo base_url();?>/public/themes/smartdepo/js/plugins/jquery-maskedinput/jquery.masked-input.min.js"></script>
+
 <script type="text/javascript">
 $(document).ready(function() {
 	// Error Message element
@@ -21,6 +23,7 @@ $(document).ready(function() {
 	$("#CRACEP").prop('disabled', true);
 	$("#CRCSC").prop('disabled', true);
 	$("#RMCODE").attr("required",true);
+	$('#CRMANDAT').mask('9999/99');
 	// datePicker
 	$(".tanggal").datepicker({
 		autoclose:true,

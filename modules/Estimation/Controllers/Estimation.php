@@ -14,7 +14,7 @@ class Estimation extends \CodeIgniter\Controller
 
 	function list_data(){		
 		$module = service('uri')->getSegment(1);
-		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+		$search = ($this->request->getPost('search[value]') != "")?$this->request->getPost('search[value]'):"";
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
         // $sort_dir = $this->get_sort_dir();		
@@ -26,7 +26,8 @@ class Estimation extends \CodeIgniter\Controller
 				],
 				'query' => [
 					'offset' => (int)$offset,
-					'limit'	=> (int)$limit
+					'limit'	=> (int)$limit,
+					'search'	=> $search
 				]
 			]);
 
@@ -55,7 +56,16 @@ class Estimation extends \CodeIgniter\Controller
 				$btn_list .= '<a href="'.site_url('estimation/edit/').$v['RPCRNO'].'" id="editPraIn" class="btn btn-xs btn-success btn-tbl">edit</a>';
 			endif;
 			
-			$btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl print" data-crno="'.$v['RPCRNO'].'">print</a>';
+			// $btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl print" data-crno="'.$v['RPCRNO'].'">print</a>';
+			$btn_list .= '
+				<div class="btn-group">
+					<button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Print <span class="caret"></span></button>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="#" class="print" data-crno="'.$v['RPCRNO'].'" data-type="all">All</a></li>
+						<li><a href="#" class="print" data-crno="'.$v['RPCRNO'].'" data-type="owner">Owner</a></li>
+						<li><a href="#" class="print" data-crno="'.$v['RPCRNO'].'" data-type="user">User</a></li>
+					</ul>
+				</div>';
 
 			// if(has_privilege_check($module, '_delete')==true):
 			// 	$btn_list .= '<a href="#" id="deletePraIn" class="btn btn-xs btn-danger btn-tbl">delete</a>';
@@ -768,7 +778,7 @@ class Estimation extends \CodeIgniter\Controller
 			die();
 		}
 	}
-	public function print($crno) 
+	public function print($crno,$type) 
 	{
 		$mpdf = new \Mpdf\Mpdf();
 
@@ -813,7 +823,9 @@ class Estimation extends \CodeIgniter\Controller
 		$html .= '<tr><td>
 				 <img src="'. ROOTPATH .'/public/media/img/LOGO_CONTINDO.png" style="height:60px;">
 				 </td>
-				 <td width="20%" class="t-right">ESTIMATE OF REPAIRS</td></tr>';
+				 <td width="20%" class="t-right">ESTIMATE OF REPAIRS<br>
+				 <b>ACCOUNT : '.strtoupper($type).'</b>
+				 </td></tr>';
 
 		$html .= '<tr><td colspan="2">JL. BY PASS KM 8, PADANG SUMATERA BARAT
 				 +62 751 61600 &nbsp; +62 751 61097</td></tr>';
@@ -872,42 +884,93 @@ class Estimation extends \CodeIgniter\Controller
 		$tot_rdmat_o = 0;
 		$tot_rdmat_u = 0;
 		$tot_rdtotal_o = 0;
-		$tot_rdtotal_u = 0;					
-		foreach($detail as $det) {
-			if($det['rdaccount']=="user") {
-				$account = "U";
-				$tot_rdmhr_u = $tot_rdmhr_u+(double)$det['rdmhr'];
-				$tot_rdlab_u = $tot_rdlab_u+(double)$det['rdlab'];	
-				$tot_rdmat_u = $tot_rdmat_u+(int)$det['rdmat'];
-				$tot_rdtotal_u = $tot_rdtotal_u+(int)$det['rdtotal'];					
-			} else if($det['rdaccount']=="owner") {
-				$account = "O";
-				$tot_rdmhr_o = $tot_rdmhr_o+(double)$det['rdmhr'];
-				$tot_rdlab_o = $tot_rdlab_o+(double)$det['rdlab'];	
-				$tot_rdmat_o = $tot_rdmat_o+(int)$det['rdmat'];
-				$tot_rdtotal_o = $tot_rdtotal_o+(int)$det['rdtotal'];
-			} else {
-				$account = "i";
-			}
+		$tot_rdtotal_u = 0;	
+		switch($type) {
+			case "owner" :
+				foreach($detail as $det) {
+					if($det['rdaccount']=="owner") {
+						$account = "O";
+						$tot_rdmhr_o = $tot_rdmhr_o+(double)$det['rdmhr'];
+						$tot_rdlab_o = $tot_rdlab_o+(double)$det['rdlab'];	
+						$tot_rdmat_o = $tot_rdmat_o+(int)$det['rdmat'];
+						$tot_rdtotal_o = $tot_rdtotal_o+(int)$det['rdtotal'];
+						
+						$html .= '<tr>
+						<td>'.$no.'</td>
+						<td>'.$det['lccode'].'</td>
+						<td>'.$det['rddesc'].'</td>
+						<td class="t-right">'.$det['rdmhr'].'</td>
+						<td class="t-right">'.number_format($det['rdlab'],0).'</td>
+						<td class="t-right">'.number_format($det['rdmat'],0).'</td>
+						<td class="t-right">'.number_format($det['rdtotal'],0).'</td>
+						<td class="t-center">'.$account.'</td>
+						</tr>';
+						$no++;
+					}
+				}			
+			break;
+			
+			case "user" :
+				foreach($detail as $det) {
+					if($det['rdaccount']=="user") {
+						$account = "U";
+						$tot_rdmhr_u = $tot_rdmhr_u+(double)$det['rdmhr'];
+						$tot_rdlab_u = $tot_rdlab_u+(double)$det['rdlab'];	
+						$tot_rdmat_u = $tot_rdmat_u+(int)$det['rdmat'];
+						$tot_rdtotal_u = $tot_rdtotal_u+(int)$det['rdtotal'];					
+						$html .= '<tr>
+						<td>'.$no.'</td>
+						<td>'.$det['lccode'].'</td>
+						<td>'.$det['rddesc'].'</td>
+						<td class="t-right">'.$det['rdmhr'].'</td>
+						<td class="t-right">'.number_format($det['rdlab'],0).'</td>
+						<td class="t-right">'.number_format($det['rdmat'],0).'</td>
+						<td class="t-right">'.number_format($det['rdtotal'],0).'</td>
+						<td class="t-center">'.$account.'</td>
+						</tr>';
+						$no++;
+					}
 
-		$html .= '<tr>
-		<td>'.$no.'</td>
-		<td>'.$det['lccode'].'</td>
-		<td>'.$det['rddesc'].'</td>
-		<td class="t-right">'.$det['rdmhr'].'</td>
-		<td class="t-right">'.number_format($det['rdlab'],0).'</td>
-		<td class="t-right">'.number_format($det['rdmat'],0).'</td>
-		<td class="t-right">'.number_format($det['rdtotal'],0).'</td>
-		<td class="t-center">'.$account.'</td>
-		</tr>';
-		$no++;
-		}
+				}			
+			break;
+
+			default :
+				foreach($detail as $det) {
+					if($det['rdaccount']=="user") {
+						$account = "U";
+						$tot_rdmhr_u = $tot_rdmhr_u+(double)$det['rdmhr'];
+						$tot_rdlab_u = $tot_rdlab_u+(double)$det['rdlab'];	
+						$tot_rdmat_u = $tot_rdmat_u+(int)$det['rdmat'];
+						$tot_rdtotal_u = $tot_rdtotal_u+(int)$det['rdtotal'];					
+					} else if($det['rdaccount']=="owner") {
+						$account = "O";
+						$tot_rdmhr_o = $tot_rdmhr_o+(double)$det['rdmhr'];
+						$tot_rdlab_o = $tot_rdlab_o+(double)$det['rdlab'];	
+						$tot_rdmat_o = $tot_rdmat_o+(int)$det['rdmat'];
+						$tot_rdtotal_o = $tot_rdtotal_o+(int)$det['rdtotal'];
+					} else {
+						$account = "i";
+					}
+
+					$html .= '<tr>
+					<td>'.$no.'</td>
+					<td>'.$det['lccode'].'</td>
+					<td>'.$det['rddesc'].'</td>
+					<td class="t-right">'.$det['rdmhr'].'</td>
+					<td class="t-right">'.number_format($det['rdlab'],0).'</td>
+					<td class="t-right">'.number_format($det['rdmat'],0).'</td>
+					<td class="t-right">'.number_format($det['rdtotal'],0).'</td>
+					<td class="t-center">'.$account.'</td>
+					</tr>';
+					$no++;
+				}
+		}			
 
 		$html .='
 		<tr>
 		<td></td><td></td>
 		<td class="t-right">Total Owner Account(IDR)</td>
-		<td class="t-right">'.$tot_rdmhr_o.'</td><td class="t-right">'.$tot_rdlab_o.'</td><td class="t-right">'.$tot_rdmat_o.'</td><td class="t-right">'.$tot_rdtotal_o.'</td><td></td>
+		<td class="t-right">'.number_format($tot_rdmhr_o,0).'</td><td class="t-right">'.number_format($tot_rdlab_o,0).'</td><td class="t-right">'.number_format($tot_rdmat_o,0).'</td><td class="t-right">'.number_format($tot_rdtotal_o,0).'</td><td></td>
 		</tr>
 		<tr>
 		<td></td><td></td>

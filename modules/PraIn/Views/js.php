@@ -735,6 +735,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});
+					editLoadTableContainer($("#praid").val());
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -840,11 +841,22 @@ $(document).ready(function() {
 	$("#apvUpdateContainer").on("click",function(){
 		formData = "&pracrnoid=" + $("#pracrnoid").val();
 		formData += "&cpopr=" + $("#prcode").val();
+		var cpife = $("input:radio[name=cpife]:checked").val();
 		if($("#prcode").val()=="ONES") {
 			formData += "&deposit=" + $("#deposit").val("1");
 		} else {
 			formData += "&deposit=" + $("#deposit").val("0");
 		}
+
+		formData += "&crno=" + $("#crno").val();
+		formData += "&cccode=" + $("#ccode").val();
+		formData += "&ctcode=" + $("#ctcode").val();
+		formData += "&cclength=" + $("#cclength").val();
+		formData += "&ccheight=" + $("#ccheight").val();
+		formData += "&cpife=" + cpife;
+		// formData += "&cpishold=" + $("#cpishold").val();
+		formData += "&cpiremark=" + $("#cpiremark").val();
+		// formData += "&sealno=" + $("#sealno").val();		
 		formData += "&cpcust=" + $("#cucode").val();
 		formData += "&emkl=" + $("#cpideliver").val();
 		formData += "&biaya_clean=" + $("#biaya_clean").val();

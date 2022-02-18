@@ -1532,6 +1532,7 @@ class PraIn extends \CodeIgniter\Controller
 		$data['totalcharge'] = $recept['total_tagihan'];
 
 		$data['data'] = $dt_order;
+		// dd($data['data']['orderPraContainers']);
 		$data['bukti_bayar'] = $bukti_bayar;
 		$data['depo'] = $this->get_depo($data['data']['cpdepo']);
 		$data['contract'] = $this->get_contract($data['data']['cpopr']);
@@ -2269,7 +2270,7 @@ class PraIn extends \CodeIgniter\Controller
 						<td colspan="3"><h5 style="line-height:1.2;font-weight:bold;padding-top:20px;">:&nbsp;' . $CRNO . '</h5></td>
 					</tr>
 					<tr>
-						<td style="width:40%;">DATE</td>
+						<td style="width:40%;">DATE PRAIN</td>
 						<td colspan="3">:&nbsp;' . date('d-m-Y', strtotime($CPIPRATGL)) . '</td>
 					</tr>
 					<tr>
@@ -2775,7 +2776,6 @@ class PraIn extends \CodeIgniter\Controller
 				<tr>
 				<td>
 				<h4>PT. CONTINDO RAYA</h4>
-				PADANG, '.date('d-M-Y').'
 				</td>
 				<td class="t-center"><b>KWITANSI / RECEIP</b></td>
 				<td class="t-right"><p><b>'.$invoice_number.'</b></p></td>
@@ -2786,7 +2786,6 @@ class PraIn extends \CodeIgniter\Controller
 		$html .='
 			SUDAH TERIMA DARI/RECEIVED FROM
 			<h4>'.$debitur['cuname'].'</h4>
-			OPERATOR CONTAINER : '.$debitur['cuname'].'<br>
 		';
 
 		$html .='

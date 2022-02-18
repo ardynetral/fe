@@ -318,7 +318,7 @@
 											<td><?=$row['biaya_clean'];?></td>
 											<td><?=$row['biaya_lain'];?></td>
 											<td><?=$row['cpiremark']?></td>
-											<td></td>
+											<td><?=$row['cpigatedate']==null ? "" : date('d-m-Y',strtotime($row['cpigatedate']));?></td>
 										</tr>
 									<?php 
 									$i++;

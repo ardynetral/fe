@@ -22,14 +22,7 @@
 				<h3><i class="fa fa-table"></i> <?=$page_title?></h3>
 			</div>
 
-			<div class="widget-content">
-				<div class="row">
-					<div class="col-md-12">
-						<?php if(has_insert==true): ?>
-						<a href="#" class="btn btn-primary" id=""><i class="fa fa-plus-square"></i>&nbsp;Add New</a>
-						<?php endif;?>
-					</div>
-				</div><br>	
+			<div class="widget-content">				
 
 				<?= $this->include('\Modules\BillRepo\Views\index_data');?>
 

@@ -85,8 +85,8 @@ class BillStorage extends \CodeIgniter\Controller
 		// $data['cucode'] = $prcode;
 		// echo dd($data);
 		// return view('Modules\PraIn\Views\tab_base',$data);
-		$data['page_title'] = "Approval";
-		$data['page_subtitle'] = "Approval Page";
+		$data['page_title'] = "Bill Storage";
+		$data['page_subtitle'] = "Storage Page";
 		return view('Modules\BillStorage\Views\index',$data);
 	}
 }

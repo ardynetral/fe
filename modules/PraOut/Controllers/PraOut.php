@@ -1980,7 +1980,7 @@ cpid,
 						<td colspan="3"><h5 style="line-height:1.2;font-weight:bold;padding-top:20px;">:&nbsp;' . $CRNO . '</h5></td>
 					</tr>
 					<tr>
-						<td style="width:40%;">DATE</td>
+						<td style="width:40%;">DATE PRAOUT</td>
 						<td colspan="3">:&nbsp;' . date('d-m-Y', strtotime($CPIPRATGL)) . '</td>
 					</tr>
 					<tr>

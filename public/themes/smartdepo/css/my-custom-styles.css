@@ -35,3 +35,4 @@
     background: url("../img/loading.gif") center no-repeat;
     padding:20px;
 }
+.vscroll { max-height: 430px;overflow-y: scroll; }

@@ -372,7 +372,7 @@
 											<td><?=$row['cpopr']?></td>
 											<td><?=((isset($row['cpife'])&&$row['cpife']==1)?'Full':'Empty')?></td>
 											<td><?=$row['cpiremark']?></td>
-											<td><?=$row['cpigatedate']?></td>
+											<td><?=$row['cpigatedate']==null ? "" : date('d-m-Y',strtotime($row['cpigatedate']));?></td>
 										</tr>
 									<?php 
 									$i++; 					

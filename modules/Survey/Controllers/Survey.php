@@ -1,7 +1,7 @@
 <?php
 namespace Modules\Survey\Controllers;
 
-// use App\Libraries\MyPaging;
+use App\Libraries\MyPaging;
 
 class Survey extends \CodeIgniter\Controller
 {
@@ -90,12 +90,12 @@ class Survey extends \CodeIgniter\Controller
 		// $prcode = $token['prcode'];
 
 		$data = [];
-		$paging = new MyPaging();
-		$limit = 10;
-		$endpoint = 'dataListReports/listAllSurveis';
-		$data['data'] = $paging->paginate($endpoint,$limit,'survey');
-		$data['pager'] = $paging->pager;
-		$data['nomor'] = $paging->nomor($this->request->getVar('page_survey'), $limit);		
+		//$paging = new MyPaging();
+		//$limit = 10;
+		//$endpoint = 'dataListReports/listAllSurveis';
+		//$data['data'] = $paging->paginate($endpoint,$limit,'survey');
+		//$data['pager'] = $paging->pager;
+		//$data['nomor'] = $paging->nomor($this->request->getVar('page_survey'), $limit);		
 		$data['page_title'] = "Survey";
 		$data['page_subtitle'] = "Survey Page";
 		return view('Modules\Survey\Views\index',$data);

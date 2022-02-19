@@ -25,6 +25,7 @@ $routes->add('/praout/get_container_form', '\Modules\PraOut\Controllers\PraOut::
 $routes->add('/praout/get_one_container/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::get_one_container/$1', ['filter' => 'login']);
 $routes->add('/praout/get_container_by_praid/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::get_container_by_praid/$1', ['filter' => 'login']);
 $routes->add('/praout/edit_container', '\Modules\PraOut\Controllers\PraOut::edit_container', ['filter' => 'login']);
+$routes->add('/praout/edit_get_container/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::edit_get_container/$1', ['filter' => 'login']);
 $routes->add('/praout/checkContainerNumber', '\Modules\PraOut\Controllers\PraOut::checkContainerNumber', ['filter' => 'login']);
 $routes->add('/praout/delete_container/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::delete_container/$1', ['filter' => 'login']);
 $routes->add('/praout/final_order/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::final_order/$1', ['filter' => 'login']);

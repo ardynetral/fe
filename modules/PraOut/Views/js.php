@@ -58,9 +58,7 @@ $(document).ready(function() {
 			success: function(json) {
 				if(json.status == "success") {
 					$("#praid").val(json.praid);	
-					$("#pra_id").val(json.praid);	
-					console.log(json.praid);		
-					$("#crno").focus();
+					$("#pra_id").val(json.praid);		
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
@@ -68,6 +66,8 @@ $(document).ready(function() {
 					});							
 					window.location.href = "#formDetail";
 					$("#save").prop('disabled', true);
+					$("#crno").prop('disabled', false);
+					$("#crno").focus();
 					$("#saveDetail").prop('disabled', false);
 				} else {
 					Swal.fire({
@@ -299,7 +299,7 @@ $(document).ready(function() {
 		"<td>"+cpishold+"</td>"+
 		"<td>"+item.cpiremark+"</td>"+
 		"<td>"+item.sealno+"</td>"+
-		"<td></td>"+
+		"<td>"+item.cpigatedate+"</td>"+
 		"</tr>";
 	}
 
@@ -456,10 +456,24 @@ $(document).ready(function() {
 		});
 	});
 
+	$("#addContainer").on("click", function(e){
+		e.preventDefault();
+		var praid = $("#pra_id").val();
+		var cpife = $("#cpife").val();
+		$("#formDetail").trigger("reset");
+		$("#pra_id").val(praid);
+		$("#ccode").select2().select2('val',"");
+		$("#crno").removeAttr("readonly");
+		$("#crno").focus();
+		$("#saveDetail").show();
+		$("#updateDetail").hide();
+		$('input:radio[name=cpife]').filter('[value=0]').prop('checked', true);
+	});
 
 	// save detailContainer
 	$("#saveDetail").on("click", function(e){
 		e.preventDefault();
+		var act = $(this).data('act');
 		var cpife = $("input:radio[name=cpife]:checked").val();
 		var formData = "praid=" + $("#praid").val();
 		formData += "&cpopr=" + $("#prcode").val();
@@ -482,7 +496,7 @@ $(document).ready(function() {
 			dataType: 'json',
 			success: function(json) {
 				
-				if(json.message == "success") {
+				if(json.status == "success") {
 
 					Swal.fire({
 					  icon: 'success',
@@ -492,7 +506,11 @@ $(document).ready(function() {
 					
 					$("#formDetail").trigger("reset");
 					$("#ccode").select2().select2('val',"");					
-					loadTableContainer($("#praid").val());
+					if(act=="edit") {
+						editLoadTableContainer($("#praid").val());
+					} else {
+						loadTableContainer($("#praid").val());
+					}
 
 				} else {
 
@@ -510,14 +528,16 @@ $(document).ready(function() {
 	$('#detTable tbody').on('click', '.edit', function(e){
 		e.preventDefault();
 		$("#formDetail").trigger("reset");
-		$('#cleaning_type option:eq("Water Wash")').prop('selected', true);
+		// $('#cleaning_type option:eq("Water Wash")').prop('selected', true);
 		var crid = $(this).data("crid");
 	    var cpife = $('input:radio[name=cpife]');
 	    // var typedo = $("input:radio[name=typedo]:checked").val();
-	    cpife.filter('[value=0]').prop('checked', true);
 	    var vesprcode = $("#vesprcode").val();
-		// $("#prcode").select2().select2('val','');
+	    $("#crno").prop("readonly",true);
+		$("#prcode").select2().select2('val','');
 		$("#cucode").val("");
+		$("#saveDetail").hide();
+		$("#updateDetail").show();
 		$.ajax({
 			url:"<?=site_url('praout/get_one_container/');?>"+crid,
 			type:"POST",
@@ -635,6 +655,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});
+					editLoadTableContainer($("#praid").val());
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -650,6 +671,7 @@ $(document).ready(function() {
 	$('#detTable tbody').on('click', '.delete', function(e){
 		e.preventDefault();	
 		var code = $(this).data('crid');
+		var act = $(this).data('act');
 		Swal.fire({
 		  title: 'Are you sure?',
 		  icon: 'warning',
@@ -659,13 +681,13 @@ $(document).ready(function() {
 		  confirmButtonText: 'Yes, delete it!'
 		}).then((result) => {
 		  if (result.isConfirmed) {
-		  	delete_data_container(code);
+		  	delete_data_container(code,act);
 		  }
 		});		
 		
 	});
 
-	function delete_data_container(code) {
+	function delete_data_container(code,act) {
 		$.ajax({
 			url: "<?php echo site_url('praout/delete_container/'); ?>"+code,
 			type: "POST",
@@ -677,7 +699,12 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					loadTableContainer2($("#praid").val());
+					// loadTableContainer2($("#praid").val());
+					if(act=="edit") {
+						editLoadTableContainer($("#praid").val());
+					} else {
+						loadTableContainer($("#praid").val());
+					}					
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -822,33 +849,21 @@ $(document).ready(function() {
 	});
 
 	$("#crno").on("keyup", function(){
+		$(this).val($(this).val().toUpperCase());
 		var crno = $("#crno").val();
 		var praid = $("#pra_id").val();
 		var status = "";
-		$(this).val($(this).val().toUpperCase());
 		$.ajax({
 			url:"<?=site_url('praout/checkContainerNumber');?>",
 			type:"POST",
-			data: {"ccode":crno,"praid":praid},
+			data: {"crno":crno,"praid":praid},
 			dataType:"JSON",
 			success: function(json){
-
-				// $("#formDetail").trigger("reset");
-				// $("#ccode").select2().select2('val',"");
 				$("#ccode").select2().select2('val','');
 				$("#ctcode").val("");
 				$("#cclength").val("");
 				$("#ccheight").val("");
-				if(json.status=="Failled") {
-
-					$(".err-crno").show();
-					$(".err-crno").html(json.message);
-					$("#crno").css("background", "#ffbfbf!important");
-					$("#crno").css("border-color", "#ea2525");
-					$("#saveDetail").prop("disabled",true);					
-
-				} else {
-
+				if(json.status=="success") {
 					$(".err-crno").html("");
 					$(".err-crno").hide();
 					$("#crno").css("background", "#fff!important");
@@ -861,6 +876,12 @@ $(document).ready(function() {
 						$("#cclength").val(json.data.container_code.cclength);
 						$("#ccheight").val(json.data.container_code.ccheight);
 					}
+				} else {
+					$(".err-crno").show();
+					$(".err-crno").html(json.message);
+					$("#crno").css("background", "#ffbfbf!important");
+					$("#crno").css("border-color", "#ea2525");
+					$("#saveDetail").prop("disabled",true);
 				}
 			}
 		});
@@ -926,6 +947,16 @@ function loadTableContainer2(praid) {
 	});
 }
 
+function editLoadTableContainer(praid) {
+	$('#detTable tbody').html("");
+	$.ajax({
+		url: "<?=site_url('praout/edit_get_container/')?>"+praid,
+		dataType: "json",
+		success: function(json) {
+			$('#detTable tbody').html(json);
+		}
+	});
+}
 function loadTableContainerAppv1(praid) {
 	$('#detTable tbody').html("");
 	$.ajax({

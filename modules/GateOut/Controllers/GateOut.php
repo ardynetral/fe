@@ -44,7 +44,7 @@ class GateOut extends \CodeIgniter\Controller
 	}
 
 	function list_data(){		
-		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+		$search = ($this->request->getPost('search[value]') != "")?$this->request->getPost('search[value]'):"";
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
         // $sort_dir = $this->get_sort_dir();		
@@ -56,7 +56,8 @@ class GateOut extends \CodeIgniter\Controller
 				],
 				'query' => [
 					'offset' => $offset,
-					'limit'	=> $limit
+					'limit'	=> $limit,
+					'search' => $search
 				]
 			]);
 

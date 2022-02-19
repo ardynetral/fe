@@ -135,7 +135,7 @@ if (isset($data) && ($data != '')) {
 									<td class="text-right">Ex. Cargo </td>
 									<td><input <?php echo $readonly; ?> type="text" name="cpicargo" id="cpicargo" class="form-control" value="<?= ''; ?>"></td>
 									<td class="text-right">Cleaning :</td>
-									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="" class="form-control" id="" value="<?= ''; ?>"></td>
+									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="rmcode" class="form-control" id="rmcode" value="<?= ''; ?>"></td>
 								</tr>
 								<tr>
 									<td class="text-right" width="130">Driver :</td>

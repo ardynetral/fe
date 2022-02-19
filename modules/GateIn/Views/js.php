@@ -555,6 +555,7 @@ $(document).ready(function() {
 					$("#vesopr").val(json.data.vesopr);
 					$("#cpideliver").val(json.data.cpideliver);
 					$("#crlastcond").val(json.data.crlastcond);
+					$("#rmcode").val(json.data.rmcode);
 				}
 			}
 		});
@@ -580,21 +581,13 @@ $(document).ready(function() {
 	    return false;
 	});
 
+	// DATATABLE
 	runDataTables();
 	var table = $('#ctTable').DataTable({
         "processing": true,
         "serverSide": true,
         "autoWidth": false,
         "fixedColumns": true,
-       //  "columnDefs": [
-       //      {   "targets": 7,
-	      //       "render": function ( data, type, row, meta ) { 	            	
-       //          	btn = '<button class="btn btn-xs btn-info btn-view" data-id="'+row[1]+'">view</button>';
-       //          	btn +='<button class="btn btn-xs btn-danger btn-delete">delete</button>';
-       //          	return btn;
-       //          }
-	      //   }
-      	// ],
         "ajax": $.fn.dataTable.pipeline( {
             url: '<?=site_url('gatein/list_data');?>',
             pages: 5  
@@ -604,12 +597,12 @@ $(document).ready(function() {
         PaginationType : "bootstrap", 
         oLanguage: { "sSearch": "",
             "sLengthMenu" : "_MENU_ &nbsp;"}
-    });
+	});
 	
 	$('.dataTables_filter input').attr("placeholder", "Search");
     $('.DTTT_container').css('display','none');
     $('.DTTT').css('display','none');
-
+    // END DATATABLE
 });
 
 function runDataTables() {		
@@ -679,9 +672,11 @@ function runDataTables() {
                     "dataType": "json",
                     "cache": false,
 					"beforeSend": function(){
-						$("#spinner").show();
-						$("#SearchSC").attr("disabled","disabled");
-						$("#SearchSC").append('<i class="fa fa-gear fa-1x fa-spin"></i>');
+						$('#ctTable > tbody').html(
+				            '<tr class="odd">' +
+				              '<td valign="top" colspan="6" class="dataTables_empty">Loading&hellip; <i class="fa fa-gear fa-1x fa-spin"></i></td>' +
+				            '</tr>'
+				          );
 					},
                     "success": function (json) {
 						$("#spinner").hide();

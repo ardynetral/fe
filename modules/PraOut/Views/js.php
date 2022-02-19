@@ -528,12 +528,13 @@ $(document).ready(function() {
 	$('#detTable tbody').on('click', '.edit', function(e){
 		e.preventDefault();
 		$("#formDetail").trigger("reset");
+		// $('#myModal').modal('toggle');
 		// $('#cleaning_type option:eq("Water Wash")').prop('selected', true);
 		var crid = $(this).data("crid");
 	    var cpife = $('input:radio[name=cpife]');
 	    // var typedo = $("input:radio[name=typedo]:checked").val();
 	    var vesprcode = $("#vesprcode").val();
-	    $("#crno").prop("readonly",true);
+	    // $("#crno").prop("readonly",true);
 		$("#prcode").select2().select2('val','');
 		$("#cucode").val("");
 		$("#saveDetail").hide();
@@ -581,6 +582,7 @@ $(document).ready(function() {
 	$('#detTable tbody').on('click', '.view', function(e){
 		e.preventDefault();
 		$("#formDetail").trigger("reset");
+		// $('#myModal').modal('toggle');
 		var crid = $(this).data("crid");
 	    var cpife = $('input:radio[name=cpife]');
 	    cpife.filter('[value=0]').prop('checked', true);

@@ -1563,7 +1563,7 @@ public function edit_get_container($praid)
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
 				<td>
-				<a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$row['pracrnoid']."'>edit</a>
+				<a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$row['pracrnoid']."' data-toggle='modal' data-target='#myModal'>edit</a>
 				<a href='#' id='editContainer' class='btn btn-xs btn-danger delete' data-crid='".$row['pracrnoid']."' data-act='edit'>delete</a>
 				</td>";
 
@@ -1625,7 +1625,7 @@ public function edit_get_container($praid)
 		foreach($result['data']['datas'] as $row){
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
-				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."'>edit</a></td>
+				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."' data-toggle='modal' data-target='#myModal'>edit</a></td>
 				<td>".$i."</td>
 				<td>".$row['crno']."</td>
 				<td>".$row['cccode']."</td>

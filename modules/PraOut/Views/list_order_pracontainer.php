@@ -1,3 +1,5 @@
+<p><button class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
+</p>
 <div class="table-responsive vscroll">
 <table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 	<thead>
@@ -25,9 +27,9 @@
 				<tr>
 					<td>
 						<?php if(isset($act)&&($act=='add')):?>
-						<a href="#" id="viewContainer" class="btn btn-xs btn-primary view" data-crid="<?=$row['pracrnoid']?>">view</a>
+						<a href="#" id="viewContainer" class="btn btn-xs btn-primary view" data-crid="<?=$row['pracrnoid']?>" data-toggle='modal' data-target='#myModal'>view</a>
 						<?php else:?>
-						<a href="#" id="editContainer" class="btn btn-xs btn-primary edit" data-crid="<?=$row['pracrnoid']?>">edit</a>
+						<a href="#" id="editContainer" class="btn btn-xs btn-primary edit" data-crid="<?=$row['pracrnoid']?>" data-toggle="modal" data-target="#myModal">edit</a>
 						<?php endif; ?>
 					</td>
 					<td><?=$i;?></td>

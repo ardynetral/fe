@@ -2,6 +2,15 @@
 $token = get_token_item();
 $group_id = $token['groupId'];
 ?>	
+<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="myModalLabel">Add Container</h4>
+			</div>
+			<div class="modal-body">
+
 	<form id="formDetail" class="form-horizontal" role="form">
 		<?= csrf_field() ?>
 		<input type="hidden" name="pracrnoid" id="pracrnoid">
@@ -70,7 +79,13 @@ $group_id = $token['groupId'];
 			<div class="form-group">
 				<div class="col-sm-offset-4 col-sm-8">
 					<button type="button" id="saveDetail" class="btn btn-primary" data-act="add" disabled><i class="fa fa-check-circle"></i> Save</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle"></i> Close</button>
 				</div>
 			</div>						
 		</fieldset>
 	</form>			
+
+			</div>
+		</div>
+	</div>
+</div>

@@ -72,7 +72,7 @@ class GateIn extends \CodeIgniter\Controller
 	}
 
 	function list_data(){		
-		$search = ($this->request->getPost('search') && $this->request->getPost('search') != "")?$this->request->getPost('search'):"";
+		$search = ($this->request->getPost('search[value]') != "")?$this->request->getPost('search[value]'):"";
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
         	
@@ -94,7 +94,8 @@ class GateIn extends \CodeIgniter\Controller
 				'crlastact1'=>'WE',
 				'crlastact2'=>'WS',
 				'limit'=>$limit,
-				'offset'=>$offset
+				'offset'=>$offset,
+				'search'=> $search
 			]
 		]);
 
@@ -648,7 +649,7 @@ class GateIn extends \CodeIgniter\Controller
 				</tr>
 				<tr>
 					<td>CLEANING</td>
-					<td colspan="3">:&nbsp;</td>
+					<td colspan="3">:&nbsp;' . $header['rmcode'] . '</td>
 				</tr>
 				<tr>
 					<td>EMKL</td>

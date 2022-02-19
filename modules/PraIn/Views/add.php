@@ -19,23 +19,23 @@
 		</div>	
 
 		<div class="row">
-			<div class="col-sm-4">
+<!-- 			<div class="col-sm-4">
 				<div class="widget widget-table">
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> Form Input Container</h3>
 					</div>
 					<div class="widget-content">
-						<?= $this->include('\Modules\PraIn\Views\form_detail_header');?>
 					</div>
 				</div>						
-			</div>
-			<div class="col-sm-8">
+			</div> -->
+			<div class="col-sm-12">
 				<div class="widget widget-table">
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> List Order Pra Container</h3>
 					</div>
 					<div class="widget-content">
 						<?= $this->include('\Modules\PraIn\Views\list_order_pracontainer');?>
+						<?= $this->include('\Modules\PraIn\Views\form_detail_header');?>
 					</div>
 				</div>
 			</div>
@@ -43,6 +43,7 @@
 		
 	</div>
 </div>
+
 
 <?= $this->endSection();?>
 

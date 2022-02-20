@@ -28,12 +28,37 @@
 		$('.select-pr').select2();
 
 		$("#printPdf").on("click", function(e) {
-			window.open("<?php echo site_url('dailymovementin/reportPdf'); ?>", '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 			e.preventDefault();
+			var prcode = $("#prcode").val();
+			var startDate = $("#startDate").val();
+			var endDate = $("#endDate").val();
+			var hour_from = $("#timepicker1").val();
+			var hour_to = $("#timepicker2").val();
+
+			var date_from = startDate.split("/").reverse().join("-");
+			var date_to = endDate.split("/").reverse().join("-");
+
+			//alert(prcode);
+			window.open("<?php echo site_url('dailymovementin/reportPdf/'); ?>" + prcode + "/" + date_from + "/" + date_to + "/" + hour_from + "/" + hour_to, '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+			//window.open("<?php echo site_url('dailymovementin/reportPdf/'); ?>" + prcode + "/" + date_from, '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 		});
+
+
+
 		$("#printExl").on("click", function(e) {
-			window.open("<?php echo site_url('dailymovementin/reportExcel'); ?>");
 			e.preventDefault();
+			var prcode = $("#prcode").val();
+			var startDate = $("#startDate").val();
+			var endDate = $("#endDate").val();
+			var hour_from = $("#timepicker1").val();
+			var hour_to = $("#timepicker2").val();
+
+			var date_from = startDate.split("/").reverse().join("-");
+			var date_to = endDate.split("/").reverse().join("-");
+
+
+			let date_from1 = date_from.toString();
+			window.open("<?php echo site_url('dailymovementin/reportExcel/'); ?>" + prcode + "/" + date_from + "/" + date_to + "/" + hour_from + "/" + hour_to, '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 		});
 
 	});

@@ -445,9 +445,21 @@ class PraIn extends \CodeIgniter\Controller
 				}
 			}
 
-			$validate = $this->validate([
-	            'praid' 	=> 'required',
-	        ]);			
+
+			// VALIDASI VESSEL & VOYAGE di APPROVAL-1
+			if(isset($_POST['act']) && $_POST['act']=='apv1') {
+				$validate = $this->validate([
+		            'cpives'		=> 'required',
+		            'cpivoyid'	=> 'required'
+		        	],
+		            [
+		            'cpives'		=> ['required' => 'VESSEL field required'],
+		            'cpivoyid'	=> ['required' => 'VOYAGE field required']
+			        ]
+			    );	
+			} else {
+				$validate = $this->validate(['praid' 	=> 'required']);
+			}
 		
 		    if ($this->request->getMethod() === 'post' && $validate)
 		    {
@@ -1837,7 +1849,7 @@ class PraIn extends \CodeIgniter\Controller
 		foreach($result['data']['datas'] as $row){
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
-				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."'>edit</a></td>			
+				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."' data-toggle='modal' data-target='#myModal'>edit</a></td>			
 				<td>".$i."</td>
 				<td>".$row['crno']."</td>
 				<td>".$row['cccode']."</td>

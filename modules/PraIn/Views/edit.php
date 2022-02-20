@@ -18,6 +18,7 @@
 				<div class="row">
 					<form id="fEditPraIn" class="form-horizontal" role="form" enctype="multipart/form-data">
 						<?= csrf_field() ?>
+						<input type="hidden" name="act" id="act" value="edit">
 						<input type="hidden" name="praid" id="praid" value="<?=$data['praid']?>">
 						<fieldset>
 							<div class="col-sm-6">

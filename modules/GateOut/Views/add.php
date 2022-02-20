@@ -180,15 +180,15 @@ if(isset($data) && ($data!='')) {
 								<tr>
 
 									<td class="text-right" width="130">Vehicle ID :</td>
-									<td><input type="text" name="cponopol" class="form-control" id="cponopol" value="<?= ''; ?>"></td>
+									<td><input type="text" name="cponopol" class="form-control" id="cponopol" value="<?= ''; ?>" required></td>
 									<td class="text-right"><b>Survey Out</b>:</td>
 									<td colspan="6"></td>
 								</tr>
 								<tr>
 									<td class="text-right" width="130">Driver :</td>
-									<td><input type="text" name="cpodriver" class="form-control" id="cpodriver" value="<?= ''; ?>"></td>
+									<td><input type="text" name="cpodriver" class="form-control" id="cpodriver" value="<?= ''; ?>" required></td>
 									<td class="text-right">Inspector Date :</td>
-									<td><input type="text" name="svsurdat" class="form-control tanggal" id="svsurdat" value="<?= ''; ?>"></td>
+									<td><input type="text" name="svsurdat" class="form-control tanggal" id="svsurdat" value="<?= ''; ?>" required></td>
 									<td colspan="5"></td>
 								</tr>
 								<tr>

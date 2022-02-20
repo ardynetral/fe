@@ -201,7 +201,14 @@ class GateOut extends \CodeIgniter\Controller
 				$data['message'] = "Data Container tidak ditemukan.";	
 				echo json_encode($data);die();					
 			} else{
-				if ($container['crlastcond'] == "AC") {
+				
+				if($container['lastact'] == "HC") {
+					$data['status'] = "Failled";
+					$data['message'] = "Invalid Container";
+					echo json_encode($data);die();
+				}
+
+				if ((($container['crlastact'] == "CO") && ($container['crlastcond'] == "AC")) || ($container['lastact'] == "AC")) {
 
 					// periksa Query getByCrno di backend
 					// getKitirRepoGateOut tdk bisa dipakai karne pakai 2 param (crno & cpoorderno) 

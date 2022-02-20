@@ -36,7 +36,7 @@ $(document).ready(function() {
 						html: '<div class="text-success">' + json.message + '</div>'
 					});
 					$("#saveData").prop('disabled', true);
-					$("#saveDetail").prop('disabled', false);
+					$("#addDetail").prop('disabled', false);
 				} else {
 					Swal.fire({
 						icon: 'warning',
@@ -217,6 +217,7 @@ $(document).ready(function() {
 		$("#saveDetail").prop("disabled",false);
 		$("#updateDetail").hide();
 		$("#updateDetail").prop("disabled",true);
+		$("#formDetail").show();
 		$("#formDetail").trigger("reset");
 		$("#det_crno").val(det_crno);
 		$("#rpid").val(tblRow);
@@ -319,8 +320,8 @@ $(document).ready(function() {
 					$("#rpcrno").css("background", "#fff!important");
 					$("#rpcrno").css("border-color", "#ccc");
 					// fill data Header
-					var rptglest = $.format.date(json.header.rptglest,"dd-MM-yyyy")
-					var svsurdat = $.format.date(json.header.svsurdat,"dd-MM-yyyy")
+					// var rptglest = $.format.date(json.header.rptglest,"dd-MM-yyyy");
+					var svsurdat = $.format.date(json.header.svsurdat,"dd-MM-yyyy");
 					$("#det_crno").val(crno);
 					$("#svid").val(json.header.svid);
 					$("#det_svid").val(json.header.svid);
@@ -328,7 +329,7 @@ $(document).ready(function() {
 					$("#rpcrton").val(json.header.svcrton);
 					$("#rpcrtby").val(json.header.svcrtby);
 					$("#rpnoest").val(json.header.rpnoest);
-					$("#rptglest").val(rptglest);
+					// $("#rptglest").val(rptglest);
 					$("#cccode").val(json.header.cccode);
 					$("#ctcode").val(json.header.ctcode);
 					$("#cclength").val(json.header.cclength);

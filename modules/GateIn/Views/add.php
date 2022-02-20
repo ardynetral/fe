@@ -131,7 +131,7 @@ if (isset($data) && ($data != '')) {
 								</tr>
 								<tr>
 									<td class="text-right" width="130">Vehicle ID :</td>
-									<td><input type="text" name="cpinopol" class="form-control" id="cpinopol" value="<?= ''; ?>"></td>
+									<td><input type="text" name="cpinopol" class="form-control" id="cpinopol" value="<?= ''; ?>" required></td>
 									<td class="text-right">Ex. Cargo </td>
 									<td><input <?php echo $readonly; ?> type="text" name="cpicargo" id="cpicargo" class="form-control" value="<?= ''; ?>"></td>
 									<td class="text-right">Cleaning :</td>
@@ -139,7 +139,7 @@ if (isset($data) && ($data != '')) {
 								</tr>
 								<tr>
 									<td class="text-right" width="130">Driver :</td>
-									<td><input type="text" name="cpidriver" class="form-control" id="cpidriver" value="<?= ''; ?>"></td>
+									<td><input type="text" name="cpidriver" class="form-control" id="cpidriver" value="<?= ''; ?>" required></td>
 									<td class="text-right">Condition :</td>
 									<td><input <?php echo $readonly; ?> type="text" name="crlastcond" id="crlastcond" class="form-control" value="<?= ''; ?>"></td>
 									<td></td>

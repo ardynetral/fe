@@ -158,7 +158,7 @@ if(isset($data) && ($data!='')) {
 								<!-- <button type="button" id="updateData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp; -->
 								<button type="button" id="cancel" class="btn btn-default"><i class="fa fa-ban"></i> Back</button>								
 								<?php else: ?>
-								<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
+								<button type="button" id="saveData" class="btn btn-primary" disabled><i class="fa fa-check-circle"></i> Save</button>&nbsp;
 								<a href="<?=site_url('estimation')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 								<?php endif; ?>
 							</td>

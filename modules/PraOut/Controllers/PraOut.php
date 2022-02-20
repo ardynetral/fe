@@ -2447,7 +2447,19 @@ public function edit_get_container($praid)
 			// $checkFormatNumber = $this->checkContainerFormatNumber($crno);
 			$container = $this->get_container($crno);
 			// echo var_dump($container);die();
-			if($container!="" && (($container['crlastact'] == "CO") && (($container['crlastcond'] == "AC") || ($container['lastact'] == "AC")))) {
+			if($container=="") {
+				$data['status'] = "Failled";
+				$data['message'] = "Invalid Container";
+				echo json_encode($data);die();
+			}
+
+			if($container['lastact'] == "HC") {
+				$data['status'] = "Failled";
+				$data['message'] = "Invalid Container";
+				echo json_encode($data);die();
+			}
+
+			if((($container['crlastact'] == "CO") && ($container['crlastcond'] == "AC")) || ($container['lastact'] == "AC")) {
 
 		    	// check table order_pra_Container
 				$reqPraContainer = $this->client->request('GET','orderPraContainers/getAllData',[

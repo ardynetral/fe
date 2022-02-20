@@ -103,6 +103,7 @@ class Approval extends \CodeIgniter\Controller
 		$data['cmcode_dropdown'] = $this->cmcode_dropdown();
 		$data['dycode_dropdown'] = $this->dycode_dropdown();
 		$data['rmcode_dropdown'] = $this->rmcode_dropdown();
+		$data['emkl_dropdown'] = $this->emkl_dropdown();	
 		return view('Modules\Approval\Views\view',$data);
 	}
 
@@ -117,6 +118,7 @@ class Approval extends \CodeIgniter\Controller
 		$data['cmcode_dropdown'] = $this->cmcode_dropdown();
 		$data['dycode_dropdown'] = $this->dycode_dropdown();
 		$data['rmcode_dropdown'] = $this->rmcode_dropdown();		
+		$data['emkl_dropdown'] = $this->emkl_dropdown();		
 		return view('Modules\Approval\Views\add',$data);
 	}
 
@@ -137,6 +139,8 @@ class Approval extends \CodeIgniter\Controller
 			"crno" => $_POST['final_crno'],
 			"svid" => $_POST['final_svid'],
 			"autno" => $_POST['autno'],
+			"rpnotesa" => $_POST['rpnotesa'],
+			"rpbillon" => $_POST['rpbillon'],
 			"totalrmhr" => $totalrmhr,
 			"totallab" => $totallab,
 			"totalcost" => $totalcost,
@@ -388,6 +392,7 @@ class Approval extends \CodeIgniter\Controller
 		$data['cmcode_dropdown'] = $this->cmcode_dropdown();
 		$data['dycode_dropdown'] = $this->dycode_dropdown();
 		$data['rmcode_dropdown'] = $this->rmcode_dropdown();
+		$data['emkl_dropdown'] = $this->emkl_dropdown();
 		return view('Modules\Approval\Views\edit',$data);
 	}
 
@@ -1154,5 +1159,30 @@ class Approval extends \CodeIgniter\Controller
 		$option .= "</select>";
 		return $option;
 		die();
+	}	
+
+	function emkl_dropdown($selected="")
+	{
+		$response = $this->client->request('GET','debiturs/listCutype',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'cutype' =>1,
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(),true);	
+		$debitur = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="rpbillon" id="rpbillon" class="select-debitur">';
+		$option .= '<option value="">-select-</option>';
+		foreach($debitur as $cu) {
+			$option .= "<option value='".$cu['cucode'] ."'". ((isset($selected) && $selected==$cu['cucode']) ? ' selected' : '').">".$cu['cuname']."</option>";
+		}
+		$option .="</select>";
+		return $option; 
+		die();			
 	}	
 }

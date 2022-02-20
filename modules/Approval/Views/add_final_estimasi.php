@@ -18,21 +18,21 @@
 					<input type="hidden" name="final_total" id="final_total" value="0">
 					<table class="tbl-form">
 						<tbody>
-						<tr>
+<!-- 						<tr>
 							<td class="text-right" width="130">Version :</td>
 							<td ><input type="text" name="" id="" class="form-control" value="<?='';?>"></td>
-						</tr>
+						</tr> -->
 						<tr>
 							<td class="text-right" width="130">Aut No :</td>
 							<td><input type="text" name="autno" class="form-control" id="autno" value="<?='';?>"></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Notes Approval :</td>
-							<td ><input type="text" name="" id="" class="form-control" value="<?='';?>"></td>
+							<td ><input type="text" name="rpnotesa" id="rpnotesa" class="form-control" value="<?='';?>"></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Bill On :</td>
-							<td><input type="text" name="rpbillon" class="form-control" id="rpbillon" value="<?='';?>"></td>
+							<td><?=$emkl_dropdown;?></td>
 						</tr>
 <!-- 						<tr> crno, svid, totalrmhr, totallab, totalcost, total, autno,
 							<td class="text-right" width="130">Approval Confirm :</td>

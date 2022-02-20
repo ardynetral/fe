@@ -160,6 +160,8 @@ class GateIn extends \CodeIgniter\Controller
 		$data['page_subtitle'] = "Gate In Page";
 		// echo var_dump($_POST);die();
 		// last act jadi WS
+
+
 		if($this->request->isAjax()) {
 			$form_params = [
 				"crno" => $_POST['crno'],
@@ -181,7 +183,23 @@ class GateIn extends \CodeIgniter\Controller
 			    "cpideliver" => $_POST['cpideliver'],
 			    "cpitruck" => "1",
 			    "cpiorderno" => $_POST['cpiorderno']			
-			];			
+			];	
+
+			$validate = $this->validate([
+	            'cpinopol'		=> 'required',
+	            'cpidriver'	=> 'required'
+	        	],
+	            [
+	            'cpinopol'		=> ['required' => 'VEHICLE ID field required'],
+	            'cpidriver'	=> ['required' => 'DRIVER field required']
+		        ]
+	    	);	
+
+	    	if(!$validate) {
+	    		$data['message'] = \Config\Services::validation()->listErrors();
+	    		echo json_encode($data);die();
+	    	}
+
 			$response = $this->client->request('POST','containerProcess/gateIns',[
 				'headers' => [
 					'Accept' => 'application/json',

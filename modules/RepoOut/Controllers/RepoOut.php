@@ -262,7 +262,13 @@ class RepoOut extends \CodeIgniter\Controller
 		    	
 		    	// jika kontaner sudah ada di depo
 		    	$container = $this->get_container($_POST['crno']);
-		    	if (($container['crlastact'] == "CO" &&  $container['crlastcond'] == "AC") ||  $container['lastact'] == "AC") {
+		    	if($container =="" || $container['lastact'] == "HC") {
+					$data['status'] = "Failled";
+					$data['message'] = "Invalid Container";
+					echo json_encode($data);die();
+				}
+
+				if ((($container['crlastact'] == "CO") && ($container['crlastcond'] == "AC")) || ($container['lastact'] == "AC")) {
 
 					$response = $this->client->request('POST', 'orderRepoContainer/createNewData', [
 						'headers' => [

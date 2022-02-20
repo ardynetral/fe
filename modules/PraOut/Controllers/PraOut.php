@@ -2447,13 +2447,7 @@ public function edit_get_container($praid)
 			// $checkFormatNumber = $this->checkContainerFormatNumber($crno);
 			$container = $this->get_container($crno);
 			// echo var_dump($container);die();
-			if($container=="") {
-				$data['status'] = "Failled";
-				$data['message'] = "Invalid Container";
-				echo json_encode($data);die();
-			}
-
-			if($container['lastact'] == "HC") {
+			if($container=="" || $container['lastact'] == "HC") {
 				$data['status'] = "Failled";
 				$data['message'] = "Invalid Container";
 				echo json_encode($data);die();

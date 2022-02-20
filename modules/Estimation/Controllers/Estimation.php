@@ -646,6 +646,8 @@ class Estimation extends \CodeIgniter\Controller
 				else if($row['rdaccount']=='owner') {$rdaccount="O";}
 				else {$rdaccount="i";}				
 				$html .= '<tr>';
+				$html .= '<td>
+						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 				$html .= '<td class="no">'.$no.'</td>';
 				$html .= '<td class="lccode" style="display:none">'.$row['lccode'].'</td>';
 				$html .= '<td class="cmcode">'.$row['cmcode'].'</td>';
@@ -663,8 +665,6 @@ class Estimation extends \CodeIgniter\Controller
 				$html .= '<td class="rdmat">'.number_format($row['rdmat'],2).'<span style="display:none;">'.$row['rdmat'].'</span></td>';
 				$html .= '<td class="rdaccount" style="display:none;">'.$rdaccount.'</td>';
 				$html .= '<td class="rdtotal" style="display:none;">'.$row['rdtotal'].'</td>';
-				$html .= '<td>
-						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 				$html .= '</tr>';
 				$no++;
 			}

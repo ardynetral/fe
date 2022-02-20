@@ -307,6 +307,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 						<table class="table" id="tblList_edit">
 							<thead>
 								<tr>
+									<th></th>
 									<th>No</th>
 									<th>COM</th>
 									<th>DT</th>
@@ -321,7 +322,6 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<th>DESC</th>
 									<th>Lab. Cost</th>
 									<th>Mat. Cost</th>
-									<th></th>
 								</tr>
 							</thead>
 							<tbody>						
@@ -335,6 +335,9 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									else if($row['rdaccount']=='owner') {$rdaccount="O";}
 									else {$rdaccount="i";}
 									echo '<tr>';
+									echo '<td>
+											<a href="#" class="btn btn-primary btn-xs edit">edit</a>
+											<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 									echo '<td class="no">'.$no.'</td>';
 									echo '<td class="lccode" style="display:none">'.$row['lccode'].'</td>';
 									echo '<td class="crno" style="display:none">'.$row['rpcrno'].'</td>';
@@ -354,9 +357,6 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									echo '<td class="rdmat">'.number_format($row['rdmat'],2).'<span style="display:none;">'.$row['rdmat'].'</span></td>';
 									echo '<td class="rdaccount" style="display:none;">'.$rdaccount.'</td>';
 									echo '<td class="rdtotal" style="display:none">'.$row['rdtotal'].'</td>';
-									echo '<td>
-											<a href="#" class="btn btn-primary btn-xs edit">edit</a>
-											<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 									echo '</tr>';
 									$no++;
 								}

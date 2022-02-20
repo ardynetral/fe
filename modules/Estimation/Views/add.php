@@ -59,7 +59,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Date :</td>
-							<td><input type="text" name="rptglest" class="form-control" id="rptglest" value="<?= ''; ?>" readonly></td>
+							<td><input type="text" name="rptglest" class="form-control" id="rptglest" value="<?= date('d-m-Y'); ?>" readonly></td>
 							<td class="text-right">Time :</td>
 							<td colspan="3"><input type="text" name="rpjamest" id="rpjamest" class="form-control" value="<?= date('H:i:s'); ?>" readonly></td>
 							<td></td>
@@ -134,7 +134,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 						<h3><i class="fa fa-table"></i> Form Input Estimation Detail</h3>
 					</div>
 					<div class="widget-content">
-						<form method="post" id="formDetail" class="form-horizontal" role="form"  enctype="multipart/form-data">
+						<form method="post" id="formDetail" class="form-horizontal" role="form" enctype="multipart/form-data" style="display:none;">
 							<fieldset>
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Location</label>
@@ -281,16 +281,17 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 
 			<!-- List Final Estimation -->
 			<div class="col-lg-8">
-				<p><button type="button" id="addDetail" class="btn btn-success"><i class="fa fa-plus"></i> Add Detail</button></p>
+				<p><button type="button" id="addDetail" class="btn btn-success" disabled><i class="fa fa-plus"></i> Add Detail</button></p>
 				<div class="widget widget-table">
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> List Final Estimation</h3>
 					</div>
 					<div class="widget-content">
-						<div class="table-responsive">
+						<div class="table-responsive vscroll">
 						<table class="table" id="tblList_add">
 							<thead>
 								<tr>
+									<th></th>
 									<th>No</th>
 									<th>COM</th>
 									<th>DT</th>
@@ -305,7 +306,6 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<th>DESC</th>
 									<th>Lab. Cost</th>
 									<th>Mat. Cost</th>
-									<th></th>
 								</tr>
 							</thead>
 							<tbody>

@@ -283,7 +283,7 @@ class Survey extends \CodeIgniter\Controller
         	],
             [
             'CRTARAK'		=> ['required' => 'TARE field required'],
-            'CRLASTCOND'	=> ['required' => 'LAST CONDITION field required'],
+            'CRLASTCOND'	=> ['required' => 'CONDITION BOX field required'],
             'CRMANDAT'		=> ['required' => 'MANUFACTURE DATE field required'],
             'RMCODE'		=> ['required' => 'CLEANING field required']
 	        ]

@@ -199,8 +199,9 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<option value='DJ' <?php echo $select = (@$details['datas']['crlastcond'] == 'DJ') ? 'selected="selected"' : ''; ?>>DJ</option>
 								</select>
 							</td>
-							<td class="text-right">Manufacture Date  <span class="text-danger">**</span>:</td>
-							<td><input type="text" name="CRMANDAT" id="CRMANDAT" class="form-control" value="<?= @$details['datas']['crmandat']; ?>" required></td>
+							<td class="text-right" width="200">Manufacture Date  <span class="text-danger">** </span>:<br><small>mm/yy</small></td>
+							<td><input type="text" name="CRMANDAT" id="CRMANDAT" class="form-control" value="<?= @$details['datas']['crmandat']; ?>" required>
+							</td>
 							<td></td>
 							<td></td>
 						</tr>

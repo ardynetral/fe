@@ -1743,7 +1743,7 @@ class PraIn extends \CodeIgniter\Controller
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
 				<td>
-				<a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$row['pracrnoid']."'>edit</a>
+				<a href='#' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$row['pracrnoid']."'  data-toggle='modal' data-target='#myModal'>edit</a>
 				<a href='#' id='editContainer' class='btn btn-xs btn-danger delete' data-crid='".$row['pracrnoid']."'>delete</a>
 				</td>";
 

@@ -201,105 +201,14 @@
 <!-- CONTAINERS -->
 
 		<div class="row">
-			<div class="col-sm-4">
-				<div class="widget widget-table">
-					<div class="widget-header">
-						<h3><i class="fa fa-table"></i> Form Input Container</h3>
-					</div>
-					<div class="widget-content">
-
-					<form id="formDetail" class="form-horizontal" role="form">
-						<?= csrf_field() ?>
-						<input type="hidden" name="pracrnoid" id="pracrnoid">
-						<fieldset>
-							
-							<div class="form-group">
-								<label class="col-sm-4 control-label text-right">Container No. </label>
-								<div class="col-sm-8">
- 									<input type="hidden" name="pra_id" class="form-control" id="pra_id" value="<?=@$data['praid']?>">
-									<input type="text" name="crno" class="form-control" id="crno" readonly="">
-									<i class="err-crno text-danger"></i>
-								</div>
-							</div>	
-							<div class="form-group">
-								<label class="col-sm-4 control-label text-right">ID Code </label>
-								<div class="col-sm-8">
-									<?=ccode_dropdown();?>
-								</div>
-							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label text-right">Container Type</label>
-								<div class="col-sm-8">
-									<input type="text" id="ctcode" class="form-control" readonly="">
-								</div>
-							</div>	
-
-							<div class="form-group">
-								<label class="col-sm-4 control-label text-right">Lenght</label>
-								<div class="col-sm-8">
-									<input type="text" name="cclength" id="cclength" class="form-control" readonly="">
-								</div>	
-							</div>	
-							<div class="form-group">
-								<label class="col-sm-4 control-label text-right">Height</label>
-								<div class="col-sm-8">
-									<input type="text" name="ccheight" id="ccheight" class="form-control" readonly="">
-								</div>	
-							</div>			
-							<div class="form-group">
-								<label class="col-sm-4 control-label text-right">F/E</label>
-								<div class="col-sm-8">
-									<label class="control-inline fancy-radio custom-bgcolor-green">
-										<input type="radio" name="cpife" id="cpife" value="1" readonly="">
-										<span><i></i>Full</span>
-									</label>
-									<label class="control-inline fancy-radio custom-bgcolor-green">
-										<input type="radio" name="cpife" id="cpife" value="0" readonly="">
-										<span><i></i>Empty</span>
-									</label>				
-								</div>	
-							</div>					
-							<div class="form-group" style="display: none;">
-								<label class="col-sm-4 control-label text-right">Hold</label>
-								<div class="col-sm-8">
-									<label class="control-inline fancy-checkbox custom-color-green">
-										<input type="checkbox" name="cpishold" id="cpishold" value="0" readonly="">
-										<span></span>
-									</label>
-								</div>	
-							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label text-right">Remark</label>
-								<div class="col-sm-8">
-									<input type="text" name="cpiremark" id="cpiremark" class="form-control">
-								</div>	
-							</div>
-							<div class="form-group">
-								<label class="col-sm-4 control-label text-right">Seal Number</label>
-								<div class="col-sm-8">
-									<input type="text" name="sealno" id="sealno" class="form-control" >
-								</div>	
-							</div>	
-
-							<div class="form-group">
-								<div class="col-sm-offset-4 col-sm-8">
-									<button type="button" id="saveDetail" class="btn btn-info" style="display:none;" data-act="edit"><i class="fa fa-pencil"></i> Save Container</button>
-									<button type="button" id="updateDetail" class="btn btn-info"><i class="fa fa-pencil"></i> Update Container</button>
-								</div>
-							</div>						
-						</fieldset>
-					</form>	
-
-					</div>
-				</div>						
-			</div>
-			<div class="col-sm-8">
+			<div class="col-sm-12">
 				<div class="widget widget-table">
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> List Order Pra Container</h3>
 					</div>
 					<div class="widget-content">
-						<p><button type="button" id="addContainer" class="btn btn-success"><i class="fa fa-plus"></i> Add Container</button></p>
+						<p><button class="btn btn-success" data-toggle="modal" data-target="#myModal" id="addContainer"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
+						</p>
 						<br>
 						<div class="table-responsive vscroll">
 						<table id="detTable" class="table table-hover table-bordered" style="width:100%;">
@@ -330,7 +239,7 @@
 									?>
 										<tr>
 											<td>
-												<a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>">edit</a>
+												<a href="#" id="editContainer" class="btn btn-xs btn-info edit" data-crid="<?=$row['pracrnoid']?>" data-toggle="modal" data-target="#myModal">edit</a>
 												<a href="#" id="deleteContainer" class="btn btn-xs btn-danger delete" data-crid="<?=$row['pracrnoid']?>" data-act="edit">delete</a>
 											</td>
 											<td><?=$i;?></td>
@@ -371,6 +280,8 @@
 
 	</div>
 </div>
+
+<?= $this->include('\Modules\PraOut\Views\form_edit_detail');?>
 
 <?= $this->endSection();?>
 

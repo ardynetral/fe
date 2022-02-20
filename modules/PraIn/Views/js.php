@@ -603,7 +603,6 @@ $(document).ready(function() {
 	    var cpife = $('input:radio[name=cpife]');
 	    var typedo = $("input:radio[name=typedo]:checked").val();
 	    var vesprcode = $("#vesprcode").val();
-	    $("#crno").prop("readonly",true);
 		$("#prcode").select2().select2('val','');
 		$("#cucode").val("");
 		$.ajax({

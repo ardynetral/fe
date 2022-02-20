@@ -23,7 +23,7 @@ $(document).ready(function() {
 	$("#CRACEP").prop('disabled', true);
 	$("#CRCSC").prop('disabled', true);
 	$("#RMCODE").attr("required",true);
-	$('#CRMANDAT').mask('9999/99');
+	$('#CRMANDAT').mask('99/99');
 	// datePicker
 	$(".tanggal").datepicker({
 		autoclose:true,

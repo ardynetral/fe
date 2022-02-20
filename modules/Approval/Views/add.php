@@ -51,7 +51,7 @@
 						</tr>
 						<tr>
 							<td class="text-right" width="130">Date :</td>
-							<td><input type="text" name="rptglest" class="form-control" id="rptglest" value="<?= ''; ?>" readonly></td>
+							<td><input type="text" name="rptglest" class="form-control" id="rptglest" value="<?= date('d-m-Y'); ?>" readonly></td>
 							<td class="text-right">Time :</td>
 							<td colspan="3"><input type="text" name="rpjamest" id="rpjamest" class="form-control" value="<?= date('H:i:s'); ?>" readonly></td>
 							<td></td>

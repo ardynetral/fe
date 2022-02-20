@@ -4,6 +4,7 @@ $(document).ready(function() {
 		$('.select-cmcode').select2();
 		$('.select-dycode').select2();
 		$('.select-rmcode').select2();
+		$('.select-debitur').select2();
     
 		// Error Message element
 		$(".err-crno").hide(); //container number check

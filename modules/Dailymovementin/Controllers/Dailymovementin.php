@@ -36,35 +36,46 @@ class Dailymovementin extends \CodeIgniter\Controller
 	}
 
 
-
-
-	public function reportPdf()
+	public function getAllData($prcode, $date_from, $date_to, $hour_from, $hour_to)
 	{
-		$db = \Config\Database::connect();
-		$sql_body = "
-		select 
-		cp.cpopr as principal,
-		month(cp.cpitgl) as dinfo_month,
-		day(cp.cpitgl) as dinfo_daily,
-		count(cp.crno) as total
-		from container_process cp
-		where year(cp.cpitgl)=year(now())
-		group by cp.cpopr, month(cp.cpitgl), day(cp.cpitgl)
-		";
+		$query_params = [
+			'prcode' => $prcode,
+			'date_from' => $date_from,
+			'date_to'  => $date_to,
+			'hour_from' => $hour_from,
+			'hour_to'  => $hour_to
+		];
 
-		$data_body = $db->query($sql_body)->getResultArray();
+		$response = $this->client->request('GET', 'reports/rptDailyMovementIn', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => $query_params,
+		]);
+		$result = json_decode($response->getBody()->getContents(), true);
+		$data['data'] = $result['data']['datas'][0];
+		return $data;
+	}
+
+	public function reportPdf($prcode = '', $date_from = '', $date_to = '', $hour_from = '', $hour_to = '')
+	{
+
+		check_exp_time();
+		$hour_from = '';
+		$hour_to = '';
+		$result =   $this->getAllData($prcode, $date_from, $date_to, $hour_from, $hour_to);
 
 		$mpdf = new \Mpdf\Mpdf();
 		$html = '';
-
 		$html .= '
 		<html>
 			<head>
 				<title>Daily Movement In</title>
 
 				<style>
-					body{font-family: Arial;font-size:12px;}
-					.page-header{display:block;border-bottom:2px solid #aaa;padding:0;min-height:30px;margin-bottom:30px;}
+					body{font-family: Arial;font-size:10px;}
+					.page-header{display:block;border-bottom:2px solid #aaa;padding:0;min-height:30px;margin-bottom:30px;font-family: Arial;font-size:18px;}
 					.head-left{float:left;width:200px;padding:0px;}
 					.head-right{float:left;padding:0px;margin-left:200px;text-align: right;}
 
@@ -74,7 +85,7 @@ class Dailymovementin extends \CodeIgniter\Controller
 					.t-left{text-align:left;}
 
 					.tbl_det_prain th,.tbl_det_prain td {
-						border:1px solid #666666!important;
+						border:0.2px solid #666666!important;
 						border-spacing: 0;
 						border-collapse: collapse;
 						padding:5px;
@@ -86,15 +97,13 @@ class Dailymovementin extends \CodeIgniter\Controller
 		';
 
 		$html .= '<body>
-			<div class="page-header">
-				<div class="head-left">
-					<h4>PT. CONTINDO RAYA</h4>
-				</div>
-				<div class="head-right">
-					<p>PADANG, ' . date('d/m/Y') . '</p>		
+			<div class="page-header center">
+				<div>
+					<h3>DAILY MOVEMENT REPORT</h3>
 				</div>
 			</div>
 		';
+
 		$html .= '
 			<table class="tbl_head_prain" width="100%">
 				<tbody>
@@ -102,31 +111,54 @@ class Dailymovementin extends \CodeIgniter\Controller
 				</tbody>
 			</table>
 		';
-
 		$html .= '
-			<h4>Daily Movement In</h4>
-			<table class="tbl_det_prain">
-				<thead>
-					<tr>
-						<th>NO</th>
-						<th>Principal</th>
-						<th>Info Daily</th>
-						<th>Info Month</th>
-						<th>Total</th>
-					</tr>
-				</thead>
-				<tbody>';
+		<div clas="row">
+			<div class="head-left">
+					Depot : CONTINDO - PADANG
+			</div>
+			<div class="head-right">
+			Gate In Date :' . date('M-d-Y', strtotime($date_from)) . ' to ' . date('M-d-Y', strtotime($date_to)) . '</p>		
+			</div>
+		</div>
+		<div clas="row">
+			<div class="head-left">
+				Container Operator :   ' . $prcode . '
+			</div>
+		</div>
+				
+		<table class="tbl_det_prain">
+			<thead>
+				<tr>
+					<th>NO</th>
+					
+					<th>Container No.</th>
+					<th>Ty</th>
+					<th>L/H</th>
+					<th>Original Vessel/Voyage</th>
+					<th>C-Box</th>
+					<th>Deliverer</th>
+					<th>Date</th>
+					<th>Vehicle Id</th>
+					<th>Remarks</th>
+				</tr>
+			</thead>
+			<tbody>';
+
 		$no = 1;
-		foreach ($data_body as $row) {
+		foreach ($result['data'] as $row) {
 			$html .= '
 					<tr>
 						<td>' . $no . '</td>
-						<td>' . $row['principal'] . '</td>
-						<td>' . $row['dinfo_month'] . '</td>
-						<td>' . $row['dinfo_daily'] . '</td>
-						<td>' . $row['total'] . '</td>
+						<td>' . $row['crno'] . '</td>
+						<td>' . $row['ctcode'] . '</td>
+						<td>' . $row['cclength'] . '/' . $row['ccheight'] . '</td>
+						<td>' . $row['vesid'] . '/' . $row['voyid'] . '</td>
+						<td>' . $row['svcond'] . '</td>
+						<td>' . $row['cpideliver'] . '</td>
+						<td>' . $row['cpitgl'] . '</td>
+						<td>' . $row['cpinopol'] . '</td>
+						<td>' . $row['cpiremark'] . '</td>
 					</tr>';
-
 			$no++;
 		}
 		$html .= '
@@ -140,6 +172,7 @@ class Dailymovementin extends \CodeIgniter\Controller
 		$mpdf->Output();
 		die();
 	}
+
 
 	public function reportExcel()
 	{

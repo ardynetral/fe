@@ -129,7 +129,27 @@ class GateOut extends \CodeIgniter\Controller
 			// "cporemark"		=> $_POST['cporemark'],
 			"cpid"			=> $_POST['cpid']
 			];
-			
+
+
+			$validate = $this->validate([
+				'syid' => 'required',
+				'cponopol' => 'required',
+				'cpodriver' => 'required',
+				'svsurdat' => 'required',
+			],
+			[
+				'syid' => ['required'=>"INSPECTOR field required"],
+				'cponopol' => ['required'=>"VEHICLE ID field required"],
+				'cpodriver' => ['required'=>"DRIVER field required"],
+				'svsurdat' => ['required'=>"INSPECTOR DATE field required"],
+			]);		
+
+			if(!$validate) {
+				$data['status'] = "Failled";
+				$data['message'] = \Config\Services::validation()->listErrors();
+				echo json_encode($data);die();
+			}
+
 			$cp_response = $this->client->request('PUT','gateout/updateGateOut',[
 				'headers' => [
 					'Accept' => 'application/json',
@@ -238,7 +258,7 @@ class GateOut extends \CodeIgniter\Controller
 					}	
 
 					$data['message'] = 'success';
-					$data['data'] = $res_gateout['data'];
+					$data['data'] = $res_gateout['data'][0];
 					echo json_encode($data);die();					    		
 
 		    	} else {

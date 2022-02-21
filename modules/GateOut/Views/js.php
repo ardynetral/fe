@@ -121,13 +121,14 @@ $(document).ready(function() {
 					$("#crno").css("background", "#ffbfbf!important");
 					$("#crno").css("border-color", "#ea2525");	
 				} else {
+					console.log(json.data);
 					$(".err-crno").html("");
 					$(".err-crno").hide();
 					$("#crno").css("background", "#fff!important");
 					$("#crno").css("border-color", "#ccc");
 					$("#cpid").val(json.data.crcpid);
-					$("#cpopr1").val(json.data.cpopr);
-					$("#cpcust1").val(json.data.cpcust);
+					$("#cpopr1").val(json.data.cpopr1);
+					$("#cpcust1").val(json.data.cpcust1);
 					$("#cccode").val(json.data.cccode);
 					$("#cclength").val(json.data.cclength);
 					$("#ccheight").val(json.data.ccheight);

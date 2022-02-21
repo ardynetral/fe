@@ -2148,7 +2148,7 @@ class PraIn extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		//print_r($result);
+		// print_r($result);
 		//die();
 		$recept = recept_by_praid($praid);
 
@@ -2166,7 +2166,7 @@ class PraIn extends \CodeIgniter\Controller
 			$PRINCIPAL = $result['data'][0]['prcode'];
 			$SHIPPER = $result['data'][0]['cpideliver'];
 			$VESSEL = $result['data'][0]['vesid'];
-			$VOY = $result['data'][0]['cpivoy'];
+			$VOY = $result['data'][0]['cpivoyid'];
 			$DATE = $result['data'][0]['cpidisdat'];
 			$DESTINATION = "";
 			$REMARK = $result['data'][0]['cpiremark'];

@@ -679,7 +679,7 @@ class GateIn extends \CodeIgniter\Controller
 				</tr>					
 				<tr>
 					<td>EX VESSEL</td>
-					<td colspan="3">:&nbsp;' . $header['vesid'] . '/' . $header['cpivoy'] . '</td>
+					<td colspan="3">:&nbsp;' . $header['vesid'] . '/' . $header['cpivoyid'] . '</td>
 				</tr>
 				<tr>
 					<td>NO POLISI</td>

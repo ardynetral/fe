@@ -114,7 +114,7 @@
 								<td class="text-right" width="130">Ex Vessel :</td>
 								<td><input <?php echo $readonly; ?> type="text" name="vesid" class="form-control" id="vesid" value="<?= @$data['vesid']; ?>"></td>
 								<td class="text-right">Voyage :</td>
-								<td><input type="text" name="voyno" id="voyno" class="form-control" value="<?= @$data['voyno']; ?>" readonly>
+								<td><input type="text" name="voyno" id="voyno" class="form-control" value="<?= @$data['cpivoyid']; ?>" readonly>
 									<input type="hidden" name="cpivoy" id="cpivoy" class="form-control" value="<?= @$data['cpivoy']; ?>">
 								</td>
 								<td class="text-right">Vessel Operator :</td>

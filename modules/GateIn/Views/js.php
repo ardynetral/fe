@@ -551,7 +551,7 @@ $(document).ready(function() {
 					$("#cpife").val(json.data.cpife);
 					$("#cpicargo").val(json.data.cpicargo);
 					$("#vesid").val(json.data.vesid);
-					$("#voyno").val(json.data.voyno);
+					$("#voyno").val(json.data.cpivoyid);
 					$("#vesopr").val(json.data.vesopr);
 					$("#cpideliver").val(json.data.cpideliver);
 					$("#crlastcond").val(json.data.crlastcond);

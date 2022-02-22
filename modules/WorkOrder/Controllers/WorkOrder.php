@@ -304,7 +304,7 @@ class WorkOrder extends \CodeIgniter\Controller
 				]
 			]);	
 			$result = json_decode($response->getBody()->getContents(), true);
-			echo var_dump($result);die();
+			// echo var_dump($result);die();
 			if(isset($result['status']) && $result['status']=="Failled") {
 	    		$data["status"] = "Failled";
 	    		$data["message"] = $result['message'];

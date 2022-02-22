@@ -1,7 +1,3 @@
-<?php if($data ==''): ?>
-	<p class="alert alert-warning"> Data not found.</p>
-<?php else : ?>
-
 <div class="row">
 	<div class="col-md-12">
 
@@ -10,7 +6,7 @@
 			<thead>
 				<tr>
 					<th>No.</th>
-					<th>WO No</th>
+					<th>WO Number</th>
 					<th>Principal</th>
 					<th>WO Date</th>
 					<th></th>
@@ -18,34 +14,8 @@
 			</thead>
 			
 			<tbody>
-				<?php $i=1; foreach($data as $row): ?>
-					<tr>
-						<td><?=$i;?></td>
-						<td><?=$row['WONO']?></td>
-						<td><?=$row['WOOPR']?></td>
-						<td><?=$row['WODATE']?></td>
-						<td>
-							<a href="#" id="" class="btn btn-xs btn-primary" data-praid="<?=$row['praid'];?>">view</a>
-
-							<?php if(has_edit==true): ?>
-							<a href="#" id="editPraIn" class="btn btn-xs btn-success">edit</a>
-							<?php endif; ?>
-							
-							<?php if(has_print==true): ?>
-							<a href="#" class="btn btn-xs btn-info" data-praid="<?=$row['praid']?>">print</a>
-							<?php endif; ?>
-
-							<?php if(has_delete==true): ?>
-							<a href="#" id="deletePraIn" class="btn btn-xs btn-danger">delete</a>
-							<?php endif; ?>
-
-						</td>
-					</tr>
-				<?php $i++; endforeach; ?>
 			</tbody>
 		</table>
 
 	</div>
 </div>
-
-<?php endif; ?>	

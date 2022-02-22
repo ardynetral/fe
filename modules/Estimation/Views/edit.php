@@ -135,12 +135,14 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 
 		<div class="row">
 			<!-- List Final Estimation -->
-			<div class="col-lg-4">
-				<div class="widget widget-table">
-					<div class="widget-header">
-						<h3><i class="fa fa-table"></i> Form Input Estimation Detail</h3>
-					</div>
-					<div class="widget-content">
+			<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h4 class="modal-title" id="myModalLabel">Add Item Estimation</h4>
+						</div>
+						<div class="modal-body">
 						<form method="post" id="formUpdateDetail" class="form-horizontal" role="form"  enctype="multipart/form-data">
 							<fieldset>
 								<div class="form-group">
@@ -283,19 +285,21 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 								<div class="form-group">
 									<div class="col-sm-offset-4 col-sm-8">
 										<button type="submit" id="updateDetail" class="btn btn-primary" style="display:none;"><i class="fa fa-check-circle"></i> Update</button>
-										<button type="submit" id="saveDetail" class="btn btn-primary" style="display:none;"><i class="fa fa-check-circle"></i> Save</button>
+										<button type="submit" id="saveDetail" class="btn btn-primary" style="display:none;"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
+										<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle"></i> Close</button>
 									</div>
 								</div>
 							</fieldset>
 						</form>
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<!-- List Final Estimation -->
-			<div class="col-lg-8">
+			<div class="col-lg-12">
 				<p>
-					<button type="button" id="addDetailEdit" class="btn btn-success"><i class="fa fa-plus"></i> Add Detail</button>
+					<button type="button" id="addDetailEdit" class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add Detail</button>
 					<a href="#" id="print" class="btn btn-info btn-tbl" data-crno="<?=$header['crno']?>"><i class="fa fa-print"></i>&nbsp;Print</a>
 				</p>
 				<div class="widget widget-table">
@@ -336,7 +340,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									else {$rdaccount="i";}
 									echo '<tr>';
 									echo '<td>
-											<a href="#" class="btn btn-primary btn-xs edit">edit</a>
+											<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
 											<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 									echo '<td class="no">'.$no.'</td>';
 									echo '<td class="lccode" style="display:none">'.$row['lccode'].'</td>';

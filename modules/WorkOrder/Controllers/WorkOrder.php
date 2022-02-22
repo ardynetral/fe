@@ -106,17 +106,11 @@ class WorkOrder extends \CodeIgniter\Controller
 			];
 			$validate = $this->validate([
 	            'wono'		=> 'required',
-	            'woto'		=> 'required',
-	            'wofrom'	=> 'required',
-	            'wocc'		=> 'required',
 	            'prcode'	=> 'required',
 	            'wotype'	=> 'required'
 	        	],
 	            [
 	            'wono'		=> ['required' => 'WO NUMBER field required'],
-	            'woto'		=> ['required' => 'TO field required'],
-	            'wofrom'	=> ['required' => 'FROM field required'],
-	            'wocc'		=> ['required' => 'CC field required'],
 	            'prcode'	=> ['required' => 'PRINCIPAL field required'],
 	            'wotype'	=> ['required' => 'CONDITION BOX field required']
 		        ]

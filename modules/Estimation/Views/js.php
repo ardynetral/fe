@@ -483,14 +483,15 @@ function calculate_cost() {
 			"rdcalmtd": $("#rdcalmtd").val(),
 			"rdqty": $("#rdqtyact").val(),
 			"muname": $("#muname").val(),
-			"prcode": $("#prcode").val()
+			// "prcode": $("#prcode").val(),
+			"crno": $("#rpcrno").val()
 		},		
 		dataType: 'json',
 		success: function(json) {
-			$("#rdmat").val(json.xmtrl_cost);
-			$("#rdmhr").val(json.xhours);
-			$("#rdtotal").val(json.xtariff_labor_cost);
-			console.log(json.xmtrl_cost);
+			$("#rdmhr").val(json._hoursidr);
+			$("#rdmat").val(json._mtrlcostidr);
+			$("#rdtotal").val(json._laborcostidr);
+			// console.log(json.xmtrl_cost);
 		}
 	});	
 }

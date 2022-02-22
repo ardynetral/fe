@@ -128,160 +128,164 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 
 		<div class="row">
 			<!-- List Final Estimation -->
-			<div class="col-lg-4">
-				<div class="widget widget-table">
-					<div class="widget-header">
-						<h3><i class="fa fa-table"></i> Form Input Estimation Detail</h3>
-					</div>
-					<div class="widget-content">
-						<form method="post" id="formDetail" class="form-horizontal" role="form" enctype="multipart/form-data" style="display:none;">
-							<fieldset>
-								<div class="form-group">
-									<label class="col-sm-4 control-label text-right">Location</label>
-									<div class="col-sm-8">
-										<input type="hidden" name="det_crno" id="det_crno">
-										<input type="hidden" name="det_svid" id="det_svid">
-										<input type="hidden" name="rpid" id="rpid">
-										<?= $lccode_dropdown; ?>
+			<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+							<h4 class="modal-title" id="myModalLabel">Add Item Estimation</h4>
+						</div>
+						<div class="modal-body">
+							<form method="post" id="formDetail" class="form-horizontal" role="form" enctype="multipart/form-data" style="display:none;">
+								<fieldset>
+									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">Location</label>
+										<div class="col-sm-8">
+											<input type="hidden" name="det_crno" id="det_crno">
+											<input type="hidden" name="det_svid" id="det_svid">
+											<input type="hidden" name="rpid" id="rpid">
+											<?= $lccode_dropdown; ?>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label text-right">Component</label>
-									<div class="col-sm-8">
-										<?= $cmcode_dropdown; ?>
+									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">Component</label>
+										<div class="col-sm-8">
+											<?= $cmcode_dropdown; ?>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label text-right">Damage Type</label>
-									<div class="col-sm-8">
-										<?= $dycode_dropdown; ?>
+									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">Damage Type</label>
+										<div class="col-sm-8">
+											<?= $dycode_dropdown; ?>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label text-right">Repair Method</label>
-									<div class="col-sm-8">
-										<?= $rmcode_dropdown; ?>
+									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">Repair Method</label>
+										<div class="col-sm-8">
+											<?= $rmcode_dropdown; ?>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label text-right">Calculation Method</label>
-									<div class="col-sm-8">
-										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="L">
-											<span><i></i>L</span>
-										</label>
-										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="S">
-											<span><i></i>S</span>
-										</label>
-										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="P">
-											<span><i></i>P</span>
-										</label>
-										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="Q">
-											<span><i></i>Q</span>
-										</label>
-										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdcalmtd" id="rdcalmtd" value="B">
-											<span><i></i>B</span>
-										</label>
+									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">Calculation Method</label>
+										<div class="col-sm-8">
+											<label class="control-inline fancy-radio custom-bgcolor-green">
+												<input type="radio" name="rdcalmtd" id="rdcalmtd" value="L">
+												<span><i></i>L</span>
+											</label>
+											<label class="control-inline fancy-radio custom-bgcolor-green">
+												<input type="radio" name="rdcalmtd" id="rdcalmtd" value="S">
+												<span><i></i>S</span>
+											</label>
+											<label class="control-inline fancy-radio custom-bgcolor-green">
+												<input type="radio" name="rdcalmtd" id="rdcalmtd" value="P">
+												<span><i></i>P</span>
+											</label>
+											<label class="control-inline fancy-radio custom-bgcolor-green">
+												<input type="radio" name="rdcalmtd" id="rdcalmtd" value="Q">
+												<span><i></i>Q</span>
+											</label>
+											<label class="control-inline fancy-radio custom-bgcolor-green">
+												<input type="radio" name="rdcalmtd" id="rdcalmtd" value="B">
+												<span><i></i>B</span>
+											</label>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label text-right">Size</label>
-									<div class="col-sm-8">
-										<input type="text" name="rdsize" class="form-control" id="rdsize">
+									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">Size</label>
+										<div class="col-sm-8">
+											<input type="text" name="rdsize" class="form-control" id="rdsize">
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label text-right">Measurement Unit</label>
-									<div class="col-sm-8">
-										<!-- <input type="text" name="muname" class="form-control" id="muname"> -->
-										<select name="muname" class="form-control" id="muname">
-											<option value=""> - select - </option>
-											<option value="%">%</option>
-											<option value="20">20</option>
-											<option value="40">40</option>
-											<option value="cm">cm</option>
-											<option value="cm2">cm2</option>
-											<option value="ft">ft</option>
-											<option value="ft2">ft2</option>
-											<option value="m">m</option>
-											<option value="m2">m2</option>
-											<option value="mm">mm</option>
-											<option value="pc">pc</option>
-											<option value="pcs">pcs</option>
-										</select>
+									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">Measurement Unit</label>
+										<div class="col-sm-8">
+											<!-- <input type="text" name="muname" class="form-control" id="muname"> -->
+											<select name="muname" class="form-control" id="muname">
+												<option value=""> - select - </option>
+												<option value="%">%</option>
+												<option value="20">20</option>
+												<option value="40">40</option>
+												<option value="cm">cm</option>
+												<option value="cm2">cm2</option>
+												<option value="ft">ft</option>
+												<option value="ft2">ft2</option>
+												<option value="m">m</option>
+												<option value="m2">m2</option>
+												<option value="mm">mm</option>
+												<option value="pc">pc</option>
+												<option value="pcs">pcs</option>
+											</select>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label text-right">Quantity</label>
-									<div class="col-sm-8">
-										<input type="text" name="rdqtyact" class="form-control" id="rdqtyact">
-										
+									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">Quantity</label>
+										<div class="col-sm-8">
+											<input type="text" name="rdqtyact" class="form-control" id="rdqtyact">
+											
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label text-right">Man Hour</label>
-									<div class="col-sm-8">
-										<input type="text" name="rdmhr" class="form-control" id="rdmhr">
-										
+									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">Man Hour</label>
+										<div class="col-sm-8">
+											<input type="text" name="rdmhr" class="form-control" id="rdmhr">
+											
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label text-right">Currency</label>
-									<div class="col-sm-8">
-										<?=currency_dropdown2('tucode','');?>
+									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">Currency</label>
+										<div class="col-sm-8">
+											<?=currency_dropdown2('tucode','');?>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label text-right">Material Cost</label>
-									<div class="col-sm-8">
-										<input type="text" name="rdmat" class="form-control" id="rdmat">
-										
+									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">Material Cost</label>
+										<div class="col-sm-8">
+											<input type="text" name="rdmat" class="form-control" id="rdmat">
+											
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-4 control-label text-right">Total Cost</label>
-									<div class="col-sm-8">
-										<input type="text" name="rdtotal" class="form-control" id="rdtotal">
+									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">Total Cost</label>
+										<div class="col-sm-8">
+											<input type="text" name="rdtotal" class="form-control" id="rdtotal">
+										</div>
 									</div>
-								</div>
 
-								<div class="form-group">
-									<label class="col-sm-4 control-label text-right">Account</label>
-									<div class="col-sm-8">
-										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdaccount" id="rdaccount" value="O">
-											<span><i></i>O</span>
-										</label>
-										<label class="control-inline fancy-radio custom-bgcolor-green">
-											<input type="radio" name="rdaccount" id="rdaccount" value="U" checked="">
-											<span><i></i>U</span>
-										</label>
+									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">Account</label>
+										<div class="col-sm-8">
+											<label class="control-inline fancy-radio custom-bgcolor-green">
+												<input type="radio" name="rdaccount" id="rdaccount" value="O">
+												<span><i></i>O</span>
+											</label>
+											<label class="control-inline fancy-radio custom-bgcolor-green">
+												<input type="radio" name="rdaccount" id="rdaccount" value="U" checked="">
+												<span><i></i>U</span>
+											</label>
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<label for="cpideliver" class="col-sm-4 control-label text-right">File Upload</label>
-									<div class="col-sm-6">
-										<input type="file" name="files[]" class="form-control" id="files" multiple="true" required="">
+									<div class="form-group">
+										<label for="cpideliver" class="col-sm-4 control-label text-right">File Upload</label>
+										<div class="col-sm-6">
+											<input type="file" name="files[]" class="form-control" id="files" multiple="true" required="">
+										</div>
 									</div>
-								</div>
-								<div class="form-group">
-									<div class="col-sm-offset-4 col-sm-8">
-										<button type="submit" id="saveDetail" class="btn btn-primary" disabled=""><i class="fa fa-check-circle"></i> Save</button>
+									<div class="form-group">
+										<div class="col-sm-offset-4 col-sm-8">
+											<button type="submit" id="saveDetail" class="btn btn-primary" disabled=""><i class="fa fa-check-circle"></i> Save</button>&nbsp;
+											<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle"></i> Close</button>
+										</div>
 									</div>
-								</div>
-							</fieldset>
-						</form>
+								</fieldset>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
 
 			<!-- List Final Estimation -->
-			<div class="col-lg-8">
-				<p><button type="button" id="addDetail" class="btn btn-success" disabled><i class="fa fa-plus"></i> Add Detail</button></p>
+			<div class="col-sm-12">
+				<p><button type="button" id="addDetail" class="btn btn-success" data-toggle="modal" data-target="#myModal" disabled><i class="fa fa-plus"></i> Add Detail</button></p>
 				<div class="widget widget-table">
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> List Final Estimation</h3>
@@ -309,25 +313,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 								</tr>
 							</thead>
 							<tbody>
-							<!-- 
-
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					 --></tbody>
+							</tbody>
 						</table>
 						</div>
 					</div>

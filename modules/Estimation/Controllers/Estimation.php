@@ -295,28 +295,24 @@ class Estimation extends \CodeIgniter\Controller
 				}
 			}
 
-			// if($_FILES["files"]['name'][0] =="") {
-
-			// 	$form_params[] = [
-			// 		'name' => 'file',
-			// 		'contents'	=> "",
-			// 		'filename'	=> "",
-			// 	];	
-
-			// } else {
-
-			// 	foreach($_FILES["files"]["tmp_name"] as $key=>$tmp_name) {
-			// 		if(is_array($_FILES["files"]["tmp_name"])) {
-			// 			$form_params[] = [
-			// 				'name' => 'file',
-			// 				'contents'	=> fopen($_FILES["files"]['tmp_name'][$key],'r'),
-			// 				'filename'	=> $_FILES["files"]['name'][$key],
-			// 			];
-			// 			continue;
-			// 		}
-			// 	}
-			// }
+			$validate = $this->validate([
+            'rdmhr'		=> 'required',
+            'rdmat'		=> 'required',
+            'rdtotal'	=> 'required',
+        	],
+            [
+            'rdmhr'		=> ['required' => 'MAN HOUR field required'],
+            'rdmat'		=> ['required' => 'MATERIAL COST field required'],
+            'rdtotal'	=> ['required' => 'TOTAL COST field required'],
+	        ]);
 			
+			if(!$validate) {
+				$data['status'] = "Failled";	
+				$data['message'] = \Config\Services::validation()->listErrors();
+				echo json_encode($data);
+				die();	
+			}
+
 			$response = $this->client->request('POST', 'estimasi/createDetail', [
 				'headers' => [
 					'Accept' => 'application/json',
@@ -683,6 +679,9 @@ class Estimation extends \CodeIgniter\Controller
 				else if($row['rdaccount']=='owner') {$rdaccount="O";}
 				else {$rdaccount="i";}				
 				$html .= '<tr>';
+				$html .= '<td>
+						<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
+						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 				$html .= '<td class="no">'.$no.'</td>';
 				$html .= '<td class="crno" style="display:none">'.$row['rpcrno'].'</td>';
 				$html .= '<td class="svid" style="display:none">'.$row['svid'].'</td>';
@@ -702,9 +701,6 @@ class Estimation extends \CodeIgniter\Controller
 				$html .= '<td class="rdmat">'.number_format($row['rdmat'],2).'<span style="display:none;">'.$row['rdmat'].'</span></td>';
 				$html .= '<td class="rdaccount" style="display:none;">'.$rdaccount.'</td>';
 				$html .= '<td class="rdtotal" style="display:none;">'.$row['rdtotal'].'</td>';
-				$html .= '<td>
-						<a href="#" class="btn btn-primary btn-xs edit">view</a>
-						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
 				$html .= '</tr>';
 				$no++;
 			}
@@ -1141,8 +1137,7 @@ class Estimation extends \CodeIgniter\Controller
 
 	public function calculateTotalCost() 
 	{
-		// rdloc,  rdcom,  rddmtype,  rdrepmtd, rdsize,  rdcalmtd, rdqty,  muname, prcode
-		// echo var_dump($_POST);die();
+		// rdloc,  rdcom,  rddmtype,  rdrepmtd, rdsize,  rdcalmtd, rdqty,  muname, prcode ,cccodes
 		$token = get_token_item();
 		$prcode = $token['prcode'];		
 		if($this->request->isAjax()) {
@@ -1160,12 +1155,14 @@ class Estimation extends \CodeIgniter\Controller
 					"rdcalmtd" => $_POST['rdcalmtd'], 
 					"rdqty" => $_POST['rdqty'],  
 					"muname" => $_POST['muname'], 
-					"prcode" => $prcode
+					"prcode" =>"",
+					"cccodes" => "",
+					// "crno" => $_POST['crno']
 				]
 			]);
 
 			$result = json_decode($response->getBody()->getContents(), true);
-			// echo var_dump($result);die();
+			echo var_dump($result);die();
 			echo json_encode($result['data'][0]);die();
 		}
 	}	

@@ -103,11 +103,11 @@ if(isset($data) && ($data!='')) {
 				</form>
 
 				<legend>Header Status Container WR(Waiting Repair)</legend>
-				<p><button type="button" class="btn btn-success" id="checkAll" disabled><i class="fa fa-list"></i> SAVE ALL CONTAINER</button></p>
+				<!-- <p><button type="button" class="btn btn-success" id="checkAll" disabled><i class="fa fa-list"></i> SAVE ALL CONTAINER</button></p> -->
 				<div class="table-responsive vscroll">
 				<table id="tblDetail" class="table">
 					<thead>
-						<tr><th width="20"></th>
+						<tr><th width="20" style="display: none;"></th>
 							<th width="20">No.</th>
 							<th>Container No.</th>
 							<th>Type</th>
@@ -124,7 +124,7 @@ if(isset($data) && ($data!='')) {
 						foreach($detail as $dt): ?>
 
 						<tr>
-						<td><input type="checkbox" name="checked_cr" class="checked_cr" value="0" ></td>
+						<td style="display:none;"><input type="checkbox" name="checked_cr" class="checked_cr" value="0" ></td>
 						<td><?= $no ?></td>
 						<td><?= $dt['crno'] ?></td>
 						<td><?= $dt['ctcode'] ?></td>

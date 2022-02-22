@@ -55,22 +55,22 @@ if(isset($data) && ($data!='')) {
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="woto" class="text-right">To :</label></td>
-							<td><input type="text" name="woto" class="form-control" id="woto" value="<?=@$data['woto'];?>" required></td>
+							<td><input type="text" name="woto" class="form-control" id="woto" value="<?=@$data['woto'];?>"></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="wofrom" class="text-right">From :</label></td>
-							<td><input type="text" name="wofrom" class="form-control" id="wofrom" value="<?=@$data['wofrom'];?>" required></td>
+							<td><input type="text" name="wofrom" class="form-control" id="wofrom" value="<?=@$data['wofrom'];?>"></td>
 							<td></td>
 						</tr>		
 						<tr>
 							<td class="text-right" width="130"><label for="wocc" class="text-right">CC :</label></td>
-							<td><input type="text" name="wocc" class="form-control" id="wocc" value="<?=@$data['wocc'];?>" required></td>
+							<td><input type="text" name="wocc" class="form-control" id="wocc" value="<?=@$data['wocc'];?>"></td>
 							<td></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="wocc" class="text-right">Notes :</label></td>
-							<td><input type="text" name="wonotes" class="form-control" id="wonotes" value="<?=@$data['wonotes'];?>" required></td>
+							<td><input type="text" name="wonotes" class="form-control" id="wonotes" value="<?=@$data['wonotes'];?>"></td>
 							<td></td>
 						</tr>									
 						<tr>

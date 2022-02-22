@@ -169,45 +169,32 @@ $(document).ready(function() {
 
 	});
 
-	// $('#detTable tbody').on('click', '.edit', function(e) {
-	// 	e.preventDefault();
-	// 	var crid = $(this).data("crid");
-	// 	var cpife = $('input:radio[name=cpife]');
-	// 	$.ajax({
-	// 		url: "<?= site_url('estimation/get_one_container/'); ?>" + crid,
-	// 		type: "POST",
-	// 		data: "crid=" + crid,
-	// 		dataType: "JSON",
-	// 		success: function(json) {
-	// 			if (json.message == "success") {
-	// 				$("#pracrnoid").val(json.cr.pracrnoid);
-	// 				$("#crno").val(json.cr.crno);
-	// 				$("#ccode").select2().select2('val', json.cr.cccode);
-	// 				$("#ctcode").val(json.cr.ctcode);
-	// 				$("#cclength").val(json.cr.cclength);
-	// 				$("#ccheight").val(json.cr.ccheight);
+	$("#muname").on("change", function(){
+		calculate_cost();		
+	});
 
-	// 				$("#saveDetail").hide();
-	// 				$("#updateDetail").show();
-	// 				$("#updateDetail").prop("disabled", false);
+	$("#lccode").on("change", function(){
+		calculate_cost();		
+	});
 
+	$("#cmcode").on("change", function(){
+		calculate_cost();		
+	});
+	
+	$("#dycode").on("change", function(){
+		calculate_cost();		
+	});
 
-	// 				if (json.cr.cpife == "1") {
-	// 					cpife.filter('[value=1]').prop('checked', true);
-	// 				} else if (json.cr.cpife == "0") {
-	// 					cpife.filter('[value=0]').prop('checked', true);
-	// 				}
+	$("#rmcode").on("change", function(){
+		calculate_cost();	
+	});
 
-	// 				if (json.cr.cpishold == 1) {
-	// 					$("#cpishold").prop('checked', true);
-	// 					$("#cpishold").val(json.cr.cpishold);
-	// 				}
-	// 				$("#cpiremark").val(json.cr.cpiremark);
-
-	// 			}
-	// 		}
-	// 	})
-	// });
+	$("input:radio[name=rdcalmtd]").on("change", function(){
+		calculate_cost();	
+	});
+	$("#rdqtyact").on("keyup", function(){
+		calculate_cost();		
+	});
 
 	$("#addDetail").on("click", function(e){
 		var det_crno = $("#rpcrno").val();
@@ -226,21 +213,6 @@ $(document).ready(function() {
 		$("#dycode").select2().select2('val','');
 		$("#rmcode").select2().select2('val','');			
 	});
-
-	// $("#addDetail").on("click", function(e){
-	// 	var det_crno = $("#rpcrno").val();
-	// 	var det_svid = $("#svid").val();
-	// 	var tblRow = parseInt($("#tblList_add tr").length);
-	// 	$("#saveDetail").prop('disabled', false);
-	// 	$("#formDetail").trigger("reset");
-	// 	$("#det_crno").val(det_crno);
-	// 	$("#det_svid").val(det_svid);
-	// 	$("#rpid").val(tblRow);
-	// 	$("#lccode").select2().select2('val','');
-	// 	$("#cmcode").select2().select2('val','');
-	// 	$("#dycode").select2().select2('val','');
-	// 	$("#rmcode").select2().select2('val','');			
-	// });
 
 	$("#addDetailEdit").on("click", function(e){
 		var det_crno = $("#rpcrno").val();
@@ -497,6 +469,31 @@ $(document).ready(function() {
     // END DATATABLE
 
 });
+
+function calculate_cost() {
+	$.ajax({
+		url: "<?php echo site_url('estimation/calculateTotalCost'); ?>",
+		type: "POST",
+		data: {
+			"rdloc": $("#lccode").val(),
+			"rdcom": $("#cmcode").val(),
+			"rddmtype": $("#dycode").val(),
+			"rdrepmtd": $("#rmcode").val(),
+			"rdsize": $("#rdsize").val(),
+			"rdcalmtd": $("#rdcalmtd").val(),
+			"rdqty": $("#rdqtyact").val(),
+			"muname": $("#muname").val(),
+			"prcode": $("#prcode").val()
+		},		
+		dataType: 'json',
+		success: function(json) {
+			$("#rdmat").val(json.xmtrl_cost);
+			$("#rdmhr").val(json.xhours);
+			$("#rdtotal").val(json.xtariff_labor_cost);
+			console.log(json.xmtrl_cost);
+		}
+	});	
+}
 
 function runDataTables() {		
     $.fn.dataTable.pipeline = function ( opts ) { 

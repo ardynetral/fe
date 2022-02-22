@@ -14,3 +14,4 @@ $routes->add('/estimation/getFileList/(:alphanum)', '\Modules\Estimation\Control
 $routes->add('/estimation/delete_detail', '\Modules\Estimation\Controllers\Estimation::delete_detail', ['filter' => 'login']);
 $routes->add('/estimation/delete_detail_edit', '\Modules\Estimation\Controllers\Estimation::delete_detail_edit', ['filter' => 'login']);
 $routes->add('/estimation/print/(:alphanum)/(:alphanum)', '\Modules\Estimation\Controllers\Estimation::print/$1/$2', ['filter' => 'login']);
+$routes->add('/estimation/calculateTotalCost', '\Modules\Estimation\Controllers\Estimation::calculateTotalCost', ['filter' => 'login']);

@@ -37,7 +37,7 @@ if(isset($data) && ($data!='')) {
 				<div id="alert">
 					
 				</div>
-				<form id="fContract" class="form-horizontal" role="form">
+				<form id="fWO" class="form-horizontal" role="form">
 					<?= csrf_field() ?>
 					<fieldset>
 					<table class="tbl-form" width="100%">
@@ -45,49 +45,56 @@ if(isset($data) && ($data!='')) {
 					<tbody>
 						<tr>
 							<td class="text-right" width="130"><label for="cono" class="text-right">WO No :</label></td>
-							<td width="300"><input type="text" name="cono" class="form-control" id="cono" value="<?=@$data['cono'];?>"></td>
+							<td width="300"><input type="text" name="wono" class="form-control" id="wono" value="<?=@$wo_number;?>" readonly></td>
 							<td></td>
 						</tr>
 						<tr>
-							<td class="text-right" width="130"><label for="cono" class="text-right">WO Date :</label></td>
-							<td><input type="text" name="cono" class="form-control" id="cono" value="<?=@$data['cono'];?>"></td>
+							<td class="text-right" width="130"><label for="wodate" class="text-right">WO Date :</label></td>
+							<td><input type="text" name="wodate" class="form-control" id="wodate" value="<?= date('d-m-Y');?>" readonly></td>
 							<td></td>
 						</tr>
 						<tr>
-							<td class="text-right" width="130"><label for="cono" class="text-right">To :</label></td>
-							<td><input type="text" name="cono" class="form-control" id="cono" value="<?=@$data['cono'];?>"></td>
+							<td class="text-right" width="130"><label for="woto" class="text-right">To :</label></td>
+							<td><input type="text" name="woto" class="form-control" id="woto" value="<?=@$data['woto'];?>" required></td>
 							<td></td>
 						</tr>
 						<tr>
-							<td class="text-right" width="130"><label for="cono" class="text-right">From :</label></td>
-							<td><input type="text" name="cono" class="form-control" id="cono" value="<?=@$data['cono'];?>"></td>
+							<td class="text-right" width="130"><label for="wofrom" class="text-right">From :</label></td>
+							<td><input type="text" name="wofrom" class="form-control" id="wofrom" value="<?=@$data['wofrom'];?>" required></td>
 							<td></td>
 						</tr>		
 						<tr>
-							<td class="text-right" width="130"><label for="cono" class="text-right">CC :</label></td>
-							<td><input type="text" name="cono" class="form-control" id="cono" value="<?=@$data['cono'];?>"></td>
+							<td class="text-right" width="130"><label for="wocc" class="text-right">CC :</label></td>
+							<td><input type="text" name="wocc" class="form-control" id="wocc" value="<?=@$data['wocc'];?>" required></td>
 							<td></td>
-						</tr>		
+						</tr>
 						<tr>
-							<td class="text-right" width="130"><label for="cono" class="text-right">Principal :</label></td>
+							<td class="text-right" width="130"><label for="wocc" class="text-right">Notes :</label></td>
+							<td><input type="text" name="wonotes" class="form-control" id="wonotes" value="<?=@$data['wonotes'];?>" required></td>
+							<td></td>
+						</tr>									
+						<tr>
+							<td class="text-right" width="130"><label for="woopr" class="text-right">Principal :</label></td>
 							<td><?=principal_dropdown();?></td>
 							<td></td>
 						</tr>	
 						<tr>
-							<td class="text-right" width="130"><label for="cono" class="text-right">Notes :</label></td>
-							<td><input type="text" name="cono" class="form-control" id="cono" value="<?=@$data['cono'];?>"></td>
+							<td class="text-right" width="130"><label for="wotype" class="text-right">Condition Box :</label></td>
+							<td>
+								<!-- <input type="text" name="cono" class="form-control" id="cono" value="<?=@$data['cono'];?>"> -->
+								<select name="wotype" id="wotype" class="input form-control" required>
+									<option value="">- select -</option>
+									<option value='AU' <?php echo $select = (@$details['datas']['crlastcond'] == 'AU') ? 'selected="selected"' : ''; ?>>AU</option>
+									<option value='DN' <?php echo $select = (@$details['datas']['crlastcond'] == 'DN') ? 'selected="selected"' : ''; ?>>DN</option>
+								</select>
+							</td>
 							<td></td>
 						</tr>													
 						<tr>
 							<td></td>
 							<td colspan="8">
-								<?php if(isset($act)&&($act=='view')):?>
-								<!-- <button type="button" id="updateData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp; -->
-								<a href="<?=site_url('wo')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
-								<?php else: ?>
 								<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
 								<a href="<?=site_url('wo')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
-								<?php endif; ?>
 							</td>
 						</tr>						
 					</tbody>
@@ -96,25 +103,23 @@ if(isset($data) && ($data!='')) {
 				</form>
 
 				<legend>Header Status Container WR(Waiting Repair)</legend>
-				<table class="table">
+				<p><button type="button" class="btn btn-success" id="checkAll" disabled><i class="fa fa-list"></i> SAVE ALL CONTAINER</button></p>
+				<div class="table-responsive vscroll">
+				<table id="tblDetail" class="table">
 					<thead>
-						<tr><th width="20">No.</th>
+						<tr><th width="20"></th>
+							<th width="20">No.</th>
 							<th>Container No.</th>
 							<th>Type</th>
 							<th>Length</th>
 							<th>Height</th>
+							<th></th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
 					</tbody>
 				</table>
+				</div>
 			</div>
 		</div>
 		<!-- end .widget -->

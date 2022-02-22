@@ -257,7 +257,7 @@ $(document).ready(function() {
 							title: "Success",
 							html: '<div class="text-success">' + json.message + '</div>'
 						});
-						loadPrint($("#crno").val());
+						loadPrint($("#final_crno").val());
 						window.location.href= "<?=site_url('approval');?>";
 					} else {
 						Swal.fire({

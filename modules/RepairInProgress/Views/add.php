@@ -9,7 +9,6 @@ if(isset($data) && ($data!='')) {
 }
 ?>
 
-
 <div class="content">
 	<div class="main-header">
 		<h2><?=$page_title;?></h2>
@@ -33,208 +32,130 @@ if(isset($data) && ($data!='')) {
 						<?php echo $message;?>
 					</p>
 				<?php endif;?>
-				<div id="alert">
-					
-				</div>
-				<form id="fContract" class="form-horizontal" role="form">
+				
+				<form id="fEstimasi" class="form-horizontal" role="form" method="POST">
 					<?= csrf_field() ?>
+					<?php $readonly = 'readonly'; ?>
+					<input type="hidden" name="svid" id="svid">
+					<input type="hidden" name="rpcrton" id="rpcrton">
+					<input type="hidden" name="rpcrtby" id="rpcrtby">
 					<fieldset>
-					<table class="tbl-form" width="100%">
-						<!-- 9 kolom -->
-					<tbody>
-						<tr>
-							<td class="text-right" width="150"><label for="" class="text-right">Container No :</label></td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>
-							<td class="text-right" width="150">Material :</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td class="text-right" width="130"><label for="" class="text-right">WO No :</label></td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>
-							<td class="text-right">Container Type :</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td class="text-right" width="130"><label for="" class="text-right">Date :</label></td>
-							<td><input type="text" name="" class="form-control" id="" value="<?=''?>"></td>
-							<td></td>
-							<td class="text-right">Length :</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td class="text-right" width="130"><label for="" class="text-right">Principal :</label></td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>
-							<td class="text-right">Height :</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td class="text-right" width="130"><label for="" class="text-right">Surveyor :</label></td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>
-							<td class="text-right">survey Condition :</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td class="text-right" width="130"><label for="" class="text-right">Survey Date :</label></td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>	
-						<tr>
-							<th>Repair</th>
-							<th>Date</th>
-							<th>Time</th>
-							<th>Cleaning</th>
-							<th>Date</th>
-							<th>Time</th>
-						</tr>	
-						<tr>
-							<td >
-								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="" id="" value="0">
-								<span>In WorkShop :</span></label>
-							</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td>
-								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="" id="" value="0">
-								<span>Start Cleaning :</span></label>
-							</td>	
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-						</tr>
-						<tr>
-							<td >
-								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="" id="" value="0">
-								<span>Start Repair :</span></label>
-							</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td >
-								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="" id="" value="0">
-								<span>Finish Cleaning :</span></label>
-							</td>	
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-						</tr>
-						<tr>
-							<td >
-								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="" id="" value="0">
-								<span>Finish Repair :</span></label>
-							</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td class="text-right" >Status</td>	
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>
-						</tr>
-						<tr>
-							<td >
-								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="" id="" value="0">
-								<span>Out WorkShop :</span></label>
-							</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td class="text-right" >Notes</td>	
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>
-						</tr>	
-						<tr>
-							<td class="text-right" >Inspector :</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>
-							<td class="text-right" >Total Completion :</td>
-							<td><input type="text" name="" class="form-control" id="" value="<?='';?>"></td>
-							<td></td>			
-						</tr>
-						<tr>
-							<td class="text-right">Fictive Completion :</td>
-							<td>
-								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="" id="" value="0">
-								<span></span></label>
-							</td>
-							<td></td>
-							<td ></td>	
-							<td></td>
-							<td></td>
-						</tr>						
-						<tr>
-							<td></td>
-							<td colspan="8">
-								<?php if(isset($act)&&($act=='view')):?>
-								<!-- <button type="button" id="updateData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp; -->
-								<button type="button" id="cancel" class="btn btn-default"><i class="fa fa-ban"></i> Back</button>								
-								<?php else: ?>
-								<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
-								<button type="button" id="cancel" class="btn btn-default text-right"><i class="fa fa-ban"></i> Cancel</button>								
-								<?php endif; ?>
-							</td>
-						</tr>						
-					</tbody>
-					</table>
+						<table class="tbl-form" width="100%">
+							<!-- 9 kolom -->
+							<tbody>
+								<tr>
+									<td class="text-right" width="130">Container No :</td>
+									<td><input type="text" name="rpcrno" class="form-control" id="rpcrno" value="<?= ''; ?>">
+										<i class="err-crno text-danger"></i></td>
+									<td class="text-right">EOR No :</td>
+									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="rpnoest" id="rpnoest" class="form-control" value="<?= ''; ?>" readonly></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td class="text-right" width="130">Date :</td>
+									<td><input type="text" name="rptglest" class="form-control" id="rptglest" value="<?= date('d-m-Y'); ?>" readonly></td>
+									<td class="text-right">Time :</td>
+									<td colspan="3"><input type="text" name="rpjamest" id="rpjamest" class="form-control" value="<?= date('H:i:s'); ?>" readonly></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td class="text-right" width="130">ID Code :</td>
+									<td><input <?php echo $readonly; ?> type="text" name="cccode" class="form-control" id="cccode" value="<?= ''; ?>"></td>
+									<td class="text-right">Type :</td>
+									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="ctcode" id="ctcode" class="form-control" value="<?= ''; ?>"></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td class="text-right" width="130">Lenght :</td>
+									<td><input <?php echo $readonly; ?> type="text" name="cclength" class="form-control" id="cclength" value="<?= ''; ?>"></td>
+									<td class="text-right">Height :</td>
+									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="ccheight" id="ccheight" class="form-control" value="<?= ''; ?>"></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td class="text-right" width="130">Contract No :</td>
+									<td><input <?php echo $readonly; ?> type="text" name="cono" class="form-control" id="cono" value="<?= ''; ?>"></td>
+									<td class="text-right">Expired :</td>
+									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="coexpdate" id="coexpdate" class="form-control" value="<?= ''; ?>"></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td class="text-right" width="130">Surveyor :</td>
+									<td><input <?php echo $readonly; ?> type="text" name="syid" class="form-control" id="syid" value="<?= ''; ?>"></td>
+									<td class="text-right">Survey Date :</td>
+									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="svsurdat" id="svsurdat" class="form-control" value="<?= ''; ?>"></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td class="text-right" width="130">Est Version :</td>
+									<td><input <?php echo $readonly; ?> type="text" name="rpver" class="form-control" id="rpver" value="<?= ''; ?>"></td>
+									<td class="text-right">Survey Condition :</td>
+									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="svcond" id="svcond" class="form-control" value="<?= ''; ?>"></td>
+									<td></td>
+									<td></td>
+								</tr>
+								<tr>
+									<td class="text-right" width="130">WO Number :</td>
+									<td><input <?php echo $readonly; ?> type="text" name="wono" class="form-control" id="wono" value="<?= ''; ?>"></td>
+									<td class="text-right">Inspektor :</td>
+									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="inspektor" id="inspektor" class="form-control" value="<?= ''; ?>"></td>
+									<td></td>
+									<td></td>
+								</tr>
+							</tbody>
+						</table>
 					</fieldset>
-				</form>	
+				</form>					
 
-				<legend>Repair's Item</legend>
-				<table class="table">
-					<thead>
-						<tr><th width="20">No.</th>
-							<th>Loc</th>
-							<th>Com</th>
-							<th>DT</th>
-							<th>RM</th>
-							<th>CM</th>
-							<th>SIZE</th>
-							<th>MU</th>
-							<th>QTY</th>
-							<th>MHY</th>
-							<th>COMP</th>
-							<th width="80">A.QTY</th>
-							<th width="80">A.MHR</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td>
-								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="" id="" value="0">
-								<span>Finish Repair :</span></label>
-							</td>
-							<td>
-								<input type="text" name="" class="form-control" id="" value="<?='';?>">
-							</td>
-							<td>
-								<input type="text" name="" class="form-control" id="" value="<?='';?>">
-							</td>
-						</tr>
-					</tbody>
-				</table>				
+				<legend></legend>
+				<div class="row">
+					<div class="col-lg-12">
+						<p class="text-center">
+							<button type="button" id="finishRepair" class="btn btn-success"><i class="fa fa-cogs"></i> FINISH REPAIR</button>
+							<button type="button" id="finishCleaning" class="btn btn-primary"><i class="fa fa-check-circle"></i> FINISH CLEANING</button>&nbsp;
+
+							<a href="<?= site_url('rip') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+						</p>
+						<div class="widget widget-table">
+							<div class="widget-header">
+								<h3><i class="fa fa-table"></i> Repair's Item</h3>
+							</div>
+							<div class="widget-content">
+								<div class="table-responsive vscroll">
+								<table class="table" id="tblList_add">
+									<thead>
+										<tr>
+											<th></th>
+											<th>No</th>
+											<th>COM</th>
+											<th>DT</th>
+											<th>RM</th>
+											<th>CM</th>
+											<th>BCE</th>
+											<th>SIZE</th>
+											<th>MU</th>
+											<th>QTY</th>
+											<th>MHR</th>
+											<th>CUR</th>
+											<th>DESC</th>
+											<th>Lab. Cost</th>
+											<th>Mat. Cost</th>
+										</tr>
+									</thead>
+									<tbody>
+									</tbody>
+								</table>
+								</div>
+							</div>
+						</div>
+					</div>					
+				</div>								
 			</div>
 		</div>
 		<!-- end .widget -->		

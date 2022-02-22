@@ -1137,6 +1137,37 @@ class Estimation extends \CodeIgniter\Controller
 		$option .= "</select>";
 		return $option;
 		die();
-	}		
+	}	
+
+	public function calculateTotalCost() 
+	{
+		// rdloc,  rdcom,  rddmtype,  rdrepmtd, rdsize,  rdcalmtd, rdqty,  muname, prcode
+		// echo var_dump($_POST);die();
+		$token = get_token_item();
+		$prcode = $token['prcode'];		
+		if($this->request->isAjax()) {
+			$response = $this->client->request('GET', 'estimasi/listcalculated', [
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'query' => [
+					"rdloc" => $_POST['rdloc'],  
+					"rdcom" => $_POST['rdcom'],  
+					"rddmtype" => $_POST['rddmtype'],  
+					"rdrepmtd" => $_POST['rdrepmtd'], 
+					"rdsize" => $_POST['rdsize'],  
+					"rdcalmtd" => $_POST['rdcalmtd'], 
+					"rdqty" => $_POST['rdqty'],  
+					"muname" => $_POST['muname'], 
+					"prcode" => $prcode
+				]
+			]);
+
+			$result = json_decode($response->getBody()->getContents(), true);
+			// echo var_dump($result);die();
+			echo json_encode($result['data'][0]);die();
+		}
+	}	
 }
 

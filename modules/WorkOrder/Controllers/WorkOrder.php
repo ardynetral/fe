@@ -298,12 +298,13 @@ class WorkOrder extends \CodeIgniter\Controller
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
 				],
-				'query' => [
+				'form_params' => [
 					'svid' => $SVID,
 					'rpcrno' => $CRNO,
 				]
 			]);	
 			$result = json_decode($response->getBody()->getContents(), true);
+			// echo var_dump($result);die();
 			if(isset($result['status']) && $result['status']=="Failled") {
 	    		$data["status"] = "Failled";
 	    		$data["message"] = $result['message'];

@@ -54,7 +54,16 @@ class Approval extends \CodeIgniter\Controller
 			
 			$btn_list .= '<a href="'.site_url('approval/view/').$v['CRNO'].'" id="" class="btn btn-xs btn-primary btn-tbl">view</a>';	
 			
-			$btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl print" data-crno="'.$v['CRNO'].'">print</a>';
+			// $btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl print" data-crno="'.$v['CRNO'].'">print</a>';
+			$btn_list .= '
+				<div class="btn-group">
+					<button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Print <span class="caret"></span></button>
+					<ul class="dropdown-menu" role="menu">
+						<li><a href="#" class="print" data-crno="'.$v['CRNO'].'" data-type="all">All</a></li>
+						<li><a href="#" class="print" data-crno="'.$v['CRNO'].'" data-type="owner">Owner</a></li>
+						<li><a href="#" class="print" data-crno="'.$v['CRNO'].'" data-type="user">User</a></li>
+					</ul>
+				</div>';			
 
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
@@ -837,7 +846,7 @@ class Approval extends \CodeIgniter\Controller
 
 	}
 
-	public function print($crno) 
+	public function print($crno,$type) 
 	{
 		$mpdf = new \Mpdf\Mpdf();
 
@@ -886,7 +895,8 @@ class Approval extends \CodeIgniter\Controller
 		$html .= '<tr><td>
 				 <img src="'. ROOTPATH .'/public/media/img/LOGO_CONTINDO.png" style="height:60px;">
 				 </td>
-				 <td width="20%" class="t-right">ESTIMATE OF REPAIRS</td></tr>';
+				 <td width="20%" class="t-right">ESTIMATE OF REPAIRS<br>
+				 <b>ACCOUNT : '.strtoupper($type).'</b></td></tr>';
 
 		$html .= '<tr><td colspan="2">JL. BY PASS KM 8, PADANG SUMATERA BARAT
 				 +62 751 61600 &nbsp; +62 751 61097</td></tr>';
@@ -946,34 +956,85 @@ class Approval extends \CodeIgniter\Controller
 		$tot_rdmat_u = 0;
 		$tot_rdtotal_o = 0;
 		$tot_rdtotal_u = 0;					
-		foreach($detail as $det) {
-			if($det['rdaccount']=="user") {
-				$account = "U";
-				$tot_rdmhr_u = $tot_rdmhr_u+(double)$det['rdmhr'];
-				$tot_rdlab_u = $tot_rdlab_u+(double)$det['rdlab'];	
-				$tot_rdmat_u = $tot_rdmat_u+(int)$det['rdmat'];
-				$tot_rdtotal_u = $tot_rdtotal_u+(int)$det['rdtotal'];					
-			} else if($det['rdaccount']=="owner") {
-				$account = "O";
-				$tot_rdmhr_o = $tot_rdmhr_o+(double)$det['rdmhr'];
-				$tot_rdlab_o = $tot_rdlab_o+(double)$det['rdlab'];	
-				$tot_rdmat_o = $tot_rdmat_o+(int)$det['rdmat'];
-				$tot_rdtotal_o = $tot_rdtotal_o+(int)$det['rdtotal'];
-			} else {
-				$account = "i";
-			}
+		switch($type) {
+			case "owner" :
+				foreach($detail as $det) {
+					if($det['rdaccount']=="owner") {
+						$account = "O";
+						$tot_rdmhr_o = $tot_rdmhr_o+(double)$det['rdmhr'];
+						$tot_rdlab_o = $tot_rdlab_o+(double)$det['rdlab'];	
+						$tot_rdmat_o = $tot_rdmat_o+(int)$det['rdmat'];
+						$tot_rdtotal_o = $tot_rdtotal_o+(int)$det['rdtotal'];
+						
+						$html .= '<tr>
+						<td>'.$no.'</td>
+						<td>'.$det['lccode'].'</td>
+						<td>'.$det['rddesc'].'</td>
+						<td class="t-right">'.$det['rdmhr'].'</td>
+						<td class="t-right">'.number_format($det['rdlab'],0).'</td>
+						<td class="t-right">'.number_format($det['rdmat'],0).'</td>
+						<td class="t-right">'.number_format($det['rdtotal'],0).'</td>
+						<td class="t-center">'.$account.'</td>
+						</tr>';
+						$no++;
+					}
+				}			
+			break;
+			
+			case "user" :
+				foreach($detail as $det) {
+					if($det['rdaccount']=="user") {
+						$account = "U";
+						$tot_rdmhr_u = $tot_rdmhr_u+(double)$det['rdmhr'];
+						$tot_rdlab_u = $tot_rdlab_u+(double)$det['rdlab'];	
+						$tot_rdmat_u = $tot_rdmat_u+(int)$det['rdmat'];
+						$tot_rdtotal_u = $tot_rdtotal_u+(int)$det['rdtotal'];					
+						$html .= '<tr>
+						<td>'.$no.'</td>
+						<td>'.$det['lccode'].'</td>
+						<td>'.$det['rddesc'].'</td>
+						<td class="t-right">'.$det['rdmhr'].'</td>
+						<td class="t-right">'.number_format($det['rdlab'],0).'</td>
+						<td class="t-right">'.number_format($det['rdmat'],0).'</td>
+						<td class="t-right">'.number_format($det['rdtotal'],0).'</td>
+						<td class="t-center">'.$account.'</td>
+						</tr>';
+						$no++;
+					}
 
-		$html .= '<tr>
-		<td>'.$no.'</td>
-		<td>'.$det['lccode'].'</td>
-		<td>'.$det['rddesc'].'</td>
-		<td class="t-right">'.$det['rdmhr'].'</td>
-		<td class="t-right">'.number_format($det['rdlab'],0).'</td>
-		<td class="t-right">'.number_format($det['rdmat'],0).'</td>
-		<td class="t-right">'.number_format($det['rdtotal'],0).'</td>
-		<td class="t-center">'.$account.'</td>
-		</tr>';
-		$no++;
+				}			
+			break;
+
+			default :
+				foreach($detail as $det) {
+					if($det['rdaccount']=="user") {
+						$account = "U";
+						$tot_rdmhr_u = $tot_rdmhr_u+(double)$det['rdmhr'];
+						$tot_rdlab_u = $tot_rdlab_u+(double)$det['rdlab'];	
+						$tot_rdmat_u = $tot_rdmat_u+(int)$det['rdmat'];
+						$tot_rdtotal_u = $tot_rdtotal_u+(int)$det['rdtotal'];					
+					} else if($det['rdaccount']=="owner") {
+						$account = "O";
+						$tot_rdmhr_o = $tot_rdmhr_o+(double)$det['rdmhr'];
+						$tot_rdlab_o = $tot_rdlab_o+(double)$det['rdlab'];	
+						$tot_rdmat_o = $tot_rdmat_o+(int)$det['rdmat'];
+						$tot_rdtotal_o = $tot_rdtotal_o+(int)$det['rdtotal'];
+					} else {
+						$account = "i";
+					}
+
+					$html .= '<tr>
+					<td>'.$no.'</td>
+					<td>'.$det['lccode'].'</td>
+					<td>'.$det['rddesc'].'</td>
+					<td class="t-right">'.$det['rdmhr'].'</td>
+					<td class="t-right">'.number_format($det['rdlab'],0).'</td>
+					<td class="t-right">'.number_format($det['rdmat'],0).'</td>
+					<td class="t-right">'.number_format($det['rdtotal'],0).'</td>
+					<td class="t-center">'.$account.'</td>
+					</tr>';
+					$no++;
+				}
 		}
 
 		$html .='
@@ -1184,5 +1245,43 @@ class Approval extends \CodeIgniter\Controller
 		$option .="</select>";
 		return $option; 
 		die();			
-	}	
+	}
+
+	public function calculateTotalCost() 
+	{
+		// rdloc,  rdcom,  rddmtype,  rdrepmtd, rdsize,  rdcalmtd, rdqty,  muname, prcode ,cccodes
+		$token = get_token_item();
+		$prcode = $token['prcode'];		
+		if($this->request->isAjax()) {
+			$response = $this->client->request('GET', 'estimasi/listcalculated', [
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'query' => [
+					"rdloc" => $_POST['rdloc'],  
+					"rdcom" => $_POST['rdcom'],  
+					"rddmtype" => $_POST['rddmtype'],  
+					"rdrepmtd" => $_POST['rdrepmtd'], 
+					"rdsize" => $_POST['rdsize'],  
+					"rdcalmtd" => $_POST['rdcalmtd'], 
+					"rdqty" => $_POST['rdqty'],  
+					"muname" => $_POST['muname'], 
+					"prcode" =>"",
+					"cccodes" => "",
+					// "crno" => $_POST['crno']
+				]
+			]);
+
+			$result = json_decode($response->getBody()->getContents(), true);
+			if(isset($result['data'][0])){
+				$data['status'] = "success";
+				$data['data'] = $result['data'][0];
+				echo json_encode($data);die();
+			}
+			$data['status'] = "Failled";
+			$data['data'] = "";
+			echo json_encode($data);die();
+		}
+	}		
 }

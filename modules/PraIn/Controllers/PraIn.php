@@ -1153,6 +1153,8 @@ class PraIn extends \CodeIgniter\Controller
 				$no=0;
 				foreach ($containers as $c) {
 				// echo var_dump($c);die();
+					$INVOICE_NUMBER  = 'KW' . date("Ymd", strtotime($data['data']['cpipratgl'])) . str_repeat("0", 8 - strlen($data['data']['praid'])) . $data['data']['praid'];
+
 					$cprocess_params[$no] = [
 						"CRNO" => $c['crno'],
 					    "CPOPR" => $c['cpopr'],
@@ -1173,8 +1175,9 @@ class PraIn extends \CodeIgniter\Controller
 					    "CPISHOLD" => $c['cpishold'],
 					    "CPIREMARK" => $c['cpiremark'],
 					    "CPIVOYID" => $data['data']['cpivoyid'],
-					    "CPIVOY" => $data['data']['voyages']['voyno'],
+					    "CPIVOY" => $data['data']['cpivoyid'],
 					    "CPISTATUS" => 0,
+					    "CPIRECEPTNO" => $INVOICE_NUMBER
 					];	
 
 					// get One Container
@@ -2504,8 +2507,8 @@ class PraIn extends \CodeIgniter\Controller
 				<td>
 					<h4>PT. CONTINDO RAYA</h4>
 				</td>
-				<td class="t-center" width="30%"><h2>KWITANSI / RECEIPT</h2></td>
-				<td class="t-right"><p>'.$invoice_number.'</p></td>
+				<td class="t-center" width="40%"><h2>PROFORMA</h2></td>
+				<td class="t-right"><p>&nbsp;</p></td>
 				</tr>
 				</table>
 			</div>
@@ -2515,7 +2518,6 @@ class PraIn extends \CodeIgniter\Controller
 				<tbody>
 					<tr>
 						<td width="60%" style="vertical-align:baseline!important;">
-							SUDAH TERIMA DARI / RECEIVED FROM
 							<h2>'.strtoupper($debitur['cuname']).'</h2>
 							<table class="tbl-borderless">
 								<tr><td>NPWP</td><td>:&nbsp; '.$debitur['cunpwp'].'</td></tr>
@@ -2650,7 +2652,7 @@ class PraIn extends \CodeIgniter\Controller
 					<tr>
 						<td width="60%"><div style="width:600px;word-break: break-all;">
 						</div></td>
-						<td class="t-center" style="vertical-align:baseline!important;"  width="25%">( KASIR )</td>
+						<td class="t-center" style="vertical-align:baseline!important;"  width="25%"></td>
 					</tr>
 				</tbody>
 			</table>	

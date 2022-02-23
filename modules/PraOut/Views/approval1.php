@@ -18,6 +18,7 @@
 				<div class="row">
 					<form id="fEditPraIn" class="form-horizontal" role="form" enctype="multipart/form-data">
 						<?= csrf_field() ?>
+						<input type="hidden" name="act" id="act" value="apv1">
 						<input type="hidden" name="praid" id="praid" value="<?=$data['praid']?>">
 						<fieldset>
 							<div class="col-sm-6">
@@ -151,7 +152,7 @@
 									<div class="col-sm-6">
 										<!-- <input type="text" name="name" class="form-control" id="name"> -->
 										<!-- <?=voyage_dropdown(); ?> -->
-										<input type="text" id="cpivoyid" name="cpivoyid" class="form-control" value="<?=$data['cpivoyid']?>" readonly>
+										<input type="text" id="cpivoyid" name="cpivoyid" class="form-control" value="<?=$data['cpivoyid']?>">
 									</div>
 								</div>								
 								<div class="form-group">
@@ -256,7 +257,7 @@
 									foreach($orderPraContainers as $row): 
 									?>
 										<tr>
-											<td><a href="#" id="editContainer" class="btn btn-xs btn-info view" data-crid="<?=$row['pracrnoid']?>" data-toggle='modal' data-target='#myModal'>view</a></td>
+											<td><a href="#" id="editContainer" class="btn btn-xs btn-info view" data-crid="<?=$row['pracrnoid']?>" data-toggle='modal' data-target='#myModal'>edit</a></td>
 											<td><?=$i;?></td>
 											<td><?=$row['crno'];?></td>
 											<td><?=$row['cccode']?></td>

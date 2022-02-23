@@ -259,7 +259,6 @@
 									<th>Height</th>
 									<th>Principal</th>
 									<th>Lift Off</th>
-									<th>Remark</th>
 									<th>Seal No</th>
 									<th>GateIn Date</th>
 								</tr>
@@ -288,7 +287,6 @@
 											<td><?=$row['cpopr'];?></td>
 											<td><?=$row['biaya_lolo'];?></td>
 											<td><?=@$row['sealno'];?></td>
-											<td><?=$row['cpiremark']?></td>
 											<td></td>
 										</tr>
 									<?php 
@@ -298,7 +296,7 @@
 									endforeach; ?>
 								<?php endif; ?>
 
-								<tr><th colspan="10" class="text-right">TOTAL LOLO</th><th class="text-right"><?=number_format($total,2)?></th></tr>
+								<tr><th colspan="9" class="text-right">TOTAL LOLO</th><th class="text-right"><?=number_format($total,2)?></th></tr>
 
 							</tbody>
 						</table>

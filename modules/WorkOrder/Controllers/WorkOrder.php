@@ -45,8 +45,8 @@ class WorkOrder extends \CodeIgniter\Controller
             $record[] = $v['woopr'];
             $record[] = date('d-m-Y', strtotime($v['wodate']));		
 
-			$btn_list .= '<a href="'.site_url('wo/edit/').$v['wono'].'" id="editWo" class="btn btn-xs btn-success btn-tbl edit">edit</a>';
-			// $btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl print" data-wono="'.$v['wono'].'">print</a>';
+			$btn_list .= '<a href="'.site_url('wo/edit/').$v['wono'].'" id="editWo" class="btn btn-xs btn-success btn-tbl edit">edit</a>&nbsp;';
+			$btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl print" data-wono="'.$v['wono'].'">print</a>';
 			// $btn_list .= '<a href="#" id="deleteWo" class="btn btn-xs btn-danger btn-tbl delete">delete</a>';
 
             $record[] = '<div>'.$btn_list.'</div>';
@@ -329,5 +329,134 @@ class WorkOrder extends \CodeIgniter\Controller
 
 		$result = json_decode($response->getBody()->getContents(), true);
 		return $result['data'];	
+	}
+
+	public function print($wono)
+	{
+		check_exp_time();
+		$mpdf = new \Mpdf\Mpdf();	
+		$data = [];
+
+		$response = $this->client->request('GET','workorder/detailWoHeader',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'wono' => $wono
+			]
+		]);		
+
+		$result = json_decode($response->getBody()->getContents(), true);
+
+		$header = $result['data']['dataOne'][0];		
+		$detail = $result['data']['dataTwo'];
+		// dd($header);
+		$html = '';
+
+		$html .= '
+		<html>
+			<head>
+				<title>WORK ORDER</title>
+				<link href="' . base_url() . '/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+				<style>
+					body{font-family: Arial;}
+					.page-header{display:block;padding:0;min-height:30px;margin-bottom:30px;}
+					.head-left{float:left;width:200px;padding:0px;}
+					.head-center{margin-left:200px;width:200px;padding:0px;text-align:center;}
+					.head-right{float:left;padding:0px;margin-right:0px;text-align: right;}
+
+					.tbl_header, .tbl_head_prain, .tbl_det_prain{border-spacing: 0;border-collapse: collapse;}
+					.tbl_header td, .tbl_head_prain td{border-spacing: 0;border-collapse: collapse;}
+					.t-right{text-align:right;}
+					.t-left{text-align:left;}
+					.t-center{text-align:center;}
+
+					.tbl_det_prain th,.tbl_det_prain td {
+						border:1px solid #666666!important;
+						border-spacing: 0;
+						border-collapse: collapse;
+						padding:5px;
+
+					}
+					.line-space{border-bottom:1px solid #333;margin:30px 0;}
+				</style>
+			</head>
+		';
+
+		$html .= '<body>
+			<div class="page-header">
+				<table width="100%" class="tbl-header">
+				<tr><td colspan="2"><h2>WORK ORDER</h2></td></tr>
+				<tr><td colspan="2"><h2>&nbsp;</h2></td></tr>
+				<tr>
+				<td class="t-left">Principal : ' . $header['woopr'] . '</td>
+				<td class="t-right">WO Number : ' . $header['wono'] . '</td>
+				</tr>
+				<tr>
+				<td class="t-left">To : ' . $header['woto'] . '</td>
+				<td class="t-right">Date : ' . $header['wodate'] . '</td>
+				</tr>
+				<tr>
+				<td class="t-left">From : ' . $header['wofrom'] . '</td>
+				<td class="t-right"></td>
+				</tr>
+				<tr>
+				<td class="t-left">CC : ' . $header['wocc'] . '</td>
+				<td class="t-right"></td>
+				</tr>
+				</table>
+			</div>
+		';
+		$html .='
+		<p>Dengan hormat,</p>
+		<p>Terlampir daftar container waiting repair/cleaning, mohon segera dilakukan pemindahan ke blok damage sehingga bisa dilakukan repair/cleaning sesuai standard yang berlaku.</p>
+		<p>Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.</p>
+		<p>Hormat kami,</p>
+		<p style="margin-top:40px;">MARKETING</p>
+		';
+
+		$html .='
+		<table class="tbl_det_prain" width="100%">
+			<thead>
+				<tr>
+					<th>NO</th>
+					<th>CONTAINER No</th>
+					<th>Type</th>
+					<th>Length</th>
+					<th>Date In</th>
+					<th>Cost(USD)</th>
+					<th>App. Date</th>
+					<th>Remarks</th>			
+				</tr>
+			</thead>
+			<tbody>';
+			if($detail!=null){
+				$i=1;
+			foreach($detail as $d){
+			$html .='<tr>
+				<td class="t-center">' . $i . '</td>
+				<td class="t-center">' .  $d['crno'] . '</td>
+				<td class="t-center">' .  $d['ctcode'] . '</td>
+				<td class="t-center">' .  $d['cclength'] . '</td>
+				<td class="t-center"></td>
+				<td class="t-center"></td>
+				<td class="t-center"></td>
+				<td class="t-center"></td>
+			</tr>';	
+			$i++;	
+			}
+			}
+		$html .='
+				</tbody>
+			</table>
+			<p style="margin-top:40px;">Notes : ' . @$header['wonotes'] . '</p>
+		</body>
+		</html>
+		';
+		$mpdf->WriteHTML($html);
+		$mpdf->Output();
+		// echo $html;
+		die();				
 	}
 }

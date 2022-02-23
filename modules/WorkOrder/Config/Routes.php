@@ -11,3 +11,5 @@ $routes->add('/wo/save_one_detail', '\Modules\WorkOrder\Controllers\WorkOrder::s
 $routes->add('/wo/edit/(:alphanum)', '\Modules\WorkOrder\Controllers\WorkOrder::edit/$1', ['filter' => 'login']);
 // DELETE
 $routes->add('/wo/delete_container', '\Modules\WorkOrder\Controllers\WorkOrder::delete_container', ['filter' => 'login']);
+// PRINT
+$routes->add('/wo/print/(:alphanum)', '\Modules\WorkOrder\Controllers\WorkOrder::print/$1', ['filter' => 'login']);

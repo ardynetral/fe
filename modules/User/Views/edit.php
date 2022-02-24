@@ -75,7 +75,7 @@
 						</div>
 
 
-						<div class="form-group" id="input_debitur" style="display:none;">
+						<div class="form-group" id="input_debitur" <?=$data['group_id']==1 ? "" : 'style="display:none;"';?>>
 							<label for="cucode" class="col-sm-2 control-label text-right">EMKL</label>
 							<div class="col-sm-4" id="debitur-dropdown">
 							<?=$debitur_dropdown;?>

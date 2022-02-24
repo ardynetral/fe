@@ -152,7 +152,7 @@ class User extends \CodeIgniter\Controller
 				"username"	=> $_POST["username"],
 				"password"	=> $_POST["password"],
 				"email"		=> $_POST["email"],
-				"prcode"=>$_POST["prcode"]
+				"prcode"	=> $_POST["prcode"]
 			];
 
 			$validate = $this->validate([
@@ -226,7 +226,7 @@ class User extends \CodeIgniter\Controller
 				"isBlock"	=> $_POST["isblock"],
 				"prcode"	=> $_POST["prcode"]
 			];
-
+			// echo var_dump($_POST);die();
 			$validate = $this->validate([
 	            'fullname' 	=> 'required',
 	            'username'  => 'required',
@@ -256,7 +256,7 @@ class User extends \CodeIgniter\Controller
 					echo json_encode($data);die();				
 				}
 
-				session()->setFlashdata('sukses','Success, New User Updated.');
+				session()->setFlashdata('sukses','Success, Data Updated.');
 				$data['message'] = "success";
 				echo json_encode($data);die();
 
@@ -415,7 +415,7 @@ class User extends \CodeIgniter\Controller
 			$result = json_decode($response->getBody()->getContents(),true);	
 			$debitur = $result['data']['datas'];
 			$option = "";
-			$option .= '<select name="prcode" id="prcode" class="select-emkl">';
+			$option .= '<select name="prcode_emkl" id="prcode_emkl" class="select-emkl">';
 			$option .= '<option vlue="">-select-</option>';
 			foreach($debitur as $cu) {
 				$option .= "<option value='".$cu['cucode'] ."'". ((isset($selected) && $selected==$cu['cucode']) ? ' selected' : '').">".$cu['cuname']."</option>";
@@ -473,7 +473,7 @@ class User extends \CodeIgniter\Controller
 	$result = json_decode($response->getBody()->getContents(),true);	
 	$debitur = $result['data']['datas'];
 	$option = "";
-	$option .= '<select name="prcode" id="prcode" class="select-debitur">';
+	$option .= '<select name="prcode_emkl" id="prcode_emkl" class="select-debitur">';
 	$option .= '<option vslue="">-select-</option>';
 	foreach($debitur as $cu) {
 		$option .= "<option value='".$cu['cucode'] ."'". ((isset($selected) && $selected==$cu['cucode']) ? ' selected' : '').">".$cu['cuname']."</option>";

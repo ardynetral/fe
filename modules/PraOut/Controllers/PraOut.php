@@ -1899,8 +1899,7 @@ public function edit_get_container($praid)
 		die();
 	}	
 
-	// Proforma Print invoice 1
-	public function print_invoice1($id) 
+	public function print_proforma($id) 
 	{
 		check_exp_time();
 		$mpdf = new \Mpdf\Mpdf();
@@ -1922,7 +1921,7 @@ public function edit_get_container($praid)
 		// dd($header);
 
 		$pratgl = $header['cpipratgl'];
-		$recept = recept_by_praid($header['praid']);
+		$recept = $header['orderPraRecept'][0];
 		$debitur = $this->get_debitur($header['cpideliver']);
 		$detail = $header['orderPraContainers'];
 		$depo = $this->get_depo($header['cpdepo']);
@@ -1987,7 +1986,7 @@ public function edit_get_container($praid)
 		$html .= '
 		<html>
 			<head>
-				<title>Order PraIn</title>
+				<title>Order PraOut</title>
 
 				<style>
 					body{font-family: Arial;font-size:12px;}
@@ -2084,7 +2083,7 @@ public function edit_get_container($praid)
 				if($qty20>0) {
 					$html .='<tr>
 						<td>001</td>
-						<td>LIFT OFF - 20 FT</td>
+						<td>LIFT ON - 20 FT</td>
 						<td></td>
 						<td class="t-center">'.$qty20.'</td>
 						<td class="t-center">20</td>
@@ -2096,7 +2095,7 @@ public function edit_get_container($praid)
 				if($qty40>0) {
 					$html .='<tr>
 						<td>002</td>
-						<td>LIFT OFF - 40 FT</td>
+						<td>LIFT ON - 40 FT</td>
 						<td></td>
 						<td class="t-center">'.$qty40.'</td>
 						<td class="t-center">40</td>
@@ -2108,7 +2107,7 @@ public function edit_get_container($praid)
 				if($qty45>0) {
 					$html .='<tr>
 						<td>003</td>
-						<td>LIFT OFF - 45 FT</td>
+						<td>LIFT ON - 45 FT</td>
 						<td></td>
 						<td class="t-center">'.$qty45.'</td>
 						<td class="t-center">45</td>
@@ -2172,6 +2171,297 @@ public function edit_get_container($praid)
 						<td width="60%"><div style="width:600px;word-break: break-all;">
 						</div></td>
 						<td class="t-center" style="vertical-align:baseline!important;"  width="25%"></td>
+					</tr>
+				</tbody>
+			</table>	
+			<div style="width:300px;">';
+			foreach($detail as $dt):
+				$html .= '<span>'.$dt['crno'] . '</span>,&nbsp;';
+			endforeach;			
+			$html .= '</p>		
+		</body>
+		</html>
+		';
+		$mpdf->WriteHTML($html);
+		$mpdf->Output();
+		// echo $html;
+		die();		
+	}
+
+	// Proforma Print invoice 1
+	public function print_invoice1($id) 
+	{
+		check_exp_time();
+		$mpdf = new \Mpdf\Mpdf();
+
+		$data = [];
+		$response = $this->client->request('GET','orderPras/printOrderByPraOrderId',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query'=>[
+				'praid' => $id,
+			]
+		]);
+
+
+		$result = json_decode($response->getBody()->getContents(),true);		
+		$header = $result['data']['datas'][0];
+		// dd($header);
+
+		$pratgl = $header['cpipratgl'];
+		$recept = recept_by_praid($header['praid']);
+		$debitur = $this->get_debitur($header['cpideliver']);
+		$detail = $header['orderPraContainers'];
+		$depo = $this->get_depo($header['cpdepo']);
+		if($recept==""){
+			$invoice_number ="-";	
+		} else {
+			// $invoice_number = "KW." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
+			$invoice_number  = 'KW' . date("Ymd", strtotime($pratgl)) . str_repeat("0", 8 - strlen($recept['praid'])) . $recept['praid'];
+		}
+				
+
+		$qty=0;
+		(int)$qty20 = 0;
+		(int)$qty40 = 0;
+		(int)$qty45 = 0;		
+		(int)$price20 = 0;
+		(int)$price40 = 0;
+		(int)$price45 = 0;		
+		(int)$subtot20 = 0;
+		(int)$subtot40 = 0;
+		(int)$subtot45 = 0;		
+		(int)$price_cleaning = 0;
+		(int)$subtot_cleaning = 0;
+		(int)$subtotal = 0;
+		(int)$total = 0;
+		
+		foreach($detail as $det) {			
+			$qty = $qty+1;
+			$price_cleaning = (int)$det['biaya_lain'];
+			$subtot_cleaning = $subtot_cleaning+(int)$det['biaya_lain'];
+
+			if($det['cclength']<=20) {
+				$qty20 = $qty20 + 1;  
+				$price20 = $det['biaya_lolo'];
+				$subtot20 = $subtot20 + (int)$det['biaya_lolo'];
+			} 
+			if ($det['cclength']==40) {
+				$qty40 = $qty40 + 1;
+				$price40 = $det['biaya_lolo'];
+				$subtot40 = $subtot40 + (int)$det['biaya_lolo'];
+			}
+			if($det['cclength']>40) {
+				$qty45 = $qty45 + 1;
+				$price45 = $det['biaya_lolo'];
+				$subtot45 = $subtot45 + (int)$det['biaya_lolo'];
+			}
+		}
+
+		$total=$subtot_cleaning+$subtot20+$subtot40+$subtot45+$recept['biaya_adm']+$recept['total_pajak'];
+		$terbilang = strtoupper(toEnglish($total)) . ' IDR';
+
+		if(isset($result['status']) && ($result['status']=="Failled"))
+		{
+			$data['status'] = "Failled";
+			$data['message'] = $result['message'];
+			echo json_encode($data);die();				
+		}
+		
+
+		$html = '';
+
+		$html .= '
+		<html>
+			<head>
+				<title>Order PraOut</title>
+
+				<style>
+					body{font-family: Arial;font-size:12px;}
+					.page-header{display:block;padding:0;min-height:30px;}
+					h2{font-weight:normal;line-height:.5;}
+					.head-left{float:left;width:200px;padding:0px;}
+					.head-right{float:left;padding:0px;margin-left:200px;text-align: right;}
+
+					.tbl_head, .tbl_det_prain, .tbl-borderless{border-spacing: 0;border-collapse: collapse;}
+					.tbl_head_prain td{border-collapse: collapse;}
+					.t-right{text-align:right;}
+					.t-left{text-align:left;}
+					.t-center{text-align:center;}
+
+					.tbl_head td, .tbl_det_prain th,.tbl_det_prain td {
+						border:1px solid #000000!important;
+						border-spacing: 0;
+						border-collapse: collapse;
+						padding:5px;
+
+					}					
+					.tbl-borderless td {
+						border:none!important;
+						border-spacing: 0;
+						border-collapse: collapse;
+					}
+					.line-space{border-bottom:1px solid #000000;margin:30px 0;}
+				</style>
+			</head>
+		';
+
+		$html .= '<body>
+			<div class="page-header">
+				<table width="100%">
+				<tr>
+				<td>
+					<h4>PT. CONTINDO RAYA</h4>
+				</td>
+				<td class="t-center" width="40%"><h2>KWITANSI / RECEIPT</h2></td>
+				<td class="t-right"><p>'.$invoice_number.'</p></td>
+				</tr>
+				</table>
+			</div>
+		';
+		$html .='
+			<table class="tbl_head" width="100%">
+				<tbody>
+					<tr>
+						<td width="60%" style="vertical-align:baseline!important;">
+							SUDAH TERIMA DARI / RECEIVED FROM
+							<h2>'.strtoupper($debitur['cuname']).'</h2>
+							<table class="tbl-borderless">
+								<tr><td>NPWP</td><td>:&nbsp; '.$debitur['cunpwp'].'</td></tr>
+							</table>
+						</td>
+						<td width="40%" style="vertical-align:baseline!important;">
+							<p>
+							ADDRESS :<br>
+							'.$debitur['cuaddr'].'
+							</p>
+						</td>
+					</tr>		
+				</tbody>
+			</table>
+		';
+
+		$html .='
+		<br>
+		<table class="tbl-borderless">
+			<tr>
+				<td style="border-botom:1px solid #000;">BANYAK UANG</td>
+				<td rowspan="3" class="t-center" style="vertical-align:baseline!important;"><br><h2>'.$terbilang.'</h2>
+			</td></tr>
+			<tr><td>----------------------</td></tr>
+			<tr><td><i>THE SUM OF</i></td></tr>
+		</table>
+		<br>
+		';
+
+		$html .='
+			<table class="tbl_det_prain" width="100%">
+				<thead>
+					<tr>
+						<th>NO</th>
+						<th>URAIAN / PEMBAYARAN</th>
+						<th>LATTER NO</th>
+						<th>QTY</th>
+						<th>SIZE</th>
+						<th COLSPAN="2">PRICE</th>
+						<th>JUMLAH</th>
+					</tr>
+				</thead>
+				<tbody>
+				';
+				if($qty20>0) {
+					$html .='<tr>
+						<td>001</td>
+						<td>LIFT ON - 20 FT</td>
+						<td></td>
+						<td class="t-center">'.$qty20.'</td>
+						<td class="t-center">20</td>
+						<td class="t-center">IDR</td>
+						<td class="t-right">'.number_format($price20,2).'</td>
+						<td class="t-right">'.number_format($subtot20,2).'</td>
+					</tr>';
+				}
+				if($qty40>0) {
+					$html .='<tr>
+						<td>002</td>
+						<td>LIFT ON - 40 FT</td>
+						<td></td>
+						<td class="t-center">'.$qty40.'</td>
+						<td class="t-center">40</td>
+						<td class="t-center">IDR</td>
+						<td class="t-right">'.number_format($price40,2).'</td>
+						<td class="t-right">'.number_format($subtot40,2).'</td>
+					</tr>';
+				}
+				if($qty45>0) {
+					$html .='<tr>
+						<td>003</td>
+						<td>LIFT ON - 45 FT</td>
+						<td></td>
+						<td class="t-center">'.$qty45.'</td>
+						<td class="t-center">45</td>
+						<td class="t-center">IDR</td>
+						<td class="t-right">'.number_format($price45,2).'</td>
+						<td class="t-right">'.number_format($subtot45,2).'</td>
+					</tr>';
+				}
+
+				$html .='
+				<tr>
+					<td>004</td>
+					<td>CLEANING</td>
+					<td></td>
+					<td class="t-center">'.$qty.'</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($price_cleaning,2).'</td>
+					<td class="t-right">'.number_format($subtot_cleaning,2).'</td>
+				</tr>	
+				<tr>
+					<td>005</td>
+					<td>ADMINISTRATION</td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
+					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
+				</tr>	
+				<tr>
+					<td>998</td>
+					<td>PPN 10% </td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
+					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
+				</tr>							
+				<tr><th colspan="7" class="t-right">Total</th>
+					<th class="t-right">'.number_format($total,2).'</th></tr>
+
+				</tbody>
+			</table>';
+
+		$html .='
+		<br>
+			<table class="tbl-borderless" width="100%">
+				<tbody>			
+	
+					<tr>
+						<td width="60%">REMARK : </td>
+						<td class="t-center">PADANG, '.date('d-M-Y').'</td>
+					</tr>
+					<tr>
+						<td><b>'.$header['cpirefin'].'</b></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td width="60%"><div style="width:600px;word-break: break-all;">
+						</div></td>
+						<td class="t-center" style="vertical-align:baseline!important;"  width="25%">( KASIR )</td>
 					</tr>
 				</tbody>
 			</table>	
@@ -2284,7 +2574,7 @@ public function edit_get_container($praid)
 						<td class="t-left">&nbsp;:&nbsp;'.$header['cpipratgl'].' </td>
 					</tr>
 					<tr>
-						<td class="t-right">Lift Off Charges In Depot</td>
+						<td class="t-right">Lift On Charges In Depot</td>
 						<td class="t-left">&nbsp;:&nbsp; '.((isset($header['liftoffcharge'])&&$header['liftoffcharge']==1)?"yes" : "no").'</td>
 						<td class="t-right">Ref In N0 #</td>
 						<td class="t-left">&nbsp;:&nbsp;'.$header['cpirefin'].'  </td>

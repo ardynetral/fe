@@ -38,7 +38,7 @@
 									</div>
 								</div>
 								<div class="form-group" style="display:none;">
-									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift Off Charged in Depot</label>
+									<label for="liftoffcharge" class="col-sm-5 control-label text-right">Lift On Charged in Depot</label>
 									<div class="col-sm-7">
 										<label class="control-inline fancy-checkbox custom-color-green">
 											<input type="checkbox" name="liftoffcharge" id="liftoffcharge" value="<?=$data['liftoffcharge']?>" <?=(isset($data['liftoffcharge'])&&($data['liftoffcharge']==1)?'':'checked');?> readonly="">
@@ -246,7 +246,7 @@
 							<th>Height</th>
 							<th>F/E</th>
 							<th>Principal</th>
-							<th>Lift Off</th>
+							<th>Lift On</th>
 							<th>Seal No</th>
 							<th>Remark</th>
 							<th>GateIn Date</th>

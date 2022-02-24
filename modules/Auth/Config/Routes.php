@@ -6,6 +6,7 @@ $routes->post('/set_login', '\Modules\Auth\Controllers\Auth::set_login');
 // $routes->get('/register', '\Modules\Auth\Controllers\Auth::register');
 $routes->get('/user_profile', '\Modules\Auth\Controllers\Auth::user_profile', ['filter' => 'login']);
 $routes->get('/forgot_password', '\Modules\Auth\Controllers\Auth::forgot_password');
+$routes->post('/forgot_password', '\Modules\Auth\Controllers\Auth::forgot_password');
 $routes->add('/activate', '\Modules\Auth\Controllers\Auth::activate');
 $routes->add('/change_password', '\Modules\Auth\Controllers\Auth::change_password');
 $routes->post('/update_new_password', '\Modules\Auth\Controllers\Auth::update_new_password');

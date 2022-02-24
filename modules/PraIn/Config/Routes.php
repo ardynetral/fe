@@ -17,6 +17,7 @@ $routes->add('/prain/approval2/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::
 $routes->add('/prain/proforma/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::proforma/$1', ['filter' => 'login']);
 $routes->add('/prain/bukti_bayar', '\Modules\PraIn\Controllers\PraIn::bukti_bayar', ['filter' => 'login']);
 $routes->add('/prain/print_order/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::print_order/$1', ['filter' => 'login']);
+$routes->add('/prain/print_proforma/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::print_proforma/$1', ['filter' => 'login']);
 $routes->add('/prain/print_invoice1/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::print_invoice1/$1', ['filter' => 'login']);
 $routes->add('/prain/print_invoice2/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::print_invoice2/$1', ['filter' => 'login']);
 // pra container

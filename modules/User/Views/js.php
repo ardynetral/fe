@@ -31,7 +31,11 @@ $(document).ready(function() {
 		formData += "&fullname=" + $("#fullname").val();
 		formData += "&email=" + $("#email").val();
 		formData += "&group_id=" + $("#group_id").val();
+		if($("#group_id").val()=="1"){
+		formData += "&prcode=" + $("#prcode_emkl").val();
+		} else {
 		formData += "&prcode=" + $("#prcode").val();
+		}
 		console.log(formData);
 		$.ajax({
 			url: "<?php echo site_url('users/add'); ?>",
@@ -102,7 +106,11 @@ $(document).ready(function() {
 		formData += "&password=" + $("#password").val();
 		formData += "&isblock=" + $("input[name=isblock]:checked").val();
 		formData += "&group_id=" + $("#group_id").val();
+		if($("#group_id").val()=="1"){
+		formData += "&prcode=" + $("#prcode_emkl").val();
+		} else {
 		formData += "&prcode=" + $("#prcode").val();
+		}
 		console.log(formData);
 		$.ajax({
 			url: "<?php echo site_url('users/edit/'); ?>"+$("#uid").val(),

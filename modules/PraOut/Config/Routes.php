@@ -17,6 +17,7 @@ $routes->add('/praout/approval2/(:alphanum)', '\Modules\PraOut\Controllers\PraOu
 $routes->add('/praout/proforma/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::proforma/$1', ['filter' => 'login']);
 $routes->add('/praout/bukti_bayar', '\Modules\PraOut\Controllers\PraOut::bukti_bayar', ['filter' => 'login']);
 $routes->add('/praout/print_order/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::print_order/$1', ['filter' => 'login']);
+$routes->add('/praout/print_proforma/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::print_proforma/$1', ['filter' => 'login']);
 $routes->add('/praout/print_invoice1/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::print_invoice1/$1', ['filter' => 'login']);
 $routes->add('/praout/print_invoice2/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::print_invoice2/$1', ['filter' => 'login']);
 // pra container

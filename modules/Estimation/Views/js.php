@@ -193,7 +193,49 @@ $(document).ready(function() {
 		calculate_cost();	
 	});
 	$("#rdqtyact").on("keyup", function(){
-		calculate_cost();		
+		$("#rdmhr").val("0");
+		$("#rdmat").val("0");
+		$("#rdtotal").val("0");	
+		$.ajax({
+			url: "<?php echo site_url('estimation/calculateTotalCost'); ?>",
+			type: "POST",
+			data: {
+				"rdloc": $("#lccode").val(),
+				"rdcom": $("#cmcode").val(),
+				"rddmtype": $("#dycode").val(),
+				"rdrepmtd": $("#rmcode").val(),
+				"rdsize": $("#rdsize").val(),
+				"rdcalmtd": $("#rdcalmtd").val(),
+				"rdqty": $("#rdqtyact").val(),
+				"muname": $("#muname").val(),
+				// "prcode": $("#prcode").val(),
+				"crno": $("#rpcrno").val()
+			},		
+			dataType: 'json',
+			success: function(json) {
+				if(json.status=="success") {
+					if($("#rdqtyact").val()< json.data._start) {
+						Swal.fire({
+							icon: 'error',
+							title: "Error",
+							html: '<div class="text-danger">Quantity min:' + json.data._start + '</div>'
+						});	
+					}if($("#rdqtyact").val()> json.data._limit) {
+						Swal.fire({
+							icon: 'error',
+							title: "Error",
+							html: '<div class="text-danger">Quantity max:' + json.data._limit + '</div>'
+						});					
+					} else{					
+						$("#rdmhr").val(json.data._hoursidr);
+						$("#rdmat").val(json.data._mtrlcostidr);
+						$("#rdtotal").val(json.data._laborcostidr);
+					}
+				}
+				// console.log(json.xmtrl_cost);
+			}
+		});
+					
 	});
 
 	$("#addDetail").on("click", function(e){
@@ -471,6 +513,8 @@ $(document).ready(function() {
 });
 
 function calculate_cost() {
+	// jika < start  maka "error message"
+	// jika > limit  maka "error message"
 	$("#rdmhr").val("0");
 	$("#rdmat").val("0");
 	$("#rdtotal").val("0");	

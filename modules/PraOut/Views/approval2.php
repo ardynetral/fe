@@ -258,7 +258,7 @@
 									<th>Length</th>
 									<th>Height</th>
 									<th>Principal</th>
-									<th>Lift Off</th>
+									<th>Lift On</th>
 									<th>Seal No</th>
 									<th>GateIn Date</th>
 								</tr>

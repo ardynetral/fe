@@ -356,7 +356,7 @@ class GateOut extends \CodeIgniter\Controller
 		$html .= '
 		<html>
 			<head>
-				<title>Gate In | Print EIR-OUT</title>
+				<title>Gate Out | Print EIR-OUT</title>
 				<link href="' . base_url() . '/public/themes/smartdepo/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 				<style>			
 					.page-header{display:block;margin-bottom:20px;line-height:0.3;}
@@ -454,7 +454,7 @@ class GateOut extends \CodeIgniter\Controller
 						<td colspan="3">:&nbsp;' . $header['cposeal'] . '</td>
 					</tr>					
 					<tr>
-						<td>VESSEL</td>
+						<td>LOADING VESSEL</td>
 						<td colspan="3">:&nbsp;' . $header['cpoves'] . '/' . $header['cpovoyid'] . '</td>
 					</tr>
 					<tr>

@@ -428,12 +428,12 @@ class GateOut extends \CodeIgniter\Controller
 
 					<tr>
 						<td>TARA</td>
-						<td colspan="3">:&nbsp;' . $header['crtarak'] . '/' . $header['crtaral'] . ' </td>
+						<td colspan="3">:&nbsp;' . $header['crtarak'] . ' </td>
 					</tr>
 
 					<tr>
-						<td>MAN.DATE </td>
-						<td colspan="3">:&nbsp;' . $header['crmandat'] . ' </td>
+						<td>REF OUT NO </td>
+						<td colspan="3">:&nbsp;' . $header['cporefout'] . ' </td>
 					</tr>
 					<tr>
 						<td>CONDITION</td>

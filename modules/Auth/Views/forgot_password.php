@@ -9,13 +9,19 @@
 			<label for="username" class="control-label sr-only">Email</label>
 			<div class="col-sm-12">
 				<div class="input-group">
-					<input type="text" placeholder="Email Address" id="email" class="form-control">
+					<input type="text" placeholder="Email Address" name="email" id="email" class="form-control" required>
 					<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
 				</div>
 			</div>
 		</div>
-		<button class="btn btn-custom-primary btn-lg btn-block btn-auth" id="btnResetPassword"><i class="fa fa-arrow-circle-o-right"></i> Reset Password</button>
+		<button type="button" class="btn btn-custom-primary btn-lg btn-block btn-auth" id="btnResetPassword"><i class="fa fa-arrow-circle-o-right"></i> Reset Password</button>
 	</form>
 </div>
+
+<?= $this->endSection(); ?>
+
+<?= $this->Section('script_js'); ?>
+
+<?= $this->include('\Modules\Auth\Views\js'); ?>
 
 <?= $this->endSection(); ?>

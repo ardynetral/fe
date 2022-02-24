@@ -147,6 +147,31 @@ class Auth extends \CodeIgniter\Controller
 
 	public function forgot_password()
 	{
+		if($this->request->isAjax()) {
+			// /auth/emailChangePassword
+			$response = $this->client->request('POST','users/auth/emailChangePassword',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'form_params' => [
+					'email' => $this->request->getPost('email'),
+				]
+			]);		
+
+			$result = json_decode($response->getBody()->getContents(),true);
+			
+			if(isset($result['status']) && ($result['status']=="Failled"))
+			{
+				$data['message'] = $result['message'];
+				echo json_encode($data);die();				
+			}
+
+			$data['message'] = 'success';
+			$data['message_data'] = $result['message'];
+			echo json_encode($data);die();			
+		}
+
 		return view('Modules\Auth\Views\forgot_password');
 	}
 

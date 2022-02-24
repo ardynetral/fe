@@ -981,6 +981,12 @@ $(document).ready(function() {
         window.open("<?php echo site_url('prain/print_order/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
 
+	$('#printProforma').on("click", function(e){
+		e.preventDefault();
+		var praid = $(this).data("praid");
+        window.open("<?php echo site_url('prain/print_proforma/'); ?>" + praid, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	});
+
 	$('#proformaPrintInvoice1').on("click", function(e){
 		e.preventDefault();
 		var praid = $(this).data("praid");

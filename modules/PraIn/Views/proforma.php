@@ -307,9 +307,11 @@
 									<a href="<?=$file['url']; ?>" target="_blank">
 										<img src="<?=$file['url']; ?>" style="width:200px;">
 									</a>
-									<?php endforeach; ?>
+									<?php break; endforeach; ?>
 								</p>
-
+								<p class="text-right">
+									<button type="button" id="printProforma" class="btn btn-primary" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Print Proforma</button>
+								</p>
 							</div>						
 
 						</div>									
@@ -370,8 +372,9 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<div class="col-sm-offset-4 col-sm-6">
+									<div class="col-sm-offset-4 col-sm-8">
 										<button type="submit" id="saveBuktiBayar" class="btn btn-primary"><i class="fa fa-save"></i> Submit</button>&nbsp;
+										<button type="button" id="printProforma" class="btn btn-default" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Print Proforma </button>
 									</div>
 								</div>
 								</fieldset>

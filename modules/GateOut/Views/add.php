@@ -165,7 +165,9 @@ if(isset($data) && ($data!='')) {
 									<td class="text-right">Manfacture Date :</td>
 									<td><input <?php echo $readonly; ?> type="text" name="manufdate" id="manufdate" class="form-control" value="<?= ''; ?>"></td>
 									<td class="text-right">Vessel :</td>
-									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="vesid" id="vesid" class="form-control" value="<?= ''; ?>"></td>
+									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="vesid" id="vesid" class="form-control" value="<?= ''; ?>">
+									<input type="hidden" name="cpovoyid" id="cpovoyid" class="form-control" value="<?= ''; ?>">
+									</td>
 								</tr>
 								<!-- baris 11 -->
 								<tr>

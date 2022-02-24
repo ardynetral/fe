@@ -247,7 +247,7 @@
 							<th>F/E</th>
 							<th>Principal</th>
 							<th>Lift Off</th>
-							<th>Deposit</th>
+							<th>Seal No</th>
 							<th>Remark</th>
 							<th>GateIn Date</th>
 							<th></th>
@@ -282,7 +282,7 @@
 									</td>
 									<td><?=$row['cpopr']?></td>
 									<td><?=number_format($row['biaya_lolo'],2);?></td>
-									<td><?=number_format($row['biaya_clean'],2);?></td>									
+									<td><?=$row['sealno'];?></td>									
 									<td><?=$row['cpiremark']?></td>
 									<td></td>
 									<td>
@@ -338,7 +338,7 @@
 			</div>	
 			<div class="widget-footer text-center">
 				<a href="#" class="btn btn-primary" id="proformaPrintInvoice1" data-praid="<?=$data['praid']?>"><i class="fa fa-print"></i> Cetak Kwitansi</a>
-				<button type="button" id="cancel" class="btn btn-default cancel"><i class="fa fa-times-circle"></i> Cancel</button>				
+				<button type="button" id="cancel" class="btn btn-default cancel"><i class="fa fa-times-circle"></i> BACK</button>				
 			</div>
 		</div>	
 		

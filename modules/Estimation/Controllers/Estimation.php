@@ -1162,8 +1162,16 @@ class Estimation extends \CodeIgniter\Controller
 			]);
 
 			$result = json_decode($response->getBody()->getContents(), true);
-			echo var_dump($result);die();
-			echo json_encode($result['data'][0]);die();
+			// echo var_dump($result);die();
+			if(isset($result['data'][0])){
+				$data['status'] = "success";
+				$data['data'] = $result['data'][0];
+				echo json_encode($data);die();
+			}
+			$data['status'] = "Failled";
+			$data['data'] = "";
+			echo json_encode($data);die();
+
 		}
 	}	
 }

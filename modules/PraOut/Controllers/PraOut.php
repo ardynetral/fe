@@ -442,9 +442,20 @@ class PraOut extends \CodeIgniter\Controller
 				}
 			}
 
-			$validate = $this->validate([
-	            'praid' 	=> 'required',
-	        ]);			
+			// VALIDASI VESSEL & VOYAGE di APPROVAL-1
+			if(isset($_POST['act']) && $_POST['act']=='apv1') {
+				$validate = $this->validate([
+		            'cpives'		=> 'required',
+		            'cpivoyid'	=> 'required'
+		        	],
+		            [
+		            'cpives'		=> ['required' => 'VESSEL field required'],
+		            'cpivoyid'	=> ['required' => 'VOYAGE field required']
+			        ]
+			    );	
+			} else {
+				$validate = $this->validate(['praid' 	=> 'required']);
+			}
 		
 		    if ($this->request->getMethod() === 'post' && $validate)
 		    {
@@ -972,6 +983,7 @@ class PraOut extends \CodeIgniter\Controller
 			'query' => ['praid' => $id],
 		]);
 		$dt_order = json_decode($response->getBody()->getContents(), true);
+		// dd($dt_order);
 		$data['data'] = $dt_order['data']['datas'][0];
 		$recept = $data['data']['orderPraRecept'][0];
 		$dt_company = $this->get_company();
@@ -1007,27 +1019,11 @@ class PraOut extends \CodeIgniter\Controller
 			if($containers!="") {
 				$no=0;
 				foreach ($containers as $c) {
-				// echo var_dump($c);die();
-/*
-/api/v1/gateOut/repoOutUpdateCP
 
-cpopr1,
-cpcust1,
-cpoorderno,
-cporefout,
-cpopratgl,
-cpofe,
-cpoterm,
-cpocargo,
-cposeal,
-cpovoy,
-cpoves,
-cporeceiv,
-cporemark,
-cpid,		
-*/			
 					$cr_result = $this->get_container($c['crno']);
-					// echo var_dump($data['data']);die();
+					
+					$INVOICE_NUMBER  = 'KW' . date("Ymd", strtotime($data['data']['cpipratgl'])) . str_repeat("0", 8 - strlen($data['data']['praid'])) . $data['data']['praid'];
+
 					$cprocess_params[$no] = [
 						"crno" => $c['crno'],
 					    "cpopr1" => $c['cpopr'],				    
@@ -1040,10 +1036,12 @@ cpid,
 					    "cporeceiv" => $data['data']['cpideliver'],
 					    "cpoorderno" => $data['data']['cpiorderno'],
 					    "cporemark" => $c['cpiremark'],
-					    "cpovoy" => $data['data']['voyages']['voyno'],
+					    "cpovoyid" => $data['data']['cpivoyid'],
+					    "cpovoy" => $data['data']['cpivoyid'],
 						"cpid" => $cr_result['crcpid'],
 						"cposeal" => $c['sealno'],
 						"cpoterm" => "MTY",
+						"cporeceptno" => $INVOICE_NUMBER
 					];	
 
 					// Container Process
@@ -1625,7 +1623,7 @@ public function edit_get_container($praid)
 		foreach($result['data']['datas'] as $row){
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
-				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary edit' data-crid='".$pracrid."' data-toggle='modal' data-target='#myModal'>edit</a></td>
+				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary view' data-crid='".$pracrid."' data-toggle='modal' data-target='#myModal'>edit</a></td>
 				<td>".$i."</td>
 				<td>".$row['crno']."</td>
 				<td>".$row['cccode']."</td>
@@ -1703,7 +1701,7 @@ public function edit_get_container($praid)
 			$CRMANDAT = $result['data'][0]['crmandat'];
 			$CRLASTCOND = $result['data'][0]['crlastcond'];
 			$CPIDRIVER = $result['data'][0]['cpodriver'];
-			$CPIDRIVER = $result['data'][0]['cpodriver'];
+			$SEALNO = @$result['data'][0]['cposeal'];
 		} else {
 			$INVOICE_NUMBER = "";
 			$CRNO = "";
@@ -1732,6 +1730,7 @@ public function edit_get_container($praid)
 			$CRMANDAT = "";
 			$CRLASTCOND = "";
 			$CPIDRIVER = "";
+			$SEALNO = "";
 		}
 
 
@@ -1853,7 +1852,11 @@ public function edit_get_container($praid)
 					<tr>
 						<td>DRIVER</td>
 						<td colspan="3">:&nbsp;' . $CPIDRIVER . '</td>
-					</tr>		
+					</tr>
+					<tr>
+						<td>SEAL NO.</td>
+						<td colspan="3">:&nbsp;' . $SEALNO . '</td>
+					</tr>								
 					<tr>
 						<td>REMARK</td>
 						<td colspan="3"  style="font-weight:normal">:&nbsp;' . $REMARK . '</td>
@@ -2023,8 +2026,8 @@ public function edit_get_container($praid)
 				<td>
 					<h4>PT. CONTINDO RAYA</h4>
 				</td>
-				<td class="t-center" width="30%"><h2>KWITANSI / RECEIPT</h2></td>
-				<td class="t-right"><p>'.$invoice_number.'</p></td>
+				<td class="t-center" width="40%"><h2>PROFORMA</h2></td>
+				<td class="t-right"><p>&nbsp;</p></td>
 				</tr>
 				</table>
 			</div>
@@ -2034,7 +2037,6 @@ public function edit_get_container($praid)
 				<tbody>
 					<tr>
 						<td width="60%" style="vertical-align:baseline!important;">
-							SUDAH TERIMA DARI / RECEIVED FROM
 							<h2>'.strtoupper($debitur['cuname']).'</h2>
 							<table class="tbl-borderless">
 								<tr><td>NPWP</td><td>:&nbsp; '.$debitur['cunpwp'].'</td></tr>
@@ -2169,7 +2171,7 @@ public function edit_get_container($praid)
 					<tr>
 						<td width="60%"><div style="width:600px;word-break: break-all;">
 						</div></td>
-						<td class="t-center" style="vertical-align:baseline!important;"  width="25%">( KASIR )</td>
+						<td class="t-center" style="vertical-align:baseline!important;"  width="25%"></td>
 					</tr>
 				</tbody>
 			</table>	

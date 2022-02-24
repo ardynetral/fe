@@ -427,16 +427,47 @@ $(document).ready(function() {
 
 	});
 
+	// PRINT
 	$("#ctTable tbody").on("click", ".print", function(e) {
 		e.preventDefault();
 		var crno = $(this).data("crno");
-		loadPrint(crno);
+		var type = $(this).data("type");
+		loadPrint(crno,type);
 	});
 
 	$("#print").on("click", function(e) {
 		e.preventDefault();
 		var crno = $(this).data("crno");
-		loadPrint(crno);
+		var type = $(this).data("type");
+		loadPrint(crno,type);
+	});
+
+	// CALCULATE COST
+	$("#muname").on("change", function(){
+		calculate_cost();		
+	});
+
+	$("#lccode").on("change", function(){
+		calculate_cost();		
+	});
+
+	$("#cmcode").on("change", function(){
+		calculate_cost();		
+	});
+	
+	$("#dycode").on("change", function(){
+		calculate_cost();		
+	});
+
+	$("#rmcode").on("change", function(){
+		calculate_cost();	
+	});
+
+	$("input:radio[name=rdcalmtd]").on("change", function(){
+		calculate_cost();	
+	});
+	$("#rdqtyact").on("keyup", function(){
+		calculate_cost();		
 	});
 
 	// DATATABLE
@@ -464,8 +495,8 @@ $(document).ready(function() {
 
 });
 
-function loadPrint(crno) {
-	window.open("<?=site_url('approval/print/'); ?>" + crno, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');		
+function loadPrint(crno,type) {
+	window.open("<?=site_url('approval/print/'); ?>" + crno + "/" + type, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');		
 }
 
 function loadFileList(crno) {
@@ -531,6 +562,37 @@ function delete_data_edit(svid,rpid,rdno,crno) {
 			}
 		}
 	});
+}
+
+function calculate_cost() {
+	$("#rdmhr").val("0");
+	$("#rdmat").val("0");
+	$("#rdtotal").val("0");		
+	$.ajax({
+		url: "<?php echo site_url('approval/calculateTotalCost'); ?>",
+		type: "POST",
+		data: {
+			"rdloc": $("#lccode").val(),
+			"rdcom": $("#cmcode").val(),
+			"rddmtype": $("#dycode").val(),
+			"rdrepmtd": $("#rmcode").val(),
+			"rdsize": $("#rdsize").val(),
+			"rdcalmtd": $("#rdcalmtd").val(),
+			"rdqty": $("#rdqtyact").val(),
+			"muname": $("#muname").val(),
+			// "prcode": $("#prcode").val(),
+			"crno": $("#rpcrno").val()
+		},		
+		dataType: 'json',
+		success: function(json) {
+			if(json.status=="success") {
+				$("#rdmhr").val(json.data._hoursidr);
+				$("#rdmat").val(json.data._mtrlcostidr);
+				$("#rdtotal").val(json.data._laborcostidr);
+			}
+			// console.log(json.xmtrl_cost);
+		}
+	});	
 }
 
 function runDataTables() {		

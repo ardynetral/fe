@@ -548,8 +548,8 @@ $(document).ready(function() {
 				if(json.message=="success") {
 					$("#biaya_lolo").val(json.biaya_lolo);
 					$(".select-pr").select2('enable',false);
-					$(".select-pr").select2().select2('val',json.prcode);
-					$("#cucode").val(json.prcode);
+					$("#prcode").select2().select2('val',json.cr.cpopr);
+					$("#cucode").val(json.cr.cpcust);
 					$("#pracrnoid").val(json.cr.pracrnoid);
 					$("#crno").val(json.cr.crno);
 					$("#ccode").select2().select2('val',json.cr.cccode);
@@ -602,8 +602,6 @@ $(document).ready(function() {
 					$("#cclength").val(json.cr.cclength);
 					$("#ccheight").val(json.cr.ccheight);
 
-					$(".select-pr").select2().select2('val',json.prcode);
-					$("#cucode").val(json.prcode);
 					
 				    if(json.cr.cpife=="1") {
 				        cpife.filter('[value=1]').prop('checked', true);

@@ -471,6 +471,9 @@ $(document).ready(function() {
 });
 
 function calculate_cost() {
+	$("#rdmhr").val("0");
+	$("#rdmat").val("0");
+	$("#rdtotal").val("0");	
 	$.ajax({
 		url: "<?php echo site_url('estimation/calculateTotalCost'); ?>",
 		type: "POST",
@@ -488,9 +491,11 @@ function calculate_cost() {
 		},		
 		dataType: 'json',
 		success: function(json) {
-			$("#rdmhr").val(json._hoursidr);
-			$("#rdmat").val(json._mtrlcostidr);
-			$("#rdtotal").val(json._laborcostidr);
+			if(json.status=="success") {
+				$("#rdmhr").val(json.data._hoursidr);
+				$("#rdmat").val(json.data._mtrlcostidr);
+				$("#rdtotal").val(json.data._laborcostidr);
+			}
 			// console.log(json.xmtrl_cost);
 		}
 	});	

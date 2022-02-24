@@ -16,4 +16,5 @@ $routes->add('/approval/update_detail', '\Modules\Approval\Controllers\Approval:
 $routes->add('/approval/getFileList/(:alphanum)', '\Modules\Approval\Controllers\Approval::getFileList/$1', ['filter' => 'login']);
 $routes->add('/approval/delete_detail', '\Modules\Approval\Controllers\Approval::delete_detail', ['filter' => 'login']);
 $routes->add('/approval/delete_detail_edit', '\Modules\Approval\Controllers\Approval::delete_detail_edit', ['filter' => 'login']);
-$routes->add('/approval/print/(:alphanum)', '\Modules\Approval\Controllers\Approval::print/$1', ['filter' => 'login']);
+$routes->add('/approval/print/(:alphanum)/(:alphanum)', '\Modules\Approval\Controllers\Approval::print/$1/$2', ['filter' => 'login']);
+$routes->add('/approval/calculateTotalCost', '\Modules\Approval\Controllers\Approval::calculateTotalCost', ['filter' => 'login']);

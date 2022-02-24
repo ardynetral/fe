@@ -264,7 +264,7 @@
 					</div>
 
 					<div class="widget-content text-center">
-						<a href="<?=site_url('prain');?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Back</a>	
+						<a href="<?=site_url('praout');?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Back</a>	
 					</div>
 
 				</div>

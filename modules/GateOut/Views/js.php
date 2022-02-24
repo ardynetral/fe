@@ -200,7 +200,7 @@ $(document).ready(function() {
 					$("#vesid").val(json.data.vesid);
 					$("#cposeal").val(json.data.cposeal);
 					$("#cporeceiv").val(json.data.cporeceiv);
-					// $("#voyno").val(json.data.voyno);
+					$("#cpovoyid").val(json.data.cpovoyid);
 					// $("#vesopr").val(json.data.vesopr);
 				}
 			}

@@ -781,6 +781,7 @@ class Estimation extends \CodeIgniter\Controller
 		$data = $this->getOneEstimasi($crno);
 		$header = $data['dataOne'][0];
 		$detail = $data['dataTwo'];
+		$ESTIMATE_DATE = ($header['rptglest']==null) ? "" : date('d-m-Y',strtotime($header['rptglest'])).' '.date('H:i:s',strtotime($header['rptglest']));
 		// dd($header);
 		$html = '';
 		$html .= '
@@ -833,11 +834,11 @@ class Estimation extends \CodeIgniter\Controller
 		<td style="vertical-align:bottom;">
 			<table class="tbl_det">
 			<tr><td width="130">EOR/EIR NUMBER</td><td width="130">'.$header['rpnoest'].'</td></tr>			
-			<tr><td>ESTIMATE DATE</td><td>'.date('d-m-Y',strtotime($header['rptglest'])).' '.date('H:i:s',strtotime($header['rptglest'])).'</td></tr>			
+			<tr><td>ESTIMATE DATE</td><td>'.$ESTIMATE_DATE.'</td></tr>			
 			<tr><td>RETURN DATE</td><td></td></tr>			
 			<tr><td>TERM/ORIGINAL PORT</td><td></td></tr>			
 			<tr><td>ORIGINAL PORT</td><td></td></tr>			
-			<tr><td>TARA</td><td></td></tr>			
+			<tr><td>TARA</td><td>' . $header['crtarak'] . '</td></tr>			
 			</table>		
 		</td>
 		<td width="30%"></td>
@@ -849,9 +850,9 @@ class Estimation extends \CodeIgniter\Controller
 			<tr><td>CONDITION</td><td>'.$header['svcond'].'</td></tr>			
 			<tr><td>CUSTOMER</td><td>'.$header['cpopr'].'</td></tr>	
 			<tr><td>CONT. OPERATOR</td><td>'.$header['cpopr'].'</td></tr>			
-			<tr><td>EX VESSEL/VOY</td><td></td></tr>			
+			<tr><td>EX VESSEL/VOY</td><td>' . $header['cpives'] . "/" . $header['cpivoyid'] . '</td></tr>			
 			<tr><td>ON HIRE DATE</td><td></td></tr>			
-			<tr><td>MANUFACTURE DATE</td><td></td></tr>					
+			<tr><td>MANUFACTURE DATE</td><td>' . $header['crmandat'] . '</td></tr>					
 			</table>
 		</td>
 		</tr>
@@ -903,7 +904,13 @@ class Estimation extends \CodeIgniter\Controller
 						</tr>';
 						$no++;
 					}
-				}			
+				}	
+				$html .='
+				<tr>
+				<td></td><td></td>
+				<td class="t-right">Total Owner Account(IDR)</td>
+				<td class="t-right">'.number_format($tot_rdmhr_o,0).'</td><td class="t-right">'.number_format($tot_rdlab_o,0).'</td><td class="t-right">'.number_format($tot_rdmat_o,0).'</td><td class="t-right">'.number_format($tot_rdtotal_o,0).'</td><td></td>
+				</tr>';				
 			break;
 			
 			case "user" :
@@ -927,7 +934,13 @@ class Estimation extends \CodeIgniter\Controller
 						$no++;
 					}
 
-				}			
+				}	
+				$html .='
+				<tr>
+				<td></td><td></td>
+				<td class="t-right">Total User Account(IDR)</td>
+				<td class="t-right">'.$tot_rdmhr_u.'</td><td class="t-right">'.number_format($tot_rdlab_u,0).'</td><td class="t-right">'.number_format($tot_rdmat_u,0).'</td><td class="t-right">'.number_format($tot_rdtotal_u,0).'</td><td></td>
+				</tr>';						
 			break;
 
 			default :
@@ -960,19 +973,18 @@ class Estimation extends \CodeIgniter\Controller
 					</tr>';
 					$no++;
 				}
+				$html .='
+				<tr>
+				<td></td><td></td>
+				<td class="t-right">Total Owner Account(IDR)</td>
+				<td class="t-right">'.number_format($tot_rdmhr_o,0).'</td><td class="t-right">'.number_format($tot_rdlab_o,0).'</td><td class="t-right">'.number_format($tot_rdmat_o,0).'</td><td class="t-right">'.number_format($tot_rdtotal_o,0).'</td><td></td>
+				</tr>
+				<tr>
+				<td></td><td></td>
+				<td class="t-right">Total User Account(IDR)</td>
+				<td class="t-right">'.$tot_rdmhr_u.'</td><td class="t-right">'.number_format($tot_rdlab_u,0).'</td><td class="t-right">'.number_format($tot_rdmat_u,0).'</td><td class="t-right">'.number_format($tot_rdtotal_u,0).'</td><td></td>
+				</tr>';				
 		}			
-
-		$html .='
-		<tr>
-		<td></td><td></td>
-		<td class="t-right">Total Owner Account(IDR)</td>
-		<td class="t-right">'.number_format($tot_rdmhr_o,0).'</td><td class="t-right">'.number_format($tot_rdlab_o,0).'</td><td class="t-right">'.number_format($tot_rdmat_o,0).'</td><td class="t-right">'.number_format($tot_rdtotal_o,0).'</td><td></td>
-		</tr>
-		<tr>
-		<td></td><td></td>
-		<td class="t-right">Total Owner Account(IDR)</td>
-		<td class="t-right">'.$tot_rdmhr_u.'</td><td class="t-right">'.number_format($tot_rdlab_u,0).'</td><td class="t-right">'.number_format($tot_rdmat_u,0).'</td><td class="t-right">'.number_format($tot_rdtotal_u,0).'</td><td></td>
-		</tr>';
 
 		$html .='</table>';	
 
@@ -1156,7 +1168,7 @@ class Estimation extends \CodeIgniter\Controller
 					"rdqty" => $_POST['rdqty'],  
 					"muname" => $_POST['muname'], 
 					"prcode" =>"",
-					"cccodes" => "",
+					"cccodes" => "20",
 					// "crno" => $_POST['crno']
 				]
 			]);

@@ -98,6 +98,7 @@ class GateOut extends \CodeIgniter\Controller
 		if($this->request->isAjax()) {
 			// echo var_dump($_POST);die();
 			$form_params = [
+			"crno"		=> $_POST['crno'],
 			// "cpotgl"		=> $_POST['cpotgl'],
 			// "cpopr"			=> $_POST['cpopr'],
 			"cpopr1"		=> $_POST['cpopr1'],

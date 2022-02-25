@@ -45,6 +45,16 @@ $(document).ready(function() {
 		e.preventDefault();													
 		var cpid = $("#cpid").val();
 		var orderno = $("#cpoorderno").val();
+		// console.log(orderno);
+		if(orderno=="") {
+			Swal.fire({
+			  icon: 'error',
+			  title: "Error",
+			  html: '<div class="text-danger">PRA OUT REF required</div>'
+			});		
+			return false;		
+		}	
+
 		$.ajax({
 			url: "<?php echo site_url('gateout/add'); ?>",
 			type: "POST",

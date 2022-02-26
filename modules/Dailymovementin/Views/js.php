@@ -1,9 +1,20 @@
 <script type="text/javascript">
 	var selectedDate;
 	$(document).ready(function() {
-
+		$("#startDate").datepicker({
+			autoclose: true,
+			format: 'dd/mm/yyyy',
+			startDate: '-5y',
+		});
+		$("#endDate").datepicker({
+			autoclose: true,
+			format: 'dd/mm/yyyy',
+			startDate: '-5y',
+		});
 		$("#startDate").datepicker('setDate', new Date());
 		$("#endDate").datepicker('setDate', new Date());
+
+
 
 		$('#timepicker1').timepicker({
 			defaultTime: false,
@@ -58,7 +69,7 @@
 
 
 			let date_from1 = date_from.toString();
-			window.open("<?php echo site_url('dailymovementin/reportExcel/'); ?>" + prcode + "/" + date_from + "/" + date_to + "/" + hour_from + "/" + hour_to, '_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+			window.open("<?php echo site_url('dailymovementin/reportExcel/'); ?>" + prcode + "/" + date_from + "/" + date_to + "/" + hour_from + "/" + hour_to, '_blank');
 		});
 
 	});

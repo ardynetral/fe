@@ -2697,9 +2697,11 @@ class PraIn extends \CodeIgniter\Controller
 		// echo var_dump($debitur);die();
 		if($recept==""){
 			$invoice_number ="-";	
+			$RECEPT_DATE = "-";
 		} else {
 			// $invoice_number = "KW." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
 			$invoice_number  = 'KW' . date("Ymd", strtotime($pratgl)) . str_repeat("0", 8 - strlen($recept['praid'])) . $recept['praid'];
+			$RECEPT_DATE = $recept['receptdate'];
 		}
 				
 
@@ -2932,7 +2934,7 @@ class PraIn extends \CodeIgniter\Controller
 	
 					<tr>
 						<td width="60%">REMARK : </td>
-						<td class="t-center">PADANG, '.date('d-M-Y').'</td>
+						<td class="t-center">PADANG, ' . $RECEPT_DATE . '</td>
 					</tr>
 					<tr>
 						<td><b>'.$header['cpirefin'].'</b></td>
@@ -2985,9 +2987,11 @@ class PraIn extends \CodeIgniter\Controller
 		$debitur = $this->get_debitur($header['cpideliver']);
 		if($recept==""){
 			$invoice_number ="-";	
+			$RECEPT_DATE = "-";
 		} else {
 			// $invoice_number = "KD." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
 			$invoice_number  = 'KD' . date("Ymd", strtotime($pratgl)) . str_repeat("0", 8 - strlen($recept['praid'])) . $recept['praid'];
+			$RECEPT_DATE = $recept['receptdate'];
 		}
 
 		$det_container = $header['orderPraContainers'];
@@ -3149,7 +3153,7 @@ class PraIn extends \CodeIgniter\Controller
 					<tr><td></td><td width="25%"></td></tr>		
 					<tr>
 						<td>REMARK : <b>'.$header['cpirefin'].'</b></td>
-						<td class="t-center">PADANG, '.date('d-M-Y').'</td>
+						<td class="t-center">PADANG, '.$RECEPT_DATE.'</td>
 					</tr>
 					<tr>
 						<td>NOTE : </td>

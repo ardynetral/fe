@@ -17,6 +17,7 @@ class Dailymovementin extends \CodeIgniter\Controller
 
 	public function index()
 	{
+		check_exp_time();
 		$module = service('uri')->getSegment(1);
 		has_privilege($module, "_view");
 		$token = get_token_item();
@@ -38,6 +39,7 @@ class Dailymovementin extends \CodeIgniter\Controller
 
 	public function getAllData($prcode, $date_from, $date_to, $hour_from, $hour_to)
 	{
+		check_exp_time();
 		$query_params = [
 			'prcode' => $prcode,
 			'date_from' => $date_from,
@@ -129,7 +131,6 @@ class Dailymovementin extends \CodeIgniter\Controller
 			<thead>
 				<tr>
 					<th>NO</th>
-					
 					<th>Container No.</th>
 					<th>Ty</th>
 					<th>L/H</th>
@@ -185,11 +186,11 @@ class Dailymovementin extends \CodeIgniter\Controller
 			->setCellValue('A1', 'DAILY MOVEMENT REPORT');
 		$exl->getActiveSheet()->mergeCells("A1:J1");
 		$exl->getActiveSheet()->getStyle('A1:J1')->getFont()->setSize(20);
-		$exl->getActiveSheet(0)->setCellValue('A2', 'Depot : CONTINDO - PADANG');
+		$exl->getActiveSheet(0)->setCellValue('A2','Depot : CONTINDO - PADANG');
 		$exl->getActiveSheet()->mergeCells("A2:J2");
-		$exl->getActiveSheet(0)->setCellValue('A3', 'Container Operator : ' . $prcode);
+		$exl->getActiveSheet(0)->setCellValue('A3','Container Operator : ' . $prcode);
 		$exl->getActiveSheet()->mergeCells("A3:J3");
-		$exl->getActiveSheet(0)->setCellValue('A4', 'Gate In Date : ' . date('d/m/y', strtotime($date_from)) . ' to ' . date('d/m/y', strtotime($date_to)));
+		$exl->getActiveSheet(0)->setCellValue('A4','Gate In Date : ' . date('d/m/y', strtotime($date_from)) . ' to ' . date('d/m/y', strtotime($date_to)));
 		$exl->getActiveSheet()->mergeCells("A4:J4");
 		// Header Tabel
 		$exl->setActiveSheetIndex(0)
@@ -212,13 +213,13 @@ class Dailymovementin extends \CodeIgniter\Controller
 				->setCellValue('A' . $col, $i)
 				->setCellValue('B' . $col, $row['crno'])
 				->setCellValue('C' . $col, $row['ctcode'])
-				->setCellValue('D' . $col, $row['cclength'] . '/' . $row['ccheight'])
+				->setCellValue('D' . $col, $row['cclength'] .'/'. $row['ccheight'])
 				->setCellValue('E' . $col, $row['vesid'] . '/' . $row['voyid'])
 				->setCellValue('F' . $col, $row['svcond'])
 				->setCellValue('G' . $col, $row['cpideliver'])
 				->setCellValue('H' . $col, $row['cpitgl'])
 				->setCellValue('I' . $col, $row['cpinopol'])
-				->setCellValue('J' . $col, $row['cpiremark']);
+				->setCellValue('J' . $col, $row['cpiremark']);		
 			$col++;
 			$i++;
 			$num = $num + 1;
@@ -227,25 +228,22 @@ class Dailymovementin extends \CodeIgniter\Controller
 		//Style font
 		$exl->getActiveSheet()->getStyle('A5:J5')->getFont()->applyFromArray(['name' => 'Arial', 'bold' => TRUE, 'color' => ['rgb' => '000000']]);
 		// autosize Column
-		foreach (range('A', 'J') as $columnID) {
-			$exl->getActiveSheet()->getColumnDimension($columnID)
-				->setAutoSize(true);
-		}
+		foreach(range('A','J') as $columnID) {
+				$exl->getActiveSheet()->getColumnDimension($columnID)
+		        ->setAutoSize(true);
+		}		
 		// style border
 		// tabel_header
 		$exl->getActiveSheet()->getStyle('A1:J1')->getAlignment()->applyFromArray([
-			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE
-		]);
+			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 
+			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE]);
 		$exl->getActiveSheet()->getStyle('A2:J4')->getAlignment()->applyFromArray([
-			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
-			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE
-		]);
+			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT, 
+			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE]);					
 		// Tabel_content
 		$exl->getActiveSheet()->getStyle('A5:J' . $num)->getAlignment()->applyFromArray([
-			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE
-		]);
+			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 
+			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE]);
 
 		$exl->getActiveSheet()->getStyle('A5:J' . $num)->getBorders()->getAllBorders()->applyFromArray(['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => '000000']]);
 

@@ -109,7 +109,7 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 		$html .= '<body>
 			<div class="page-header center">
 				<div>
-					<h3>MOVEMENT CONTAINER IN BY VEY/VOY</h3>
+					<h3>MOVEMENT CONTAINER IN BY VES/VOY</h3>
 				</div>
 			</div>
 		';
@@ -202,11 +202,11 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 			->setCellValue('A1', 'MOVEMENT CONTAINER IN BY VES/VOY');
 		$exl->getActiveSheet()->mergeCells("A1:I1");
 		$exl->getActiveSheet()->getStyle('A1:I1')->getFont()->setSize(20);
-		$exl->getActiveSheet(0)->setCellValue('A2', 'Depot : CONTINDO - PADANG');
+		$exl->getActiveSheet(0)->setCellValue('A2','Depot : CONTINDO - PADANG');
 		$exl->getActiveSheet()->mergeCells("A2:I2");
-		$exl->getActiveSheet(0)->setCellValue('A3', 'Deliverer : ' . $cucode);
+		$exl->getActiveSheet(0)->setCellValue('A3','Deliverer : ' . $cucode);
 		$exl->getActiveSheet()->mergeCells("A3:I3");
-		$exl->getActiveSheet(0)->setCellValue('A4', 'Gate In Date : ' . date('d/m/y', strtotime($date_from)) . ' to ' . date('d/m/y', strtotime($date_to)));
+		$exl->getActiveSheet(0)->setCellValue('A4','Gate In Date : ' . date('d/m/y', strtotime($date_from)) . ' to ' . date('d/m/y', strtotime($date_to)));
 		$exl->getActiveSheet()->mergeCells("A4:I4");
 		// Header Tabel
 		$exl->setActiveSheetIndex(0)
@@ -218,7 +218,7 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 			->setCellValue('F5', 'Lenght/Height')
 			->setCellValue('G5', 'Date')
 			->setCellValue('H5', 'Time')
-			->setCellValue('I5', 'Principal');
+			->setCellValue('I5', 'Principal');	
 		// Body Tabel
 		$col = 6;
 		$i = 1;
@@ -234,7 +234,7 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 				->setCellValue('G' . $col, $row['cpitgl'])
 				->setCellValue('H' . $col, $row['cpijam'])
 				->setCellValue('I' . $col, $row['cpopr']);
-
+				
 			$col++;
 			$i++;
 			$num = $num + 1;
@@ -243,25 +243,22 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 		//Style font
 		$exl->getActiveSheet()->getStyle('A5:I5')->getFont()->applyFromArray(['name' => 'Arial', 'bold' => TRUE, 'color' => ['rgb' => '000000']]);
 		// autosize Column
-		foreach (range('A', 'I') as $columnID) {
-			$exl->getActiveSheet()->getColumnDimension($columnID)
-				->setAutoSize(true);
-		}
+		foreach(range('A','I') as $columnID) {
+				$exl->getActiveSheet()->getColumnDimension($columnID)
+		        ->setAutoSize(true);
+		}		
 		// style border
 		// tabel_header
 		$exl->getActiveSheet()->getStyle('A1:I1')->getAlignment()->applyFromArray([
-			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE
-		]);
+			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 
+			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE]);
 		$exl->getActiveSheet()->getStyle('A2:I4')->getAlignment()->applyFromArray([
-			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
-			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE
-		]);
+			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT, 
+			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE]);					
 		// Tabel_content
 		$exl->getActiveSheet()->getStyle('A5:I' . $num)->getAlignment()->applyFromArray([
-			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
-			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE
-		]);
+			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 
+			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE]);
 
 		$exl->getActiveSheet()->getStyle('A5:I' . $num)->getBorders()->getAllBorders()->applyFromArray(['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => '000000']]);
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace Modules\Rptmovementinbyvey\Controllers;
+namespace Modules\Rptmovementoutbyvey\Controllers;
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Border;
 
-class Rptmovementinbyvey extends \CodeIgniter\Controller
+class Rptmovementoutbyvey extends \CodeIgniter\Controller
 {
 	private $client;
 	public function __construct()
@@ -32,20 +32,20 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 			$data['cucode'] = '0';
 		}
 		$data['group_id'] = $group_id;
-		return view('Modules\Rptmovementinbyvey\Views\index', $data);
+		return view('Modules\Rptmovementoutbyvey\Views\index', $data);
 	}
 
 
 	public function getAllData($cucode, $date_from, $date_to, $cpives)
 	{
 		$query_params = [
-			'cpideliver' => $cucode,
+			'cporeceiv' => $cucode,
 			'cpitgl1' => $date_from,
 			'cpitgl2'  => $date_to,
 			'cpives' => $cpives
 		];
 
-		$response = $this->client->request('GET', 'reports/laporanBongkar', [
+		$response = $this->client->request('GET', 'reports/laporanMuat', [
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
@@ -53,13 +53,8 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 			'query' => $query_params,
 		]);
 		$result = json_decode($response->getBody()->getContents(), true);
-		//print_r($result);
-		//die;
-
-		//$data['data'] = $result['data']['resultData'][0];
 		$data['data'] = $result['data']['resultData'];
-		//print_r($result);
-		//die;
+
 		return $data;
 	}
 
@@ -67,15 +62,6 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 	{
 		check_exp_time();
 		$result =   $this->getAllData($cucode, $date_from, $date_to, $cpives);
-		//print_r($result['data']);
-		//foreach ($result['data'] as $row) {
-		//	echo $row['crno'];
-		//};
-
-
-
-
-
 		$mpdf = new \Mpdf\Mpdf();
 		$html = '';
 		$html .= '
@@ -109,7 +95,7 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 		$html .= '<body>
 			<div class="page-header center">
 				<div>
-					<h3>MOVEMENT CONTAINER IN BY VEY/VOY</h3>
+					<h3>MOVEMENT CONTAINER OUT BY VEY/VOY</h3>
 				</div>
 			</div>
 		';
@@ -141,7 +127,7 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 				<tr>
 					<th>NO</th>
 					<th>Vessey/Voy</th>
-					<th>Do. Num</th>
+					<th>RO. Num</th>
 					<th>Container No.</th>
 					<th>Conatiner Code</th>
 					<th>Lenght/Height</th>
@@ -157,13 +143,13 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 			$html .= '
 					<tr>
 						<td>' . $no . '</td>
-						<td>' . $row['cpives'] . '/' . $row['cpivoyid'] . '</td>
-						<td>' . $row['cpirefin'] . '</td>
+						<td>' . $row['cpoves'] . '/' . $row['cpovoyid'] . '</td>
+						<td>' . $row['cporefout'] . '</td>
 						<td>' . $row['crno'] . '</td>
 						<td>' . $row['cccode'] . '</td>
 						<td>' . $row['cclength'] . '/' . $row['ccheight'] . '</td>
-						<td>' . $row['cpitgl'] . '</td>
-						<td>' . $row['cpijam'] . '</td>
+						<td>' . $row['cpotgl'] . '</td>
+						<td>' . $row['cpojam'] . '</td>
 						<td>' . $row['cpopr'] . '</td>
 					</tr>';
 			$no++;
@@ -196,10 +182,11 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 
 		$result =   $this->getAllData($cucode, $date_from, $date_to, $cpives);
 
+
 		$exl = new Spreadsheet();
 		// Judul Dokumen
 		$exl->setActiveSheetIndex(0)
-			->setCellValue('A1', 'MOVEMENT CONTAINER IN BY VES/VOY');
+			->setCellValue('A1', 'MOVEMENT CONTAINER OUT BY VES/VOY');
 		$exl->getActiveSheet()->mergeCells("A1:I1");
 		$exl->getActiveSheet()->getStyle('A1:I1')->getFont()->setSize(20);
 		$exl->getActiveSheet(0)->setCellValue('A2', 'Depot : CONTINDO - PADANG');
@@ -212,7 +199,7 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 		$exl->setActiveSheetIndex(0)
 			->setCellValue('A5', 'No')
 			->setCellValue('B5', 'Vessey/Voy')
-			->setCellValue('C5', 'DO. Num')
+			->setCellValue('C5', 'RO. Num')
 			->setCellValue('D5', 'Container No.')
 			->setCellValue('E5', 'Container Code')
 			->setCellValue('F5', 'Lenght/Height')
@@ -223,11 +210,12 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 		$col = 6;
 		$i = 1;
 		$num = 5;
+
 		foreach ($result['data'] as $row) {
 			$exl->setActiveSheetIndex(0)
 				->setCellValue('A' . $col, $i)
-				->setCellValue('B' . $col, $row['cpives'] . '/' . $row['cpivoyid'])
-				->setCellValue('C' . $col, $row['cpirefin'])
+				->setCellValue('B' . $col, $row['cpoves'] . '/' . $row['cpovoyid'])
+				->setCellValue('C' . $col, $row['cporefout'])
 				->setCellValue('D' . $col, $row['crno'])
 				->setCellValue('E' . $col, $row['cccode'])
 				->setCellValue('F' . $col, $row['cclength'] . '/' . $row['ccheight'])
@@ -266,7 +254,7 @@ class Rptmovementinbyvey extends \CodeIgniter\Controller
 		$exl->getActiveSheet()->getStyle('A5:I' . $num)->getBorders()->getAllBorders()->applyFromArray(['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => '000000']]);
 
 		$writer = new Xlsx($exl);
-		$filename = 'DailyMovInReport-' . date('Y-m-d-His');
+		$filename = 'DailyMovOutReport-' . date('Y-m-d-His');
 		header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
 		header('Content-Disposition: attachment;filename=' . $filename . '.xlsx');
 		header('Cache-Control: max-age=0');

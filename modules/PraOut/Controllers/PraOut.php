@@ -2216,10 +2216,12 @@ public function edit_get_container($praid)
 		$detail = $header['orderPraContainers'];
 		$depo = $this->get_depo($header['cpdepo']);
 		if($recept==""){
-			$invoice_number ="-";	
+			$invoice_number ="-";
+			$RECEPT_DATE = "-";	
 		} else {
 			// $invoice_number = "KW." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
 			$invoice_number  = 'KW' . date("Ymd", strtotime($pratgl)) . str_repeat("0", 8 - strlen($recept['praid'])) . $recept['praid'];
+			$RECEPT_DATE = $recept['receptdate'];
 		}
 				
 
@@ -2452,7 +2454,7 @@ public function edit_get_container($praid)
 	
 					<tr>
 						<td width="60%">REMARK : </td>
-						<td class="t-center">PADANG, '.date('d-M-Y').'</td>
+						<td class="t-center">PADANG, '.$RECEPT_DATE.'</td>
 					</tr>
 					<tr>
 						<td><b>'.$header['cpirefin'].'</b></td>
@@ -2502,9 +2504,11 @@ public function edit_get_container($praid)
 		$recept = recept_by_praid($header['praid']);
 
 		if($recept==""){
-			$invoice_number ="-";	
+			$invoice_number ="-";
+			$RECEPT_DATE = "-";	
 		} else {
 			$invoice_number = "INV." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
+			$RECEPT_DATE = $recept['receptdate'];
 		}
 				
 		$detail = $header['orderPraContainers'];
@@ -2553,7 +2557,7 @@ public function edit_get_container($praid)
 				<tr>
 				<td><h4>PT. CONTINDO RAYA</h4></td>
 				<td class="t-center"><b>'.$invoice_number.'</b></td>
-				<td class="t-right"><p>PADANG, '.date('d/m/Y').'</p></td>
+				<td class="t-right"><p>PADANG, '.$RECEPT_DATE.'</p></td>
 				</tr>
 				</table>
 			</div>

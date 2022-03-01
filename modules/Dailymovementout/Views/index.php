@@ -31,7 +31,7 @@
 
 				</div>
 
-				<form id="#formCType" class="form-horizontal" role="form">
+				<form id="#formCType" class="form-horizontal" role="form" data-parsley-validate="">
 					<?= csrf_field(); ?>
 					<fieldset>
 						<div class="form-group">
@@ -41,7 +41,7 @@
 									echo principal_dropdown($selected = "");
 								else :
 								?>
-									<input type="text" readonly name="prcode" class="form-control" id="prcode" value="<?= $prcode; ?>">
+									<input type="text" readonly name="prcode" class="form-control" id="prcode" value="<?= $prcode; ?>" required>
 								<?php endif; ?>
 							</div>
 						</div>
@@ -49,7 +49,7 @@
 							<label for="cpipratgl" class="col-sm-2 control-label text-right">Date</label>
 							<div class="col-sm-2">
 								<div class="input-group">
-									<input type="text" name="startDate" id="startDate" class="form-control tanggal">
+									<input type="text" name="startDate" id="startDate" class="form-control tanggal" required>
 									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 								</div>
 							</div>
@@ -58,7 +58,7 @@
 							</div>
 							<div class="col-sm-2">
 								<div class="input-group">
-									<input type="text" name="endDate" id="endDate" class="form-control tanggal">
+									<input type="text" name="endDate" id="endDate" class="form-control tanggal" required>
 									<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
 								</div>
 							</div>
@@ -67,7 +67,7 @@
 							<label for="cpipratgl" class="col-sm-2 control-label text-right">Hour</label>
 							<div class="col-sm-2">
 								<div class="input-group bootstrap-timepicker timepicker">
-									<input id="timepicker1" name="startHour" type="text" class="form-control input-small">
+									<input id="timepicker1" name="startHour" type="text" class="form-control input-small" required>
 									<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
 								</div>
 							</div>
@@ -76,15 +76,17 @@
 							</div>
 							<div class="col-sm-2">
 								<div class="input-group bootstrap-timepicker timepicker">
-									<input id="timepicker2" name="endHour" type="text" class="form-control input-small">
+									<input id="timepicker2" name="endHour" type="text" class="form-control input-small" required>
 									<span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span>
 								</div>
 							</div>
 						</div>
 
 						<div class="rows">
+							<div class="col-sm-offset-2">
 							<button type="button" id="printPdf" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print to PDF </button>
 							<button type="button" id="printExl" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print to Excel</button>
+							</div>
 						</div>
 					</fieldset>
 				</form>

@@ -345,10 +345,10 @@ class GateOut extends \CodeIgniter\Controller
 	{
 		$mpdf = new \Mpdf\Mpdf(['mode' => 'utf-8', 'format' => [80, 236]]);
 		$header = $this->get_data_print($cpoorderno, $cpid);
-		// echo var_dump($header);
+		$CPID = $header['cpid'];
 		$CPIEIR  = str_repeat("0", 8 - strlen($header['cpoeir'])) . $header['cpoeir'];
 		$QR_FORMAT = $header['crno'] . $CPIEIR;
-		$QRCODE = $this->generate_qrcode($QR_FORMAT);
+		$QRCODE = $this->generate_qrcode($CPID);
 		// print_r($header);die();
 		$QRCODE_IMG = ROOTPATH . '/public/media/qrcode/' . $QRCODE['content'] . '.png';
 

@@ -8,7 +8,6 @@ $routes->add('/praout/add', '\Modules\PraOut\Controllers\PraOut::add', ['filter'
 $routes->add('/praout/get_order_form', '\Modules\PraOut\Controllers\PraOut::get_order_form', ['filter' => 'login']);
 $routes->add('/praout/edit/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::edit/$1', ['filter' => 'login']);
 $routes->add('/praout/delete/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::delete/$1', ['filter' => 'login']);
-// $routes->post('/praout/edit/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::edit/$1', ['filter' => 'login']);
 $routes->add('/praout/approve_order/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::approve_order/$1', ['filter' => 'login']);
 $routes->add('/praout/appv1_update_container', '\Modules\PraOut\Controllers\PraOut::appv1_update_container', ['filter' => 'login']);
 $routes->add('/praout/appv1_containers/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::appv1_containers/$1', ['filter' => 'login']);
@@ -20,6 +19,9 @@ $routes->add('/praout/print_order/(:alphanum)', '\Modules\PraOut\Controllers\Pra
 $routes->add('/praout/print_proforma/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::print_proforma/$1', ['filter' => 'login']);
 $routes->add('/praout/print_invoice1/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::print_invoice1/$1', ['filter' => 'login']);
 $routes->add('/praout/print_invoice2/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::print_invoice2/$1', ['filter' => 'login']);
+$routes->add('/praout/final_order/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::final_order/$1', ['filter' => 'login']);
+$routes->add('/praout/cetak_kitir/(:alphanum)/(:alphanum)/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::cetak_kitir/$1/$2/$3', ['filter' => 'login']);
+
 // pra container
 $routes->add('/praout/addcontainer', '\Modules\PraOut\Controllers\PraOut::addcontainer', ['filter' => 'login']);
 $routes->add('/praout/get_container_form', '\Modules\PraOut\Controllers\PraOut::get_container_form', ['filter' => 'login']);
@@ -29,8 +31,10 @@ $routes->add('/praout/edit_container', '\Modules\PraOut\Controllers\PraOut::edit
 $routes->add('/praout/edit_get_container/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::edit_get_container/$1', ['filter' => 'login']);
 $routes->add('/praout/checkContainerNumber', '\Modules\PraOut\Controllers\PraOut::checkContainerNumber', ['filter' => 'login']);
 $routes->add('/praout/delete_container/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::delete_container/$1', ['filter' => 'login']);
-$routes->add('/praout/final_order/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::final_order/$1', ['filter' => 'login']);
-$routes->add('/praout/cetak_kitir/(:alphanum)/(:alphanum)/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::cetak_kitir/$1/$2/$3', ['filter' => 'login']);
+// import container from file
+$routes->add('/praout/import_xls_pra', '\Modules\PraOut\Controllers\PraOut::import_xls_pra', ['filter' => 'login']);
+$routes->add('/praout/insertContainerFromFile/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::insertContainerFromFile/$1', ['filter' => 'login']);
+
 
 // ajax request
 $routes->add('/praout/ajax_ccode_listOne/(:alphanum)', '\Modules\PraOut\Controllers\PraOut::ajax_ccode_listOne/$1', ['filter' => 'login']);

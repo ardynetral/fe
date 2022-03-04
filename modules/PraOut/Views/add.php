@@ -20,7 +20,7 @@
 
 		<div class="row">
 			<div class="col-sm-12">
-				<div class="widget widget-table">
+				<div class="widget widget-table pra-container" style="display:none;">
 					<div class="widget-header">
 						<h3><i class="fa fa-table"></i> List Order Pra Container</h3>
 					</div>

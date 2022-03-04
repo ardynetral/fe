@@ -64,17 +64,20 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});							
-					window.location.href = "#formDetail";
+					
 					$("#save").prop('disabled', true);
 					$("#crno").prop('disabled', false);
 					$("#crno").focus();
 					$("#saveDetail").prop('disabled', false);
+					$(".pra-container").show();	
 				} else {
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
 					  html: '<div class="text-danger">'+json.message_body+'</div>'
-					});						
+					});	
+					$("#save").prop('disabled', false);	
+					$(".pra-container").hide();				
 				}
 			},
             complete: function () {
@@ -928,6 +931,77 @@ $(document).ready(function() {
 		e.preventDefault();
 		window.location.href = "<?php echo site_url('praout'); ?>";
 	});
+
+	// IMPORT DATA CONTAINER FROM EXCEL FILE
+	$('#fileXls').bind('change', function(e) {
+		e.preventDefault();
+		var fd = new FormData();
+		var file = this.files[0];
+		var fileType = file["type"];
+		var praid = $("#praid").val();
+		// console.log(fileType);
+		var validFileTypes = ["application/vnd.ms-excel","application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"];	
+		if($.inArray(fileType, validFileTypes) > 0){
+			fd.append('file_xls',file);
+			fd.append('praid',praid);
+			// console.log(file);
+			$.ajax({
+				url: "<?=site_url('praout/import_xls_pra');?>",
+				type:"POST",
+				data:fd,
+				dataType:"JSON",
+		        contentType: false,
+		      	processData: false,
+				success: function(res) {
+					if(res.status=="Failled") {
+						Swal.fire({
+						  icon: 'warning',
+						  title: "Oops",
+						  html: '<div class="text-danger">'+res.message+'</div>'
+						});							
+					} else {
+						$("#detTable tbody").html("");
+						$("#detTable tbody").html(res.data);
+					}
+				}
+			});
+		} else {
+			Swal.fire({
+			  icon: 'warning',
+			  title: "Invalid File Type",
+			  html: '<div class="text-danger">Gunakan file dengan extensi ".xlsx"</div>'
+			});		
+		}
+	});	
+
+	$("#insertContainerFromFile").on("click", function(e){
+		e.preventDefault();
+		var praid = $("#praid").val();
+		$.ajax({
+			url: "<?=site_url('praout/insertContainerFromFile/');?>" + praid,
+			type:"POST",
+			data: $("#fContainerFromFile").serialize(),
+			dataType:"JSON",
+	       //  contentType: false,
+	      	// processData: false,
+			success: function(res) {
+				if(res.status=="Failled") {
+					Swal.fire({
+					  icon: 'warning',
+					  title: "Oops",
+					  html: '<div class="text-danger">'+res.message+'</div>'
+					});
+				} else {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+res.message+'</div>'
+					});		
+					window.location.href="<?=site_url('praout')?>";					
+				}
+			}
+		});
+	});	
 
 });
 

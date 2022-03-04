@@ -20,6 +20,8 @@ $routes->add('/prain/print_order/(:alphanum)', '\Modules\PraIn\Controllers\PraIn
 $routes->add('/prain/print_proforma/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::print_proforma/$1', ['filter' => 'login']);
 $routes->add('/prain/print_invoice1/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::print_invoice1/$1', ['filter' => 'login']);
 $routes->add('/prain/print_invoice2/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::print_invoice2/$1', ['filter' => 'login']);
+$routes->add('/prain/final_order/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::final_order/$1', ['filter' => 'login']);
+$routes->add('/prain/cetak_kitir_new/(:alphanum)/(:alphanum)/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::cetak_kitir_new/$1/$2/$3', ['filter' => 'login']);
 // pra container
 $routes->add('/prain/addcontainer', '\Modules\PraIn\Controllers\PraIn::addcontainer', ['filter' => 'login']);
 $routes->add('/prain/get_container_form', '\Modules\PraIn\Controllers\PraIn::get_container_form', ['filter' => 'login']);
@@ -31,8 +33,8 @@ $routes->add('/prain/edit_container', '\Modules\PraIn\Controllers\PraIn::edit_co
 $routes->add('/prain/edit_get_container/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::edit_get_container/$1', ['filter' => 'login']);
 $routes->add('/prain/checkContainerNumber', '\Modules\PraIn\Controllers\PraIn::checkContainerNumber', ['filter' => 'login']);
 $routes->add('/prain/delete_container/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::delete_container/$1', ['filter' => 'login']);
-$routes->add('/prain/final_order/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::final_order/$1', ['filter' => 'login']);
-$routes->add('/prain/cetak_kitir_new/(:alphanum)/(:alphanum)/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::cetak_kitir_new/$1/$2/$3', ['filter' => 'login']);
+$routes->add('/prain/import_xls_pra', '\Modules\PraIn\Controllers\PraIn::import_xls_pra', ['filter' => 'login']);
+$routes->add('/prain/insertContainerFromFile/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::insertContainerFromFile/$1', ['filter' => 'login']);
 
 // ajax request
 $routes->add('/prain/ajax_ccode_listOne/(:alphanum)', '\Modules\PraIn\Controllers\PraIn::ajax_ccode_listOne/$1', ['filter' => 'login']);

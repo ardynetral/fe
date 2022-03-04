@@ -1,11 +1,16 @@
 <?php
 namespace Modules\PraIn\Controllers;
 
+// QRCODE
 use App\Libraries\Ciqrcode;
-
 use function bin2hex;
 use function file_exists;
 use function mkdir;
+// XLS
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+// use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+// use PhpOffice\PhpSpreadsheet\Style\Border;
 
 class PraIn extends \CodeIgniter\Controller
 {
@@ -3548,8 +3553,8 @@ class PraIn extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);	
-
-		return $result['data'];
+		$data  = (isset($result['data']) && $result['data'] != null)?$result['data']:"";
+		return $data;
 	}
 
 	public function check_container($crno) {
@@ -3611,4 +3616,230 @@ class PraIn extends \CodeIgniter\Controller
             'file'    => $dir . $save_name,
         ];
     }
-}
+
+    public function import_xls_pra()
+    {
+    	if($this->request->isAjax()){
+	    	$sheetname = "Sheet1";
+	    	$praid = $_POST['praid'];
+	    	$uploadFile = $_FILES['file_xls']['tmp_name'];
+			$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+			$reader->setLoadSheetsOnly($sheetname);
+			$spreadsheet = $reader->load($uploadFile);
+			$sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+			// print_r($sheetData[8]["A"]);die();
+			$data_arr = [];
+			$status = "";
+			$message = "";
+			$i=1;
+			$html = '';
+
+			// check table order_pra_Container
+			$reqPraContainer = $this->client->request('GET','orderPraContainers/getAllData',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'query' => [
+					'praid' => $praid,
+					'offset' => 0,
+					'limit' => 100,
+				]
+			]);
+
+			$resPraContainer= json_decode($reqPraContainer->getBody()->getContents(), true);
+			$orderPraContainers = $resPraContainer['data']['datas'];			
+			// echo var_dump($sheetData);die();
+			if($sheetData[1]["A"]=="") {
+				$data['status'] = "Failled";
+				$data['message'] = "Pastikan format data sudah benar.";
+				echo json_encode($data);die();				
+			}
+
+			foreach($sheetData as $k=>$v) {
+				if($k>7 && $v["A"]!="") {
+
+					if($v["F"]=="20") {$code = "22G1";}
+					else if($v["F"]=="40") {$code = "40G1";}
+					else if($v["F"]=="45") {$code = "45G1";}
+
+					// check table Container
+					$response = $this->client->request('GET','containers/checkcCode',[
+						'headers' => [
+							'Accept' => 'application/json',
+							'Authorization' => session()->get('login_token')
+						],
+						'query'=>[
+							'cContainer' => $v["A"], 
+						]
+					]);
+
+					$result = json_decode($response->getBody()->getContents(),true);
+					// echo var_dump($result);die();
+					if(isset($result['success']) && ($result['success']==false))
+					{
+						$status = "invalid";	
+						$message = "Format CRNO salah";	
+					} else {
+
+						// check table order_pra_Container
+						if(isset($orderPraContainers) && ($orderPraContainers!=null)) {
+							foreach($orderPraContainers as $opc) {
+								$crnos[] = $opc['crno'];
+							}
+
+							if(in_array($v["A"],$crnos)==true) {
+								$status= "invalid";
+								$message = "Container in order";
+							}else {						
+								if($this->check_container($v["A"])==0) {
+									$status= "new";
+									$message = "";
+								} else {
+									$container = $this->get_container($v["A"]);	
+									if($container['crlastact']=="BI" || $container['crlastact']=="OD") {
+										$status= "valid";
+										$message = "";	
+									} else{
+										$status= "invalid";
+										$message = "Status " . $container['crlastact'];
+									}					
+								}							
+							} 
+						} else {
+							if($this->check_container($v["A"])==0) {
+								$status= "new";
+								$message = "";
+							} else {
+								$container = $this->get_container($v["A"]);	
+								if($container['crlastact']=="BI" || $container['crlastact']=="OD") {
+									$status= "valid";
+									$message = "";	
+								} else{
+									$status= "invalid";
+									$message = "Status " . $container['crlastact'];
+								}						
+							}					
+						}
+
+					}
+
+					$html .='<tr>
+					<td></td>
+					<td>'.$i.'</td>
+					<td><input type="text" class="form-control col-sm-2 crno" name="crno[]" value="'.$v['A'].'" readonly></td>
+					<td><input type="text" class="form-control col-sm-2 ccode" name="ccode[]" value="'.$code.'" readonly></td>
+					<td><input type="text" class="form-control col-sm-2 ctcode" name="ctcode[]" value="" readonly></td>
+					<td><input type="text" class="form-control col-sm-2 ccheight" name="ccheight[]" value="'.$v['E'].'" readonly></td>
+					<td><input type="text" class="form-control col-sm-2 cclength" name="cclength[]" value="'.$v['F'].'" readonly></td>
+					<td></td>
+					<td>'.$message.'</td>
+					<td style="display:none;"><input type="text" class="form-control col-sm-2 status" name="status[]" value="'.$status.'">
+						<input type="text" class="form-control col-sm-2 message" name="message[]" value="'.$message.'">
+					</td>
+					</tr>'; 
+					$data_arr[$i]['CRNO'] = $v["A"];
+					$data_arr[$i]['CODE'] = $code;
+					$data_arr[$i]['HEIGHT'] = $v["E"];
+					$data_arr[$i]['LENGTH'] = $v["F"];
+					$i++;
+				}
+			}
+			$data['status'] = "success";
+			$data['data'] = $html;
+			echo json_encode($data);die();
+    	}
+    	/* 
+    		# ambil kolom CRNO
+    		# check order_pra_container jika sudah ada, lewati.
+    		# check tbl_container
+    			# ada
+    		 		- ambil data di tbl_container
+    		 		- insert data order_pra_container
+    	   		# belum ada
+    	   			- ambil kolom CCODE
+    	   			- ambil detail container "containercode/listOne"
+    	   			- insert tbl_container
+    	   			- insert tbl_order_pra_container
+		*/
+
+    }
+
+    public function insertContainerFromFile($praid)
+    {
+    	$params = [];
+    	if($this->request->isAjax()) {
+    		// echo var_dump($_POST);die();
+    		foreach($_POST['crno'] as $key=>$val) {
+    			$params[$key] = [
+					"cpopr" => "-",
+					"cpcust" => "-",
+					"praid" => $praid,
+    				"crno" => $_POST['crno'][$key],
+    				"cccode" => $_POST['ccode'][$key],
+    				"ctcode" => $_POST['ctcode'][$key],
+    				"ccheight" => $_POST['ccheight'][$key],
+    				"cclength" => $_POST['cclength'][$key],
+    				"cpiremark" => $_POST['message'][$key],
+    				"cpife" => "0",
+    				"cpishold" => 1,
+    				"sealno" => "-",
+    			]; 
+    			// echo var_dump($params[$key]);
+		    	// insert order_pra_container
+				$this->client->request('POST','orderPraContainers/createNewData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'form_params' => $params[$key],
+				]);
+
+		    	// Jika container belum ada di table container maka insert tabel container
+		    	if($_POST['status'][$key]=="new") {
+					$body[$key] = [
+			            "crno" 		=> $_POST['crno'][$key],
+			            "mtcode" 	=> $_POST['ctcode'][$key],
+			            "cccode" 	=> $_POST['ccode'][$key],
+			            "crowner" 	=> 0,
+			            "crcdp" 	=> 0,
+			            "crcsc" 	=> 0,
+			            "cracep" 	=> 0,
+			            "crmmyy" 	=> 0,
+			            "crweightk" => 0,
+			            "crweightl" => 0,
+			            "crtarak" 	=> 0,
+			            "crtaral" 	=> 0,
+			            "crnetk" 	=> 0,
+			            "crnetl" 	=> 0,
+			            "crvol" 	=> 0,
+			            "crmanuf" 	=> 0,
+			            "crmandat" 	=> 0,
+			            "crlastact" => "BI"
+			        ];
+
+					$this->client->request('POST','containers/create',[
+						'headers' => [
+							'Accept' => 'application/json',
+							'Authorization' => session()->get('login_token')
+						],
+						'form_params' => [
+							'crNo' => $_POST['crno'][$key],
+							'dset' => $body[$key]
+						]
+					]);	
+		    	} 
+
+				$data['status'] = "success";
+				$data['message'] = "Data Saved";
+    		}
+			echo json_encode($data);
+			die();
+    		// echo var_dump($params);
+    		// die();
+    	}
+
+    }
+
+
+} //End Class PraIn

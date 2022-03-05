@@ -1,6 +1,12 @@
-<p><button class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
+<p>
+	<button class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
+	<label class="btn btn-default">
+		<i class="fa fa-upload"></i>&nbsp;Add From File
+		<input type="file" name="fileXls" id="fileXls" style="display: none;">
+	</label>
 </p>
 <div class="table-responsive vscroll">
+<form id="fContainerFromFile" role="form">
 <table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 	<thead>
 		<tr>
@@ -11,10 +17,9 @@
 			<th>Type</th>
 			<th>Length</th>
 			<th>Height</th>
-			<th>Principal</th>
 			<th>F/E</th>
-			<th>Remark</th>
 			<th>Seal No</th>
+			<th>Remark</th>
 		</tr>
 	</thead>
 	
@@ -38,16 +43,17 @@
 					<td><?=$row['ctcode']?></td>
 					<td><?=$row['cclength']?></td>
 					<td><?=$row['ccheight']?></td>
-					<td><?=$row['cpopr']?></td>
 					<td><?=((isset($row['cpife'])&&$row['cpife']==1)?'Full':'Empty')?></td>
-					<td><?=$row['cpiremark']?></td>
 					<td><?=$row['sealno']?></td>
+					<td><?=$row['cpiremark']?></td>
 				</tr>
 			<?php $i++; endforeach; ?>
 		<?php endif; ?>
 	</tbody>
 </table>
+</form>
 </div>
 <p class="text-center">
+	<a href="#" class="btn btn-primary" id="insertContainerFromFile">&nbsp;<i class="fa fa-save"></i>&nbsp;Save Containers&nbsp;</a>
 	<a href="<?=site_url('praout')?>" class="btn btn-default">&nbsp;<i class="fa fa-refresh"></i>&nbsp;BACK&nbsp;</a>
 </p>

@@ -3620,7 +3620,7 @@ class PraIn extends \CodeIgniter\Controller
     public function import_xls_pra()
     {
     	if($this->request->isAjax()){
-	    	$sheetname = "Sheet1";
+	    	$sheetname = "CONTAINERS";
 	    	$praid = $_POST['praid'];
 	    	$uploadFile = $_FILES['file_xls']['tmp_name'];
 			$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
@@ -3657,11 +3657,11 @@ class PraIn extends \CodeIgniter\Controller
 			}
 
 			foreach($sheetData as $k=>$v) {
-				if($k>7 && $v["A"]!="") {
+				if($k>1 && $v["A"]!="") {
 
-					if($v["F"]=="20") {$code = "22G1";}
-					else if($v["F"]=="40") {$code = "40G1";}
-					else if($v["F"]=="45") {$code = "45G1";}
+					if($v["E"]=="20") {$code = "22G1";}
+					else if($v["E"]=="40") {$code = "40G1";}
+					else if($v["E"]=="45") {$code = "45G1";}
 
 					// check table Container
 					$response = $this->client->request('GET','containers/checkcCode',[
@@ -3728,20 +3728,17 @@ class PraIn extends \CodeIgniter\Controller
 					<td></td>
 					<td>'.$i.'</td>
 					<td><input type="text" class="form-control col-sm-2 crno" name="crno[]" value="'.$v['A'].'" readonly></td>
-					<td><input type="text" class="form-control col-sm-2 ccode" name="ccode[]" value="'.$code.'" readonly></td>
-					<td><input type="text" class="form-control col-sm-2 ctcode" name="ctcode[]" value="" readonly></td>
-					<td><input type="text" class="form-control col-sm-2 ccheight" name="ccheight[]" value="'.$v['E'].'" readonly></td>
-					<td><input type="text" class="form-control col-sm-2 cclength" name="cclength[]" value="'.$v['F'].'" readonly></td>
+					<td><input type="text" class="form-control col-sm-2 ccode" name="ccode[]" value="'.$v['B'].'" readonly></td>
+					<td><input type="text" class="form-control col-sm-2 ctcode" name="ctcode[]" value="'.$v['C'].'" readonly></td>
+					<td><input type="text" class="form-control col-sm-2 ccheight" name="ccheight[]" value="'.$v['D'].'" readonly></td>
+					<td><input type="text" class="form-control col-sm-2 cclength" name="cclength[]" value="'.$v['E'].'" readonly></td>
 					<td></td>
 					<td>'.$message.'</td>
 					<td style="display:none;"><input type="text" class="form-control col-sm-2 status" name="status[]" value="'.$status.'">
 						<input type="text" class="form-control col-sm-2 message" name="message[]" value="'.$message.'">
 					</td>
 					</tr>'; 
-					$data_arr[$i]['CRNO'] = $v["A"];
-					$data_arr[$i]['CODE'] = $code;
-					$data_arr[$i]['HEIGHT'] = $v["E"];
-					$data_arr[$i]['LENGTH'] = $v["F"];
+
 					$i++;
 				}
 			}

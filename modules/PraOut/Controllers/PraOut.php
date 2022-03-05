@@ -7,6 +7,9 @@ use function bin2hex;
 use function file_exists;
 use function mkdir;
 
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+
 class PraOut extends \CodeIgniter\Controller
 {
 	private $client;
@@ -3048,8 +3051,8 @@ public function edit_get_container($praid)
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);	
-
-		return isset($result['data'])?$result['data']:"";
+		$data  = (isset($result['data']) && $result['data'] != null)?$result['data']:"";
+		return $data;
 	}
 
 	public function check_container($crno) {
@@ -3111,4 +3114,178 @@ public function edit_get_container($praid)
             'file'    => $dir . $save_name,
         ];
     }
+
+    // INSERT CONTAINER FROM FILE 
+    public function import_xls_pra()
+    {
+    	if($this->request->isAjax()){
+	    	$sheetname = "CONTAINERS";
+	    	$praid = $_POST['praid'];
+	    	$uploadFile = $_FILES['file_xls']['tmp_name'];
+			$reader = new \PhpOffice\PhpSpreadsheet\Reader\Xlsx();
+			$reader->setLoadSheetsOnly($sheetname);
+			$spreadsheet = $reader->load($uploadFile);
+			$sheetData = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+			$data_arr = [];
+			$status = "";
+			$message = "";
+			$i=1;
+			$html = '';
+
+			// check table order_pra_Container
+			$reqPraContainer = $this->client->request('GET','orderPraContainers/getAllData',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'query' => [
+					'praid' => $praid,
+					'offset' => 0,
+					'limit' => 100,
+				]
+			]);
+
+			$resPraContainer= json_decode($reqPraContainer->getBody()->getContents(), true);
+			$orderPraContainers = $resPraContainer['data']['datas'];			
+
+			if($sheetData[1]["A"]=="") {
+				$data['status'] = "Failled";
+				$data['message'] = "Pastikan format data sudah benar.";
+				echo json_encode($data);die();				
+			}
+
+			foreach($sheetData as $k=>$v) {
+				if($k>1 && $v["A"]!="") {
+
+					if($v["E"]=="20") {$code = "22G1";}
+					else if($v["E"]=="40") {$code = "40G1";}
+					else if($v["E"]=="45") {$code = "45G1";}
+
+					// check table Container
+					$response = $this->client->request('GET','containers/checkcCode',[
+						'headers' => [
+							'Accept' => 'application/json',
+							'Authorization' => session()->get('login_token')
+						],
+						'query'=>[
+							'cContainer' => $v["A"], 
+						]
+					]);
+
+					$result = json_decode($response->getBody()->getContents(),true);
+
+					if(isset($result['success']) && ($result['success']==false))
+					{
+						$status = "invalid";	
+						$message = "Format CRNO salah";	
+					} else {
+
+						// check table order_pra_Container
+						if(isset($orderPraContainers) && ($orderPraContainers!=null)) {
+							foreach($orderPraContainers as $opc) {
+								$crnos[] = $opc['crno'];
+							}
+
+							if(in_array($v["A"],$crnos)==true) {
+								$status= "invalid";
+								$message = "Container in order";
+							}else {						
+								$container = $this->get_container($v["A"]);	
+								if(($container['crlastact'] == "CO" && $container['crlastcond'] == "AC") || $container['lastact'] == "AC") {
+									$status= "valid";
+									$message = "";	
+								} else{
+									$status= "invalid";
+									$message = "Status=" . $container['crlastact'] . ', Cond='.$container['crlastcond'] . ', LastACT' . $container['lastact'];
+								}					
+												
+							} 
+						} else {
+							if($this->check_container($v["A"])==0) {
+								$status= "new";
+								$message = "Not Found";
+							} else {							
+								$container = $this->get_container($v["A"]);
+								// echo var_dump($container);	
+								if(($container['crlastact'] == "CO" && $container['crlastcond'] == "AC") || $container['lastact'] == "AC") {
+									$status= "valid";
+									$message = "";	
+								} else{
+									$status= "invalid";
+									$message = "Invalid Container";
+								}					
+							}
+						}
+
+					}
+
+					$html .='<tr>
+					<td></td>
+					<td>'.$i.'</td>
+					<td><input type="text" class="form-control col-sm-2 crno" name="crno[]" value="'.$v['A'].'" readonly></td>
+					<td><input type="text" class="form-control col-sm-2 ccode" name="ccode[]" value="'.$v['B'].'" readonly></td>
+					<td><input type="text" class="form-control col-sm-2 ctcode" name="ctcode[]" value="'.$v['C'].'" readonly></td>
+					<td><input type="text" class="form-control col-sm-2 ccheight" name="ccheight[]" value="'.$v['D'].'" readonly></td>
+					<td><input type="text" class="form-control col-sm-2 cclength" name="cclength[]" value="'.$v['E'].'" readonly></td>
+					<td></td>
+					<td></td>
+					<td>'.$message.'</td>
+					<td style="display:none;"><input type="text" class="form-control col-sm-2 status" name="status[]" value="'.$status.'">
+						<input type="text" class="form-control col-sm-2 message" name="message[]" value="'.$message.'">
+					</td>
+					</tr>'; 
+
+					$i++;
+				}
+			}
+
+			$data['status'] = "success";
+			$data['data'] = $html;
+			echo json_encode($data);die();
+    	}
+    }
+
+    public function insertContainerFromFile($praid)
+    {
+    	/* 
+    		STATUS MESSAGE
+    		- invalid Container: (CRLASTACT, CRLASTCOND, LASTACT) tidak memenuhi syarat
+    		- Not Found : Container belum ada di tabel container
+		*/
+
+    	if($this->request->isAjax()) {
+    		foreach($_POST['crno'] as $key=>$val) {
+    			$params[$key] = [
+					"cpopr" => "-",
+					"cpcust" => "-",
+					"praid" => $praid,
+    				"crno" => $_POST['crno'][$key],
+    				"cccode" => $_POST['ccode'][$key],
+    				"ctcode" => $_POST['ctcode'][$key],
+    				"ccheight" => $_POST['ccheight'][$key],
+    				"cclength" => $_POST['cclength'][$key],
+    				"cpiremark" => $_POST['message'][$key],
+    				"cpife" => "0",
+    				"cpishold" => 1,
+    				"sealno" => "-",
+    			]; 
+
+				$this->client->request('POST','orderPraContainers/createNewData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'form_params' => $params[$key],
+				]);
+
+    		}
+
+			$data['status'] = "success";
+			$data['message'] = "Data Saved";
+			echo json_encode($data);
+			die();
+    	}
+
+    }    
 }

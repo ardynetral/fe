@@ -229,7 +229,7 @@ class GateOut extends \CodeIgniter\Controller
 					echo json_encode($data);die();
 				}
 
-				if ((($container['crlastact'] == "CO") && ($container['crlastcond'] == "AC")) || ($container['lastact'] == "AC")) {
+				if ((($container['crlastact'] == "BO") && ($container['crlastcond'] == "AC")) || ($container['lastact'] == "AC")) {
 
 					// periksa Query getByCrno di backend
 					// getKitirRepoGateOut tdk bisa dipakai karne pakai 2 param (crno & cpoorderno) 

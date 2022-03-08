@@ -167,7 +167,7 @@ class GateIn extends \CodeIgniter\Controller
 				"crno" => $_POST['crno'],
 			    "cpdepo" => "000",
 			    "spdepo" => "000",
-			    "cpitgl" => $_POST['cpipratgl'],
+			    "cpitgl" => date('Y-m-d'),
 			    "cpiefin" => "1",
 			    "cpichrgbb" => "1",
 			    "cpipaidbb" => (isset($_POST['cpipaidbb'])?$_POST['cpipaidbb']:'0'),
@@ -255,7 +255,7 @@ class GateIn extends \CodeIgniter\Controller
 			$form_params = [
 			    "cpdepo" => "000",
 			    "spdepo" => "000",
-			    "cpitgl" => $_POST['cpipratgl'],
+			    "cpitgl" => date('Y-m-d'),
 			    "cpiefin" => "1",
 			    "cpichrgbb" => "1",
 			    "cpipaidbb" => $_POST['cpipaidbb'],

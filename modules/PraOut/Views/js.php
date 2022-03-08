@@ -1075,12 +1075,12 @@ $('#fileBukti').bind('change', function() {
 
 	var file = this.files[0];
 	var fileType = file["type"];
-	var validImageTypes = ["image/gif", "image/jpeg", "image/png"];
+	var validImageTypes = ["image/gif", "image/jpeg", "image/png", "application/pdf"];
 	if ($.inArray(fileType, validImageTypes) < 0) {
 		Swal.fire({
 		  icon: 'error',
 		  title: "Ops",
-		  html: '<div class="text-danger">Hanya boleh upload gambar!</div>'
+		  html: '<div class="text-danger">Hanya boleh upload file Gambar / file PDF!</div>'
 		});	 
 		this.value='';   
 	}  		

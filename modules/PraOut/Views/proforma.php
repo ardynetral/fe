@@ -274,8 +274,8 @@
 								
 								<p class="text-right"><b>Bukti Transfer</b><br>
 									<?php foreach($bukti_bayar['files'] as $file):?>
-									<a href="<?=$file['url']; ?>" target="_blank">
-										<img src="<?=$file['url']; ?>" style="width:200px;">
+									<a class="btn btn-default" href="<?=$file['url']; ?>" target="_blank">
+										File bukti transfer
 									</a>
 									<?php break; endforeach; ?>
 								</p>
@@ -337,7 +337,8 @@
 								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">Bukti Transfer</label>
 									<div class="col-sm-6">
-										<input type="file" name="files" class="form-control" id="fileBukti" accept="image/*">
+										<input type="file" name="files" class="form-control" id="fileBukti">
+										<p class="help-block">File harus berupa Gambar(PNG/JPG) atau PDF, Maksimal 512KB</p>
 									</div>
 								</div>
 								<div class="form-group">

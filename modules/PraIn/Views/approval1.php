@@ -333,7 +333,8 @@
 							<button type="button" id="ApprovalOrder" class="btn btn-danger"><i class="fa fa-check-circle"></i> Approve Order</button>
 
 						<?php endif; ?>
-						<a href="<?=site_url('prain');?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Back</a>	
+						<a href="<?=site_url('prain');?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Back</a>
+						<span class="block-loading"></span>	
 					</div>
 
 				</div>

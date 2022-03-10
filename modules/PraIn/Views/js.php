@@ -794,6 +794,7 @@ $(document).ready(function() {
 
 	$("#ApprovalOrder").on("click", function(e){
 		e.preventDefault();
+		$(this).prop('disabled', true);
 		var cpife = $("input:radio[name=cpife]:checked").val();
 		var formData = "praid=" + $("#praid").val();
 		formData += "&pracrnoid=" + $("#pracrnoid").val();
@@ -819,6 +820,10 @@ $(document).ready(function() {
 			type: "POST",
 			data: formData,
 			dataType: 'json',
+            beforeSend: function () {
+				$("#ApprovalOrder").prop('disabled', true);
+                $(".block-loading").addClass("loading"); 
+            },	
 			success: function(json) {
 				if(json.message == "success") {
 					Swal.fire({
@@ -826,15 +831,20 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});
+					$("#ApprovalOrder").prop('disabled', true);
 					window.location.href = "<?php echo site_url('prain'); ?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
 					  html: '<div class="text-danger">'+json.message_body+'</div>'
-					});						
+					});	
+					$("#ApprovalOrder").prop('disabled', false);					
 				}
-			}
+			},
+            complete: function () {
+                $(".block-loading").removeClass("loading"); 
+            },			
 		});	
 
 	});

@@ -56,9 +56,11 @@
 
 						</div>
 
-						<div class="rows">
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
 							<button type="button" id="printPdf" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print to PDF </button>
 							<button type="button" id="printExl" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print to Excel</button>
+							</div>
 						</div>
 					</fieldset>
 				</form>

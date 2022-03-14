@@ -284,7 +284,7 @@ class User extends \CodeIgniter\Controller
 		$data['data'] = (isset($result['data']) ? $result['data'] : '');
 		$data['group'] = $this->group_dropdown($result['data']['group_id']);
 		$data['principal_dropdown'] = principal_dropdown($result['data']['prcode']);
-		$data['debitur_dropdown'] = $this->debitur_dropdown($result['data']['prcode']);
+		$data['debitur_dropdown'] = $this->emkl_dropdown($result['data']['prcode']);
 		// dd($result['data']);
 		return view('Modules\User\Views\edit',$data);		
 	}	
@@ -482,4 +482,29 @@ class User extends \CodeIgniter\Controller
 	return $option; 
 	die();			
 }
+	function emkl_dropdown($selected="")
+	{
+		$api = api_connect();
+		$response = $this->client->request('GET','debiturs/listCutype',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'cutype' =>1,
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(),true);	
+		$debitur = $result['data']['datas'];
+		$option = "";
+		$option .= '<select name="prcode_emkl" id="prcode_emkl" class="select-debitur">';
+		$option .= '<option vslue="">-select-</option>';
+		foreach($debitur as $cu) {
+			$option .= "<option value='".$cu['cucode'] ."'". ((isset($selected) && $selected==$cu['cucode']) ? ' selected' : '').">".$cu['cuname']."</option>";
+		}
+		$option .="</select>";
+		return $option; 
+		die();			
+	}
 }

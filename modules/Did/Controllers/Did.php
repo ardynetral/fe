@@ -29,23 +29,24 @@ class Did extends \CodeIgniter\Controller
 		return view('Modules\Did\Views\view', $data);
 	}
 
+	public function getAllData()
+	{
+		$response = $this->client->request('GET', 'reports/rptDepoInfoDaily', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			]
+		]);
+		$result = json_decode($response->getBody()->getContents(), true);
+		$data = $result['data']['datas'][0];
+		return $data;
+	}
+
 	public function reportPdf()
 	{
-		$db = \Config\Database::connect();
-		$sql_body = "
-		select 
-		cp.cpopr as principal,
-		month(cp.cpitgl) as dinfo_month,
-		day(cp.cpitgl) as dinfo_daily,
-		count(cp.crno) as total
-		from container_process cp
-		where year(cp.cpitgl)=year(now())
-		group by cp.cpopr, month(cp.cpitgl), day(cp.cpitgl)
-		";
 
-		$data_body = $db->query($sql_body)->getResultArray();
-
-		$mpdf = new \Mpdf\Mpdf();
+		$result =   $this->getAllData();
+		$mpdf = new \Mpdf\Mpdf(['setAutoTopMargin' => 'pad']);
 		$html = '';
 
 		$html .= '
@@ -63,13 +64,13 @@ class Did extends \CodeIgniter\Controller
 					.tbl_head_prain td{border-collapse: collapse;}
 					.t-right{text-align:right;}
 					.t-left{text-align:left;}
+					.t-center{text-align:center;}
 
 					.tbl_det_prain th,.tbl_det_prain td {
 						border:1px solid #666666!important;
 						border-spacing: 0;
 						border-collapse: collapse;
 						padding:5px;
-
 					}
 					.line-space{border-bottom:1px solid #dddddd;margin:30px 0;}
 				</style>
@@ -77,56 +78,53 @@ class Did extends \CodeIgniter\Controller
 		';
 
 		$html .= '<body>
-			<div class="page-header">
-				<div class="head-left">
-					<h4>PT. CONTINDO RAYA</h4>
-				</div>
-				<div class="head-right">
-					<p>PADANG, ' . date('d/m/Y') . '</p>		
-				</div>
-			</div>
-		';
-		$html .= '
-			<table class="tbl_head_prain" width="100%">
-				<tbody>
-					
-				</tbody>
-			</table>
-		';
 
-		$html .= '
-			<h4>Repor Depo Info Daily</h4>
-			<table class="tbl_det_prain">
-				<thead>
-					<tr>
-						<th>NO</th>
-						<th>Principal</th>
-						<th>Info Daily</th>
-						<th>Info Month</th>
-						<th>Total</th>
-					</tr>
-				</thead>
-				<tbody>';
+		<table class="tbl_det_prain" width="100%">
+			<thead>
+				<tr>
+					<th>Principal</th>
+					<th>Month</th>
+					<th>Daily</th>
+					<th>Total</th>
+				</tr>
+			</thead>
+			<tbody>';
 		$no = 1;
-		foreach ($data_body as $row) {
-			$html .= '
-					<tr>
-						<td>' . $no . '</td>
-						<td>' . $row['principal'] . '</td>
-						<td>' . $row['dinfo_month'] . '</td>
-						<td>' . $row['dinfo_daily'] . '</td>
-						<td>' . $row['total'] . '</td>
-					</tr>';
-
-			$no++;
+		$grouping = [];
+		foreach ($result as $key=>$row) {
+			$grouping[$row['principal']][]=$row;
 		}
+		
+		$grandtotal = 0;
+		$j=0;
+		foreach ($grouping as $pr_code) {
+			$subtotal = 0;
+			foreach($pr_code as $prc) {
+				$html .= '
+				<tr>
+					<td class="t-center">'.$prc['principal'].'</td>
+					<td class="t-center">'.$prc['dinfo_month'].'</td>
+					<td class="t-center">'.$prc['dinfo_daily'].'</td>
+					<td class="t-center">'.$prc['total'].'</td>
+				</tr>';
+				$subtotal=$subtotal+$prc['total'];
+			}
+			$grandtotal=$grandtotal+$subtotal;
+			$html .= '<tr><th class="t-right" colspan="3">SUB TOTAL</th><th>'.$subtotal.'</th></tr>';
+		$j++;
+		}
+
+		$html .= '<tr><th class="t-right" colspan="3">GRAND TOTAL</th><th>' . $grandtotal . '</th></tr>';		
 		$html .= '
-				</tbody>
-			</table>
+			</tbody>
+		</table>
 
 		</body>
 		</html>
 		';
+		$mpdf->setHeader('|<h3>PT. CONTINDO RAYA<br>
+					DEPO INFO DAILY REPORT</h3>|PAGE {PAGENO}');
+		$mpdf->setFooter('PRINTED ON ' . date('d/m/Y'));		
 		$mpdf->WriteHTML($html);
 		$mpdf->Output();
 		die();
@@ -134,55 +132,66 @@ class Did extends \CodeIgniter\Controller
 
 	public function reportExcel()
 	{
-		$db = \Config\Database::connect();
-		$sql_body = "
-		select 
-		cp.cpopr as principal,
-		month(cp.cpitgl) as dinfo_month,
-		day(cp.cpitgl) as dinfo_daily,
-		count(cp.crno) as total
-		from container_process cp
-		where year(cp.cpitgl)=year(now())
-		group by cp.cpopr, month(cp.cpitgl), day(cp.cpitgl)
-		";
-
-		$data_body = $db->query($sql_body)->getResultArray();
-
+		$result =   $this->getAllData();
 		$exl = new Spreadsheet();
 		// Judul Dokumen
 		$exl->setActiveSheetIndex(0)
 			->setCellValue('A1', 'Depo Info Daily Report');
-		$exl->getActiveSheet()->mergeCells("A1:E1");
-		$exl->getActiveSheet()->getStyle('A1:E1')->getFont()->setSize(20);
+		$exl->getActiveSheet()->mergeCells("A1:D1");
+		$exl->getActiveSheet()->getStyle('A1:D1')->getFont()->setSize(20);
 		// Header Tabel
 		$exl->setActiveSheetIndex(0)
-			->setCellValue('A2', 'No')
-			->setCellValue('B2', 'Principal')
-			->setCellValue('C2', 'Info Month')
-			->setCellValue('D2', 'Info Daily')
-			->setCellValue('E2', 'Total');
-
+			->setCellValue('A2', 'Principal')
+			->setCellValue('B2', 'Info Month')
+			->setCellValue('C2', 'Info Daily')
+			->setCellValue('D2', 'Total');
+		$exl->getActiveSheet()->getStyle('A1:D1')->getAlignment()->applyFromArray(['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => TRUE]);
 		// Body Tabel
+		$grouping = [];
+		foreach ($result as $key=>$row) {
+			$grouping[$row['principal']][]=$row;
+		}
+
 		$col = 3;
 		$i = 0;
 		$num = 2;
-		foreach ($data_body as $row) {
-			$exl->setActiveSheetIndex(0)
-				->setCellValue('A' . $col, $i)
-				->setCellValue('B' . $col, $row['principal'])
-				->setCellValue('C' . $col, $row['dinfo_month'])
-				->setCellValue('D' . $col, $row['dinfo_daily'])
-				->setCellValue('E' . $col, $row['total']);
-			$col++;
-			$i++;
-			$num = $num + 1;
+		$rows=0;
+		$grandtotal = 0;
+		foreach ($grouping as $pr_code) {
+			$subtotal = 0;
+			foreach ($pr_code as $row) {
+				$exl->getActiveSheet()
+					->setCellValue('A' . $col, $row['principal'])
+					->setCellValue('B' . $col, $row['dinfo_month'])
+					->setCellValue('C' . $col, $row['dinfo_daily'])
+					->setCellValue('D' . $col, $row['total']);
+				$col++;
+				$i++;
+				$num = $num + 1;
+				$subtotal=$subtotal+$row['total'];	
+			}
+			// $rows=$col;
+			$grandtotal=$grandtotal+$subtotal;
+			// $exl->getActiveSheet()->setCellValue('A'.$rows, 'SUB TOTAL');
 		}
+		// die();
+		$endrow = $num+1;
+		$exl->setActiveSheetIndex(0)->setCellValue('A' . $endrow, 'GRAND TOTAL');
+		$exl->getActiveSheet()->mergeCells("A" . $endrow . ":C" . $endrow);
+		$exl->setActiveSheetIndex(0)->setCellValue('D' . $endrow, $grandtotal);
+		$exl->getActiveSheet()->getStyle("A" . $endrow . ":D" . $endrow)->getFont()->applyFromArray(['name' => 'Arial', 'bold' => TRUE, 'color' => ['rgb' => '000000']]);
+		$exl->getActiveSheet()->getStyle("A" . $endrow . ":D" . $endrow)->getAlignment()->applyFromArray(['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT, 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => TRUE]);	
 
-		//Style font
-		$exl->getActiveSheet()->getStyle('A2:E2')->getFont()->applyFromArray(['name' => 'Arial', 'bold' => TRUE, 'color' => ['rgb' => '000000']]);
-		// style border
-		$exl->getActiveSheet()->getStyle('A1:E' . $num)->getAlignment()->applyFromArray(['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER, 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => TRUE]);
-		$exl->getActiveSheet()->getStyle('A2:E' . $num)->getBorders()->getAllBorders()->applyFromArray(['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => '000000']]);
+		// autosize Column
+		$sheet = $exl->getActiveSheet();
+		foreach ($sheet->getColumnIterator() as $column) {
+		    $sheet->getColumnDimension($column->getColumnIndex())->setAutoSize(true);
+		}
+		// font
+		$exl->getActiveSheet()->getStyle('A2:D2')->getFont()->applyFromArray(['name' => 'Arial', 'bold' => TRUE, 'color' => ['rgb' => '000000']]);
+
+		// border
+		$exl->getActiveSheet()->getStyle('A2:D' . $endrow)->getBorders()->getAllBorders()->applyFromArray(['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => '000000']]);
 
 		$writer = new Xlsx($exl);
 		$filename = 'DailyReport-' . date('Y-m-d-His');

@@ -5,8 +5,8 @@
 
 <div class="content">
 	<div class="main-header">
-		<h2>Daily Movement In</h2>
-		<em>Daily Movement In page</em>
+		<h2>Damage Progress Report</h2>
+		<em>Damage Progress Report page</em>
 	</div>
 	<div class="main-content">
 
@@ -45,7 +45,7 @@
 								<?php endif; ?>
 							</div>
 						</div>
-						<div class="form-group">
+<!-- 						<div class="form-group">
 							<label for="cpipratgl" class="col-sm-2 control-label text-right">Date</label>
 							<div class="col-sm-2">
 								<div class="input-group">
@@ -54,11 +54,13 @@
 								</div>
 							</div>
 
-						</div>
+						</div> -->
 
-						<div class="rows">
+						<div class="form-group">
+							<div class="col-sm-offset-2 col-sm-10">
 							<button type="button" id="printPdf" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print to PDF </button>
 							<button type="button" id="printExl" class="btn btn-primary"><i class="fa fa-check-circle"></i> Print to Excel</button>
+							</div>
 						</div>
 					</fieldset>
 				</form>
@@ -77,6 +79,6 @@
 
 <?= $this->Section('script_js'); ?>
 
-<?= $this->include('\Modules\Dailymovementout\Views\js'); ?>
+<?= $this->include('\Modules\Damageprogress\Views\js'); ?>
 
 <?= $this->endSection(); ?>

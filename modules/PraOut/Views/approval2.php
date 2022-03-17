@@ -260,7 +260,7 @@
 									<th>Principal</th>
 									<th>Lift On</th>
 									<th>Seal No</th>
-									<th>GateIn Date</th>
+									<th>Gate Out Date</th>
 								</tr>
 							</thead>
 							

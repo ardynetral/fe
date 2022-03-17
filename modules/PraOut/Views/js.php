@@ -74,7 +74,7 @@ $(document).ready(function() {
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
-					  html: '<div class="text-danger">'+json.message_body+'</div>'
+					  html: '<div class="text-danger">'+json.message+'</div>'
 					});	
 					$("#save").prop('disabled', false);	
 					$(".pra-container").hide();				

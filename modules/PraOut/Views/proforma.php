@@ -320,7 +320,7 @@
 										<input type="hidden" name="total_pajak" class="form-control" id="total_pajak" value="<?=$recept['total_pajak'];?>">
 										<input type="hidden" name="materai" class="form-control" id="materai" value="<?=$recept['materai'];?>">
 										<input type="hidden" name="total_tagihan" class="form-control" id="total_tagihan" value="<?=$recept['total_tagihan'];?>">
-										<input type="text" name="cpireceptno" class="form-control" id="cpireceptno" required="">
+										<input type="text" name="cpireceptno" class="form-control" id="cpireceptno" required>
 									</div>
 								</div>
 								<div class="form-group">
@@ -337,7 +337,7 @@
 								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">Bukti Transfer</label>
 									<div class="col-sm-6">
-										<input type="file" name="files" class="form-control" id="fileBukti">
+										<input type="file" name="files" class="form-control" id="fileBukti" required>
 										<p class="help-block">File harus berupa Gambar(PNG/JPG) atau PDF, Maksimal 512KB</p>
 									</div>
 								</div>

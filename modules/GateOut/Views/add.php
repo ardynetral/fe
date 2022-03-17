@@ -72,7 +72,10 @@ if(isset($data) && ($data!='')) {
 									<td class="text-right">Height :</td>
 									<td><input <?php echo $readonly; ?> type="text" name="ccheight" class="form-control" id="ccheight" value="<?= ''; ?>"></td>
 									<td class="text-right"> Date Out # :</td>
-									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="cpopratgl" id="cpopratgl" class="form-control" value="<?= ''; ?>"></td>
+									<td colspan="3">
+										<input <?php echo $readonly; ?> type="text" name="cpotgl" id="cpotgl" class="form-control" value="<?= date('d/m/Y'); ?>">
+										<input <?php echo $readonly; ?> type="hidden" name="cpopratgl" id="cpopratgl" class="form-control" value="<?= ''; ?>">
+									</td>
 								</tr>
 								<!-- baris 4  -->
 								<tr>
@@ -81,7 +84,7 @@ if(isset($data) && ($data!='')) {
 									<td class="text-right">Lenght :</td>
 									<td><input <?php echo $readonly; ?> type="text" name="cclength" class="form-control" id="cclength" value="<?= ''; ?>"></td>
 									<td class="text-right"> Time # :</td>
-									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="cpojam" id="cpojam" class="form-control" value="<?= ''; ?>"></td>
+									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="cpojam" id="cpojam" class="form-control" value="<?= date('h:i:s'); ?>"></td>
 								</tr>
 								<!-- baris 5  -->
 								<tr>

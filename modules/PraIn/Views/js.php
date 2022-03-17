@@ -418,7 +418,7 @@ $(document).ready(function() {
 	$("#prcode").on("change", function(){
 		$("#deposit").prop('checked',false);
 		$("#deposit").val("0");		
-		$("#cleaning_type").val("Water Wash");	
+		$("#cleaning_type").val("WW");	
 		var prcode = $(this).val();
 		var pracrnoid = $("#pracrnoid").val();
 		var typedo = $('input:radio[name=typedo]:checked').val();

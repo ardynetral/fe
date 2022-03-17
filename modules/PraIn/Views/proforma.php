@@ -368,7 +368,7 @@
 								<div class="form-group">
 									<label for="cpideliver" class="col-sm-4 control-label text-right">Bukti Transfer</label>
 									<div class="col-sm-6">
-										<input type="file" name="files" class="form-control file-bukti" id="fileBukti">
+										<input type="file" name="files" class="form-control file-bukti" id="fileBukti" required>
 										<p class="help-block">File harus berupa Gambar(PNG/JPG) atau PDF, Maksimal 512KB</p>
 									</div>
 								</div>

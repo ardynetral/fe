@@ -178,17 +178,17 @@ class PraIn extends \CodeIgniter\Controller
 		$std40 = 0;
 		foreach($datas as $data) {
 	
-			if((floatval($data['ccheight'])>8.5) && (floatval($data['cclength'])<=20)) {
+			if((floatval($data['ccheight'])>8.6) && (floatval($data['cclength'])<=20)) {
 				$hc20=$hc20+1;
-			} else if((floatval($data['ccheight'])>8.5) && (floatval($data['ccheight'])<9.5) && (floatval($data['cclength'])==40)) {
+			} else if((floatval($data['ccheight'])>8.6) && (floatval($data['ccheight'])<9.5) && (floatval($data['cclength'])==40)) {
 				$hc40=$hc40+1;
 			} else if((floatval($data['ccheight']))>=9.5 && (floatval($data['cclength'])==40)) {
 				$hc45=$hc45+1;
 			}
 
-			if((floatval($data['ccheight'])<=8.5) && (floatval($data['cclength'])<=20)) {
+			if((floatval($data['ccheight'])<=8.6) && (floatval($data['cclength'])<=20)) {
 				$std20=$std20+1;
-			} else if((floatval($data['ccheight'])<=8.5) && (floatval($data['cclength'])==40)) {
+			} else if((floatval($data['ccheight'])<=8.6) && (floatval($data['cclength'])==40)) {
 				$std40=$std40+1;
 			}
 
@@ -245,7 +245,7 @@ class PraIn extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'cpirefin',
-				'contents'	=> $_POST['cpirefin']
+				'contents'	=> strtoupper($_POST['cpirefin'])
 			];
 			$post_arr[] = [
 				'name'		=> 'cpijam',
@@ -296,9 +296,16 @@ class PraIn extends \CodeIgniter\Controller
 			
 
 			$validate = $this->validate([
-	            'cpiorderno' 	=> 'required',
-	            // 'cpives' 	=> 'required',
-	            // 'cpivoyid' 	=> 'required',
+	            'cpidish' 	=> 'required',
+	            'cpidisdat' => 'required',
+	            'cpirefin' 	=> 'required',
+	            'cpicargo' 	=> 'required',
+	        ],
+            [
+	            'cpidish' 	=> ['required' => 'ORIGIN PORT field required'],
+	            'cpidisdat' => ['required' => 'DISCHARGE DATE field required'],
+	            'cpirefin' 	=> ['required' => 'DO NUMBER field required'],
+	            'cpicargo' 	=> ['required' => 'EX CARGO field required']	
 	        ]);			
 
 			// echo var_dump($post_arr);die();
@@ -521,7 +528,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $id,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -1010,7 +1017,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $id,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -1272,7 +1279,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $id,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -1711,7 +1718,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $praid,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -1752,7 +1759,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $praid,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -1795,7 +1802,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $praid,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -1840,7 +1847,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $praid,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -2456,8 +2463,10 @@ class PraIn extends \CodeIgniter\Controller
 			}
 		}
 
-		$total=$subtot_cleaning+$subtot20+$subtot40+$subtot45+@$recept['biaya_adm']+@$recept['total_pajak'];
+		// $total=$subtot_cleaning+$subtot20+$subtot40+$subtot45+$recept['biaya_adm']+$recept['total_pajak'];
+		$total = $recept['total_tagihan'];
 		$terbilang = strtoupper(toEnglish($total)) . ' IDR';
+		$materai = ($recept['total_tagihan'] > 5000000)?"10000":"0";
 
 		if(isset($result['status']) && ($result['status']=="Failled"))
 		{
@@ -2634,6 +2643,8 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
 				</tr>							
+				<tr><td colspan="7" class="t-right">Materai</td>
+					<td class="t-right">'.number_format($materai,2).'</td></tr>
 				<tr><th colspan="7" class="t-right">Total</th>
 					<th class="t-right">'.number_format($total,2).'</th></tr>
 
@@ -2747,8 +2758,10 @@ class PraIn extends \CodeIgniter\Controller
 			}
 		}
 
-		$total=$subtot_cleaning+$subtot20+$subtot40+$subtot45+$recept['biaya_adm']+$recept['total_pajak'];
+		$total=$subtot_cleaning+$subtot20+$subtot40+$subtot45+$recept['biaya_adm']+$recept['total_pajak']+$recept['materai'];
+		// $total = $recept['total_tagihan'];
 		$terbilang = strtoupper(toEnglish($total)) . ' IDR';
+		$materai = ($recept['total_tagihan'] > 5000000)?+$recept['materai']:"0";
 
 		if(isset($result['status']) && ($result['status']=="Failled"))
 		{
@@ -2925,7 +2938,10 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-center">IDR</td>
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
-				</tr>							
+				</tr>
+				</tr>	
+					<tr><td colspan="7" class="t-right">Materai</td>
+					<td class="t-right">'.number_format($materai,2).'</td></tr>
 				<tr><th colspan="7" class="t-right">Total</th>
 					<th class="t-right">'.number_format($total,2).'</th></tr>
 
@@ -3279,7 +3295,7 @@ class PraIn extends \CodeIgniter\Controller
 					'query' => [
 						'praid' => $praid,
 						'offset' => 0,
-						'limit' => 100,
+						'limit' => 500,
 					]
 				]);
 
@@ -3643,7 +3659,7 @@ class PraIn extends \CodeIgniter\Controller
 				'query' => [
 					'praid' => $praid,
 					'offset' => 0,
-					'limit' => 100,
+					'limit' => 500,
 				]
 			]);
 

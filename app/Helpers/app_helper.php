@@ -8,8 +8,7 @@ function api_connect()
 	// check_exp_time();
 
 	$client = new Client([
-		//'base_uri' => 'http://202.157.185.83:4000/api/v1/',
-		'base_uri' => 'http://103.82.240.182:4000/api/v1/',
+		'base_uri' => 'http://202.157.185.83:4000/api/v1/',
 		'timeout' => 0,
 		'http_errors' => false
 	]);
@@ -636,6 +635,51 @@ function check_bukti_bayar($praid)
 		}
 	}
 	return false;
+}
+
+function check_bukti_bayar2($praid)
+{
+	$api = api_connect();
+	$response = $api->request('GET', 'orderPras/printOrderByPraOrderId', [
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		],
+		'query' => [
+			'praid' => $praid,
+		]
+	]);
+
+	$result = json_decode($response->getBody()->getContents(), true);
+	$datapra = $result['data']['datas'][0];
+	$data_bukti = "";
+	// bukti_bayar
+	if (isset($datapra['orderPraRecept'][1])) {
+		$recept_files = $datapra['orderPraRecept'][1];
+		$response_bukti = $api->request('GET', 'orderPraRecepts/getDetailData', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json' => [
+				'prareceptid' => $recept_files['prareceptid']
+			]
+		]);
+		$result_bukti = json_decode($response_bukti->getBody()->getContents(), true);
+		$bukti_bayar = $result_bukti['data'];
+		$file_bukti = isset($bukti_bayar['files'][0])?$bukti_bayar['files'][0]:"";
+		// dd($bukti_bayar);
+		if($bukti_bayar['cpireceptno']=="-" || $file_bukti=="") {
+			//return true; // update
+			$data_bukti = "update";
+		} else {
+			$data_bukti = "exist";
+		}
+	} else {
+		// return false; // insert
+		$data_bukti = "insert";
+	}
+	return $data_bukti;
 }
 
 function recept_by_praid($praid)

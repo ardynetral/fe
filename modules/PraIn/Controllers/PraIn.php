@@ -39,7 +39,7 @@ class PraIn extends \CodeIgniter\Controller
 
 		$data = [];
 		$offset=0;
-		$limit=100;
+		$limit=1000;
 		// order pra
 		$response1 = $this->client->request('GET','orderPras/getAllData',[
 			'headers' => [
@@ -209,7 +209,7 @@ class PraIn extends \CodeIgniter\Controller
 		$group_id = $token['groupId'];
 		$prcode = $token['prcode'];
 		$offset=0;
-		$limit=10;
+		$limit=500;
 
 		if ($this->request->isAJAX()) 
 		{
@@ -1325,7 +1325,7 @@ class PraIn extends \CodeIgniter\Controller
 		$data['std40'] = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['std40'] : 0);
 
 		// bukti_bayar
-		if(check_bukti_bayar($dt_order['data']['datas'][0]['praid'])==true) {
+		if(check_bukti_bayar2($dt_order['data']['datas'][0]['praid'])=="exist") {
 			$recept_files = $dt_order['data']['datas'][0]['orderPraRecept'][1];
 			$response_bukti = $this->client->request('GET','orderPraRecepts/getDetailData',[
 				'headers' => [
@@ -1355,6 +1355,8 @@ class PraIn extends \CodeIgniter\Controller
 		}
 
 		$datarecept = $dt_order['data']['datas'][0]['orderPraRecept'][0];
+		// untuk bug doble insert datarecept di appv1 . gunakan datarecept2
+		$datarecept2 = isset($dt_order['data']['datas'][0]['orderPraRecept'][1])?$dt_order['data']['datas'][0]['orderPraRecept'][1]:"";
 		$data['message'] = "success";
 		$data['data'] = $dt_order['data']['datas'][0];
 		$total_charge = $this->hitungTotalCharge($data['data']['orderPraContainers']);
@@ -1363,6 +1365,7 @@ class PraIn extends \CodeIgniter\Controller
 		$data['adm_tarif'] = $total_charge['ADM_TARIF'];
 		$data['materai'] = $total_charge['MATERAI'];
 		$data['recept'] = $datarecept;
+		$data['recept2'] = $datarecept2;
 		$data['bukti_bayar'] = $bukti_bayar;
 		$data['contract'] = $dt_order['data']['datas'][0];
 		$data['depo'] = $this->get_depo($data['data']['cpdepo']);
@@ -1600,6 +1603,8 @@ class PraIn extends \CodeIgniter\Controller
 	public function bukti_bayar() 
 	{
 		check_exp_time();
+		$token = get_token_item();
+		$group_id = $token['groupId'];		
 		$data = [];
 		$post_arr = [];
 
@@ -1665,13 +1670,28 @@ class PraIn extends \CodeIgniter\Controller
 					'filename'	=> $_FILES["files"]['name']
 				);
 			}
-			$response = $this->client->request('POST','orderPraRecepts/createNewData',[
-				'headers' => [
-					'Accept' => 'application/json',
-					'Authorization' => session()->get('login_token')
-				],
-				'multipart' => $post_arr,
-			]);
+			// echo var_dump(check_bukti_bayar2($_POST['praid']));die();
+			if((check_bukti_bayar2($_POST['praid'])=="insert")&&($group_id!=1)) {
+				$response = $this->client->request('POST','orderPraRecepts/createNewData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'multipart' => $post_arr,
+				]);
+			} else if((check_bukti_bayar2($_POST['praid'])=="update")&&($group_id!=1)){
+				$post_arr[] = [
+					'name'		=> 'prareceptid',
+					'contents'	=> $_POST['prareceptid']
+				];				
+				$response = $this->client->request('POST','orderPraRecepts/updateData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'multipart' => $post_arr,
+				]);				
+			}
 
 			$result = json_decode($response->getBody()->getContents(),true);
 
@@ -2920,16 +2940,6 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-right">'.number_format($subtot_cleaning,2).'</td>
 				</tr>	
 				<tr>
-					<td>005</td>
-					<td>ADMINISTRATION</td>
-					<td></td>
-					<td class="t-center">1</td>
-					<td class="t-center"></td>
-					<td class="t-center">IDR</td>
-					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
-					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
-				</tr>	
-				<tr>
 					<td>998</td>
 					<td>PPN 10% </td>
 					<td></td>
@@ -2939,9 +2949,26 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
 				</tr>
-				</tr>	
-					<tr><td colspan="7" class="t-right">Materai</td>
-					<td class="t-right">'.number_format($materai,2).'</td></tr>
+				<tr>
+					<td>005</td>
+					<td>ADMINISTRATION</td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
+					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
+				</tr>
+				<tr>
+					<td>005</td>
+					<td>MATERAI</td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($materai,2).'</td>
+					<td class="t-right">'.number_format($materai,2).'</td>
+				</tr>						
 				<tr><th colspan="7" class="t-right">Total</th>
 					<th class="t-right">'.number_format($total,2).'</th></tr>
 

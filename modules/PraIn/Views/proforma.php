@@ -342,7 +342,7 @@
 									<label for="cpideliver" class="col-sm-4 control-label text-right">Ref Transfer No</label>
 									<div class="col-sm-6">
 										<input type="hidden" name="praid" class="form-control" id="praid" value="<?=$data['praid']?>">
-										<input type="hidden" name="prareceptid" class="form-control" id="prareceptid" value="<?=$recept['prareceptid'];?>">
+										<input type="hidden" name="prareceptid" class="form-control" id="prareceptid" value="<?=@$recept2['prareceptid'];?>">
 										<input type="hidden" name="biaya_cleaning" class="form-control" id="biaya_cleaning" value="<?=$recept['biaya_cleaning'];?>">
 										<input type="hidden" name="tot_lolo" class="form-control" id="tot_lolo" value="<?=$recept['tot_lolo'];?>">
 										<input type="hidden" name="biaya_adm" class="form-control" id="biaya_adm" value="<?=$recept['biaya_adm'];?>">

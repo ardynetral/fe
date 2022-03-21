@@ -37,7 +37,7 @@ class PraOut extends \CodeIgniter\Controller
 
 		$data = [];
 		$offset=0;
-		$limit=100;
+		$limit=1000;
 		// order pra
 		$response1 = $this->client->request('GET','orderPras/getAllData',[
 			'headers' => [
@@ -203,7 +203,7 @@ class PraOut extends \CodeIgniter\Controller
 		$prcode = $token['prcode'];
 
 		$offset=0;
-		$limit=10;
+		$limit=500;
 
 		if ($this->request->isAJAX()) 
 		{
@@ -2435,6 +2435,16 @@ public function edit_get_container($praid)
 					<td class="t-right">'.number_format($subtot_cleaning,2).'</td>
 				</tr>	
 				<tr>
+					<td>998</td>
+					<td>PPN 10% </td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
+					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
+				</tr>							
+				<tr>
 					<td>005</td>
 					<td>ADMINISTRATION</td>
 					<td></td>
@@ -2445,17 +2455,15 @@ public function edit_get_container($praid)
 					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
 				</tr>	
 				<tr>
-					<td>998</td>
-					<td>PPN 10% </td>
+					<td>005</td>
+					<td>MATERAI</td>
 					<td></td>
 					<td class="t-center">1</td>
 					<td class="t-center"></td>
 					<td class="t-center">IDR</td>
-					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
-					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
-				</tr>							
-				<tr><td colspan="7" class="t-right">Materai</td>
-					<td class="t-right">'.number_format($materai,2).'</td></tr>
+					<td class="t-right">'.number_format($materai,2).'</td>
+					<td class="t-right">'.number_format($materai,2).'</td>
+				</tr>					
 				<tr><th colspan="7" class="t-right">Total</th>
 					<th class="t-right">'.number_format($total,2).'</th></tr>
 

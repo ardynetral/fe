@@ -44,7 +44,7 @@
 
 							<a href="<?=site_url('prain/proforma/'.$row['praid']);?>" id="" class="btn btn-xs btn-primary" data-praid="<?=$row['praid'];?>">Proforma</a>
 							
-							<?php if((check_bukti_bayar($row['praid'])==true)&&($group_id!=1)):?>
+							<?php if((check_bukti_bayar2($row['praid'])=="exist")&&($group_id!=1)):?>
 							<a href="<?=site_url('prain/approval2/'.$row['praid']);?>" id="" class="btn btn-xs btn-success approve" data-praid="<?=$row['praid'];?>">Approval 2</a>
 							<?php endif;?>
 

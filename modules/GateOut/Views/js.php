@@ -183,7 +183,7 @@ $(document).ready(function() {
 					$("#cpoeir").val(json.data.cpoeir);
 					$("#cporefout").val(json.data.cporefout);
 					$("#cpopratgl").val(json.data.cpopratgl);
-					$("#cpojam").val(json.data.cpojam);
+					// $("#cpojam").val(json.data.cpojam);
 					$("#cporeceptno").val(json.data.cporeceptno);
 
 					if(json.data.cpochrgbm==1) {

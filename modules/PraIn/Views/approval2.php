@@ -253,8 +253,10 @@
 								
 								<p class="text-right"><b>Bukti Transfer</b><br>
 									<?php foreach($bukti_bayar['files'] as $file):?>
-									<a href="<?=$file['url']?>" target="_blank"><img src="<?=$file['url']; ?>" style="width:200px;"></a>
-									<?php endforeach; ?>
+									<a  class="btn btn-default" href="<?=$file['url']; ?>" target="_blank">
+										File bukti transfer
+									</a>
+									<?php  break; endforeach; ?>
 								</p>
 
 							</div>						

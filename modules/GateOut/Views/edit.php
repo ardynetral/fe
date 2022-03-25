@@ -31,6 +31,7 @@
 				<form id="fGateOut" class="form-horizontal" role="form">
 					<?= csrf_field() ?>
 					<?php $readonly = 'readonly'; ?>
+					<?php $cpotgl = ($data['cpotgl'] !="")?date('d-m-Y',strtotime(@$data['cpotgl'])):"";?>
 					<fieldset>
 						<table class="tbl-form" width="100%">
 							<!-- 9 kolom -->
@@ -64,7 +65,10 @@
 									<td class="text-right">Height :</td>
 									<td><input <?php echo $readonly; ?> type="text" name="ccheight" class="form-control" id="ccheight" value="<?= $data['ccheight']; ?>"></td>
 									<td class="text-right"> Date Out # :</td>
-									<td colspan="3"><input <?php echo $readonly; ?> type="text" name="cpopratgl" id="cpopratgl" class="form-control" value="<?= date('d-m-Y',strtotime($data['cpopratgl'])); ?>"></td>
+									<td colspan="3">
+										<input <?php echo $readonly; ?> type="text" name="cpotgl" id="cpotgl" class="form-control" value="<?= $cpotgl; ?>">
+										<input <?php echo $readonly; ?> type="hidden" name="cpopratgl" id="cpopratgl" class="form-control" value="<?= ''; ?>">
+									</td>
 								</tr>
 								<!-- baris 4  -->
 								<tr>

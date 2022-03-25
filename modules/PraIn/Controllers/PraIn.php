@@ -39,7 +39,7 @@ class PraIn extends \CodeIgniter\Controller
 
 		$data = [];
 		$offset=0;
-		$limit=100;
+		$limit=1000;
 		// order pra
 		$response1 = $this->client->request('GET','orderPras/getAllData',[
 			'headers' => [
@@ -178,17 +178,17 @@ class PraIn extends \CodeIgniter\Controller
 		$std40 = 0;
 		foreach($datas as $data) {
 	
-			if((floatval($data['ccheight'])>8.5) && (floatval($data['cclength'])<=20)) {
+			if((floatval($data['ccheight'])>8.6) && (floatval($data['cclength'])<=20)) {
 				$hc20=$hc20+1;
-			} else if((floatval($data['ccheight'])>8.5) && (floatval($data['ccheight'])<9.5) && (floatval($data['cclength'])==40)) {
+			} else if((floatval($data['ccheight'])>8.6) && (floatval($data['ccheight'])<9.5) && (floatval($data['cclength'])==40)) {
 				$hc40=$hc40+1;
 			} else if((floatval($data['ccheight']))>=9.5 && (floatval($data['cclength'])==40)) {
 				$hc45=$hc45+1;
 			}
 
-			if((floatval($data['ccheight'])<=8.5) && (floatval($data['cclength'])<=20)) {
+			if((floatval($data['ccheight'])<=8.6) && (floatval($data['cclength'])<=20)) {
 				$std20=$std20+1;
-			} else if((floatval($data['ccheight'])<=8.5) && (floatval($data['cclength'])==40)) {
+			} else if((floatval($data['ccheight'])<=8.6) && (floatval($data['cclength'])==40)) {
 				$std40=$std40+1;
 			}
 
@@ -209,7 +209,7 @@ class PraIn extends \CodeIgniter\Controller
 		$group_id = $token['groupId'];
 		$prcode = $token['prcode'];
 		$offset=0;
-		$limit=10;
+		$limit=500;
 
 		if ($this->request->isAJAX()) 
 		{
@@ -245,7 +245,7 @@ class PraIn extends \CodeIgniter\Controller
 			];
 			$post_arr[] = [
 				'name'		=> 'cpirefin',
-				'contents'	=> $_POST['cpirefin']
+				'contents'	=> strtoupper($_POST['cpirefin'])
 			];
 			$post_arr[] = [
 				'name'		=> 'cpijam',
@@ -296,9 +296,16 @@ class PraIn extends \CodeIgniter\Controller
 			
 
 			$validate = $this->validate([
-	            'cpiorderno' 	=> 'required',
-	            // 'cpives' 	=> 'required',
-	            // 'cpivoyid' 	=> 'required',
+	            'cpidish' 	=> 'required',
+	            'cpidisdat' => 'required',
+	            'cpirefin' 	=> 'required',
+	            'cpicargo' 	=> 'required',
+	        ],
+            [
+	            'cpidish' 	=> ['required' => 'ORIGIN PORT field required'],
+	            'cpidisdat' => ['required' => 'DISCHARGE DATE field required'],
+	            'cpirefin' 	=> ['required' => 'DO NUMBER field required'],
+	            'cpicargo' 	=> ['required' => 'EX CARGO field required']	
 	        ]);			
 
 			// echo var_dump($post_arr);die();
@@ -521,7 +528,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $id,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -1010,7 +1017,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $id,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -1272,7 +1279,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $id,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -1318,7 +1325,7 @@ class PraIn extends \CodeIgniter\Controller
 		$data['std40'] = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['std40'] : 0);
 
 		// bukti_bayar
-		if(check_bukti_bayar($dt_order['data']['datas'][0]['praid'])==true) {
+		if(check_bukti_bayar2($dt_order['data']['datas'][0]['praid'])=="exist") {
 			$recept_files = $dt_order['data']['datas'][0]['orderPraRecept'][1];
 			$response_bukti = $this->client->request('GET','orderPraRecepts/getDetailData',[
 				'headers' => [
@@ -1348,6 +1355,8 @@ class PraIn extends \CodeIgniter\Controller
 		}
 
 		$datarecept = $dt_order['data']['datas'][0]['orderPraRecept'][0];
+		// untuk bug doble insert datarecept di appv1 . gunakan datarecept2
+		$datarecept2 = isset($dt_order['data']['datas'][0]['orderPraRecept'][1])?$dt_order['data']['datas'][0]['orderPraRecept'][1]:"";
 		$data['message'] = "success";
 		$data['data'] = $dt_order['data']['datas'][0];
 		$total_charge = $this->hitungTotalCharge($data['data']['orderPraContainers']);
@@ -1356,6 +1365,7 @@ class PraIn extends \CodeIgniter\Controller
 		$data['adm_tarif'] = $total_charge['ADM_TARIF'];
 		$data['materai'] = $total_charge['MATERAI'];
 		$data['recept'] = $datarecept;
+		$data['recept2'] = $datarecept2;
 		$data['bukti_bayar'] = $bukti_bayar;
 		$data['contract'] = $dt_order['data']['datas'][0];
 		$data['depo'] = $this->get_depo($data['data']['cpdepo']);
@@ -1593,6 +1603,8 @@ class PraIn extends \CodeIgniter\Controller
 	public function bukti_bayar() 
 	{
 		check_exp_time();
+		$token = get_token_item();
+		$group_id = $token['groupId'];		
 		$data = [];
 		$post_arr = [];
 
@@ -1658,13 +1670,28 @@ class PraIn extends \CodeIgniter\Controller
 					'filename'	=> $_FILES["files"]['name']
 				);
 			}
-			$response = $this->client->request('POST','orderPraRecepts/createNewData',[
-				'headers' => [
-					'Accept' => 'application/json',
-					'Authorization' => session()->get('login_token')
-				],
-				'multipart' => $post_arr,
-			]);
+			// echo var_dump(check_bukti_bayar2($_POST['praid']));die();
+			if((check_bukti_bayar2($_POST['praid'])=="insert")) {
+				$response = $this->client->request('POST','orderPraRecepts/createNewData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'multipart' => $post_arr,
+				]);
+			} else if((check_bukti_bayar2($_POST['praid'])=="update")){
+				$post_arr[] = [
+					'name'		=> 'prareceptid',
+					'contents'	=> $_POST['prareceptid']
+				];				
+				$response = $this->client->request('POST','orderPraRecepts/updateData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'multipart' => $post_arr,
+				]);				
+			}
 
 			$result = json_decode($response->getBody()->getContents(),true);
 
@@ -1711,7 +1738,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $praid,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -1752,7 +1779,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $praid,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -1795,7 +1822,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $praid,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -1840,7 +1867,7 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'praid' => $praid,
 				'offset' => 0,
-				'limit' => 100,
+				'limit' => 500,
 			]
 		]);
 
@@ -2456,8 +2483,10 @@ class PraIn extends \CodeIgniter\Controller
 			}
 		}
 
-		$total=$subtot_cleaning+$subtot20+$subtot40+$subtot45+@$recept['biaya_adm']+@$recept['total_pajak'];
+		// $total=$subtot_cleaning+$subtot20+$subtot40+$subtot45+$recept['biaya_adm']+$recept['total_pajak'];
+		$total = $recept['total_tagihan'];
 		$terbilang = strtoupper(toEnglish($total)) . ' IDR';
+		$materai = ($recept['total_tagihan'] > 5000000)?+$recept['materai']:"0";
 
 		if(isset($result['status']) && ($result['status']=="Failled"))
 		{
@@ -2615,17 +2644,7 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-right">'.number_format($subtot_cleaning,2).'</td>
 				</tr>	
 				<tr>
-					<td>005</td>
-					<td>ADMINISTRATION</td>
-					<td></td>
-					<td class="t-center">1</td>
-					<td class="t-center"></td>
-					<td class="t-center">IDR</td>
-					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
-					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
-				</tr>	
-				<tr>
-					<td>998</td>
+					<td>997</td>
 					<td>PPN 10% </td>
 					<td></td>
 					<td class="t-center">1</td>
@@ -2633,7 +2652,27 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-center">IDR</td>
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
-				</tr>							
+				</tr>
+				<tr>
+					<td>998</td>
+					<td>ADMINISTRATION</td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
+					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
+				</tr>
+				<tr>
+					<td>999</td>
+					<td>MATERAI</td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($materai,2).'</td>
+					<td class="t-right">'.number_format($materai,2).'</td>
+				</tr>
 				<tr><th colspan="7" class="t-right">Total</th>
 					<th class="t-right">'.number_format($total,2).'</th></tr>
 
@@ -2678,7 +2717,9 @@ class PraIn extends \CodeIgniter\Controller
 	{
 		check_exp_time();
 		$mpdf = new \Mpdf\Mpdf();
-
+		$DEPO = $this->get_company();
+		$QR_COMPANY = $this->generate_qrcode($DEPO['pagroup']);
+		$QRCODE = ROOTPATH . '/public/media/qrcode/' . $QR_COMPANY['content'] . '.png';
 		$data = [];
 		$response = $this->client->request('GET','orderPras/printOrderByPraOrderId',[
 			'headers' => [
@@ -2747,8 +2788,10 @@ class PraIn extends \CodeIgniter\Controller
 			}
 		}
 
-		$total=$subtot_cleaning+$subtot20+$subtot40+$subtot45+$recept['biaya_adm']+$recept['total_pajak'];
+		$total=$subtot_cleaning+$subtot20+$subtot40+$subtot45+$recept['biaya_adm']+$recept['total_pajak']+$recept['materai'];
+		// $total = $recept['total_tagihan'];
 		$terbilang = strtoupper(toEnglish($total)) . ' IDR';
+		$materai = ($recept['total_tagihan'] > 5000000)?+$recept['materai']:"0";
 
 		if(isset($result['status']) && ($result['status']=="Failled"))
 		{
@@ -2907,17 +2950,7 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-right">'.number_format($subtot_cleaning,2).'</td>
 				</tr>	
 				<tr>
-					<td>005</td>
-					<td>ADMINISTRATION</td>
-					<td></td>
-					<td class="t-center">1</td>
-					<td class="t-center"></td>
-					<td class="t-center">IDR</td>
-					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
-					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
-				</tr>	
-				<tr>
-					<td>998</td>
+					<td>997</td>
 					<td>PPN 10% </td>
 					<td></td>
 					<td class="t-center">1</td>
@@ -2925,7 +2958,27 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-center">IDR</td>
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
-				</tr>							
+				</tr>
+				<tr>
+					<td>998</td>
+					<td>ADMINISTRATION</td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
+					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
+				</tr>
+				<tr>
+					<td>999</td>
+					<td>MATERAI</td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($materai,2).'</td>
+					<td class="t-right">'.number_format($materai,2).'</td>
+				</tr>						
 				<tr><th colspan="7" class="t-right">Total</th>
 					<th class="t-right">'.number_format($total,2).'</th></tr>
 
@@ -2938,7 +2991,7 @@ class PraIn extends \CodeIgniter\Controller
 				<tbody>			
 	
 					<tr>
-						<td width="60%">REMARK : </td>
+						<td width="80%">REMARK : </td>
 						<td class="t-center">PADANG, ' . $RECEPT_DATE . '</td>
 					</tr>
 					<tr>
@@ -2946,17 +2999,20 @@ class PraIn extends \CodeIgniter\Controller
 						<td></td>
 					</tr>
 					<tr>
-						<td width="60%"><div style="width:600px;word-break: break-all;">
+						<td width="80%"><div style="width:600px;word-break: break-all;">
 						</div></td>
 						<td class="t-center" style="vertical-align:baseline!important;"  width="25%">( KASIR )</td>
 					</tr>
 				</tbody>
 			</table>	
-			<div style="width:300px;">';
+			<div style="width:75%;float:left;">';
 			foreach($detail as $dt):
 				$html .= '<span>'.$dt['crno'] . '</span>,&nbsp;';
 			endforeach;			
-			$html .= '</p>		
+			$html .= '</div>	
+			<div class="t-center" style="vertical-align:baseline!important;float:right;right:0;">
+				<img src="' . $QRCODE . '" style="height:120px;margin-top:40px;">
+			</div>		
 		</body>
 		</html>
 		';
@@ -3279,7 +3335,7 @@ class PraIn extends \CodeIgniter\Controller
 					'query' => [
 						'praid' => $praid,
 						'offset' => 0,
-						'limit' => 100,
+						'limit' => 500,
 					]
 				]);
 
@@ -3643,7 +3699,7 @@ class PraIn extends \CodeIgniter\Controller
 				'query' => [
 					'praid' => $praid,
 					'offset' => 0,
-					'limit' => 100,
+					'limit' => 500,
 				]
 			]);
 
@@ -3837,6 +3893,5 @@ class PraIn extends \CodeIgniter\Controller
     	}
 
     }
-
 
 } //End Class PraIn

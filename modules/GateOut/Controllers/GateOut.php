@@ -99,7 +99,7 @@ class GateOut extends \CodeIgniter\Controller
 			// echo var_dump($_POST);die();
 			$form_params = [
 			"crno"		=> $_POST['crno'],
-			// "cpotgl"		=> $_POST['cpotgl'],
+			"cpotgl"		=> date('Y-m-d'),
 			// "cpopr"			=> $_POST['cpopr'],
 			"cpopr1"		=> $_POST['cpopr1'],
 			// "cpcust"		=> $_POST['cpcust'],
@@ -118,7 +118,7 @@ class GateOut extends \CodeIgniter\Controller
 			"cpoterm"		=> $_POST['cpoterm'],
 			"cpoload"		=> $_POST['cpoload'],
 			// "cpoloaddat"	=> $_POST['cpoloaddat'],
-			"cpojam"		=> $_POST['cpojam'],
+			"cpojam"		=> date('h:i:s'),
 			"cpocargo"		=> $_POST['cpocargo'],
 			"cposeal"		=> $_POST['cposeal'],
 			// "cpovoy"		=> $_POST['cpovoy'],
@@ -351,7 +351,7 @@ class GateOut extends \CodeIgniter\Controller
 		$QRCODE = $this->generate_qrcode($CPID);
 		// print_r($header);die();
 		$QRCODE_IMG = ROOTPATH . '/public/media/qrcode/' . $QRCODE['content'] . '.png';
-
+		$OUTDATE = ($header['cpotgl']!="")?date('d-m-Y', strtotime($header['cpotgl'])):"";
 		$html = '';
 
 		$html .= '
@@ -415,7 +415,7 @@ class GateOut extends \CodeIgniter\Controller
 
 					<tr>
 						<td style="width:40%;">DATE/TIME</td>
-						<td colspan="3">:&nbsp;' . date('d-m-Y', strtotime($header['cpopratgl'])) . '/' . $header['cpojam'] . '</td>
+						<td colspan="3">:&nbsp;' . $OUTDATE . '/' . $header['cpojam'] . '</td>
 					</tr>				
 
 					<tr>

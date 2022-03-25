@@ -221,7 +221,7 @@
 									<a href="<?=$file['url']; ?>" target="_blank">
 										<img src="<?=$file['url']; ?>" style="width:200px;">
 									</a>
-									<?php endforeach; ?>
+									<?php break; endforeach; ?>
 								</p>
 
 							</div>						
@@ -249,7 +249,7 @@
 							<th>Lift On</th>
 							<th>Seal No</th>
 							<th>Remark</th>
-							<th>GateIn Date</th>
+							<th>Gate Out Date</th>
 							<th></th>
 						</tr>
 					</thead>

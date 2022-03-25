@@ -56,7 +56,7 @@ function select_ccode($selected="")
 		],
 		'json' => [
 			'start' => 0,
-			'rows'	=> 100,
+			'rows'	=> 1000,
 			'search'=> "",
 			'orderColumn' => "cccode",
 			'orderType' => "ASC"
@@ -137,7 +137,7 @@ function repoves_dropdown($selected="")
 		],
 		'json' => [
 			'start' => 0,
-          	'rows'  => 100,
+          	'rows'  => 1000,
           	'search'=> "",
           	'orderColumn' => "vesid",
           	'orderType' => "ASC"

@@ -119,7 +119,7 @@ $(document).ready(function() {
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
-					  html: '<div class="text-danger">'+json.message_body+'</div>'
+					  html: '<div class="text-danger">'+json.message+'</div>'
 					});						
 					$("#save").prop('disabled', false);
 					$(".pra-container").hide();	
@@ -418,7 +418,7 @@ $(document).ready(function() {
 	$("#prcode").on("change", function(){
 		$("#deposit").prop('checked',false);
 		$("#deposit").val("0");		
-		$("#cleaning_type").val("Water Wash");	
+		$("#cleaning_type").val("WW");	
 		var prcode = $(this).val();
 		var pracrnoid = $("#pracrnoid").val();
 		var typedo = $('input:radio[name=typedo]:checked').val();
@@ -1159,6 +1159,18 @@ $('#files').bind('change', function() {
 	});
 	this.value='';
 	} 
+
+	var file = this.files[0];
+	var fileType = file["type"];
+	var validImageTypes = ["image/gif", "image/jpeg", "image/png", "application/pdf"];
+	if ($.inArray(fileType, validImageTypes) < 0) {
+		Swal.fire({
+		  icon: 'error',
+		  title: "Ops",
+		  html: '<div class="text-danger">Hanya boleh upload file Gambar / file PDF!</div>'
+		});	 
+		this.value='';   
+	}  			
 });
 // check gambar
 $('#fileBukti').bind('change', function() {

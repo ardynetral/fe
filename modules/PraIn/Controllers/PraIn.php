@@ -1671,7 +1671,7 @@ class PraIn extends \CodeIgniter\Controller
 				);
 			}
 			// echo var_dump(check_bukti_bayar2($_POST['praid']));die();
-			if((check_bukti_bayar2($_POST['praid'])=="insert")&&($group_id!=1)) {
+			if((check_bukti_bayar2($_POST['praid'])=="insert")) {
 				$response = $this->client->request('POST','orderPraRecepts/createNewData',[
 					'headers' => [
 						'Accept' => 'application/json',
@@ -1679,7 +1679,7 @@ class PraIn extends \CodeIgniter\Controller
 					],
 					'multipart' => $post_arr,
 				]);
-			} else if((check_bukti_bayar2($_POST['praid'])=="update")&&($group_id!=1)){
+			} else if((check_bukti_bayar2($_POST['praid'])=="update")){
 				$post_arr[] = [
 					'name'		=> 'prareceptid',
 					'contents'	=> $_POST['prareceptid']
@@ -2486,7 +2486,7 @@ class PraIn extends \CodeIgniter\Controller
 		// $total=$subtot_cleaning+$subtot20+$subtot40+$subtot45+$recept['biaya_adm']+$recept['total_pajak'];
 		$total = $recept['total_tagihan'];
 		$terbilang = strtoupper(toEnglish($total)) . ' IDR';
-		$materai = ($recept['total_tagihan'] > 5000000)?"10000":"0";
+		$materai = ($recept['total_tagihan'] > 5000000)?+$recept['materai']:"0";
 
 		if(isset($result['status']) && ($result['status']=="Failled"))
 		{
@@ -2644,17 +2644,7 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-right">'.number_format($subtot_cleaning,2).'</td>
 				</tr>	
 				<tr>
-					<td>005</td>
-					<td>ADMINISTRATION</td>
-					<td></td>
-					<td class="t-center">1</td>
-					<td class="t-center"></td>
-					<td class="t-center">IDR</td>
-					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
-					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
-				</tr>	
-				<tr>
-					<td>998</td>
+					<td>997</td>
 					<td>PPN 10% </td>
 					<td></td>
 					<td class="t-center">1</td>
@@ -2662,9 +2652,27 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-center">IDR</td>
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
-				</tr>							
-				<tr><td colspan="7" class="t-right">Materai</td>
-					<td class="t-right">'.number_format($materai,2).'</td></tr>
+				</tr>
+				<tr>
+					<td>998</td>
+					<td>ADMINISTRATION</td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
+					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
+				</tr>
+				<tr>
+					<td>999</td>
+					<td>MATERAI</td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($materai,2).'</td>
+					<td class="t-right">'.number_format($materai,2).'</td>
+				</tr>
 				<tr><th colspan="7" class="t-right">Total</th>
 					<th class="t-right">'.number_format($total,2).'</th></tr>
 
@@ -2709,7 +2717,9 @@ class PraIn extends \CodeIgniter\Controller
 	{
 		check_exp_time();
 		$mpdf = new \Mpdf\Mpdf();
-
+		$DEPO = $this->get_company();
+		$QR_COMPANY = $this->generate_qrcode($DEPO['pagroup']);
+		$QRCODE = ROOTPATH . '/public/media/qrcode/' . $QR_COMPANY['content'] . '.png';
 		$data = [];
 		$response = $this->client->request('GET','orderPras/printOrderByPraOrderId',[
 			'headers' => [
@@ -2940,7 +2950,7 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-right">'.number_format($subtot_cleaning,2).'</td>
 				</tr>	
 				<tr>
-					<td>998</td>
+					<td>997</td>
 					<td>PPN 10% </td>
 					<td></td>
 					<td class="t-center">1</td>
@@ -2950,7 +2960,7 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
 				</tr>
 				<tr>
-					<td>005</td>
+					<td>998</td>
 					<td>ADMINISTRATION</td>
 					<td></td>
 					<td class="t-center">1</td>
@@ -2960,7 +2970,7 @@ class PraIn extends \CodeIgniter\Controller
 					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
 				</tr>
 				<tr>
-					<td>005</td>
+					<td>999</td>
 					<td>MATERAI</td>
 					<td></td>
 					<td class="t-center">1</td>
@@ -2981,7 +2991,7 @@ class PraIn extends \CodeIgniter\Controller
 				<tbody>			
 	
 					<tr>
-						<td width="60%">REMARK : </td>
+						<td width="80%">REMARK : </td>
 						<td class="t-center">PADANG, ' . $RECEPT_DATE . '</td>
 					</tr>
 					<tr>
@@ -2989,17 +2999,20 @@ class PraIn extends \CodeIgniter\Controller
 						<td></td>
 					</tr>
 					<tr>
-						<td width="60%"><div style="width:600px;word-break: break-all;">
+						<td width="80%"><div style="width:600px;word-break: break-all;">
 						</div></td>
 						<td class="t-center" style="vertical-align:baseline!important;"  width="25%">( KASIR )</td>
 					</tr>
 				</tbody>
 			</table>	
-			<div style="width:300px;">';
+			<div style="width:75%;float:left;">';
 			foreach($detail as $dt):
 				$html .= '<span>'.$dt['crno'] . '</span>,&nbsp;';
 			endforeach;			
-			$html .= '</p>		
+			$html .= '</div>	
+			<div class="t-center" style="vertical-align:baseline!important;float:right;right:0;">
+				<img src="' . $QRCODE . '" style="height:120px;margin-top:40px;">
+			</div>		
 		</body>
 		</html>
 		';
@@ -3880,6 +3893,5 @@ class PraIn extends \CodeIgniter\Controller
     	}
 
     }
-
 
 } //End Class PraIn

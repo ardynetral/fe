@@ -1040,7 +1040,6 @@ class PraIn extends \CodeIgniter\Controller
 	{
 		check_exp_time();
 		// UPDATE CONTAINER (PRINCIPAL & CSTOMER)
-		// echo var_dump($_POST);die();
 		if ($this->request->isAJAX()) 
 		{
 			$contract = $this->get_contract($_POST['cpopr']);
@@ -3027,7 +3026,9 @@ class PraIn extends \CodeIgniter\Controller
 	{
 		check_exp_time();
 		$mpdf = new \Mpdf\Mpdf();
-
+		$DEPO = $this->get_company();
+		$QR_COMPANY = $this->generate_qrcode($DEPO['pagroup']);
+		$QRCODE = ROOTPATH . '/public/media/qrcode/' . $QR_COMPANY['content'] . '.png';
 		$data = [];
 		$response = $this->client->request('GET','orderPras/printOrderByPraOrderId',[
 			'headers' => [
@@ -3230,6 +3231,9 @@ class PraIn extends \CodeIgniter\Controller
 					</tr>
 				</tbody>
 			</table>	
+			<div class="t-right" style="vertical-align:baseline!important;float:right;right:0;">
+				<img src="' . $QRCODE . '" style="height:120px;margin-top:40px;">
+			</div>				
 		</body>
 		</html>
 		';
@@ -3307,6 +3311,7 @@ class PraIn extends \CodeIgniter\Controller
 		    if ($this->request->getMethod() === 'post' && $validate)
 		    {
 		    	// check table Container
+				
 				$response = $this->client->request('GET','containers/checkcCode',[
 					'headers' => [
 						'Accept' => 'application/json',
@@ -3318,13 +3323,14 @@ class PraIn extends \CodeIgniter\Controller
 				]);
 
 				$result = json_decode($response->getBody()->getContents(),true);
-				// echo var_dump($result);die();
+
 				if(isset($result['success']) && ($result['success']==false))
 				{
 					$data['status'] = "Failled";
 					$data['message'] = $result['message'];
 					echo json_encode($data);die();				
 				}
+				
 
 		    	// check table order_pra_Container
 				$reqPraContainer = $this->client->request('GET','orderPraContainers/getAllData',[
@@ -3335,7 +3341,7 @@ class PraIn extends \CodeIgniter\Controller
 					'query' => [
 						'praid' => $praid,
 						'offset' => 0,
-						'limit' => 500,
+						'limit' => 1000,
 					]
 				]);
 

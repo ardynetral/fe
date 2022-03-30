@@ -124,6 +124,7 @@
 			<div class="col-sm-offset-4 col-sm-8">
 				<button type="button" id="apvUpdateContainer" class="btn btn-info"><i class="fa fa-pencil"></i> Update Container</button>
 				<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle"></i> Close</button>
+				<span class="block-loading2"></span>	
 			</div>
 		</div>						
 	</fieldset>

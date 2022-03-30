@@ -276,6 +276,7 @@
 									$total = 0;
 									foreach($data['orderPraContainers'] as $row):
 										$subtotal = @$row['biaya_lolo']; 
+										$gateDate = ($row['cpigatedate']!=null)?date('d-m-Y',strtotime($row['cpigatedate'])):"";
 									?>
 										<tr>
 											<td><?=$i;?></td>
@@ -287,7 +288,7 @@
 											<td><?=$row['cpopr'];?></td>
 											<td><?=$row['biaya_lolo'];?></td>
 											<td><?=@$row['sealno'];?></td>
-											<td></td>
+											<td><?=$gateDate;?></td>
 										</tr>
 									<?php 
 									$i++;

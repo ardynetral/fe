@@ -437,13 +437,18 @@ $(document).ready(function() {
 			type:"POST",
 			data: {"prcode":prcode,"pracrnoid":pracrnoid,"typedo":typedo,"vesprcode":vesprcode},
 			dataType:"JSON",
+			beforeSend: function() {
+				$("#apvUpdateContainer").prop("disabled", true);
+				$(".block-loading2").addClass("loading"); 
+			},
 			success: function(json){
 				if(json.status=="Failled") {
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
 					  html: '<div class="text-danger">'+json.message+'</div>'
-					});		
+					});	
+					$("#apvUpdateContainer").prop("disabled", true);	
 				} else {
 					
 					$("#cucode").val(json.data.cucode);
@@ -467,7 +472,12 @@ $(document).ready(function() {
 					if(typedo!="1") {
 						$("#biaya_lolo").val(json.biaya_lolo);
 					}
+					$("#apvUpdateContainer").prop("disabled", false);
 				}
+			},
+			complete: function() {
+				$("#apvUpdateContainer").prop("disabled", false);
+				$(".block-loading2").removeClass("loading"); 				
 			}
 		});
 	}) ;
@@ -881,6 +891,10 @@ $(document).ready(function() {
 			type: "POST",
 			data: formData,
 			dataType: 'json',
+			beforeSend: function() {
+				$("#apvUpdateContainer").prop("disabled", true);
+				$(".block-loading2").addClass("loading"); 
+			},			
 			success: function(json) {
 				if(json.message == "success") {
 					Swal.fire({
@@ -893,13 +907,19 @@ $(document).ready(function() {
 					$("#prcode").select2().select2('val',"");
 					$("#pracrnoid").val("");					
 					loadTableContainerAppv1($("#praid").val());
+					$("#apvUpdateContainer").prop("disabled", false);
 				} else {
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
 					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
+					});	
+					$("#apvUpdateContainer").prop("disabled", false);					
 				}
+			},
+			complete: function() {
+				$("#apvUpdateContainer").prop("disabled", false);
+				$(".block-loading2").removeClass("loading"); 
 			}
 		});
 	});

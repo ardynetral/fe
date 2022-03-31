@@ -150,11 +150,13 @@ class Dim extends \CodeIgniter\Controller
 		}
 
 		$col = 3;
-		$i = 0;
-		$num = 2;
-		$rows=0;
+		$rows=3;
 		$grandtotal = 0;
+
 		foreach ($grouping as $pr_code) {
+			if($col>3) {
+				$col=$rows_subtot+1;
+			}
 			$subtotal = 0;
 			foreach ($pr_code as $row) {
 				$exl->getActiveSheet()
@@ -162,19 +164,19 @@ class Dim extends \CodeIgniter\Controller
 					->setCellValue('B' . $col, $row['dinfo_month'])
 					->setCellValue('C' . $col, $row['total']);
 				$col++;
-				$i++;
-				$num = $num + 1;
 				$subtotal=$subtotal+$row['total'];	
+				$rows_subtot=$col;
+				$exl->getActiveSheet()->setCellValue('A'.$rows_subtot, 'SUB TOTAL');
+				$exl->getActiveSheet()->setCellValue('C'.$rows_subtot, $subtotal);
 			}
-			// $rows=$col;
+			$exl->getActiveSheet()->mergeCells("A" . $rows_subtot . ":B" . $rows_subtot);
+			$exl->getActiveSheet()->getStyle("A" . $rows_subtot . ":C" . $rows_subtot)->getAlignment()->applyFromArray(['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT, 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => TRUE]);
 			$grandtotal=$grandtotal+$subtotal;
-			// $exl->getActiveSheet()->setCellValue('A'.$rows, 'SUB TOTAL');
 		}
-		// die();
-		$endrow = $num+1;
+		$endrow = $rows_subtot+1;
 		$exl->setActiveSheetIndex(0)->setCellValue('A' . $endrow, 'GRAND TOTAL');
-		$exl->getActiveSheet()->mergeCells("A" . $endrow . ":B" . $endrow);
 		$exl->setActiveSheetIndex(0)->setCellValue('C' . $endrow, $grandtotal);
+		$exl->getActiveSheet()->mergeCells("A" . $endrow . ":B" . $endrow);
 		$exl->getActiveSheet()->getStyle("A" . $endrow . ":C" . $endrow)->getFont()->applyFromArray(['name' => 'Arial', 'bold' => TRUE, 'color' => ['rgb' => '000000']]);
 		$exl->getActiveSheet()->getStyle("A" . $endrow . ":C" . $endrow)->getAlignment()->applyFromArray(['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT, 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => TRUE]);	
 

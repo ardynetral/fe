@@ -350,57 +350,15 @@ $(document).ready(function() {
 
 	// STEP 1 :
 	$("#prcode").on("change", function(){
-		$("#deposit").prop('checked',false);
-		$("#deposit").val("0");		
-		$("#cleaning_type").val("Water Wash");	
 		var prcode = $(this).val();
-		var pracrnoid = $("#pracrnoid").val();
-		// var typedo = $('input:radio[name=typedo]:checked').val();
-		// var cpife = $("input:radio[name=cpife]:checked").val();
-		var vesprcode = $("#vesprcode").val();
-		if(pracrnoid=="") {
-			Swal.fire({
-			  icon: 'error',
-			  title: "Container belum dipilih",
-			  html: '<div class="text-danger">Klik view pada tabel Container</div>'
-			});	
-		}
+        // var pracrnoid = [];
+		$("#cucode").val(prcode);
+        // $('#detTable tbody :checkbox:checked').each(function(i){
+        //   pracrnoid[i] = $(this).val();
 
-		$.ajax({
-			url:"<?=site_url('praout/ajax_prcode_listOne/');?>"+prcode,
-			type:"POST",
-			data: {"prcode":prcode,"pracrnoid":pracrnoid,"vesprcode":vesprcode},
-			dataType:"JSON",
-			success: function(json){
-				if(json.status=="Failled") {
-					Swal.fire({
-					  icon: 'error',
-					  title: "Error",
-					  html: '<div class="text-danger">'+json.message+'</div>'
-					});		
-				} else {
-					
-					$("#cucode").val(json.data.cucode);
-
-					if(json.data.prcode==="ONES") {
-						$("#deposit").removeAttr("disabled");
-						$("#deposit").prop('checked',true);
-						$("#deposit").val("1");						
-						$("#biaya_clean").val(json.biaya_clean);
-					} else {
-						$("#deposit").val("0");						
-						$("#deposit").prop('checked',false);
-						$("#deposit").attr("disabled","disabled");
-						$("#biaya_clean").val("0");
-					}
-
-					$("#biaya_lolo").val(json.biaya_lolo);
-					// if(typedo!="1") {
-					// }
-				}
-			}
-		});
-	}) ;
+        // });
+        // console.log(pracrnoid);
+	});
 
 	// Vessel dropdown change
 	$("#cpives").on("change", function(){
@@ -769,25 +727,32 @@ $(document).ready(function() {
 
 	// update OrderPraContainer di approval1
 	$("#apvUpdateContainer").on("click",function(){
-		formData = "&pracrnoid=" + $("#pracrnoid").val();
+		var pracrnoid = [];
+        $('#detTable tbody :checkbox:checked').each(function(i){
+          pracrnoid[i] = $(this).val();
+          
+        });
+
+		formData = "&pracrnoid=" + pracrnoid;
 		formData += "&cpopr=" + $("#prcode").val();
-		if($("#prcode").val()=="ONES") {
-			formData += "&deposit=" + $("#deposit").val("1");
-		} else {
-			formData += "&deposit=" + $("#deposit").val("0");
-		}
 		formData += "&cpcust=" + $("#cucode").val();
 		formData += "&emkl=" + $("#cpideliver").val();
 		formData += "&biaya_clean=" + $("#biaya_clean").val();
 		formData += "&biaya_lolo=" + $("#biaya_lolo").val();
 		formData += "&cleaning_type=" + $("#cleaning_type").val();
 		formData += "&biaya_lain=" + $("#biaya_lain").val();
-		console.log(formData);
+		formData += "&cpiremark=" + $("#cpiremark").val();
+		formData += "&sealno=" + $("#sealno").val();
+
 		$.ajax({
 			url: "<?php echo site_url('praout/appv1_update_container')?>",
 			type: "POST",
 			data: formData,
 			dataType: 'json',
+			beforeSend: function() {
+				$("#apvUpdateContainer").prop("disabled", true);
+				$(".block-loading2").addClass("loading"); 
+			},			
 			success: function(json) {
 				if(json.message == "success") {
 					Swal.fire({
@@ -795,21 +760,60 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+json.message_body+'</div>'
 					});
-					$("#formDetail").trigger("reset");
-					$("#ccode").select2().select2('val',"");					
-					$("#prcode").select2().select2('val',"");
-					$("#pracrnoid").val("");					
+					$("#formDetail2").trigger("reset");				
+					$("#prcode").select2().select2('val',"");				
+				    $('#checkAll:checkbox').prop('checked', false);
+				    $("#apvUpdateContainer").prop("disabled", false);
 					loadTableContainerAppv1($("#praid").val());
+					countSelected();
+					$("#mUpdateSelected").modal('toggle');
 				} else {
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
 					  html: '<div class="text-danger">'+json.message+'</div>'
-					});						
+					});	
+					$("#apvUpdateContainer").prop("disabled", false);					
 				}
+			},
+			complete: function() {
+				$("#apvUpdateContainer").prop("disabled", false);
+				$(".block-loading2").removeClass("loading"); 				
 			}
 		});
 	});
+
+	// Multiple check container approval1
+	$("#checkAll").click(function () {
+	    $('input:checkbox').not(this).prop('checked', this.checked);
+	    countSelected();
+	});	
+
+	$('#detTable tbody :checkbox').on("change", function(){
+		countSelected();
+	})
+
+	$("#editSelected").click(function(){
+        var val = [];
+        $('#detTable tbody :checkbox:checked').each(function(i){
+          val[i] = $(this).val();
+        });
+
+        if(val.length==0) {
+			Swal.fire({
+			  icon: 'error',
+			  title: "Error",
+			  html: '<div class="text-danger">Pilih minimal 1 Container</div>'
+			});
+
+			// $("#mUpdateSelected").modal('toggle');	
+        } else {
+        	$('input:radio[name=cpife]').filter('[value=0]').prop('checked', true);
+        	$("#mUpdateSelected").modal('toggle');
+        }
+	});
+
+
 
 	// Approve2
 	$('#approval2').on('click', function(e){
@@ -1085,6 +1089,16 @@ $('#fileBukti').bind('change', function() {
 		this.value='';   
 	}  		
 });
+
+// HITUNG CHECKED CONTAINER
+function countSelected() {
+    var val = [];
+    $('#detTable tbody :checkbox:checked').each(function(i){
+      val[i] = $(this).val();
+    });
+
+    $("#numSelected").html(val.length + " selected");	
+}
 
 function runDataTables() {		
     $.fn.dataTable.pipeline = function ( opts ) { 

@@ -57,13 +57,13 @@
 
 							<div class="col-sm-6">
 								<div class="form-group">
-									<label for="cpiorderno" class="col-sm-4 control-label text-right">Pra In No</label>
+									<label for="cpiorderno" class="col-sm-4 control-label text-right">Pra Out No</label>
 									<div class="col-sm-6">
 										<input type="text" name="cpiorderno" class="form-control" id="cpiorderno" value="<?=$data['cpiorderno'];?>" readonly>
 									</div>
 								</div>								
 								<div class="form-group">
-									<label for="cpipratgl" class="col-sm-4 control-label text-right">Pra In Date</label>
+									<label for="cpipratgl" class="col-sm-4 control-label text-right">Pra Out Date</label>
 									<div class="col-sm-6">
 										<div class="input-group">
 											<input type="text" name="cpipratgl" id="cpipratgl" class="form-control" required readonly value="<?=$data['cpipratgl'];?>">
@@ -266,6 +266,7 @@
 							$total = 0;
 							foreach($data['orderPraContainers'] as $row): 
 								$subtotal = @$row['biaya_lolo'];
+								$gateDate = ($row['cpigatedate']!=null)?date('d-m-Y',strtotime($row['cpigatedate'])):"";
 							?>
 								<tr>
 									<td><?=$i;?>
@@ -284,7 +285,7 @@
 									<td><?=number_format($row['biaya_lolo'],2);?></td>
 									<td><?=$row['sealno'];?></td>									
 									<td><?=$row['cpiremark']?></td>
-									<td></td>
+									<td><?=$gateDate;?></td>
 									<td>
 										<a class="btn btn-xs btn-primary cetak_kitir" href="#" id=""
 										data-praid="<?=$row['praid']; ?>"  

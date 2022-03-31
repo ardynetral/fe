@@ -224,12 +224,20 @@
 						<h3><i class="fa fa-table"></i> List Order Pra Container</h3>
 					</div>
 					<div class="widget-content">
+						<p>
+							<button type="button" class="btn btn-success btn-md" id="editSelected">Add Principal</button>&nbsp;
+							<span id="numSelected">0 selected</span>
+						</p>
 						<div class="table-responsive vscroll">
 						<table id="detTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
-									<th></th>
-									<th>No.</th>
+									<th width="105">
+										<label class="control-inline fancy-checkbox custom-color-green">
+											<input type="checkbox" name="selectall" id="checkAll">
+											<span>Select all</span>
+										</label>
+									</th>
 									<th>Container #</th>
 									<th>ID Code</th>
 									<th>Type</th>
@@ -257,8 +265,12 @@
 									foreach($orderPraContainers as $row): 
 									?>
 										<tr>
-											<td><a href="#" id="editContainer" class="btn btn-xs btn-info view" data-crid="<?=$row['pracrnoid']?>" data-toggle='modal' data-target='#myModal'>edit</a></td>
-											<td><?=$i;?></td>
+											<td class="text-center">
+												<label class="control-inline fancy-checkbox custom-color-green">
+													<input type="checkbox" name="container[]" value="<?=$row['pracrnoid']?>">
+													<span><?=$i;?></span>
+												</label>
+											</td>
 											<td><?=$row['crno'];?></td>
 											<td><?=$row['cccode']?></td>
 											<td><?=$row['ctcode']?></td>
@@ -272,9 +284,9 @@
 									<?php 
 									$i++; 
 									$total_lolo = $total_lolo+$row['biaya_lolo'];
-									$total_cleaning = $total_cleaning+$row['biaya_clean'];
-									$total = $total+$total_lolo;									
+									//$total_cleaning = $total_cleaning+$row['biaya_clean'];
 									endforeach; 
+									$total = $total_lolo;									
 									?>
 								<?php endif; ?>
 								<input type="hidden" name="total_lolo" id="total_lolo" value="<?=$total_lolo?>">

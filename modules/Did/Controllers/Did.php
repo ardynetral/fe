@@ -153,32 +153,36 @@ class Did extends \CodeIgniter\Controller
 		}
 
 		$col = 3;
-		$i = 0;
-		$num = 2;
-		$rows=0;
+		$rows=3;
 		$grandtotal = 0;
+
 		foreach ($grouping as $pr_code) {
+			if($col>3) {
+				$col=$rows_subtot+1;
+			}
 			$subtotal = 0;
-			foreach ($pr_code as $row) {
+
+			foreach ($pr_code as $key=>$row) {
 				$exl->getActiveSheet()
 					->setCellValue('A' . $col, $row['principal'])
 					->setCellValue('B' . $col, $row['dinfo_month'])
 					->setCellValue('C' . $col, $row['dinfo_daily'])
 					->setCellValue('D' . $col, $row['total']);
 				$col++;
-				$i++;
-				$num = $num + 1;
 				$subtotal=$subtotal+$row['total'];	
+				$rows_subtot=$col;
+				$exl->getActiveSheet()->setCellValue('A'.$rows_subtot, 'SUB TOTAL');
+				$exl->getActiveSheet()->setCellValue('D'.$rows_subtot, $subtotal);
 			}
-			// $rows=$col;
+			$exl->getActiveSheet()->mergeCells("A" . $rows_subtot . ":C" . $rows_subtot);
+			$exl->getActiveSheet()->getStyle("A" . $rows_subtot . ":D" . $rows_subtot)->getAlignment()->applyFromArray(['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT, 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => TRUE]);					
 			$grandtotal=$grandtotal+$subtotal;
-			// $exl->getActiveSheet()->setCellValue('A'.$rows, 'SUB TOTAL');
 		}
-		// die();
-		$endrow = $num+1;
+
+		$endrow = $rows_subtot+1;
 		$exl->setActiveSheetIndex(0)->setCellValue('A' . $endrow, 'GRAND TOTAL');
-		$exl->getActiveSheet()->mergeCells("A" . $endrow . ":C" . $endrow);
 		$exl->setActiveSheetIndex(0)->setCellValue('D' . $endrow, $grandtotal);
+		$exl->getActiveSheet()->mergeCells("A" . $endrow . ":C" . $endrow);
 		$exl->getActiveSheet()->getStyle("A" . $endrow . ":D" . $endrow)->getFont()->applyFromArray(['name' => 'Arial', 'bold' => TRUE, 'color' => ['rgb' => '000000']]);
 		$exl->getActiveSheet()->getStyle("A" . $endrow . ":D" . $endrow)->getAlignment()->applyFromArray(['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_RIGHT, 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => TRUE]);	
 

@@ -942,21 +942,55 @@ class PraOut extends \CodeIgniter\Controller
 		// UPDATE CONTAINER (PRINCIPAL & CSTOMER)
 		if ($this->request->isAJAX()) 
 		{
-			$contract = $this->get_contract($_POST['cpopr']);
-			$response = $this->client->request('PUT','orderPraContainers/updateData',[
-				'headers' => [
-					'Accept' => 'application/json',
-					'Authorization' => session()->get('login_token')
-				],
-				'form_params' => [
-					'pracrnoid' => $_POST['pracrnoid'],
-					'cpopr' => $_POST['cpopr'],
-					'cpcust' => $_POST['cpcust'],
-					'biaya_clean' => 0,
-					'biaya_lolo' => $_POST['biaya_lolo'],
-					'cleaning_type' => $_POST['cleaning_type']
-				],
-			]);	
+			$contract = $this->get_contract($_POST['cpopr']);	
+			if($contract == ""){
+				$data['message'] = "Data Contract ".$_POST['cpopr']." tidak ditemukan";
+				echo json_encode($data);die();	
+			}			
+			$arr_pracrnoid = explode(',', $_POST['pracrnoid']);
+
+			foreach($arr_pracrnoid as $pracrnoid) {
+				// Get order_pra_container
+				$response_cr = $this->client->request('GET','orderPraContainers/getDetailData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'query' => [
+						'pracrnoid' => $pracrnoid,
+					]
+				]);
+
+				$result_cr = json_decode($response_cr->getBody()->getContents(), true);	
+				$dt_cr = $result_cr['data'];
+
+				// Biaya_LOLO
+				if(floatval($dt_cr['cclength'])<=20) {
+					$biaya_lolo=$contract['colofmty20'];
+				} else if(floatval($dt_cr['cclength'])==40) {
+					$biaya_lolo=$contract['colofmty40'];
+				} else if(floatval($dt_cr['cclength'])==45) {
+					$biaya_lolo=$contract['colofmty45'];
+				}
+
+				//UPDATE ORDER PRA CONTAINER 
+				$response = $this->client->request('PUT','orderPraContainers/updateData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'form_params' => [
+						'pracrnoid' => $pracrnoid,
+						'cpopr' => $_POST['cpopr'],
+						'cpcust' => $_POST['cpcust'],
+						'biaya_clean' => 0,
+						'biaya_lolo' => $biaya_lolo,
+						'cleaning_type' => $_POST['cleaning_type'],
+						'cpiremark' => $_POST['cpiremark'],
+						'sealno' => $_POST['sealno']						
+					],
+				]);	
+			}
 
 			$result = json_decode($response->getBody()->getContents(), true);
 
@@ -1631,8 +1665,12 @@ public function edit_get_container($praid)
 		foreach($result['data']['datas'] as $row){
 			$pracrid=$row['pracrnoid'];
 			$html .= "<tr>
-				<td><a href='#'' id='editContainer' class='btn btn-xs btn-primary view' data-crid='".$pracrid."' data-toggle='modal' data-target='#myModal'>edit</a></td>
-				<td>".$i."</td>
+				<td class='text-center'>
+					<label class='control-inline fancy-checkbox custom-color-green'>
+						<input type='checkbox' name='container[]' value='".$row['pracrnoid']."'>
+						<span>".$i."</span>
+					</label>
+				</td>
 				<td>".$row['crno']."</td>
 				<td>".$row['cccode']."</td>
 				<td>".$row['ctcode']."</td>
@@ -1981,7 +2019,7 @@ public function edit_get_container($praid)
 		// $total=$subtot_cleaning+$subtot20+$subtot40+$subtot45+$recept['biaya_adm']+$recept['total_pajak'];
 		$total = $recept['total_tagihan'];
 		$terbilang = strtoupper(toEnglish($total)) . ' IDR';
-		$materai = ($recept['total_tagihan'] > 5000000)?"10000":"0";
+		$materai = ($recept['total_tagihan'] > 5000000)?+$recept['materai']:"0";
 		if(isset($result['status']) && ($result['status']=="Failled"))
 		{
 			$data['status'] = "Failled";
@@ -2138,17 +2176,7 @@ public function edit_get_container($praid)
 					<td class="t-right">'.number_format($subtot_cleaning,2).'</td>
 				</tr>	
 				<tr>
-					<td>005</td>
-					<td>ADMINISTRATION</td>
-					<td></td>
-					<td class="t-center">1</td>
-					<td class="t-center"></td>
-					<td class="t-center">IDR</td>
-					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
-					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
-				</tr>	
-				<tr>
-					<td>998</td>
+					<td>997</td>
 					<td>PPN 10% </td>
 					<td></td>
 					<td class="t-center">1</td>
@@ -2156,9 +2184,27 @@ public function edit_get_container($praid)
 					<td class="t-center">IDR</td>
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
-				</tr>							
-				<tr><td colspan="7" class="t-right">Materai</td>
-					<td class="t-right">'.number_format($materai,2).'</td></tr>
+				</tr>
+				<tr>
+					<td>998</td>
+					<td>ADMINISTRATION</td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
+					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
+				</tr>
+				<tr>
+					<td>999</td>
+					<td>MATERAI</td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right">'.number_format($materai,2).'</td>
+					<td class="t-right">'.number_format($materai,2).'</td>
+				</tr>
 				<tr><th colspan="7" class="t-right">Total</th>
 					<th class="t-right">'.number_format($total,2).'</th></tr>
 
@@ -2204,7 +2250,9 @@ public function edit_get_container($praid)
 	{
 		check_exp_time();
 		$mpdf = new \Mpdf\Mpdf();
-
+		$DEPO = $this->get_company();
+		$QR_COMPANY = $this->generate_qrcode($DEPO['pagroup']);
+		$QRCODE = ROOTPATH . '/public/media/qrcode/' . $QR_COMPANY['content'] . '.png';
 		$data = [];
 		$response = $this->client->request('GET','orderPras/printOrderByPraOrderId',[
 			'headers' => [
@@ -2435,7 +2483,7 @@ public function edit_get_container($praid)
 					<td class="t-right">'.number_format($subtot_cleaning,2).'</td>
 				</tr>	
 				<tr>
-					<td>998</td>
+					<td>997</td>
 					<td>PPN 10% </td>
 					<td></td>
 					<td class="t-center">1</td>
@@ -2445,7 +2493,7 @@ public function edit_get_container($praid)
 					<td class="t-right">'.number_format($recept['total_pajak'],2).'</td>
 				</tr>							
 				<tr>
-					<td>005</td>
+					<td>998</td>
 					<td>ADMINISTRATION</td>
 					<td></td>
 					<td class="t-center">1</td>
@@ -2455,7 +2503,7 @@ public function edit_get_container($praid)
 					<td class="t-right">'.number_format($recept['biaya_adm'],2).'</td>
 				</tr>	
 				<tr>
-					<td>005</td>
+					<td>999</td>
 					<td>MATERAI</td>
 					<td></td>
 					<td class="t-center">1</td>
@@ -2476,7 +2524,7 @@ public function edit_get_container($praid)
 				<tbody>			
 	
 					<tr>
-						<td width="60%">REMARK : </td>
+						<td width="80%">REMARK : </td>
 						<td class="t-center">PADANG, '.$RECEPT_DATE.'</td>
 					</tr>
 					<tr>
@@ -2484,17 +2532,20 @@ public function edit_get_container($praid)
 						<td></td>
 					</tr>
 					<tr>
-						<td width="60%"><div style="width:600px;word-break: break-all;">
+						<td width="80%"><div style="width:600px;word-break: break-all;">
 						</div></td>
 						<td class="t-center" style="vertical-align:baseline!important;"  width="25%">( KASIR )</td>
 					</tr>
 				</tbody>
 			</table>	
-			<div style="width:300px;">';
+			<div style="width:75%;float:left;">';
 			foreach($detail as $dt):
 				$html .= '<span>'.$dt['crno'] . '</span>,&nbsp;';
 			endforeach;			
-			$html .= '</p>		
+			$html .= '</div>	
+			<div class="t-center" style="vertical-align:baseline!important;float:right;right:0;">
+				<img src="' . $QRCODE . '" style="height:120px;margin-top:40px;">
+			</div>		
 		</body>
 		</html>
 		';

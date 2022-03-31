@@ -1360,7 +1360,7 @@ class PraIn extends \CodeIgniter\Controller
 		$data['data'] = $dt_order['data']['datas'][0];
 		$total_charge = $this->hitungTotalCharge($data['data']['orderPraContainers']);
 		$data['subtotal_charge'] = $subtotal;
-		$data['pajak'] = $total_charge['TOTAL_PAJAK'];
+		$data['pajak'] = $datarecept['total_pajak'];
 		$data['adm_tarif'] = $total_charge['ADM_TARIF'];
 		$data['materai'] = $total_charge['MATERAI'];
 		$data['recept'] = $datarecept;
@@ -2443,7 +2443,13 @@ class PraIn extends \CodeIgniter\Controller
 			// $invoice_number = "KW." . date("Ymd",strtotime($pratgl)) . ".000000" . $recept['prareceptid'];
 			$invoice_number  = 'KW' . date("Ymd", strtotime($pratgl)) . str_repeat("0", 8 - strlen($recept['praid'])) . $recept['praid'];
 		}
-				
+
+		$contract = $this->get_contract($detail[0]['cpopr']);
+		if($pratgl < "2022-04-01") {
+			$ppn = 10;
+		} else {
+			$ppn = (isset($contract['cotax'])?$contract['cotax']:0);
+		}				
 
 		$qty=0;
 		(int)$qty20 = 0;
@@ -2644,7 +2650,7 @@ class PraIn extends \CodeIgniter\Controller
 				</tr>	
 				<tr>
 					<td>997</td>
-					<td>PPN 10% </td>
+					<td>PPN ' . (int)$ppn . '% </td>
 					<td></td>
 					<td class="t-center">1</td>
 					<td class="t-center"></td>
@@ -2749,6 +2755,13 @@ class PraIn extends \CodeIgniter\Controller
 			$RECEPT_DATE = $recept['receptdate'];
 		}
 				
+		$contract = $this->get_contract($detail[0]['cpopr']);
+		if($pratgl < "2022-04-01") {
+			$ppn = 10;
+		} else {
+			$ppn = (isset($contract['cotax'])?$contract['cotax']:0);
+			
+		}
 
 		$qty=0;
 		(int)$qty20 = 0;
@@ -2950,7 +2963,7 @@ class PraIn extends \CodeIgniter\Controller
 				</tr>	
 				<tr>
 					<td>997</td>
-					<td>PPN 10% </td>
+					<td>PPN ' . (int)$ppn . '% </td>
 					<td></td>
 					<td class="t-center">1</td>
 					<td class="t-center"></td>

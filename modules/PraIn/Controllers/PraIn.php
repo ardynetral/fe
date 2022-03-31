@@ -909,7 +909,12 @@ class PraIn extends \CodeIgniter\Controller
 			// cleaning by: coadmm (1=by_order, 0=by_container)
 			// hitung billing
 
-			$tax = (isset($contract['cotax'])?$contract['cotax']:0);
+			if($dt_order['data']['datas'][0]['cpipratgl'] < "2022-04-01") {
+				$tax = 10;
+			} else {
+				$tax = (isset($contract['cotax'])?$contract['cotax']:0);
+			}
+			
 			$total_lolo = (int)$_POST['total_lolo'];
 			$total_cleaning = (int)$_POST['total_cleaning'];
 			$total_biaya_lain = (int)$_POST['total_biaya_lain'];

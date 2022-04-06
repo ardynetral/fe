@@ -810,7 +810,7 @@ class PraOut extends \CodeIgniter\Controller
 
 			if($contract==""){
 				$data['message'] = "Failled";
-				$data['message_body'] = "Approval gagal. Data Contract tidak ditemukan untuk Operator ".$dt_order['data']['cpopr'];
+				$data['message_body'] = "Approval gagal. Data Contract tidak ditemukan";
 				echo json_encode($data);die();	
 			}
 
@@ -818,8 +818,12 @@ class PraOut extends \CodeIgniter\Controller
 			// admin_tarif: coadmv
 			// cleaning by: coadmm (1=by_order, 0=by_container)
 			// hitung billing
+			if($dt_order['data']['datas'][0]['cpipratgl'] < "2022-04-01") {
+				$tax = 10;
+			} else {
+				$tax = (isset($contract['cotax'])?$contract['cotax']:0);
+			}
 
-			$tax = (isset($contract['cotax'])?$contract['cotax']:0);
 			$total_lolo = (int)$_POST['total_lolo'];
 			$total_cleaning = 0;
 			$subtotal = (int)$_POST['subtotal_bill'];
@@ -1163,7 +1167,13 @@ class PraOut extends \CodeIgniter\Controller
 
 		$contract = $this->get_contract($data['data']['orderPraContainers'][0]['cpopr']);
 
-		$tax = (isset($contract['cotax'])?$contract['cotax']:0);
+		$pratgl = $data['data']['cpipratgl'];
+		if($pratgl < "2022-04-01") {
+			$tax = 10;
+		} else {
+			$tax = (isset($contract['cotax'])?$contract['cotax']:0);
+		}
+
 		$subtotal = 0;
 		$pajak = $tax/100;
 		$adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
@@ -1220,8 +1230,14 @@ class PraOut extends \CodeIgniter\Controller
 		} else {
 			$bukti_bayar = "";
 		}
+		
+		$pratgl = $dt_order['data']['datas'][0]['cpipratgl'];
+		if($pratgl < "2022-04-01") {
+			$tax = 10;
+		} else {
+			$tax = (isset($contract['cotax'])?$contract['cotax']:0);
+		}
 
-		$tax = (isset($contract['cotax'])?$contract['cotax']:0);
 		$subtotal = 0;
 		$pajak = $tax/100;
 		$adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
@@ -1387,7 +1403,13 @@ class PraOut extends \CodeIgniter\Controller
 
 		$contract = $this->get_contract($dt_order['orderPraContainers'][0]['cpopr']);
 
-		$tax = (isset($contract['cotax'])?$contract['cotax']:0);
+		$pratgl = $dt_order['cpipratgl'];
+		if($pratgl < "2022-04-01") {
+			$tax = 10;
+		} else {
+			$tax = (isset($contract['cotax'])?$contract['cotax']:0);
+		}
+
 		$subtotal = 0;
 		$pajak = $tax/100;
 		$adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
@@ -1582,7 +1604,7 @@ class PraOut extends \CodeIgniter\Controller
 		die();
 	}
 
-public function edit_get_container($praid) 
+	public function edit_get_container($praid) 
 	{
 		$response = $this->client->request('GET','orderPraContainers/getAllData',[
 			'headers' => [
@@ -1978,6 +2000,12 @@ public function edit_get_container($praid)
 			$invoice_number  = 'KW' . date("Ymd", strtotime($pratgl)) . str_repeat("0", 8 - strlen($recept['praid'])) . $recept['praid'];
 		}
 				
+		$contract = $this->get_contract($detail[0]['cpopr']);
+		if($pratgl < "2022-04-01") {
+			$ppn = 10;
+		} else {
+			$ppn = (isset($contract['cotax'])?$contract['cotax']:0);
+		}
 
 		$qty=0;
 		(int)$qty20 = 0;
@@ -2177,7 +2205,7 @@ public function edit_get_container($praid)
 				</tr>	
 				<tr>
 					<td>997</td>
-					<td>PPN 10% </td>
+					<td>PPN ' . (int)$ppn . '% </td>
 					<td></td>
 					<td class="t-center">1</td>
 					<td class="t-center"></td>
@@ -2283,6 +2311,13 @@ public function edit_get_container($praid)
 			$RECEPT_DATE = $recept['receptdate'];
 		}
 				
+		$contract = $this->get_contract($detail[0]['cpopr']);
+		if($pratgl < "2022-04-01") {
+			$ppn = 10;
+		} else {
+			$ppn = (isset($contract['cotax'])?$contract['cotax']:0);
+
+		}
 
 		$qty=0;
 		(int)$qty20 = 0;
@@ -2484,7 +2519,7 @@ public function edit_get_container($praid)
 				</tr>	
 				<tr>
 					<td>997</td>
-					<td>PPN 10% </td>
+					<td>PPN ' . (int)$ppn . '% </td>
 					<td></td>
 					<td class="t-center">1</td>
 					<td class="t-center"></td>

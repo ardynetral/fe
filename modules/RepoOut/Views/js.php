@@ -52,6 +52,7 @@ $(document).ready(function() {
 					$("#repoid").val(json.repoid);
 					$("#repo_orderno").val(json.reorderno);
 					$("#saveData").prop('disabled', true);
+					$(".repo-detail-table").show();
 				} else {
 					$("#saveData").prop('disabled', false);
 					Swal.fire({

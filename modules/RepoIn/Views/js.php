@@ -50,18 +50,8 @@ $(document).ready(function() {
 					  html: '<div class="text-success">'+json.message+'</div>'
 					});		
 					$("#repoid").val(json.repoid);
-					// $("#cpiorderno").val(json.reorderno);
-					// $("#cpopr").select2().select2('val',json.cpopr);
-					// $("#cpcust").select2().select2('val',json.cpcust);
-					// $("#cpdepo").val(json.cpdepo);
-					// $("#cpipratgl").val(json.redate);
-					// $("#cpijam").val(json.cpijam);
-					// $("#cpives").val(json.cpives);
-					// $("#cpiremark").val(json.cpiremark);
-					// $("#cpideliver").val(json.cpideliver);
-					// $("#cpivoyid").val(json.cpivoyid);
-					// $("#cpivoy").val(json.cpivoy);
 					$("#saveData").prop('disabled', true);
+					$(".repo-detail-table").show();
 				} else {
 					$("#saveData").prop('disabled', false);
 					Swal.fire({

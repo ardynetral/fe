@@ -53,6 +53,7 @@ class RepoIn extends \CodeIgniter\Controller
 			$record[] = $v['cpopr'];
 			$record[] = $v['recpives'];
 			$record[] = $v['recpivoyid'];
+			// $record[] = (isset($v['repofe'])&&$v['repofe']==1)?'Full':'Empty';
 
 			$btn_list .= '<a href="' . site_url() . '/repoin/view/' . $reorderno . '" class="btn btn-xs btn-primary btn-tbl">Cetak kitir</a>';
 			$btn_list .= '<a href="' . site_url() . '/repoin/edit/' . $reorderno . '" class="btn btn-xs btn-success btn-tbl">Edit</a>';
@@ -260,7 +261,7 @@ class RepoIn extends \CodeIgniter\Controller
 				'ctcode' => $_POST['ctcode'],
 				'cclength' => $_POST['cclength'],
 				'ccheight' => $_POST['ccheight'],
-				'cpife' => $_POST['cpife'],
+				'repofe' => $_POST['repofe'],
 				'cpishold' => $_POST['cpishold'],
 				// 'reporemark' => $_POST['reporemark']
 			];
@@ -885,17 +886,16 @@ class RepoIn extends \CodeIgniter\Controller
 		foreach ($result['data']['datas'] as $row) {
 			$repocrnoid = $row['repocrnoid'];
 			$html .= "<tr>
+				<td>
+				<a href='#' class='btn btn-xs btn-danger delete' data-kode='" . $repocrnoid . "'>delete</a></td>
 				<td>" . $i . "</td>
 				<td>" . $row['crno'] . "</td>
 				<td>" . $row['cccode'] . "</td>
 				<td>" . $row['ctcode'] . "</td>
 				<td>" . $row['cclength'] . "</td>
 				<td>" . $row['ccheight'] . "</td>
-				<td>" . ((isset($row['repofe']) && $row['repofe'] == 1) ? 'Full' : 'Empty') . "</td>
 				<td>" . ((isset($row['reposhold']) && $row['reposhold'] == 1) ? 'Hold' : 'Release') . "</td>
-				<td>" . $row['reporemark'] . "</td>
-				<td>
-				<a href='#' class='btn btn-xs btn-danger delete' data-kode='" . $repocrnoid . "'>delete</a></td>";
+				<td>" . $row['reporemark'] . "</td>";
 			$html .= "</tr>";
 			$i++;
 		}

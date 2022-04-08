@@ -186,6 +186,19 @@
 										</div>
 									</div>
 									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">F/E</label>
+										<div class="col-sm-6">
+											<label class="control-inline fancy-radio custom-bgcolor-green">
+												<input type="radio" name="repofe" id="repofe" value="1" <?=((isset($data['repofe'])&&$data['repofe']==1)?'checked':'')?>>
+												<span><i></i>Full</span>
+											</label>
+											<label class="control-inline fancy-radio custom-bgcolor-green">
+												<input type="radio" name="repofe" id="repofe" value="0" <?=((isset($data['repofe'])&&$data['repofe']==0)?'checked':'')?>>
+												<span><i></i>Empty</span>
+											</label>								
+										</div>
+									</div>									
+									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Billing Type</label>
 										<div class="col-sm-6">
 											<select name="rebill" id="rebill" class="">
@@ -485,36 +498,34 @@
 						<table id="rcTable" class="table table-hover table-bordered" style="width:100%;">
 							<thead>
 								<tr>
+									<th></th>
 									<th>No.</th>
 									<th>Container #</th>
 									<th>ID Code</th>
 									<th>Type</th>
 									<th>Length</th>
 									<th>Height</th>
-									<th>F/E</th>
 									<th>Hold/Release</th>
 									<th>Remark</th>
 									<th>Seal No</th>
-									<th></th>
 								</tr>
 							</thead>
 							<?php if($containers!=""):?>
 							<tbody id="listOrderPra">
 								<?php $no=1; foreach($containers as $c):?>
 								<tr>
+									<td>
+										<a href='#' class='btn btn-xs btn-danger delete' data-kode="<?=$c['repocrnoid']?>">delete</a>
+									</td>									
 									<td><?=$no;?></td>
 									<td><?=$c['crno'];?></td>
 									<td><?=$c['cccode'];?></td>
 									<td><?=$c['ctcode'];?></td>
 									<td><?=$c['cclength'];?></td>
 									<td><?=$c['ccheight'];?></td>
-									<td><?=((isset($c['repofe'])&&$c['repofe']==1)?'Full':'Empty');?></td>
 									<td><?=((isset($c['reposhold'])&&$c['reposhold']==1)?'Hold':'Release');?></td>
 									<td><?=$c['reporemark'];?></td>
 									<td><?=$c['sealno'];?></td>
-									<td>
-										<a href='#' class='btn btn-xs btn-danger delete' data-kode="<?=$c['repocrnoid']?>">delete</a>
-									</td>									
 								</tr>
 								<?php $no++; endforeach; ?>
 							</tbody>

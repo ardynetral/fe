@@ -72,6 +72,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var fomData = "reorderno=" + $("#reorderno").val();
 		fomData += "&repovendor=" + $("#repovendor").val();
+		formData += "&repofe=" + $("input:radio[name=repofe]:checked").val();
 		if($("#rebill").val()=="Breakdown") {
 			// BreakDown
 			fomData += "&relift=" + parseInt($("#relift").val());
@@ -388,7 +389,7 @@ $(document).ready(function() {
 		formData += "&ctcode=" + $("#ctcode").val();
 		formData += "&cclength=" + $("#cclength").val();
 		formData += "&ccheight=" + $("#ccheight").val();
-		formData += "&cpife=" + $("#cpife").val();
+		formData += "&repofe=" + $("input:radio[name=repofe]:checked").val();
 		formData += "&cpishold=" + $("#cpishold").val();
 		// formData += "&reporemark=" + $("#reporemark").val();
 		
@@ -452,7 +453,7 @@ $(document).ready(function() {
 		formData += "&ctcode=" + $("#ctcode").val();
 		formData += "&cclength=" + $("#cclength").val();
 		formData += "&ccheight=" + $("#ccheight").val();
-		formData += "&cpife=" + $("#cpife").val();
+		formData += "&repofe=" + $("input:radio[name=repofe]:checked").val();
 		formData += "&cpishold=" + $("#cpishold").val();
 		// formData += "&reporemark=" + $("#reporemark").val();
 		
@@ -521,7 +522,7 @@ $(document).ready(function() {
 					$("#ctcode").val(json.container_code.ctcode);
 					$("#cclength").val(json.container_code.cclength);
 					$("#ccheight").val(json.container_code.ccheight);
-					$("input:radio[name=cpife]").filter('[value=0]').prop('checked', true);		
+					// $("input:radio[name=cpife]").filter('[value=0]').prop('checked', true);		
 				}
 			}
 		});
@@ -553,7 +554,7 @@ $(document).ready(function() {
 				$("#ctcode").val(json.ctcode);
 				$("#cclength").val(json.cclength);
 				$("#ccheight").val(json.ccheight);
-				$("input:radio[name=cpife]").filter('[value=0]').prop('checked', true);	
+				// $("input:radio[name=cpife]").filter('[value=0]').prop('checked', true);	
 			}
 		});				
 	});

@@ -192,6 +192,19 @@
 										</div>
 									</div>
 									<div class="form-group">
+										<label class="col-sm-4 control-label text-right">F/E</label>
+										<div class="col-sm-6">
+											<label class="control-inline fancy-radio custom-bgcolor-green">
+												<input type="radio" name="repofe" id="repofe" value="1" <?=((isset($data['repofe'])&&$data['repofe']==1)?'checked':'')?>>
+												<span><i></i>Full</span>
+											</label>
+											<label class="control-inline fancy-radio custom-bgcolor-green">
+												<input type="radio" name="repofe" id="repofe" value="0" <?=((isset($data['repofe'])&&$data['repofe']==0)?'checked':'')?>>
+												<span><i></i>Empty</span>
+											</label>								
+										</div>
+									</div>									
+									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Billing Type</label>
 										<div class="col-sm-6">
 											<input type="text" class="form-control" value="<?=$data['rebill']?>" readonly>
@@ -452,7 +465,6 @@
 									<th>Type</th>
 									<th>Length</th>
 									<th>Height</th>
-									<th>F/E</th>
 									<th>Hold/Release</th>
 									<th>Remark</th>
 								</tr>
@@ -467,7 +479,6 @@
 									<td><?=$c['ctcode'];?></td>
 									<td><?=$c['cclength'];?></td>
 									<td><?=$c['ccheight'];?></td>
-									<td><?=((isset($c['repofe'])&&$c['repofe']==1)?'Full':'Empty');?></td>
 									<td><?=((isset($c['reposhold'])&&$c['reposhold']==1)?'Hold':'Release');?></td>
 									<td><?=$c['reporemark'];?></td>
 								</tr>

@@ -35,15 +35,23 @@
 							<thead>
 								<tr>
 									<th>No.</th>
-									<th>Principal</th>
-									<!-- <th>Damage No.</th> -->
-									<th>Date</th>
-									<th>Exp Date</th>
-									<th>Remark</th>
+									<th>Eqp.Type</th>
+									<th>Repair Code</th>
+									<th>Repair Description</th>
+									<th>Material</th>
+									<th>Formula</th>
+									<th>Also Applies To</th>
+									<th>Location</th>
+									<th>ISO Code</th>
+									<th>Limit</th>
+									<th>Start</th>
+									<th>Hours</th>
+									<th>Mtrl.Cost</th>
+									<th>INC</th>
 									<th></th>
 								</tr>
 							</thead>
-							
+							<tbody></tbody>
 						</table>
 					</div>
 				</div>

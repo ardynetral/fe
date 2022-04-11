@@ -3,6 +3,9 @@ $(document).ready(function() {
 
 	// SELECT2
 	$('.select-cncode').select2();
+	$('.select-cccodes').select2();
+	$('#comp_code').select2();
+	$('#repair_code').select2();
 
 	// DATATABLE
 	runDataTables();
@@ -20,27 +23,26 @@ $(document).ready(function() {
         PaginationType : "bootstrap", 
         oLanguage: { "sSearch": "",
             "sLengthMenu" : "_MENU_ &nbsp;"}
-    });
+	});
 	
 	$('.dataTables_filter input').attr("placeholder", "Search");
     $('.DTTT_container').css('display','none');
     $('.DTTT').css('display','none');
+    // END DATATABLE
 
-	$("#saveData").click(function(e){
+	// INSERT
+	$("form#MnrTariff").on("submit", function(e){
 		e.preventDefault();
-		var formData = "prcode=" + $("#prcode").val();
-		formData += "&dmno=" + $("#dmno").val();
-		formData += "&dmdate=" + $("#dmdate").val();
-		formData += "&dmexpdate=" + $("#dmexpdate").val();
-		formData += "&dmremarks=" + $("#dmremarks").val();
-		console.log(formData);
 		$.ajax({
 			url: "<?php echo site_url('mnrtariff/add'); ?>",
 			type: "POST",
-			data: formData,
+			data:  new FormData(this),
 			dataType: 'json',
+            processData: false,
+            contentType: false,
+            cache: false,				
 			success: function(json) {
-				if(json.message == "success") {
+				if(json.status == "success") {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
@@ -59,21 +61,19 @@ $(document).ready(function() {
 	});
 
 	// EDIT DATA
-	$("#updateData").click(function(e){
+	$("form#UpdateMnrTariff").on("submit", function(e){
 		e.preventDefault();
-		var formData = "prcode=" + $("#prcode").val();
-		formData += "&dmno=" + $("#dmno").val();
-		formData += "&dmdate=" + $("#dmdate").val();
-		formData += "&dmexpdate=" + $("#dmexpdate").val();
-		formData += "&dmremarks=" + $("#dmremarks").val();
-		console.log(formData);
+		var isoid=$("#isoid").val();
 		$.ajax({
-			url: "<?php echo site_url('mnrtariff/edit/'); ?>"+$("#prcode").val(),
+			url: "<?php echo site_url('mnrtariff/edit/'); ?>"+isoid,
 			type: "POST",
-			data: formData,
+			data:  new FormData(this),
 			dataType: 'json',
+            processData: false,
+            contentType: false,
+            cache: false,				
 			success: function(json) {
-				if(json.message == "success") {
+				if(json.status == "success") {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
@@ -89,7 +89,7 @@ $(document).ready(function() {
 				}
 			}
 		});
-	});	
+	});
 
 	$('#ctTable tbody').on('click', '.delete', function(e){
 		e.preventDefault();	
@@ -111,11 +111,12 @@ $(document).ready(function() {
 
 	function delete_data(code) {
 		$.ajax({
-			url: "<?php echo site_url('mnrtariff/delete/'); ?>"+code,
+			url: "<?=site_url('mnrtariff/delete'); ?>",
 			type: "POST",
+			data: {"isoid" : code},
 			dataType: 'json',
 			success: function(json) {
-				if(json.message == "success") {
+				if(json.status == "success") {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
@@ -201,9 +202,11 @@ function runDataTables() {
                     "dataType": "json",
                     "cache": false,
 					"beforeSend": function(){
-						$("#spinner").show();
-						$("#SearchSC").attr("disabled","disabled");
-						$("#SearchSC").append('<i class="fa fa-gear fa-1x fa-spin"></i>');
+						$('#ctTable > tbody').html(
+				            '<tr class="odd">' +
+				              '<td valign="top" colspan="6" class="dataTables_empty">Loading&hellip; <i class="fa fa-gear fa-1x fa-spin"></i></td>' +
+				            '</tr>'
+				          );
 					},
                     "success": function (json) {
 						$("#spinner").hide();
@@ -229,6 +232,32 @@ function runDataTables() {
                 drawCallback(json);
             }
         }
-    }    
+    }
+
+    $("#comp_code").on("change", function(e){
+    	e.preventDefault();
+    	$.ajax({
+    		url:"<?=site_url('mnrtariff/get_component_desc')?>",
+    		method:"POST",
+    		data:{"comp_code":$(this).val()},
+    		dataType:"JSON",
+    		success: function(json){
+    			$("#comp_description").val(json);
+    		}
+    	});
+    });
+
+    $("#repair_code").on("change", function(e){
+    	e.preventDefault();
+    	$.ajax({
+    		url:"<?=site_url('mnrtariff/get_repair_desc')?>",
+    		method:"POST",
+    		data:{"repair_code":$(this).val()},
+    		dataType:"JSON",
+    		success: function(json){
+    			$("#repair_description").val(json);
+    		}
+    	});
+    });      
 }
 </script>

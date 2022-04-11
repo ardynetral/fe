@@ -1753,8 +1753,8 @@ class PraOut extends \CodeIgniter\Controller
 			$CODE = $result['data'][0]['ctcode'];
 			$PRINCIPAL = $result['data'][0]['cpopr1'];
 			$SHIPPER = $result['data'][0]['cporeceiv'];
-			$VESSEL = $result['data'][0]['vesid'];
-			$VOY = $result['data'][0]['cpovoyid'];
+			$VESSEL = $result['data'][0]['cpoves'];
+			$VOY = $result['data'][0]['cpovoy'];
 			$DATE = $result['data'][0]['cpoloaddat'];
 			$DESTINATION = "";
 			$REMARK = $result['data'][0]['cporemark'];
@@ -1852,11 +1852,11 @@ class PraOut extends \CodeIgniter\Controller
 			<div class="wrapper">
 
 			<div class="page-header t-center">
-				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">PT.CONTINDO RAYA</h3>
-				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR MUAT</h3>
-				<h4 style="text-decoration: underline;line-height:0.5;">' . $REFIN . '</h3>
+				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">PT.CONTINDO RAYA</h5>
+				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR MUAT</h5>
+				<h4 style="text-decoration: underline;line-height:0.5;">' . $REFIN . '</h4>
 				<img src="' . $QRCODE_IMG . '" style="height:120px;">
-				<h5 style="text-decoration: underline;line-height:0.5;">' . $CPID . '</h4>
+				<h4 style="text-decoration: underline;line-height:0.5;">' . $CPID . '</h4>
 			</div>
 		';
 
@@ -1910,7 +1910,7 @@ class PraOut extends \CodeIgniter\Controller
 						<td colspan="3">:&nbsp;</td>
 					</tr>					
 					<tr>
-						<td>EX VESSEL</td>
+						<td>LOADING VESSEL</td>
 						<td colspan="3"  style="font-weight:normal">:&nbsp;' . $VESSEL . '/' . $VOY . '</td>
 					</tr>
 					<tr>

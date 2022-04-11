@@ -73,6 +73,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var fomData = "reorderno=" + $("#reorderno").val();
 		fomData += "&repovendor=" + $("#repovendor").val();
+		fomData += "&repofe=" + $("input:radio[name=repofe]:checked").val();
 		if($("#rebill").val()=="Breakdown") {
 			// BreakDown
 			fomData += "&relift=" + parseInt($("#relift").val());
@@ -391,7 +392,7 @@ $(document).ready(function() {
 		formData += "&ctcode=" + $("#ctcode").val();
 		formData += "&cclength=" + $("#cclength").val();
 		formData += "&ccheight=" + $("#ccheight").val();
-		formData += "&cpife=" + $("#cpife").val();
+		formData += "&repofe=" + $("input:radio[name=repofe]:checked").val();
 		formData += "&cpishold=" + $("#cpishold").val();
 		formData += "&reporemark=" + $("#reporemark").val();
 		formData += "&sealno=" + $("#sealno").val();

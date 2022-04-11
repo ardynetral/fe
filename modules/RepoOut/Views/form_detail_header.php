@@ -45,7 +45,7 @@
 							<input type="text" name="ccheight" id="ccheight" class="form-control" readonly="">
 						</div>	
 					</div>			
-					<div class="form-group">
+<!-- 					<div class="form-group">
 						<label class="col-sm-3 control-label text-right">F/E</label>
 						<div class="col-sm-7">
 							<label class="control-inline fancy-radio custom-bgcolor-green">
@@ -57,7 +57,7 @@
 								<span><i></i>Empty</span>
 							</label>				
 						</div>	
-					</div>					
+					</div>	 -->				
 					<div class="form-group" style="display:none;">
 						<label class="col-sm-3 control-label text-right">Hold</label>
 						<div class="col-sm-7">

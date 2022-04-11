@@ -4,16 +4,15 @@
 <table id="rcTable" class="table table-hover table-bordered" style="width:100%;">
 	<thead>
 		<tr>
+			<th></th>
 			<th>No.</th>
 			<th>Container #</th>
 			<th>ID Code</th>
 			<th>Type</th>
 			<th>Length</th>
 			<th>Height</th>
-			<th>F/E</th>
 			<th>Hold/Release</th>
 			<th>Remark</th>
-			<th></th>
 		</tr>
 	</thead>
 	

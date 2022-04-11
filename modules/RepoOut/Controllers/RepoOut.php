@@ -246,7 +246,7 @@ class RepoOut extends \CodeIgniter\Controller
 				'ctcode' => $_POST['ctcode'],
 				'cclength' => $_POST['cclength'],
 				'ccheight' => $_POST['ccheight'],
-				'repofe' => $_POST['cpife'],
+				'repofe' => $_POST['repofe'],
 				'reposhold' => $_POST['cpishold'],
 				'reporemark' => $_POST['reporemark'],
 				'sealno' => $_POST['sealno']
@@ -349,7 +349,7 @@ class RepoOut extends \CodeIgniter\Controller
 				'ctcode' => $_POST['ctcode'],
 				'cclength' => $_POST['cclength'],
 				'ccheight' => $_POST['ccheight'],
-				'repofe' => $_POST['cpife'],
+				'repofe' => $_POST['repofe'],
 				'reposhold' => $_POST['cpishold'],
 				'reporemark' => $_POST['reporemark'],
 				'sealno' => $_POST['sealno']
@@ -850,18 +850,16 @@ class RepoOut extends \CodeIgniter\Controller
 		foreach ($result['data']['datas'] as $row) {
 			$repocrnoid = $row['repocrnoid'];
 			$html .= "<tr>
+				<td><a href='#' class='btn btn-xs btn-danger delete' data-kode='" . $repocrnoid . "'>delete</a></td>
 				<td>" . $i . "</td>
 				<td>" . $row['crno'] . "</td>
 				<td>" . $row['cccode'] . "</td>
 				<td>" . $row['ctcode'] . "</td>
 				<td>" . $row['cclength'] . "</td>
 				<td>" . $row['ccheight'] . "</td>
-				<td>" . ((isset($row['repofe']) && $row['repofe'] == 1) ? 'Full' : 'Empty') . "</td>
 				<td>" . ((isset($row['reposhold']) && $row['reposhold'] == 1) ? 'Hold' : 'Release') . "</td>
 				<td>" . $row['reporemark'] . "</td>
-				<td>" . $row['sealno'] . "</td>
-				<td>
-				<a href='#' class='btn btn-xs btn-danger delete' data-kode='" . $repocrnoid . "'>delete</a></td>";
+				<td>" . $row['sealno'] . "</td>";
 			$html .= "</tr>";
 			$i++;
 		}
@@ -1156,7 +1154,7 @@ class RepoOut extends \CodeIgniter\Controller
 		$cprocess_params = [
 			"crno" => $_POST['crno'],
 			"cporefout" => $header['data']['reautno'],
-		    "cpofe" => $_POST['cpife'],
+		    "cpofe" => $_POST['repofe'],
 		    "cporemark" => $_POST['cpiremark'],
 		    "cpopr1" => $header['data']['cpopr'],				    
 		    "cpcust1" => $header['data']['cpcust'],					    

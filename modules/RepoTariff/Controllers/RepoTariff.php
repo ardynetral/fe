@@ -166,7 +166,7 @@ class RepoTariff extends \CodeIgniter\Controller
 		    {
 		    	$rtdate = date("Y-m-d", strtotime($_POST['rtdate']));
 		    	$rtexpdate = date("Y-m-d", strtotime($_POST['rtexpdate']));
-				$response = $this->client->request('POST','repotarif/updateData',[
+				$response = $this->client->request('PUT','repotarif/updateData',[
 					'headers' => [
 						'Accept' => 'application/json',
 						'Authorization' => session()->get('login_token')

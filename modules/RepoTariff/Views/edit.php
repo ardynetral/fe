@@ -81,7 +81,7 @@
 						</div>							
 						<div class="form-group">
 							<div class="col-sm-offset-2 col-sm-10">
-								<button type="submit" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
+								<button type="submit" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp;
 								<button type="button" id="addDetail" class="btn btn-success" data-toggle="modal" data-target="#repoTariffDetailModal" data-backdrop="static"><i class="fa fa-cogs"></i> Add Detail</button>&nbsp;
 								<a href="<?=site_url('repotariff')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 							</div>

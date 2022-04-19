@@ -65,7 +65,35 @@ $(document).ready(function() {
 	});
 
 	// EDIT DATA
-
+	$("form#editRtheader").on("submit", function(e){
+		e.preventDefault();
+		var prcode = $("#prcode").val();
+		var rtno = $("#rtno").val();
+		$.ajax({
+			url: "<?php echo site_url('repotariff/edit/'); ?>"+prcode+"/"+rtno,
+			type: "POST",
+			data: new FormData(this),
+			dataType: 'json',
+            processData: false,
+            contentType: false,
+            cache: false,				
+			success: function(json) {
+				if(json.status == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+json.message+'</div>'
+					});
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+json.message+'</div>'
+					});					
+				}
+			}
+		});
+	});
 
 // DETAIL
 	// INSERT

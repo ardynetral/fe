@@ -35,10 +35,10 @@
 				<form id="#formCType" class="form-horizontal" role="form">
 					<?= csrf_field() ?>
 					<fieldset>
-						<div class="form-group">
+						<div class="form-group" style="display:none;">
 							<label for="chorderno" class="col-sm-2 control-label text-right">Order Id.</label>
 							<div class="col-sm-3">
-								<input type="text" name="chorderno" class="form-control" id="chorderno">
+								<input type="text" name="chorderno" class="form-control" id="chorderno" value="0">
 							</div>
 						</div>	
 						<div class="form-group">

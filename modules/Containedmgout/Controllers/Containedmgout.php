@@ -107,7 +107,6 @@ class Containedmgout extends \CodeIgniter\Controller
 			$chnote = $this->request->getPost('chnote');
 
 			$validate = $this->validate([
-				'chorderno' 	=> 'required',
 				'crno'  => 'required'
 			]);
 
@@ -145,8 +144,10 @@ class Containedmgout extends \CodeIgniter\Controller
 				echo json_encode($data);
 				die();
 			} else {
+				$data['status'] = "Failled";
 				$data['message'] = \Config\Services::validation()->listErrors();
 				echo json_encode($data);
+				echo var_dump($data);
 				die();
 			}
 		}

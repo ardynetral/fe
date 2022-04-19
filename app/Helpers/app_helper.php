@@ -718,6 +718,39 @@ function recept_by_praid($praid)
 	return $data_recept;
 }
 
+function get_company_profile() 
+{
+	$api = api_connect();
+	$response = $api->request('GET','companies/list',[
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		]
+	]);
+
+	$result = json_decode($response->getBody()->getContents(),true);	
+
+	$data = isset($result['data']['datas'])?$result['data']['datas'][0]:"";
+	$company = [];
+	if($data == "") {
+		$company['name'] = "";
+		$company['manager'] = "";
+		$company['address'] = "";
+		$company['phone'] = "";
+		$company['fax'] = "";
+		$company['npwp'] = "";
+	} else {
+		$company['name'] = $data['pagroup'];
+		$company['manager'] = $data['pamgr'];
+		$company['address'] = trim($data['paaddr']);
+		$company['phone'] = $data['paphone'];
+		$company['fax'] = $data['pafax'];
+		$company['npwp'] = $data['pakwtnpwp'];
+	}	
+
+	return $company;
+}
+
 // FUNGSI TERBILANG
 function hundreds($number)
 {
@@ -865,3 +898,4 @@ function toEnglish($number)
 
 	return ucwords($string);
 }
+

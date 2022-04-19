@@ -127,6 +127,28 @@ function cpopr_dropdown($selected="")
 	die();	
 }
 
+function rebillingto_dropdown($selected="")
+{
+	$api = api_connect();
+	$response = $api->request('GET','principals/list',[
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		]
+	]);
+
+	$result = json_decode($response->getBody()->getContents(),true);
+	$option = "";
+	$option .= '<select name="rebillingto" id="rebillingto" class="select-rebillingto">';
+	$option .= '<option value="">-select-</option>';	
+	foreach ($result['data']['datas'] as $row) {
+		$option .= "<option value='".$row['prcode'] ."'". ((isset($selected) && $selected==$row['prcode']) ? ' selected' : '').">".strtoupper($row['prcode'])."</option>"; 
+	}		
+	$option .="</select>";
+	return $option; 
+	die();	
+}
+
 function repoves_dropdown($selected="")
 {
 	$api = api_connect();

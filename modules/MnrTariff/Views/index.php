@@ -36,13 +36,13 @@
 								<tr>
 									<th>No.</th>
 									<th>Eqp.Type</th>
-									<th>Repair Code</th>
-									<th>Repair Description</th>
+									<th>Component Desc.</th>
+									<th>Repair Desc.</th>
 									<th>Material</th>
 									<th>Formula</th>
 									<th>Also Applies To</th>
 									<th>Location</th>
-									<th>ISO Code</th>
+									<th>Size Container</th>
 									<th>Limit</th>
 									<th>Start</th>
 									<th>Hours</th>

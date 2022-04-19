@@ -62,7 +62,7 @@ class MnrTariff extends \CodeIgniter\Controller
             $record = array(); 
             $record[] = $no;
             $record[] = $v['mtcode'];
-            $record[] = $v['repair_code'];
+            $record[] = $v['comp_description'];
 			$record[] = $v['repair_description'];
 			$record[] = $v['material'];
 			$record[] = $v['formula'];
@@ -113,15 +113,15 @@ class MnrTariff extends \CodeIgniter\Controller
 		$data = [];
 		$data['page_title'] = "MNR Tariff";
 		$data['page_subtitle'] = "Insert MNR Tariff";
-		$ccodes = [];
+		// $ccodes = [];
 
 
 		if($this->request->isAJAX()) {
-			foreach($_POST['cccodes'] as $val) {
-				$ccodes[] = substr($val, strpos($val, "-") + 1);
-			}
+			// foreach($_POST['cccodes'] as $val) {
+			// 	$ccodes[] = substr($val, strpos($val, "-") + 1);
+			// }
 			$reformat = [
-				'cccodes' => implode(" ", $ccodes)
+				'cccodes' => implode(" ", $_POST['cccodes'])
 			];
 			$form_params = array_replace($_POST, $reformat);
 			$response = $this->client->request('POST', 'damage_tariffs/createIsoRepair', [
@@ -158,25 +158,21 @@ class MnrTariff extends \CodeIgniter\Controller
 		$data['page_title'] = "MNR Tariff";
 		$data['page_subtitle'] = "Edit MNR Tariff";
 
-		// echo print_r($this->get_data_mnr($id));die();
 		if($this->request->isAJAX()) {
-			// $ccodes = [];
-			// foreach($_POST['cccodes'] as $val) {
-			// 	$ccodes[] = substr($val, strpos($val, "-") + 1);
-			// }
-			// $reformat = [
-			// 	'cccodes' => implode(" ", $ccodes)
-			// ];
-			// $form_params = array_replace($_POST, $reformat);
-			$response = $this->client->request('POST', 'damage_tariffs/createIsoRepair', [
+			$reformat = [
+				'cccodes' => implode(" ", $_POST['cccodes'])
+			];
+			$form_params = array_replace($_POST, $reformat);
+			$response = $this->client->request('PUT', 'damage_tariffs/updateIsoRepair', [
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
 				],
-				'form_params' => $_POST
+				'form_params' => $form_params
 			]);
 
 			$result = json_decode($response->getBody()->getContents(), true);
+			// echo print_r($result);die();
 			if (isset($result['status']) && ($result['status'] == "Failled")) {
 				$data['status'] = "Failled";
 				$data['message'] = $result['message'];
@@ -190,6 +186,9 @@ class MnrTariff extends \CodeIgniter\Controller
 		}
 
 		$data['data'] = $this->get_data_mnr($id);
+
+		$cccode = [];
+		$data['cccode_arr'] = ($data['data']['cccodes']!="")?explode(" ", $data['data']['cccodes']):"";	
 		$data['component_dropdown'] = $this->component_dropdown($data['data']['comp_code']);
 		$data['repair_dropdown'] = $this->repair_dropdown($data['data']['repair_code']);
 		$data['cccodes_dropdown'] = $this->cccodes_dropdown($data['data']['cccodes']);

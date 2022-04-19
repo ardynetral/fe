@@ -138,7 +138,7 @@ class Dailymovementout extends \CodeIgniter\Controller
 					<th>H</th>
 					<th>Loading Vessel/Voyage</th>
 					<th>Dest</th>
-					<th>Date In</th>
+					<th>Date Out</th>
 					<th>Con</th>
 					<th>Receiver</th>
 					<th>DO No / Seal</th>
@@ -154,14 +154,14 @@ class Dailymovementout extends \CodeIgniter\Controller
 			$html .= '
 					<tr>
 						<td>' . $no . '</td>
-						<td>' . $row['c'] . '</td>
+						<td>' . $row['crno'] . '</td>
 						<td>' . $row['id_code'] . '</td>
 						<td>' . $row['ctype'] . '</td>
 						<td>' . $row['clength'] . '</td>
 						<td>' . $row['cheight'] . '</td>
 						<td>' . $row['loading_ves'] . ' / ' . $row['loading_voy'] . '</td>
 						<td>' . $row['dest'] . '</td>
-						<td>' . $row['date_in'] . '</td>
+						<td>' . $row['date_out'] . '</td>
 						<td>' . $row['cond'] . '</td>
 						<td>' . $row['receiver'] . '</td>
 						<td>' . $row['do_no'] . ' / ' . $row['seal'] . '</td>

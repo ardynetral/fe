@@ -2,8 +2,6 @@
 $(document).ready(function() {
 	// Error Message element
 	$(".err-crno").hide(); //container number check
-	// $("#update").hide();
-	// $("#updateDetail").hide();
 	$("#editOrderFrame").hide();
 	// SELECT2
 	$('.select-pr').select2();
@@ -12,12 +10,30 @@ $(document).ready(function() {
 	$('.select-vessel').select2();
 	$('.select-voyage').select2();
 	$('.select-ccode').select2();
+	
 	// DATATABLE
-	$("#ctTable").DataTable({
-	    select: {
-	        style: 'single'
-	    }
+	runDataTables();
+	var table = $('#ctTable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "autoWidth": false,
+        "fixedColumns": true,
+        "ajax": $.fn.dataTable.pipeline( {
+            url: '<?=site_url('prain/list_data');?>',
+            pages: 5  
+        } )
+        ,
+        sDom: 'T<"row view-filter"<"col-sm-12"<"pull-left"l><"pull-right"f><"clearfix">>>t<"row view-pager"<"col-sm-12"<"pull-right"ip>>>',
+        PaginationType : "bootstrap", 
+        oLanguage: { "sSearch": "",
+            "sLengthMenu" : "_MENU_ &nbsp;"}
 	});
+	
+	$('.dataTables_filter input').attr("placeholder", "Search");
+    $('.DTTT_container').css('display','none');
+    $('.DTTT').css('display','none');
+    // END DATATABLE	
+
 	// datePicker
 	$(".tanggal").datepicker({
 		autoclose:true,
@@ -43,52 +59,8 @@ $(document).ready(function() {
 		window.location.href = "#OrderPra";
 	});
 
-	// Preview Upload files
-	// function imagesPreview(input, locationPreview) {
- //        if (input.files) {
- //            var filesAmount = input.files.length;
- //            var alink = [];
- //            for (i = 0; i < filesAmount; i++) {
- //                var reader = new FileReader();
- //                var no_file = i+1;
- //                reader.onload = function(event) {
- //                	// alink[i] = event.target.result;
- //                	$("a").attr('href', event.target.result)
- //                }
- //                $($.parseHTML(no_file+'.&nbsp;<a href="" target="_blank">'+input.files[i].name+'</a><br>')).appendTo(locationPreview);
- //                reader.readAsDataURL(input.files[i]);
- //            }
- //        }
- //    }   
- //    $("#files").on("change", function(){
- //    	$("div.imgPreview").html("");
- // 		imagesPreview(this, 'div.imgPreview');
- //    });
-
 	$("form#fPraInOrder").on("submit", function(e){
 		e.preventDefault();			
-		// console.log($('input#files')[0].files[]);
-		// window.scrollTo(xCoord, yCoord);
-		// var files = $("#files")[0].files;
-		// var formData = "cpiorderno=" + $("#cpiorderno").val();
-		// formData += "&cpiopr=" + $("#prcode").val();
-		// formData += "&cpicust=" + $("#cucode").val();
-
-		// formData += "&cpidish=" + $("#cpidish").val();
-		// formData += "&cpidisdat=" + $("#cpidisdat").val();
-		// formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		// formData += "&cpdepo=" + $("#cpdepo").val();
-		// formData += "&cpipratgl=" + $("#cpipratgl").val();
-		// formData += "&cpirefin=" + $("#cpirefin").val();
-		// formData += "&cpijam=" + $("#cpijam").val();
-		// formData += "&cpives=" + $("#cpives").val();
-		// formData += "&cpivoyid=" + $("#cpivoyid").val();
-		// formData += "&cpicargo=" + $("#cpicargo").val();
-		// formData += "&cpideliver=" + $("#cpideliver").val();
-		// formData += "&files=" + files;
-
-		// console.log(files);
-
 		$.ajax({
 			url: "<?php echo site_url('prain/add'); ?>",
 			type: "POST",
@@ -223,22 +195,6 @@ $(document).ready(function() {
 
 	$("form#fEditPraIn").on("submit",function(e){
 		e.preventDefault();
-		// var formData = "cpiorderno=" + $("#cpiorderno").val();
-		// formData += "&praid=" + $("#praid").val();
-		// formData += "&cpiopr=" + $("#prcode").val();
-		// formData += "&cpicust=" + $("#cucode").val();
-		// formData += "&cpidish=" + $("#cpidish").val();
-		// formData += "&cpidisdat=" + $("#cpidisdat").val();
-		// formData += "&liftoffcharge=" + $("#liftoffcharge").val();
-		// formData += "&cpdepo=" + $("#cpdepo").val();
-		// formData += "&cpipratgl=" + $("#cpipratgl").val();
-		// formData += "&cpirefin=" + $("#cpirefin").val();
-		// formData += "&cpijam=" + $("#cpijam").val();
-		// formData += "&cpives=" + $("#cpives").val();
-		// formData += "&cpivoyid=" + $("#cpivoyid").val();
-		// formData += "&cpicargo=" + $("#cpicargo").val();
-		// formData += "&cpideliver=" + $("#cpideliver").val();
-		// console.log(formData);
 		$.ajax({
 			url: "<?php echo site_url('prain/edit/'); ?>"+$("#praid").val(),
 			type: "POST",
@@ -1215,10 +1171,8 @@ $('#fileBukti').bind('change', function() {
 		  html: '<div class="text-danger">Hanya boleh upload file Gambar / file PDF!</div>'
 		});	 
 		this.value='';   
-	}  		
+	}	
 });
-
-
 
 function runDataTables() {		
     $.fn.dataTable.pipeline = function ( opts ) { 

@@ -26,7 +26,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<?php if(has_insert==true): ?>
-						<a href="#" class="btn btn-primary" id=""><i class="fa fa-plus-square"></i>&nbsp;Add New</a>
+						<a href="<?=site_url('cfswo/add')?>" class="btn btn-primary" id=""><i class="fa fa-plus-square"></i>&nbsp;Add New</a>
 						<?php endif;?>
 					</div>
 				</div><br>	

@@ -61,7 +61,7 @@
 							</tr>	
 							<tr>
 								<td class="text-right" width="130">Material :</td>
-								<td><input type="text" name="material" class="form-control" id="material" value="<?=@$data['material']; ?>" required></td>	
+								<td><input type="text" name="material" class="form-control" id="material" value="<?=@$data['material']; ?>"></td>	
 								<td class="text-right" width="130">INC Hours :</td>
 								<td><input type="text" name="_inchours" class="form-control" id="_inchours" value="<?=@$data['_inchours']; ?>" required></td>
 							</tr>
@@ -73,7 +73,7 @@
 							</tr>
 							<tr>
 								<td class="text-right" width="130">Also Applies To :</td>
-								<td><input type="text" name="also_applies_to" class="form-control" id="also_applies_to" value="<?=@$data['also_applies_to']; ?>" required></td>
+								<td><input type="text" name="also_applies_to" class="form-control" id="also_applies_to" value="<?=@$data['also_applies_to']; ?>"></td>
 								<td></td>
 								<td></td>
 							</tr>
@@ -85,7 +85,15 @@
 							</tr>
 							<tr>
 								<td class="text-right" width="130">ISO Codes :</td>
-								<td><input type="text" class="form-control" value="<?=@$data['cccodes']; ?>" name="cccodes" id="cccodes"></td>
+								<td>
+
+									<select name="cccodes[]" id="repair_code" class="select-cccodes" multiple="multiple" required>
+										<option value="20" <?= in_array("20", $cccode_arr)?"selected":""; ?>>20</option>
+										<option value="40" <?= in_array("40", $cccode_arr)?"selected":""; ?>>40</option>
+										<option value="45" <?= in_array("45", $cccode_arr)?"selected":""; ?>>45</option>
+									</select>
+
+								</td>
 								<td></td>
 								<td></td>
 							</tr>

@@ -51,12 +51,12 @@ class RptReceipt extends \CodeIgniter\Controller
 			'query' => $query_params,
 		]);
 		$result = json_decode($response->getBody()->getContents(), true);
-		// dd($result);
 		if(isset($result['status']) && $result['status']=="Failled") {
 			$data['data'] = [];
 		} else {
 			$data['data'] = $result['data']['resultData'];
 		}
+
 		return $data;
 	}
 
@@ -65,6 +65,7 @@ class RptReceipt extends \CodeIgniter\Controller
 		check_exp_time();
 
 		$result =   $this->getAllData($date_from, $date_to);
+		// dd($result);die();
 		$mpdf = new \Mpdf\Mpdf(['setAutoTopMargin' => 'stretch']);
 		$html = '';
 		$html .= '
@@ -118,13 +119,13 @@ class RptReceipt extends \CodeIgniter\Controller
 		foreach ($result['data'] as $row) {
 			$orderdate = ($row['cpipratgl']!=NULL) ? date('d/m/Y',strtotime($row['cpipratgl'])):"";  
 			$receptdate = ($row['receptdate']!=NULL) ? date('d/m/Y',strtotime($row['receptdate'])):"";  
-			// $invoice_number = 'KW' . date("Ymd", strtotime($row['cpipratgl'])) . str_repeat("0", 8 - strlen($row['praid'])) . $row['praid'];
-			$invoice_number = 'KW' . date("Ymd", strtotime($row['cpipratgl']));
-			$subtotal = $row['biaya_cleaning']+$row['biaya_adm']+$row['total_pajak'];
+			$invoice_number = 'KW' . date("Ymd", strtotime($row['cpipratgl'])) . str_repeat("0", 8 - strlen($row['praid'])) . $row['praid'];
+			// $invoice_number = 'KW' . date("Ymd", strtotime($row['cpipratgl']));
+			$subtotal = $row['tot_lolo']+$row['biaya_adm']+$row['total_pajak'];
 			$html .= '
 					<tr>
 						<td rowspan="4">' . $no . '</td>
-						<td rowspan="4">' . $row['cpopr'] . '</td>
+						<td rowspan="4">' . $row['cpideliver'] . '</td>
 						<td rowspan="4">' . $receptdate . '</td>
 						<td rowspan="4">' . $invoice_number . '</td>
 						<td rowspan="4"></td>
@@ -132,7 +133,7 @@ class RptReceipt extends \CodeIgniter\Controller
 					<tr>
 						<td>LIFT OFF - 20FT</td>
 						<td>IDR</td>
-						<td>' . number_format($row['biaya_cleaning'],2) . '</td>
+						<td>' . number_format($row['tot_lolo'],2) . '</td>
 						<td></td>
 					</tr>
 					<tr>
@@ -184,12 +185,12 @@ class RptReceipt extends \CodeIgniter\Controller
 		$exl = new Spreadsheet();
 		// Judul Dokumen
 		$exl->setActiveSheetIndex(0)
-			->setCellValue('A1', 'RECEIPT REPORT');
+			->setCellValue('A1', 'DAFTAR KWITANSI');
 		$exl->getActiveSheet()->mergeCells("A1:I1");
 		$exl->getActiveSheet()->getStyle('A1:I1')->getFont()->setSize(20);
-		$exl->getActiveSheet(0)->setCellValue('A2', 'Depot : CONTINDO - PADANG');
+		$exl->getActiveSheet(0)->setCellValue('A2', 'DEPOT : CONTINDO - PADANG');
 		$exl->getActiveSheet()->mergeCells("A2:I2");
-		$exl->getActiveSheet(0)->setCellValue('A3', 'Date : ' . date('d/m/y', strtotime($date_from)) . ' to ' . date('d/m/y', strtotime($date_to)));
+		$exl->getActiveSheet(0)->setCellValue('A3', 'PERIODE : ' . date('d/m/y', strtotime($date_from)) . ' to ' . date('d/m/y', strtotime($date_to)));
 		$exl->getActiveSheet()->mergeCells("A3:I3");
 		// Header Tabel
 		$exl->setActiveSheetIndex(0)
@@ -218,7 +219,7 @@ class RptReceipt extends \CodeIgniter\Controller
 			$receptdate = ($row['receptdate']!=NULL) ? date('d/m/Y',strtotime($row['receptdate'])):"";  
 			// $invoice_number = 'KW' . date("Ymd", strtotime($row['cpipratgl'])) . str_repeat("0", 8 - strlen($row['praid'])) . $row['praid'];
 			$invoice_number = 'KW' . date("Ymd", strtotime($row['cpipratgl']));
-			$subtotal = $row['biaya_cleaning']+$row['biaya_adm']+$row['total_pajak'];
+			$subtotal = $row['tot_lolo']+$row['biaya_adm']+$row['total_pajak'];
 			if($row_lolo>5) {
 				$row_lolo = $row_subtot+1;
 				$row_adm = $row_lolo+1;
@@ -232,7 +233,7 @@ class RptReceipt extends \CodeIgniter\Controller
 				->setCellValue('A' . $row_ppn, "")
 				->setCellValue('A' . $row_subtot, "SUB TOTAL")
 
-				->setCellValue('B' . $row_lolo, $row['cpopr'])
+				->setCellValue('B' . $row_lolo, $row['cpideliver'])
 				->setCellValue('B' . $row_adm, "")
 				->setCellValue('B' . $row_ppn, "")
 
@@ -256,7 +257,7 @@ class RptReceipt extends \CodeIgniter\Controller
 				->setCellValue('G' . $row_adm, "IDR")			
 				->setCellValue('G' . $row_ppn, "IDR")
 
-				->setCellValue('H' . $row_lolo, number_format($row['biaya_cleaning'],2))
+				->setCellValue('H' . $row_lolo, number_format($row['tot_lolo'],2))
 				->setCellValue('H' . $row_adm, number_format($row['biaya_adm'],2))			
 				->setCellValue('H' . $row_ppn, number_format($row['total_pajak'],2))		
 				->setCellValue('H' . $row_subtot, number_format($subtotal,2))

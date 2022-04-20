@@ -397,9 +397,10 @@ class GateOut extends \CodeIgniter\Controller
 			<div class="wrapper">
 
 			<div class="page-header t-center">
+				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">PT.CONTINDO RAYA</h5>
 				<h5 style="line-height:1.2;font-weight:bold;padding-top:20px;">TANDA TERIMA<br>CONTAINER</h5>
 				<img src="' . $QRCODE_IMG . '" style="height:120px;">
-				<h5 style="text-decoration: underline;line-height:0.5;">EIR OUT.' . $CPIEIR . '</h5>
+				<h4 style="text-decoration: underline;line-height:0.5;">EIR OUT.' . $CPIEIR . '</h4>
 			</div>
 		';
 		$html .= '

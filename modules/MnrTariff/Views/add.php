@@ -60,7 +60,7 @@
 							</tr>	
 							<tr>
 								<td class="text-right" width="130">Material :</td>
-								<td><input type="text" name="material" class="form-control" id="material" required></td>	
+								<td><input type="text" name="material" class="form-control" id="material"></td>	
 								<td class="text-right" width="130">INC Hours :</td>
 								<td><input type="text" name="_inchours" class="form-control" id="inchours" required></td>
 							</tr>
@@ -72,7 +72,7 @@
 							</tr>
 							<tr>
 								<td class="text-right" width="130">Also Applies To :</td>
-								<td><input type="text" name="also_applies_to" class="form-control" id="also_applies_to" required></td>
+								<td><input type="text" name="also_applies_to" class="form-control" id="also_applies_to"></td>
 								<td></td>
 								<td></td>
 							</tr>
@@ -83,8 +83,12 @@
 								<td></td>
 							</tr>
 							<tr>
-								<td class="text-right" width="130">ISO Codes :</td>
-								<td><?= $cccodes_dropdown; ?></td>
+								<td class="text-right" width="130">Size Container :</td>
+								<td><select name="cccodes[]" id="repair_code" class="select-cccodes" multiple="multiple" required>
+									<option value="20">20</option>
+									<option value="40">40</option>
+									<option value="45">45</option>
+								</select></td>
 								<td></td>
 								<td></td>
 							</tr>

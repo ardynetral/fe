@@ -27,10 +27,6 @@
 					</div>
 				</div><br>	
 
-				<?php if(!isset($data)||$data ==''): ?>
-					<p class="alert alert-warning"> Data not found.</p>
-				<?php else : ?>
-
 				<div class="row">
 					<div class="col-md-12">
 
@@ -44,28 +40,15 @@
 									<th>Begin Date</th>
 									<th>Expired Date</th>
 									<th>Remark</th>
+									<th></th>
 								</tr>
 							</thead>
 							
 							<tbody>
-								<?php $i=1; foreach($data as $row): ?>
-									<tr>
-										<td><?=$i;?></td>
-										<td></td>
-										<td></td>
-										<td width="150">
-											<a href="" class="btn btn-xs btn-primary">View</a>
-											<a href="" class="btn btn-xs btn-success">Edit</a>
-											<a href="#" class="btn btn-xs btn-danger delete" id="delete" data-kode="">Delete</a>
-										</td>
-									</tr>
-								<?php $i++; endforeach; ?>
 							</tbody>
 						</table>
 					</div>
 				</div>
-
-				<?php endif; ?>
 
 			</div>		
 		</div>		

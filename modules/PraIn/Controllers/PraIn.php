@@ -37,11 +37,64 @@ class PraIn extends \CodeIgniter\Controller
 		$group_id = $token['groupId'];
 		$prcode = $token['prcode'];
 
-		$data = [];
-		$offset=0;
-		$limit=1000;
-		// order pra
-		$response1 = $this->client->request('GET','orderPras/getAllData',[
+		// $data = [];
+		// $offset=0;
+		// $limit=1000;
+		// $response1 = $this->client->request('GET','orderPras/getAllData',[
+		// 	'headers' => [
+		// 		'Accept' => 'application/json',
+		// 		'Authorization' => session()->get('login_token')
+		// 	],
+		// 	'query' => [
+		// 		'offset' => $offset,
+		// 		'limit'	=> $limit,
+		// 		'pracode' => 'PI'
+		// 	]
+		// ]);
+		// $result_pra = json_decode($response1->getBody()->getContents(),true);	
+		// if((isset($result_pra['status'])&&($result_pra['status']=="Failled")) || (isset($result_pra['data']['datas'])&&$result_pra['data']['datas']==null)) {
+		// 	$data['data_pra'] = "";
+		// } else {
+		// 	if($group_id == 1) 
+		// 	{
+		// 		$datas = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
+		// 		// Jika EMKL (User_group==1)
+		// 		$data_pra = array();
+		// 		foreach($datas as $dt) {
+		// 			if($user_id==$dt['crtby']) {
+		// 				$data_pra[] = $dt;
+		// 			}
+		// 			else {}
+		// 		}
+		// 		$data['data_pra'] = $data_pra;
+		// 	} 
+		// 	else 
+		// 	{
+		// 		$data['data_pra'] = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
+		// 	}	
+		// }
+
+		$data['prcode'] = $prcode;
+		$data['cucode'] = $prcode;
+		$data['group_id'] = $group_id;
+		return view('Modules\PraIn\Views\index',$data);
+	}
+
+	public function list_data()
+	{
+		$token = get_token_item();
+		$user_id = $token['id'];
+		$group_id = $token['groupId'];
+		$prcode = $token['prcode'];
+
+		$search = ($this->request->getPost('search[value]') != "")?$this->request->getPost('search[value]'):"";
+        $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
+        $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
+        	
+		$form_params = [
+
+		];		
+		$response = $this->client->request('GET','orderPras/getAllData',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
@@ -52,36 +105,72 @@ class PraIn extends \CodeIgniter\Controller
 				'pracode' => 'PI'
 			]
 		]);
-		$result_pra = json_decode($response1->getBody()->getContents(),true);	
-		// dd($result_pra);
-		if((isset($result_pra['status'])&&($result_pra['status']=="Failled")) || (isset($result_pra['data']['datas'])&&$result_pra['data']['datas']==null)) {
-			$data['data_pra'] = "";
-		} else {
-			if($group_id == 1) 
-			{
-				$datas = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
-				// Jika EMKL (User_group==1)
-				$data_pra = array();
-				foreach($datas as $dt) {
-					if($user_id==$dt['crtby']) {
-						$data_pra[] = $dt;
-					}
-					else {}
-				}
-				$data['data_pra'] = $data_pra;
-			} 
-			else 
-			{
-				$data['data_pra'] = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
-			}	
-		}
+		$result = json_decode($response->getBody()->getContents(),true);
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => @$result['data']['count'],
+            "recordsFiltered" => @$result['data']['count'],
+            "data" => array()
+        );
+		$no = ($offset !=0)?$offset+1 :1;
 
-		$data['prcode'] = $prcode;
-		$data['cucode'] = $prcode;
-		$data['group_id'] = $group_id;
-		// echo dd($data);
-		// return view('Modules\PraIn\Views\tab_base',$data);
-		return view('Modules\PraIn\Views\index',$data);
+		// if($group_id == 1) 
+		// {
+		// 	$datas = isset($result['data']['datas'])?$result['data']['datas']:"";
+		// 	// Jika EMKL (User_group==1)
+		// 	$data = array();
+		// 	foreach($datas as $dt) {
+		// 		if($user_id==$dt['crtby']) {
+		// 			$data_pra[] = $dt;
+		// 		}
+		// 	}
+		// } 
+		// else 
+		// {
+			$data_pra = $result['data']['datas'];
+		// }	
+
+		foreach ($data_pra as $k=>$v) {
+			$btn_list="";
+            $record = array(); 
+            $record[] = $no;
+            $record[] = $v['cpiorderno'];
+            $record[] = $v['cpipratgl'];
+            $record[] = $v['cpives'];
+            $record[] = $v['cpivoyid'];
+			$record[] = $v['cpirefin'];
+			$record[] = 'KW' . date("Ymd", strtotime($v['cpipratgl'])) . str_repeat("0", 8 - strlen($v['praid'])) . $v['praid'];
+
+			if($v['appv']==0):
+
+				$btn_list .='<a href="'.site_url('praout/edit/'.$v['praid']).'" id="editPraIn" class="btn btn-xs btn-warning">edit</a>&nbsp;';
+
+				if($group_id!=1):
+				$btn_list .='<a href="'.site_url('praout/approve_order/'.$v['praid']).'" id="" class="btn btn-xs btn-primary" data-praid="'.$v['praid'].'">Approval</a>&nbsp;';
+				endif;
+					
+				$btn_list .='<a href="#" id="" class="btn btn-xs btn-danger delete" data-kode="'.$v['praid'].'">delete</a>';
+					
+			elseif($v['appv']==1):
+
+				$btn_list .='<a href="'.site_url('praout/proforma/'.$v['praid']).'" id="" class="btn btn-xs btn-primary" data-praid="'.$v['praid'].'">Proforma</a>&nbsp;';
+				
+				if((check_bukti_bayar2($v['praid'])=="exist")&&($group_id!=1)):
+				$btn_list .='<a href="'.site_url('praout/approval2/'.$v['praid']).'" id="" class="btn btn-xs btn-success approve" data-praid="'.$v['praid'].'">Approval 2</a>&nbsp;';
+				endif;
+
+			elseif($v['appv']==2):
+				$btn_list .='<a href="'.site_url('praout/view/'.$v['praid']).'" id="" class="btn btn-xs btn-default" data-praid="'.$v['praid'].'">view</a>&nbsp;';
+				$btn_list .='<a href="'.site_url('praout/final_order/'.$v['praid']).'" class="btn btn-xs btn-info">Cetak kitir</a>';
+
+			endif;
+			
+            $record[] = '<div>'.$btn_list.'</div>';
+            $no++;
+
+            $output['data'][] = $record;
+        } 
+        echo json_encode($output);		
 	}
 
 	public function view($code)

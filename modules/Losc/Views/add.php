@@ -85,8 +85,8 @@
 							<div class="col-sm-3">
 								<select name="billType" id="billType" class="select-billtype">
 									<option value="">- select -</option>
-									<option value="B">Available</option>
-									<option value="P">Damage</option>
+									<option value="A">Available</option>
+									<option value="D">Damage</option>
 								</select>
 							</div>
 						</div>

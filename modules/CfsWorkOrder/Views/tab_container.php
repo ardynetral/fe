@@ -2,7 +2,7 @@
 	<div class="col-sm-12">
 		<div class="widget widget-table">
 			<div class="widget-header">
-				<h3><i class="fa fa-table"></i> Repo Container</h3>
+				<h3><i class="fa fa-table"></i> WO Container</h3>
 			</div>
 			<div class="widget-content">
 				<p><button class="btn btn-success" data-toggle="modal" data-target="#myModal" id="insertContainer"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
@@ -47,8 +47,8 @@
 				</div>						
 			</div>
 			<div class="widget-footer text-center">
-				<a href="<?=site_url('repoin');?>" class="btn btn-default" id="">Kembali</a>
-				<a href="#" class="btn btn-danger" id="updateNewData"><i class="fa fa-save"></i> Save All</a>
+				<a href="<?=site_url('cfswo');?>" class="btn btn-default" id="">Kembali</a>
+				<!-- <a href="#" class="btn btn-danger" id="updateNewData"><i class="fa fa-save"></i> Save All</a> -->
 			</div>					
 		</div>
 	</div>

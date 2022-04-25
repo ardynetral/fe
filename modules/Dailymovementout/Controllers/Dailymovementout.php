@@ -38,12 +38,17 @@ class Dailymovementout extends \CodeIgniter\Controller
 
 	public function getAllData($prcode, $date_from, $date_to, $hour_from, $hour_to)
 	{
+		$prcd = ($prcode == 'All')?"":$prcode;
+		$dFrom = date("Y-m-d", strtotime($date_from));		
+		$dTo = date("Y-m-d", strtotime($date_to));		
+		$hFrom = ($hour_from == "")?"00:00":$hour_to;
+		$hTo = ($hour_to == "")?"23:59":$hour_from;
 		$query_params = [
-			'prcode' => $prcode,
-			'date_from' => $date_from,
-			'date_to'  => $date_to,
-			'hour_from' => $hour_from,
-			'hour_to'  => $hour_to
+			'prcode' => $prcd,
+			'date_from' => $dFrom,
+			'date_to'  => $dTo,
+			'hour_from' => $hFrom,
+			'hour_to'  => $hTo
 		];
 
 		$response = $this->client->request('GET', 'reports/rptDailyMovementOut', [
@@ -151,6 +156,7 @@ class Dailymovementout extends \CodeIgniter\Controller
 
 		$no = 1;
 		foreach ($result['data'] as $row) {
+			$debitur = get_debitur($row['receiver']);
 			$html .= '
 					<tr>
 						<td>' . $no . '</td>
@@ -163,7 +169,7 @@ class Dailymovementout extends \CodeIgniter\Controller
 						<td>' . $row['dest'] . '</td>
 						<td>' . $row['date_out'] . '</td>
 						<td>' . $row['cond'] . '</td>
-						<td>' . $row['receiver'] . '</td>
+						<td>' . $debitur['name'] . '</td>
 						<td>' . $row['do_no'] . ' / ' . $row['seal'] . '</td>
 						<td>' . $row['time'] . '</td>
 						<td>' . $row['trucker'] . '</td>
@@ -224,6 +230,7 @@ class Dailymovementout extends \CodeIgniter\Controller
 		$i = 1;
 		$num = 5;
 		foreach ($result['data'] as $row) {
+			$debitur = get_debitur($row['receiver']);
 			$exl->setActiveSheetIndex(0)
 				->setCellValue('A' . $col, $i)
 				->setCellValue('B' . $col, $row['c'])
@@ -235,7 +242,7 @@ class Dailymovementout extends \CodeIgniter\Controller
 				->setCellValue('H' . $col, $row['dest'])
 				->setCellValue('I' . $col, $row['date_in'])
 				->setCellValue('J' . $col, $row['cond'])
-				->setCellValue('K' . $col, $row['receiver'])
+				->setCellValue('K' . $col, $debitur['name'])
 				->setCellValue('L' . $col, $row['do_no'])
 				->setCellValue('M' . $col, $row['time'])
 				->setCellValue('N' . $col, $row['trucker'])

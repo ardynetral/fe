@@ -183,7 +183,13 @@
 								<span><i></i>Empty</span>
 							</label>								
 						</div>
-					</div>					
+					</div>
+					<div class="form-group" style="display:none;">
+						<label for="cpopr " class="col-sm-4 control-label text-right">Rebilling To</label>
+						<div class="col-sm-6">
+							<?=rebillingto_dropdown();?>
+						</div>
+					</div>										
 					<div class="form-group">
 						<label class="col-sm-4 control-label text-right">Billing Type</label>
 						<div class="col-sm-6">
@@ -212,6 +218,78 @@
 							</div>	
 							<div class="col-sm-4">
 								<input type="text" name="redoc" class="form-control" id="redoc" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Port Charge 20"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="rtportcharger20" class="form-control" id="rtportcharger20" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Total Port Charge 20"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="rtportchargertot20" class="form-control" id="rtportchargertot20" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Port Charge 40"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="rtportcharger40" class="form-control" id="rtportcharger40" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Total Port Charge 40"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="rtportchargertot40" class="form-control" id="rtportchargertot40" value="0" required>
+							</div>
+						</div>						
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Trucking 20"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="rttruck20" class="form-control" id="rttruck20" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Total Trucking 20"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="rttrucktot20" class="form-control" id="rttrucktot20" value="0" required>
+							</div>
+						</div>						
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Trucking 40"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="rttruck40" class="form-control" id="rttruck40" value="0" required>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-sm-4 control-label text-right">Total Trucking 40"</label>
+							<div class="col-sm-2">
+								<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+							</div>	
+							<div class="col-sm-4">
+								<input type="text" name="rttrucktot40" class="form-control" id="rttrucktot40" value="0" required>
 							</div>
 						</div>
 						<div class="form-group">
@@ -274,7 +352,7 @@
 								<input type="text" name="" class="form-control" id="" value="SUBTOT" readonly>
 							</div>
 							<div class="col-sm-4">
-								<input type="text" name="subtotbreak" class="form-control" id="subtotbreak" value="0" requirereadonly>
+								<input type="text" name="subtotbreak" class="form-control" id="subtotbreak" value="0" required readonly>
 							</div>
 						</div>				
 					</div>

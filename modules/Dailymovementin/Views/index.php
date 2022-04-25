@@ -38,7 +38,7 @@
 							<label for="cncode" class="col-sm-2 control-label text-right">Principal</label>
 							<div class="col-sm-2">
 								<?php if ($prcode == "0") :
-									echo principal_dropdown($selected = "");
+									echo principal_dropdown2($selected = "");
 								else :
 								?>
 									<input type="text" readonly name="prcode" class="form-control" id="prcode" value="<?= $prcode; ?>">

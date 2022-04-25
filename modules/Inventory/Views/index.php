@@ -37,12 +37,7 @@
 						<div class="form-group">
 							<label for="cncode" class="col-sm-2 control-label text-right">Principal</label>
 							<div class="col-sm-2">
-								<?php if ($prcode == "0") :
-									echo principal_dropdown($selected = "");
-								else :
-								?>
-									<input type="text" readonly name="prcode" class="form-control" id="prcode" value="<?= $prcode; ?>">
-								<?php endif; ?>
+								<?=principal_dropdown($selected = ""); ?>
 							</div>
 						</div>
 						<div class="form-group">
@@ -76,13 +71,13 @@
 						<div class="form-group">
 							<label for="days" class="col-sm-2 control-label text-right">Container Type</label>
 							<div class="col-sm-2">
-								<input type="text" name="days" class="form-control" id="city" value="<?= @$city ?>">
+								<input type="text" name="ctcode" class="form-control" id="ctcode">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-2 control-label text-right">Condition</label>
 							<div class="col-sm-3">
-								<select name="billType" id="billType" class="select-billtype">
+								<select name="condition" id="condition" class="select-billtype">
 									<option value="">- select -</option>
 									<option value="B">Available</option>
 									<option value="P">Damage</option>

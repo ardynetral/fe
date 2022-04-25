@@ -812,7 +812,8 @@ class RepoOut extends \CodeIgniter\Controller
 			],
 			'form_params' => [
 				'prcode' => $_POST['prcode'],
-				'rttype' => $_POST['retype']
+				'rttype' => $_POST['retype'],
+				'rtef' => $_POST['rtef']
 			]
 		]);
 

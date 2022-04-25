@@ -1,8 +1,4 @@
 
-<?php if($data_pra ==''): ?>
-	<p class="alert alert-warning"> Data not found.</p>
-<?php else : ?>
-
 <div class="row">
 	<div class="col-md-12">
 
@@ -10,58 +6,21 @@
 		<table id="ctTable" class="table table-hover table-bordered" style="width:100%;">
 			<thead>
 				<tr>
+					<th></th>
 					<th>No.</th>
-					<th>Pra In Ref.</th>
+					<th>Pra Out Ref.</th>
 					<th>Date</th>
 					<th>Vessel</th>
 					<th>Voyage</th>
 					<th>RO Number</th>
-					<th></th>
+					<th>Kwitansi</th>
 				</tr>
 			</thead>
 			
 			<tbody>
-				<?php $i=1; foreach($data_pra as $row): ?>
-					<tr>
-						<td><?=$i;?></td>
-						<td><?=$row['cpiorderno'];?></td>
-						<td><?=$row['cpipratgl']?></td>
-						<td><?=$row['cpives']?></td>
-						<td><?=$row['cpivoyid']?></td>
-						<td><?=$row['cpirefin']?></td>
-						<td>
-						<?php if($row['appv']==0): ?>
 
-							<a href="<?=site_url('praout/edit/'.$row['praid']);?>" id="editPraIn" class="btn btn-xs btn-warning">edit</a>
-
-							<?php if($group_id!=1): ?>
-							<a href="<?=site_url('praout/approve_order/'.$row['praid']);?>" id="" class="btn btn-xs btn-primary" data-praid="<?=$row['praid'];?>">Approval</a>
-							<?php endif; ?>
-								
-							<a href="#" id="" class="btn btn-xs btn-danger delete" data-kode="<?=$row['praid']?>">delete</a>
-								
-						<?php elseif($row['appv']==1): ?>
-
-							<a href="<?=site_url('praout/proforma/'.$row['praid']);?>" id="" class="btn btn-xs btn-primary" data-praid="<?=$row['praid'];?>">Proforma</a>
-							
-							<?php if((check_bukti_bayar($row['praid'])==true)&&($group_id!=1)):?>
-							<!-- <a href="<?=site_url('praout/approval2/'.$row['praid']);?>" id="" class="btn btn-xs btn-success approve" data-praid="<?=$row['praid'];?>">Approval 2</a> -->
-							<a href="<?=site_url('praout/approval2/'.$row['praid']);?>" id="" class="btn btn-xs btn-success approve" data-praid="<?=$row['praid'];?>">Approval 2</a>
-							<?php endif;?>
-
-						<?php elseif($row['appv']==2): ?>
-							<a href="<?=site_url('praout/view/'.$row['praid']);?>" id="" class="btn btn-xs btn-default" data-praid="<?=$row['praid'];?>">view</a>
-							<a href="<?=site_url('praout/final_order/'.$row['praid']);?>" class="btn btn-xs btn-info">Cetak kitir</a>
-
-						<?php endif; ?>
-					</td>
-					</tr>
-				<?php $i++;?>
-				<?php endforeach; ?>
 			</tbody>
 		</table>
 	</div>
 </div>
 
-
-<?php endif; ?>	

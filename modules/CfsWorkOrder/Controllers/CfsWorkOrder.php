@@ -45,8 +45,9 @@ class CfsWorkOrder extends \CodeIgniter\Controller
             $record[] = $v['woopr'];
             $record[] = date('d-m-Y', strtotime($v['wodate']));		
 
-			$btn_list .= '<a href="'.site_url('cfswo/edit/').$v['wono'].'" id="editWo" class="btn btn-xs btn-success btn-tbl edit">edit</a>&nbsp;';
-			$btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl print" data-wono="'.$v['wono'].'">print</a>';
+			$btn_list .= '<a href="#" id="editWo" class="btn btn-xs btn-success btn-tbl edit">edit</a>&nbsp;';
+			$btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl print" data-wono="'.$v['wono'].'">kwitansi</a>&nbsp;';
+			$btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl print" data-wono="'.$v['wono'].'">proforma</a>';
 			// $btn_list .= '<a href="#" id="deleteWo" class="btn btn-xs btn-danger btn-tbl delete">delete</a>';
 
             $record[] = '<div>'.$btn_list.'</div>';
@@ -89,26 +90,25 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 		$data = [];
 
 		if($this->request->isAjax()) {
-			$form_params = [
+			$form_params = [];
+			$reformat = [
 				"wono" => $this->generateWONumber(),
 				"wodate" => date('Y-m-d'),
-				"wocomp" => 0,
-				"woto" => $this->request->getPost('woto'),
-				"wocc" => $this->request->getPost('wocc'),
-				"wofrom" => $this->request->getPost('wofrom'),
-				"woopr" => $this->request->getPost('prcode'),
-				"wonotes" => $this->request->getPost('wonotes'),
-				"wocrton" => date('Y-m-d'), 
+				"wocrton" => date('Y-m-d'),
 				"wocrtby" => $uname, 
 				"womdfon" => date('Y-m-d'), 
 				"womdfby" => $uname
 			];
+			$form_params = array_replace($_POST, $reformat);
+			// echo var_dump($form_params);die();
 			$validate = $this->validate([
 	            'wono'		=> 'required',
-	            'prcode'	=> 'required'
+	            'wotype'	=> 'required',
+	            'prcode'	=> 'required',
 	        	],
 	            [
 	            'wono'		=> ['required' => 'WO NUMBER field required'],
+	            'wotype'	=> ['required' => 'WO TYPE field required'],
 	            'prcode'	=> ['required' => 'PRINCIPAL field required']
 		        ]
 	    	);	
@@ -119,7 +119,7 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 	    		echo json_encode($data);die();
 	    	}		
 
-			$response = $this->client->request('POST','otherworkorder/insertData',[
+			$response = $this->client->request('POST','otherwo/insertData',[
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
@@ -128,12 +128,16 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 			]);		
 
 			$result = json_decode($response->getBody()->getContents(), true);
-			
+
+
 			if(isset($result['status']) && $result['status']=="Failled") {
 	    		$data["status"] = "Failled";
 	    		$data["message"] = $result['message'];
 	    		echo json_encode($data);die();
 			}
+
+			// Insert RECEIPT
+			$this->insertReceipt($result['data']['wonoid']);
 
 			$data["status"] = "success";
     		$data["message"] = "Data Saved";
@@ -315,6 +319,99 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 			echo json_encode($data);	
 
 		}
+	}
+
+	// RECEIPT
+	public function insertReceipt($wonoid) 
+	{
+		$form_params = [
+		"wonoid" => $wonoid,
+		"woreceptdate" => date("Y-m-d"), 
+		"woreceptno" => "", 
+		"wocurr" => "IDR", 
+		"worate" => "1", 
+		"wodescbiaya1" => "0", 
+		"wobiaya1" => "0",
+		"wodescbiaya2" => "0", 
+		"wobiaya2" => "0", 
+		"wodescbiaya3" => "0", 
+		"wobiaya3" => "0", 
+		"wodescbiaya4" => "0", 
+		"wobiaya4" => "0", 
+		"wodescbiaya5" => "0", 
+		"wobiaya5" => "0",
+		"wodescbiaya6" => "0", 
+		"wobiaya6" => "0", 
+		"wodescbiaya7" => "0", 
+		"wobiaya7" => "0", 
+		"wobiaya_adm" => "0",
+		"wototal_pajak" => "0", 
+		"womaterai" => "0", 
+		"wototal_tagihan" => "0", 
+		"wototbiaya_lain" => "0", 
+		"wototpph23" => "0"
+		];
+
+		return $this->client->request('POST','worecept/insertData',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'form_params' => $form_params
+		]);		
+
+		//$result2 = json_decode($response2->getBody()->getContents(), true);		
+	}
+
+	public function update_receipt() 
+	{
+		// $form_params = []; woreceptid
+		$validate = $this->validate([
+            'woreceptid'		=> 'required',
+        	]
+    	);	
+
+    	if(!$validate) {
+    		$data["status"] = "Failled";
+    		$data["message"] = \Config\Services::validation()->listErrors();
+    		echo json_encode($data);die();
+    	}	
+		$response = $this->client->request('PUT','worecept/updateWO',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'form_params' => $_POST
+		]);		
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		// echo var_dump($result);die();
+		if(isset($result['status']) && $result['status']=="Failled") {
+    		$data["status"] = "Failled";
+    		$data["message"] = $result['message'];
+    		echo json_encode($data);die();
+		}
+
+		$data["status"] = "success";
+		$data["message"] = "Data Work Order";
+		$data['data'] = $result['data'];		
+		echo json_encode($data);			
+	}
+
+	public function get_data_receipt() {
+		$response = $this->client->request('GET','worecept/detailWoRecept',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'wonoid' => $_POST['wonoid'],
+			]
+		]);		
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		// echo var_dump($result);die();
+		echo json_encode($result['data'][0][0]);
 	}
 
 	public function generateWONumber() {

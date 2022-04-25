@@ -35,18 +35,20 @@ $(document).ready(function() {
 	});
 
 	// SAveHeader
-	$("#saveData").on("click", function(){
-		// e.preventDefault();
-		formData = $('#fWO').serializeArray();
+	$("form#fWO").on("submit", function(e){
+		e.preventDefault();
 		$('#saveData').prop('disabled','disabled');
 		$.ajax({
 			url: "<?php echo site_url('cfswo/add'); ?>",
 			type: "POST",
-			data: formData,
+			data: new FormData(this),
 			dataType: 'json',
+            processData: false,
+            contentType: false,
+            cache: false,			
 			beforeSend: function(){
 				$('#saveData').prop('disabled',true);
-				$('#cancel').prop('disabled',true);
+				// $('#cancel').prop('disabled',true);
 			},
 			success: function(res) {
 				if(res.status == "success") {
@@ -56,11 +58,13 @@ $(document).ready(function() {
 					  html: '<div class="text-success">'+res.message+'</div>'
 					});
 					$('#saveData').prop('disabled',true);
-					$('#prcode').prop('disabled',true);
-					$('#wotype').prop('disabled',true);
-					$('#cancel').prop('disabled',true);
-					$("#checkAll").prop('disabled',false);
-					$("#wono").val(res.data.wono);
+					$("#fWO #wonoid").val(res.data.wonoid);
+					// $("#fReceipt #wonoid").val(res.data.wonoid);
+					// $('#prcode').prop('disabled',true);
+					// $('#wotype').prop('disabled',true);
+					// $('#cancel').prop('disabled',true);
+					// $("#checkAll").prop('disabled',false);
+					// $("#wono").val(res.data.wono);
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -73,35 +77,80 @@ $(document).ready(function() {
 		});		
 	});
 
-
-	$("#checkAll").on("click", function(e){
-		e.preventDefault();
-		var CRNOS =  $('#tblDetail tbody tr td:nth-child(3)').map(function() {
-            return $(this).text();
-        }).get().join(',');	
-		console.log(CRNOS);
+	// TAB
+	$("#tab_kwitansi").on("click", function(e){
 		$.ajax({
-			url: "<?php echo site_url('cfswo/save_all_detail'); ?>",
+			url: "<?php echo site_url('cfswo/get_data_receipt'); ?>",
 			type: "POST",
-			data: { "CRNOS":CRNOS,"WONO":$("#wono").val() },
+			data: {"wonoid":$("#wonoid").val()},
 			dataType: 'json',
+			success: function(json) {
+				$("#fReceipt #woreceptid").val(json.wodreceptid);
+				$("#fReceipt #woreceptdate").val(json.woreceptdate);
+				$("#fReceipt #wodescbiaya1").val(json.wodescbiaya1);
+				$("#fReceipt #wobiaya1").val(json.wobiaya1);
+				$("#fReceipt #wodescbiaya2").val(json.wodescbiaya2);
+				$("#fReceipt #wobiaya2").val(json.wobiaya2);				
+				$("#fReceipt #wodescbiaya3").val(json.wodescbiaya3);
+				$("#fReceipt #wobiaya3").val(json.wobiaya3);
+				$("#fReceipt #wodescbiaya4").val(json.wodescbiaya4);
+				$("#fReceipt #wobiaya4").val(json.wobiaya4);	
+				$("#fReceipt #wodescbiaya5").val(json.wodescbiaya5);
+				$("#fReceipt #wobiaya5").val(json.wobiaya5);
+				$("#fReceipt #wodescbiaya6").val(json.wodescbiaya6);
+				$("#fReceipt #wobiaya6").val(json.wobiaya6);
+				$("#fReceipt #wodescbiaya7").val(json.wodescbiaya7);
+				$("#fReceipt #wobiaya7").val(json.wobiaya7);
+				$("#fReceipt #wototal_pajak").val(json.wototal_pajak);
+				$("#fReceipt #wobiaya_adm").val(json.wobiaya_adm);
+				$("#fReceipt #womaterai").val(json.womaterai);
+				$("#fReceipt #wototbiaya_lain").val(json.wototbiaya_lain);
+				$("#fReceipt #wototpph23").val(json.wototpph23);
+				$("#fReceipt #wototal_tagihan").val(json.wototal_tagihan);
+				console.log(json);
+			}			
+		});
+	});
+	$("form#fReceipt").on("submit", function(e){
+		e.preventDefault();
+		// $('#saveData').prop('disabled','disabled');
+		$.ajax({
+			url: "<?php echo site_url('cfswo/update_receipt'); ?>",
+			type: "POST",
+			data: new FormData(this),
+			dataType: 'json',
+            processData: false,
+            contentType: false,
+            cache: false,			
+			beforeSend: function(){
+				// $('#saveData').prop('disabled',true);
+				// $('#cancel').prop('disabled',true);
+			},
 			success: function(res) {
-				if(res.status=="success") {
+				if(res.status == "success") {
 					Swal.fire({
 					  icon: 'success',
 					  title: "Success",
 					  html: '<div class="text-success">'+res.message+'</div>'
 					});
-					$('#tblDetail tbody').find('input:checkbox').prop("disabled", true);
+					// $('#saveData').prop('disabled',true);
+					// $("#fWO #wonoid").val(res.data.wonoid);
+					// $("#fReceipt #wonoid").val(res.data.wonoid);
+					// $('#prcode').prop('disabled',true);
+					// $('#wotype').prop('disabled',true);
+					// $('#cancel').prop('disabled',true);
+					// $("#checkAll").prop('disabled',false);
+					// $("#wono").val(res.data.wono);
 				} else {
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
 					  html: '<div class="text-danger">'+res.message+'</div>'
-					});					
+					});						
+					// $('#saveData').prop('disabled',false);
 				}
 			}
-		});
+		});		
 	});
 
 	$("#tblDetail tbody").on("change",".checked_cr", function(e){
@@ -168,6 +217,24 @@ $(document).ready(function() {
 		var wono = $(this).data('wono');
 		window.open("<?php echo site_url('cfswo/print/'); ?>" + wono,'_blank', 'height=900,width=600,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 	});
+
+	// CHECKBOX
+	if($("#wopraorderin").val()=="1") {	$("#wopraorderin").prop('checked',true); }
+	if($("#wopraorderout").val()=="1") { $("#wopraorderout").prop('checked',true); }
+	if($("#wostock").val()=="1") { $("#wostock").prop('checked',true); }
+
+	$("#wopraorderin").on("change", function(){
+		var val = this.checked ? '1' : '0';
+		return $(this).val(val);
+	});
+	$("#wopraorderout").on("change", function(){
+		var val = this.checked ? '1' : '0';
+		return $(this).val(val);
+	});
+	$("#wostock").on("change", function(){
+		var val = this.checked ? '1' : '0';
+		return $(this).val(val);
+	});	
 
 	// DATATABLE
 	runDataTables();

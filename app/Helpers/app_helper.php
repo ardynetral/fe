@@ -343,6 +343,29 @@ function principal_dropdown($selected = "")
 	die();
 }
 
+function principal_dropdown2($selected = "")
+{
+	$api = api_connect();
+	$response = $api->request('GET', 'principals/list', [
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		]
+	]);
+
+	$result = json_decode($response->getBody()->getContents(), true);
+	$option = "";
+	$option .= '<select name="prcode" id="prcode" class="select-pr">';
+	$option .= '<option value="">-select-</option>';
+	$option .= '<option value="All">All</option>';
+	foreach ($result['data']['datas'] as $row) {
+		$option .= "<option value='" . $row['prcode'] . "'" . ((isset($selected) && $selected == $row['prcode']) ? ' selected' : '') . ">" . strtoupper($row['prname']) . "</option>";
+	}
+	$option .= "</select>";
+	return $option;
+	die();
+}
+
 function debitur_dropdown($selected = "")
 {
 	$api = api_connect();
@@ -751,6 +774,53 @@ function get_company_profile()
 	return $company;
 }
 
+function get_debitur($cucode) {
+	$data = [];
+	$debitur = [];
+	$api = api_connect();
+	$response = $api->request('GET','debiturs/getDetailData',[
+		'headers' => [
+			'Accept' => 'application/json',
+			'Authorization' => session()->get('login_token')
+		],
+		'form_params' => [
+			'cucode' => $cucode,
+		]
+	]);	
+	$result = json_decode($response->getBody()->getContents(), true);	
+	if(isset($result['data'])&&$result['data']!=null) {
+		$data = $result['data'];
+		$debitur = [
+			'code' => $data['cucode'],
+			'name' => $data['cuname'],
+			'address' => $data['cuaddr'],
+			'phone' => $data['cuphone'],
+			'contact' => $data['cucontact'],
+			'email' => $data['cuemail'],
+			'skada' => $data['cuskada'],
+			'npwp' => $data['cunpwp'],
+			'country_code' => $data['cncode'],
+			'zip_code' => $data['cuzip'],
+		];
+	} else {
+		$data = [];
+		$debitur = [
+			'code' => "",
+			'name' => $cucode,
+			'address' => "",
+			'phone' => "",
+			'contact' => "",
+			'email' => "",
+			'skada' => "",
+			'npwp' => "",
+			'country_code' => "",
+			'zip_code' => "",
+		];		
+	}
+
+	return $debitur;
+}
+
 // FUNGSI TERBILANG
 function hundreds($number)
 {
@@ -898,4 +968,6 @@ function toEnglish($number)
 
 	return ucwords($string);
 }
+
+
 

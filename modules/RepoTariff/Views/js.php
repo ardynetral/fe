@@ -206,6 +206,10 @@ $(document).ready(function() {
 					$("#editTariffDetail #rthaulv20").val(json.data.rthaulv20);
 					$("#editTariffDetail #rthaulv40").val(json.data.rthaulv40);
 					$("#editTariffDetail #rthaulv45").val(json.data.rthaulv45);
+					$("#editTariffDetail #rtportcharger20").val(json.data.rtportcharger20);
+					$("#editTariffDetail #rtportcharger40").val(json.data.rtportcharger40);
+					$("#editTariffDetail #rttruck20").val(json.data.rttruck20);
+					$("#editTariffDetail #rttruck40").val(json.data.rttruck40);
 					getRepoType(json.data.rttype);
 
 					$("#rtid").attr("readonly","readonly");

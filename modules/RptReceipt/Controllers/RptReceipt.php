@@ -67,6 +67,7 @@ class RptReceipt extends \CodeIgniter\Controller
 		$result =   $this->getAllData($date_from, $date_to);
 		// dd($result);die();
 		$mpdf = new \Mpdf\Mpdf(['setAutoTopMargin' => 'stretch']);
+
 		$html = '';
 		$html .= '
 		<html>
@@ -117,6 +118,10 @@ class RptReceipt extends \CodeIgniter\Controller
 		$no = 1;
 		$grandTotal = 0;
 		foreach ($result['data'] as $row) {
+			$debitur = get_debitur($row['cpideliver']);
+			// set ppn
+			if($row['cpipratgl'] < "2022-04-01") { $ppn = 10; } else { $ppn = 11; }	
+
 			$orderdate = ($row['cpipratgl']!=NULL) ? date('d/m/Y',strtotime($row['cpipratgl'])):"";  
 			$receptdate = ($row['receptdate']!=NULL) ? date('d/m/Y',strtotime($row['receptdate'])):"";  
 			$invoice_number = 'KW' . date("Ymd", strtotime($row['cpipratgl'])) . str_repeat("0", 8 - strlen($row['praid'])) . $row['praid'];
@@ -125,7 +130,7 @@ class RptReceipt extends \CodeIgniter\Controller
 			$html .= '
 					<tr>
 						<td rowspan="4">' . $no . '</td>
-						<td rowspan="4">' . $row['cpideliver'] . '</td>
+						<td rowspan="4">' . $debitur['name'] . '</td>
 						<td rowspan="4">' . $receptdate . '</td>
 						<td rowspan="4">' . $invoice_number . '</td>
 						<td rowspan="4"></td>
@@ -134,19 +139,19 @@ class RptReceipt extends \CodeIgniter\Controller
 						<td>LIFT OFF - 20FT</td>
 						<td>IDR</td>
 						<td>' . number_format($row['tot_lolo'],2) . '</td>
-						<td></td>
+						<td rowspan="3"></td>
 					</tr>
 					<tr>
 						<td>ADMINISTRATION</td>
 						<td>IDR</td>
 						<td>' . number_format($row['biaya_adm'],2) . '</td>
-						<td></td>
+
 					</tr>
 					<tr>
-						<td>PPN 10%</td>
+						<td>PPN '.$ppn.'%</td>
 						<td>IDR</td>
 						<td>' . number_format($row['total_pajak'],2) . '</td>
-						<td></td>
+
 					</tr>
 					<tr>
 						<td colspan="7" class="t-right">SUBTOTAL</td><td colspan="2">' .number_format($subtotal,2). '</td>
@@ -215,6 +220,9 @@ class RptReceipt extends \CodeIgniter\Controller
 		$subTotal = 0;
 		$grandTotal = 0;
 		foreach ($result['data'] as $row) {
+			$debitur = get_debitur($row['cpideliver']);
+			// set ppn
+			if($row['cpipratgl'] < "2022-04-01") { $ppn = 10; } else { $ppn = 11; }
 			$orderdate = ($row['cpipratgl']!=NULL) ? date('d/m/Y',strtotime($row['cpipratgl'])):"";  
 			$receptdate = ($row['receptdate']!=NULL) ? date('d/m/Y',strtotime($row['receptdate'])):"";  
 			// $invoice_number = 'KW' . date("Ymd", strtotime($row['cpipratgl'])) . str_repeat("0", 8 - strlen($row['praid'])) . $row['praid'];
@@ -233,7 +241,7 @@ class RptReceipt extends \CodeIgniter\Controller
 				->setCellValue('A' . $row_ppn, "")
 				->setCellValue('A' . $row_subtot, "SUB TOTAL")
 
-				->setCellValue('B' . $row_lolo, $row['cpideliver'])
+				->setCellValue('B' . $row_lolo, $debitur['name'])
 				->setCellValue('B' . $row_adm, "")
 				->setCellValue('B' . $row_ppn, "")
 
@@ -251,7 +259,7 @@ class RptReceipt extends \CodeIgniter\Controller
 
 				->setCellValue('F' . $row_lolo, "LIFT OFF - 20FT")
 				->setCellValue('F' . $row_adm, "ADMINISTRATION")
-				->setCellValue('F' . $row_ppn, "PPN 10%")
+				->setCellValue('F' . $row_ppn, "PPN ".$ppn."%")
 
 				->setCellValue('G' . $row_lolo, "IDR")			
 				->setCellValue('G' . $row_adm, "IDR")			

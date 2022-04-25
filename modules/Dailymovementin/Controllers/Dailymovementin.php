@@ -38,12 +38,17 @@ class Dailymovementin extends \CodeIgniter\Controller
 
 	public function getAllData($prcode, $date_from, $date_to, $hour_from, $hour_to)
 	{
+		$prcd = ($prcode == 'All')?"":$prcode;
+		$dFrom = date("Y-m-d", strtotime($date_from));		
+		$dTo = date("Y-m-d", strtotime($date_to));		
+		$hFrom = ($hour_from == "")?"00:00":$hour_to;
+		$hTo = ($hour_to == "")?"23:59":$hour_from;
 		$query_params = [
-			'prcode' => $prcode,
-			'date_from' => $date_from,
-			'date_to'  => $date_to,
-			'hour_from' => $hour_from,
-			'hour_to'  => $hour_to
+			'prcode' => $prcd,
+			'date_from' => $dFrom,
+			'date_to'  => $dTo,
+			'hour_from' => $hFrom,
+			'hour_to'  => $hTo
 		];
 
 		$response = $this->client->request('GET', 'reports/rptDailyMovementIn', [
@@ -145,6 +150,7 @@ class Dailymovementin extends \CodeIgniter\Controller
 
 		$no = 1;
 		foreach ($result['data'] as $row) {
+			$debitur = get_debitur($row['cpideliver']);
 			$html .= '
 					<tr>
 						<td>' . $no . '</td>
@@ -153,7 +159,7 @@ class Dailymovementin extends \CodeIgniter\Controller
 						<td>' . $row['cclength'] . '/' . $row['ccheight'] . '</td>
 						<td>' . $row['vesid'] . '/' . $row['voyid'] . '</td>
 						<td>' . $row['svcond'] . '</td>
-						<td>' . $row['cpideliver'] . '</td>
+						<td>' . $debitur['name'] . '</td>
 						<td>' . $row['cpitgl'] . '</td>
 						<td>' . $row['cpinopol'] . '</td>
 						<td>' . $row['cpiremark'] . '</td>
@@ -208,6 +214,7 @@ class Dailymovementin extends \CodeIgniter\Controller
 		$i = 1;
 		$num = 5;
 		foreach ($result['data'] as $row) {
+			$debitur = get_debitur($row['cpideliver']);
 			$exl->setActiveSheetIndex(0)
 				->setCellValue('A' . $col, $i)
 				->setCellValue('B' . $col, $row['crno'])
@@ -215,7 +222,7 @@ class Dailymovementin extends \CodeIgniter\Controller
 				->setCellValue('D' . $col, $row['cclength'] . '/' . $row['ccheight'])
 				->setCellValue('E' . $col, $row['vesid'] . '/' . $row['voyid'])
 				->setCellValue('F' . $col, $row['svcond'])
-				->setCellValue('G' . $col, $row['cpideliver'])
+				->setCellValue('G' . $col, $debitur['name'])
 				->setCellValue('H' . $col, $row['cpitgl'])
 				->setCellValue('I' . $col, $row['cpinopol'])
 				->setCellValue('J' . $col, $row['cpiremark']);

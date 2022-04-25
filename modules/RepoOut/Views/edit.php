@@ -216,7 +216,7 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>		
 											<div class="col-sm-4">
-												<input type="text" name="relift" class="form-control" id="relift" value="0" required readonly>
+												<input type="text" name="relift" class="form-control" id="relift" value="<?=$data['relift']?>" readonly>
 											</div>
 										</div>
 										<div class="form-group">
@@ -225,9 +225,81 @@
 												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
 											</div>	
 											<div class="col-sm-4">
-												<input type="text" name="redoc" class="form-control" id="redoc" value="0" required readonly>
+												<input type="text" name="redoc" class="form-control" id="redoc" value="<?=$data['redoc']?>" readonly>
 											</div>
 										</div>
+										<div class="form-group">
+											<label class="col-sm-4 control-label text-right">Port Charge 20"</label>
+											<div class="col-sm-2">
+												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+											</div>	
+											<div class="col-sm-4">
+												<input type="text" name="rtportcharger20" class="form-control" id="rtportcharger20" value="<?=$data['reportcharger20']?>" readonly>
+											</div>
+										</div>										
+										<div class="form-group">
+											<label class="col-sm-4 control-label text-right">Total Port Charge 20"</label>
+											<div class="col-sm-2">
+												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+											</div>	
+											<div class="col-sm-4">
+												<input type="text" name="rtportchargertot20" class="form-control" id="rtportchargertot20" value="<?=$data['reportchargertot20']?>" readonly>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-4 control-label text-right">Port Charge 40"</label>
+											<div class="col-sm-2">
+												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+											</div>	
+											<div class="col-sm-4">
+												<input type="text" name="rtportcharger40" class="form-control" id="rtportcharger40" value="<?=$data['reportcharger40']?>" readonly>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-4 control-label text-right">Total Port Charge 40"</label>
+											<div class="col-sm-2">
+												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+											</div>	
+											<div class="col-sm-4">
+												<input type="text" name="rtportchargertot40" class="form-control" id="rtportchargertot40" value="<?=$data['reportchargertot40']?>" readonly>
+											</div>
+										</div>						
+										<div class="form-group">
+											<label class="col-sm-4 control-label text-right">Trucking 20"</label>
+											<div class="col-sm-2">
+												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+											</div>	
+											<div class="col-sm-4">
+												<input type="text" name="rttruck20" class="form-control" id="rttruck20" value="<?=$data['retruck20']?>" readonly>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-4 control-label text-right">Total Trucking 20"</label>
+											<div class="col-sm-2">
+												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+											</div>	
+											<div class="col-sm-4">
+												<input type="text" name="rttrucktot20" class="form-control" id="rttrucktot20" value="<?=$data['retrucktot20']?>" readonly>
+											</div>
+										</div>						
+										<div class="form-group">
+											<label class="col-sm-4 control-label text-right">Trucking 40"</label>
+											<div class="col-sm-2">
+												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+											</div>	
+											<div class="col-sm-4">
+												<input type="text" name="rttruck40" class="form-control" id="rttruck40" value="<?=$data['retruck40']?>" readonly>
+											</div>
+										</div>
+										<div class="form-group">
+											<label class="col-sm-4 control-label text-right">Total Trucking 40"</label>
+											<div class="col-sm-2">
+												<input type="text" name="" class="form-control" id="" value="IDR" readonly>
+											</div>	
+											<div class="col-sm-4">
+												<input type="text" name="rttrucktot40" class="form-control" id="rttrucktot40" value="<?=$data['retrucktot40']?>" readonly>
+											</div>
+										</div>										
 										<div class="form-group">
 											<label class="col-sm-4 control-label text-right">Haulage 20"</label>
 											<div class="col-sm-2">

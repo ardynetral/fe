@@ -5,6 +5,7 @@ $(document).ready(function() {
 
 	// SELECT2
 	$('.select-pr').select2();
+	$('.select-rebillingto').select2();
 	$('.select-port').select2();
 	$('.select-depo').select2();
 	$('.select-city').select2();
@@ -72,7 +73,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var fomData = "reorderno=" + $("#reorderno").val();
 		fomData += "&repovendor=" + $("#repovendor").val();
-		formData += "&repofe=" + $("input:radio[name=repofe]:checked").val();
+		fomData += "&repofe=" + $("input:radio[name=repofe]:checked").val();
 		if($("#rebill").val()=="Breakdown") {
 			// BreakDown
 			fomData += "&relift=" + parseInt($("#relift").val());
@@ -86,6 +87,15 @@ $(document).ready(function() {
 			fomData += "&subtotbreak=" + parseInt($("#subtotbreak").val());
 			fomData += "&reother1=" + parseInt($("#reother1").val());
 			fomData += "&totbreak=" + parseInt($("#totbreak").val());
+			fomData += "&rtportcharger20=" + parseInt($("#rtportcharger20").val());
+			fomData += "&reportchargertot20=" + parseInt($("#rtportchargertot20").val());
+			fomData += "&rtportcharger40=" + parseInt($("#rtportcharger40").val());
+			fomData += "&reportchargertot40=" + parseInt($("#rtportchargertot40").val());
+			fomData += "&rttruck20=" + parseInt($("#rttruck20").val());
+			fomData += "&retrucktot20=" + parseInt($("#rttrucktot20").val());
+			fomData += "&rttruck40=" + parseInt($("#rttruck40").val());
+			fomData += "&retrucktot40=" + parseInt($("#rttrucktot40").val());
+
 			// Package
 			fomData += "&recpack20=0";
 			fomData += "&recpacktot20=0";
@@ -115,6 +125,14 @@ $(document).ready(function() {
 			fomData += "&subtotbreak=0";
 			fomData += "&reother1=0";
 			fomData += "&totbreak=0";
+			fomData += "&rtportcharger20=0";
+			fomData += "&rtportchargertot20=0";
+			fomData += "&rtportcharger40=0";
+			fomData += "&rtportchargertot40=0";
+			fomData += "&rttruck20=0";
+			fomData += "&rttrucktot20=0";
+			fomData += "&rttruck40=0";
+			fomData += "&rttrucktot40=0";			
 			// Package
 			fomData += "&recpack20=" + parseInt($("#recpack20").val());
 			fomData += "&recpacktot20=" + parseInt($("#recpacktot20").val());
@@ -292,6 +310,7 @@ $(document).ready(function() {
 					});		
 				} else {
 					$("#cpcust").val(json.data.cucode);
+					$("#rebillingto").select2().select2('val',cpopr);
 				}
 			}
 		});
@@ -348,22 +367,22 @@ $(document).ready(function() {
 
 	$("#reother1").on("keyup", function(){
 		var subtotbreak = parseInt($("#subtotbreak").val());
-		var totbreak = subtotbreak + parseInt($(this).val()) + parseInt($("#reother2").val());
+		var totbreak = subtotbreak + parseInt($(this).val());
 		$("#totbreak").val(totbreak);
 
 		var subtotpack = parseInt($("#subtotpack").val());
-		var totpack = subtotpack + parseInt($(this).val()) + parseInt($("#reother2").val());
-		$("#totpack").val(totpack);
+		var totpack = subtotpack + parseInt($(this).val());
+		$("#totpack").val(totpack);	
 	});
 
 	$("#reother2").on("keyup", function(){
 		var subtotbreak = parseInt($("#subtotbreak").val());
-		var totbreak = subtotbreak + parseInt($(this).val()) + parseInt($("#reother1").val());
+		var totbreak = subtotbreak + parseInt($(this).val());
 		$("#totbreak").val(totbreak);
 
 		var subtotpack = parseInt($("#subtotpack").val());
-		var totpack = subtotpack + parseInt($(this).val()) + parseInt($("#reother1").val());
-		$("#totpack").val(totpack);
+		var totpack = subtotpack + parseInt($(this).val());
+		$("#totpack").val(totpack);	
 	});	
 	// save detailContainer
 	$("#saveDetail").on("click", function(e){
@@ -415,7 +434,8 @@ $(document).ready(function() {
 					$("#hc45").val(json.QTY.hc45);
 
 					loadTableContainer($("#repoid").val());
-					getTariff($("#cpopr").val(),$("#retype").val());
+					getTariff($("#cpopr").val(),$("#retype").val(),$('input:radio[name=repofe]:checked').val());
+					totalCharge();					
 
 				} else {
 					Swal.fire({
@@ -479,7 +499,8 @@ $(document).ready(function() {
 					$("#hc45").val(json.QTY.hc45);
 
 					loadTableContainer($("#repoid").val());
-					getTariff($("#cpopr").val(),$("#retype").val());
+					getTariff($("#cpopr").val(),$("#retype").val(),$('input:radio[name=rtef]:checked').val());
+					totalCharge();
 
 				} else {
 					Swal.fire({
@@ -598,7 +619,7 @@ $(document).ready(function() {
 					$("#hc40").val(json.QTY.hc40); 
 					$("#hc45").val(json.QTY.hc45); 
 
-					getTariff($("#cpopr").val(),$("#retype").val());
+					getTariff($("#cpopr").val(),$("#retype").val(),$('input:radio[name=rtef]:checked').val());
 					loadTableContainer($("#repoid").val());
 
 				} else {
@@ -632,6 +653,7 @@ $(document).ready(function() {
 	$("#retype").on("change", function(){
 		let val = $(this).val();
 		let prcode = $("#cpopr").val();
+		let rtef = $('input:radio[name=repofe]:checked').val();
 		// DEPO TO DEPO OUT
 		if (val == '11' || val == '11') {
 			$('#fromDepoBlok').removeClass('hideBlock');
@@ -744,14 +766,24 @@ $(document).ready(function() {
 			$("#toCityBlok").children().attr('disabled', true);
 		}
 
-		getTariff(prcode,val);
+		getTariff(prcode,val,rtef);
+		totalCharge();
 
+	});
+
+	$("input:radio[name=repofe]").on("change", function(){
+		let prcode = $("#cpopr").val();
+		let retype = $("#retype").val();
+		let rtef = $('input:radio[name=repofe]:checked').val();
+		getTariff(prcode,retype,rtef);
+		totalCharge();
 	});
 
 	$("#rebill").on("change", function(){
 		var billType = $(this).val();
 		let retype = $("#retype").val();
 		let prcode = $("#cpopr").val();		
+		let rtef = $('input:radio[name=repofe]:checked').val();		
 		if (billType=='Breakdown') {
 			console.log(billType);
 			// showBreakDown();
@@ -761,7 +793,8 @@ $(document).ready(function() {
 			$("#blockReother2").hide();			
 			$("#Package").hide();			
 			$("#totpack").hide();	
-			getTariff(prcode,retype);		
+			getTariff(prcode,retype,rtef);
+			totalCharge();		
 		} else if (billType=='Package'){
 			$("#Package").show();
 			$("#blockReother2").show();			
@@ -769,7 +802,8 @@ $(document).ready(function() {
 			$("#breakDown").hide();			
 			$("#blockReother1").hide();			
 			$("#totbreak").hide();	
-			getTariff(prcode,retype);			
+			getTariff(prcode,retype,rtef);	
+			totalCharge();		
 		} else {
 			$("#breakDown").hide();			
 			$("#Package").hide();	
@@ -823,11 +857,11 @@ function loadTableContainer(repoid) {
 	});
 }
 
-function getTariff(prcode,retype) {
+function getTariff(prcode,retype,rtef) {
 	$.ajax({
 		url:"<?=site_url('repoin/get_repo_tariff_detail');?>",
 		type:"POST",
-		data: {'prcode':prcode,'retype':retype},
+		data: {'prcode':prcode,'retype':retype,'rtef':rtef},
 		dataType:"JSON",
 		success: function(json){
 			if(json.status=="Failled") {
@@ -837,6 +871,14 @@ function getTariff(prcode,retype) {
 				$("#re20").val("0");
 				$("#re40").val("0");
 				$("#re45").val("0");
+				$("#rtportcharger20").val("0");
+				$("#rtportcharger40").val("0");
+				$("#rttruck20").val("0");
+				$("#rttruck40").val("0");
+				$("#rtportchargertot20").val("0");
+				$("#rtportchargertot40").val("0");
+				$("#rttrucktot20").val("0");
+				$("#rttrucktot40").val("0");								
 				// package
 				$("#recpack20").val("0");
 				$("#recpack40").val("0");
@@ -858,16 +900,32 @@ function getTariff(prcode,retype) {
 				$("#re20").val(json.data.rthaulv20);
 				$("#re40").val(json.data.rthaulv40);
 				$("#re45").val(json.data.rthaulv45);
+				$("#rtportcharger20").val(json.data.rtportcharger20);
+				$("#rtportcharger40").val(json.data.rtportcharger40);
+				$("#rttruck20").val(json.data.rttruck20);
+				$("#rttruck40").val(json.data.rttruck40);
+
+
 				var retot20 = parseInt($("#re20").val()) * parseInt(qty20); 
-				var retot40 = parseInt($("#re20").val()) * parseInt(qty40); 
-				var retot45 = parseInt($("#re20").val()) * parseInt(qty45); 
-				var subtotbreak = parseInt($("#relift").val()) + parseInt($("#redoc").val()) + parseInt(retot20) + parseInt(retot40) + parseInt(retot45);
+				var retot40 = parseInt($("#re40").val()) * parseInt(qty40); 
+				var retot45 = parseInt($("#re45").val()) * parseInt(qty45); 
+				var rtportchargertot20 = parseInt($("#rtportcharger20").val()) * parseInt(qty20); 
+				var rtportchargertot40 = parseInt($("#rtportcharger40").val()) * parseInt(qty40); 
+				var rttrucktot20 = parseInt($("#rttruck20").val()) * parseInt(qty20); 
+				var rttrucktot40 = parseInt($("#rttruck40").val()) * parseInt(qty40); 				
+
+				var subtotbreak = parseInt($("#relift").val()) + parseInt($("#redoc").val()) + parseInt(retot20) + parseInt(retot40) + parseInt(retot45) + parseInt(rtportchargertot20) + parseInt(rtportchargertot40) + parseInt(rttrucktot20) + parseInt(rttrucktot40);
 				var totbreak = parseInt(subtotbreak) + parseInt($("#reother1").val());
-				// console.log(retot20);
+
 				$("#retot20").val(retot20);
 				$("#retot40").val(retot40);
 				$("#retot45").val(retot45);					
+				$("#rtportchargertot20").val(rtportchargertot20);					
+				$("#rtportchargertot40").val(rtportchargertot40);					
+				$("#rttrucktot20").val(rttrucktot20);					
+				$("#rttrucktot40").val(rttrucktot40);					
 				$("#subtotbreak").val(subtotbreak);
+
 				// package
 				$("#recpack20").val(json.data.rtpackv20);
 				$("#recpack40").val(json.data.rtpackv40);
@@ -1054,12 +1112,14 @@ function showPackage() {
 	);
 }
 
-function totalBreak() {
-	
-}
-function totalPack() {
-	var totpack = subtotpack+reother1+reother2;
-	$("#totpack").val(totpack);
+function totalCharge() {
+	var subtotbreak = parseInt($("#subtotbreak").val());
+	var totbreak = subtotbreak + parseInt($("#reother1").val());
+	$("#totbreak").val(totbreak);
+
+	var subtotpack = parseInt($("#subtotpack").val());
+	var totpack = subtotpack + parseInt($("#reother2").val());
+	$("#totpack").val(totpack);	
 }
 
 function runDataTables() {		

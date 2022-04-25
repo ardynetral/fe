@@ -35,11 +35,31 @@ class PraOut extends \CodeIgniter\Controller
 		$group_id = $token['groupId'];
 		$prcode = $token['prcode'];
 
-		$data = [];
-		$offset=0;
-		$limit=1000;
-		// order pra
-		$response1 = $this->client->request('GET','orderPras/getAllData',[
+		$data['prcode'] = $prcode;
+		$data['cucode'] = $prcode;
+		$data['group_id'] = $group_id;
+		return view('Modules\PraOut\Views\index',$data);
+	}
+
+	public function list_data()
+	{
+		$token = get_token_item();
+		$user_id = $token['id'];
+		if($token['groupId']=='1') {
+			$group_id = $token['groupId'];
+		} else {
+			$group_id = "";
+		}
+		$prcode = $token['prcode'];
+
+		$search = ($this->request->getPost('search[value]') != "")?$this->request->getPost('search[value]'):"";
+        $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
+        $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
+        	
+		$form_params = [
+
+		];		
+		$response = $this->client->request('GET','orderPras/getAllData',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
@@ -47,35 +67,69 @@ class PraOut extends \CodeIgniter\Controller
 			'query' => [
 				'offset' => $offset,
 				'limit'	=> $limit,
-				'pracode' => 'PO'
+				'search'	=> $search,
+				'pracode' => 'PO',
+				'userId'	=> $user_id,
+				'groupId' => $group_id
 			]
 		]);
-		$result_pra = json_decode($response1->getBody()->getContents(),true);	
-		if((isset($result_pra['status'])&&($result_pra['status']=="Failled")) || (isset($result_pra['data']['datas'])&&$result_pra['data']['datas']==null)) {
-			$data['data_pra'] = "";
-		} else {
-			// Jika EMKL (User_group==1)
-			if($group_id == 1) 
-			{
-				$datas = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
-				$data_pra = array();
-				foreach($datas as $dt) {
-					if($user_id==$dt['crtby']) {
-						$data_pra[] = $dt;
-					}
-				}
-				$data['data_pra'] = $data_pra;
-			} 
-			else 
-			{
-				$data['data_pra'] = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
-			}
-		}
+		$result = json_decode($response->getBody()->getContents(),true);
+        $output = array(
+            "draw" => $this->request->getPost('draw'),
+            "recordsTotal" => @$result['data']['count'],
+            "recordsFiltered" => @$result['data']['count'],
+            "data" => array()
+        );
+		$no = ($offset !=0)?$offset+1 :1;
 
-		$data['prcode'] = $prcode;
-		$data['cucode'] = $prcode;
-		$data['group_id'] = $group_id;
-		return view('Modules\PraOut\Views\index',$data);
+		$data_pra = $result['data']['datas'];
+
+		foreach ($data_pra as $k=>$v) {
+			$btn_list="";
+            $record = array(); 
+			if($v['appv']==0):
+
+				$btn_list .='<a href="'.site_url('praout/edit/'.$v['praid']).'" id="editPraIn" class="btn btn-xs btn-warning">edit</a>&nbsp;';
+
+				if($group_id!=1):
+				$btn_list .='<a href="'.site_url('praout/approve_order/'.$v['praid']).'" id="" class="btn btn-xs btn-primary" data-praid="'.$v['praid'].'">Approval</a>&nbsp;';
+				endif;
+					
+				$btn_list .='<a href="#" id="" class="btn btn-xs btn-danger delete" data-kode="'.$v['praid'].'">delete</a>';
+					
+			elseif($v['appv']==1):
+
+				$btn_list .='<a href="'.site_url('praout/proforma/'.$v['praid']).'" id="" class="btn btn-xs btn-primary" data-praid="'.$v['praid'].'">Proforma</a>&nbsp;';
+				
+				if((check_bukti_bayar2($v['praid'])=="exist")&&($group_id!=1)):
+				$btn_list .='<a href="'.site_url('praout/approval2/'.$v['praid']).'" id="" class="btn btn-xs btn-success approve" data-praid="'.$v['praid'].'">Approval 2</a>&nbsp;';
+				endif;
+
+			elseif($v['appv']==2):
+				$btn_list .='<a href="'.site_url('praout/view/'.$v['praid']).'" id="" class="btn btn-xs btn-default" data-praid="'.$v['praid'].'">view</a>&nbsp;';
+				$btn_list .='<a href="'.site_url('praout/final_order/'.$v['praid']).'" class="btn btn-xs btn-info">Cetak kitir</a>';
+
+			endif;
+			
+            $record[] = '<div>'.$btn_list.'</div>';
+            $record[] = $no;
+            $record[] = $v['cpiorderno'];
+            $record[] = $v['cpipratgl'];
+            $record[] = $v['cpives'];
+            $record[] = $v['cpivoyid'];
+			$record[] = $v['cpirefin'];
+
+			if((check_bukti_bayar2($v['praid'])=="exist")) {
+				$record[] = 'KW' . date("Ymd", strtotime($v['cpipratgl'])) . str_repeat("0", 8 - strlen($v['praid'])) . $v['praid'];
+			} else {
+				$record[] = '-';
+			}
+
+            $no++;
+
+            $output['data'][] = $record;
+        } 
+        echo json_encode($output);		
 	}
 
 	public function view($code)
@@ -818,11 +872,12 @@ class PraOut extends \CodeIgniter\Controller
 			// admin_tarif: coadmv
 			// cleaning by: coadmm (1=by_order, 0=by_container)
 			// hitung billing
+
 			if($dt_order['data']['datas'][0]['cpipratgl'] < "2022-04-01") {
 				$tax = 10;
 			} else {
 				$tax = (isset($contract['cotax'])?$contract['cotax']:0);
-			}
+			}		
 
 			$total_lolo = (int)$_POST['total_lolo'];
 			$total_cleaning = 0;
@@ -1230,7 +1285,7 @@ class PraOut extends \CodeIgniter\Controller
 		} else {
 			$bukti_bayar = "";
 		}
-		
+
 		$pratgl = $dt_order['data']['datas'][0]['cpipratgl'];
 		if($pratgl < "2022-04-01") {
 			$tax = 10;
@@ -1409,7 +1464,7 @@ class PraOut extends \CodeIgniter\Controller
 		} else {
 			$tax = (isset($contract['cotax'])?$contract['cotax']:0);
 		}
-
+		
 		$subtotal = 0;
 		$pajak = $tax/100;
 		$adm_tarif = (isset($contract['coadmv'])?$contract['coadmv']:0);
@@ -1520,13 +1575,28 @@ class PraOut extends \CodeIgniter\Controller
 					'filename'	=> $_FILES["files"]['name']
 				);
 			}
-			$response = $this->client->request('POST','orderPraRecepts/createNewData',[
-				'headers' => [
-					'Accept' => 'application/json',
-					'Authorization' => session()->get('login_token')
-				],
-				'multipart' => $post_arr,
-			]);
+			
+			if((check_bukti_bayar2($_POST['praid'])=="insert")) {
+				$response = $this->client->request('POST','orderPraRecepts/createNewData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'multipart' => $post_arr,
+				]);
+			} else if((check_bukti_bayar2($_POST['praid'])=="update")){
+				$post_arr[] = [
+					'name'		=> 'prareceptid',
+					'contents'	=> $_POST['prareceptid']
+				];				
+				$response = $this->client->request('POST','orderPraRecepts/updateData',[
+					'headers' => [
+						'Accept' => 'application/json',
+						'Authorization' => session()->get('login_token')
+					],
+					'multipart' => $post_arr,
+				]);				
+			}
 
 			$result = json_decode($response->getBody()->getContents(),true);
 
@@ -1542,7 +1612,7 @@ class PraOut extends \CodeIgniter\Controller
 
 			$data['status'] = "1";
 			$data['message'] = "Berhasil upload bukti pembayaran";
-			echo json_encode($data);die();			
+			echo json_encode($data);die();				
 		}
 	} 
 
@@ -1604,7 +1674,7 @@ class PraOut extends \CodeIgniter\Controller
 		die();
 	}
 
-	public function edit_get_container($praid) 
+public function edit_get_container($praid) 
 	{
 		$response = $this->client->request('GET','orderPraContainers/getAllData',[
 			'headers' => [
@@ -1854,7 +1924,7 @@ class PraOut extends \CodeIgniter\Controller
 			<div class="page-header t-center">
 				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">PT.CONTINDO RAYA</h5>
 				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR MUAT</h5>
-				<h4 style="text-decoration: underline;line-height:0.5;">' . $REFIN . '</h4>
+				<h5 style="text-decoration: underline;line-height:0.5;">' . $REFIN . '</h5>
 				<img src="' . $QRCODE_IMG . '" style="height:120px;">
 				<h4 style="text-decoration: underline;line-height:0.5;">' . $CPID . '</h4>
 			</div>
@@ -2006,7 +2076,7 @@ class PraOut extends \CodeIgniter\Controller
 		} else {
 			$ppn = (isset($contract['cotax'])?$contract['cotax']:0);
 		}
-
+		
 		$qty=0;
 		(int)$qty20 = 0;
 		(int)$qty40 = 0;
@@ -2310,14 +2380,14 @@ class PraOut extends \CodeIgniter\Controller
 			$invoice_number  = 'KW' . date("Ymd", strtotime($pratgl)) . str_repeat("0", 8 - strlen($recept['praid'])) . $recept['praid'];
 			$RECEPT_DATE = $recept['receptdate'];
 		}
-				
+
 		$contract = $this->get_contract($detail[0]['cpopr']);
 		if($pratgl < "2022-04-01") {
 			$ppn = 10;
 		} else {
 			$ppn = (isset($contract['cotax'])?$contract['cotax']:0);
 
-		}
+		}				
 
 		$qty=0;
 		(int)$qty20 = 0;

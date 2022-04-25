@@ -3,6 +3,16 @@
 	var selectedDate;
 	$(document).ready(function() {
 
+		$("#startDate").datepicker({
+			autoclose: true,
+			format: 'dd/mm/yyyy',
+			startDate: '-5y',
+		});
+		$("#endDate").datepicker({
+			autoclose: true,
+			format: 'dd/mm/yyyy',
+			startDate: '-5y',
+		});
 		$("#startDate").datepicker('setDate', new Date());
 		$("#endDate").datepicker('setDate', new Date());
 
@@ -34,43 +44,43 @@
 			var prcode = $("#prcode").val();
 			var startDate = $("#startDate").val();
 			var endDate = $("#endDate").val();
-			var hour_from = $("#timepicker1").val();
-			var hour_to = $("#timepicker2").val();
+			var hour_from = ($("#timepicker1").val() == "") ? "00:00" : $("#timepicker1").val();
+			var hour_to = ($("#timepicker2").val() == "") ? "23:59" : $("#timepicker2").val();			
 
 			var date_from = startDate.split("/").reverse().join("-");
 			var date_to = endDate.split("/").reverse().join("-");
 
-			if(prcode=="" || startDate=="" || endDate=="" || hour_from=="" || hour_to=="") {
-				Swal.fire({
-					icon: 'warning',
-					title: "Alert",
-					html: '<div class="text-danger">Lengkapi Form...</div>'
-				});
-			} else {
+			// if(prcode=="" || startDate=="" || endDate=="" || hour_from=="" || hour_to=="") {
+			// 	Swal.fire({
+			// 		icon: 'warning',
+			// 		title: "Alert",
+			// 		html: '<div class="text-danger">Lengkapi Form...</div>'
+			// 	});
+			// } else {
 
 			window.open("<?php echo site_url('dailymovementout/reportPdf/'); ?>" + prcode + "/" + date_from + "/" + date_to + "/" + hour_from + "/" + hour_to, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
 
-			}
+			// }
 		});
 		$("#printExl").on("click", function(e) {
 			var prcode = $("#prcode").val();
 			var startDate = $("#startDate").val();
 			var endDate = $("#endDate").val();
-			var hour_from = $("#timepicker1").val();
-			var hour_to = $("#timepicker2").val();
+			var hour_from = ($("#timepicker1").val() == "") ? "00:00" : $("#timepicker1").val();
+			var hour_to = ($("#timepicker2").val() == "") ? "23:59" : $("#timepicker2").val();			
 
 			var date_from = startDate.split("/").reverse().join("-");
 			var date_to = endDate.split("/").reverse().join("-");
-			if(prcode=="" || startDate=="" || endDate=="" || hour_from=="" || hour_to=="") {
-				Swal.fire({
-					icon: 'warning',
-					title: "Alert",
-					html: '<div class="text-danger">Lengkapi Form...</div>'
-				});
-			} else {
+			// if(prcode=="" || startDate=="" || endDate=="" || hour_from=="" || hour_to=="") {
+			// 	Swal.fire({
+			// 		icon: 'warning',
+			// 		title: "Alert",
+			// 		html: '<div class="text-danger">Lengkapi Form...</div>'
+			// 	});
+			// } else {
 				window.open("<?php echo site_url('dailymovementout/reportExcel/'); ?>" + prcode + "/" + date_from + "/" + date_to + "/" + hour_from + "/" + hour_to);
 				e.preventDefault();
-			}
+			// }
 		});
 
   $('#formCType').parsley().on('field:validated', function() {

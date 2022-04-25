@@ -132,6 +132,30 @@
 						</div>
 					</div>
 					<div class="form-group">
+						<label for="prcode" class="col-sm-3 control-label text-right">Port Charge 20"</label>
+						<div class="col-sm-9">
+							<input type="text" name="rtportcharger20" class="form-control" id="rtportcharger20">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="prcode" class="col-sm-3 control-label text-right">Port Charge 40"</label>
+						<div class="col-sm-9">
+							<input type="text" name="rtportcharger40" class="form-control" id="rtportcharger40">
+						</div>
+					</div>	
+					<div class="form-group">
+						<label for="prcode" class="col-sm-3 control-label text-right">Trucking 20"</label>
+						<div class="col-sm-9">
+							<input type="text" name="rttruck20" class="form-control" id="rttruck20">
+						</div>
+					</div>	
+					<div class="form-group">
+						<label for="prcode" class="col-sm-3 control-label text-right">Trucking 40"</label>
+						<div class="col-sm-9">
+							<input type="text" name="rttruck40" class="form-control" id="rttruck40">
+						</div>
+					</div>
+					<div class="form-group">
 						<label for="prcode" class="col-sm-3 control-label text-right">Haulage Currency</label>
 						<div class="col-sm-9">
 							<input type="text" name="rthaulcurr" class="form-control" id="rthaulcurr" value="IDR" readonly="">
@@ -154,7 +178,8 @@
 						<div class="col-sm-9">
 							<input type="text" name="rthaulv45" class="form-control" id="rthaulv45">
 						</div>
-					</div>
+					</div>				
+	
 					<div class="form-group">
 						<div class="col-sm-offset-3 col-sm-9">
 							<button type="submit" id="saveDetail" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;

@@ -34,46 +34,12 @@ class PraIn extends \CodeIgniter\Controller
 
 		$token = get_token_item();
 		$user_id = $token['id'];
-		$group_id = $token['groupId'];
+		if($token['groupId']=='1') {
+			$group_id = $token['groupId'];
+		} else {
+			$group_id = "";
+		}
 		$prcode = $token['prcode'];
-
-		// $data = [];
-		// $offset=0;
-		// $limit=1000;
-		// $response1 = $this->client->request('GET','orderPras/getAllData',[
-		// 	'headers' => [
-		// 		'Accept' => 'application/json',
-		// 		'Authorization' => session()->get('login_token')
-		// 	],
-		// 	'query' => [
-		// 		'offset' => $offset,
-		// 		'limit'	=> $limit,
-		// 		'pracode' => 'PI'
-		// 	]
-		// ]);
-		// $result_pra = json_decode($response1->getBody()->getContents(),true);	
-		// if((isset($result_pra['status'])&&($result_pra['status']=="Failled")) || (isset($result_pra['data']['datas'])&&$result_pra['data']['datas']==null)) {
-		// 	$data['data_pra'] = "";
-		// } else {
-		// 	if($group_id == 1) 
-		// 	{
-		// 		$datas = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
-		// 		// Jika EMKL (User_group==1)
-		// 		$data_pra = array();
-		// 		foreach($datas as $dt) {
-		// 			if($user_id==$dt['crtby']) {
-		// 				$data_pra[] = $dt;
-		// 			}
-		// 			else {}
-		// 		}
-		// 		$data['data_pra'] = $data_pra;
-		// 	} 
-		// 	else 
-		// 	{
-		// 		$data['data_pra'] = isset($result_pra['data']['datas'])?$result_pra['data']['datas']:"";
-		// 	}	
-		// }
-
 		$data['prcode'] = $prcode;
 		$data['cucode'] = $prcode;
 		$data['group_id'] = $group_id;
@@ -84,7 +50,11 @@ class PraIn extends \CodeIgniter\Controller
 	{
 		$token = get_token_item();
 		$user_id = $token['id'];
-		$group_id = $token['groupId'];
+		if($token['groupId']=='1') {
+			$group_id = $token['groupId'];
+		} else {
+			$group_id = "";
+		}
 		$prcode = $token['prcode'];
 
 		$search = ($this->request->getPost('search[value]') != "")?$this->request->getPost('search[value]'):"";
@@ -102,7 +72,10 @@ class PraIn extends \CodeIgniter\Controller
 			'query' => [
 				'offset' => $offset,
 				'limit'	=> $limit,
-				'pracode' => 'PI'
+				'search'	=> $search,
+				'pracode' => 'PI',
+				'userId'	=> $user_id,
+				'groupId' => $group_id
 			]
 		]);
 		$result = json_decode($response->getBody()->getContents(),true);
@@ -114,33 +87,11 @@ class PraIn extends \CodeIgniter\Controller
         );
 		$no = ($offset !=0)?$offset+1 :1;
 
-		// if($group_id == 1) 
-		// {
-		// 	$datas = isset($result['data']['datas'])?$result['data']['datas']:"";
-		// 	// Jika EMKL (User_group==1)
-		// 	$data = array();
-		// 	foreach($datas as $dt) {
-		// 		if($user_id==$dt['crtby']) {
-		// 			$data_pra[] = $dt;
-		// 		}
-		// 	}
-		// } 
-		// else 
-		// {
-			$data_pra = $result['data']['datas'];
-		// }	
+		$data_pra = $result['data']['datas'];
 
 		foreach ($data_pra as $k=>$v) {
 			$btn_list="";
             $record = array(); 
-            $record[] = $no;
-            $record[] = $v['cpiorderno'];
-            $record[] = $v['cpipratgl'];
-            $record[] = $v['cpives'];
-            $record[] = $v['cpivoyid'];
-			$record[] = $v['cpirefin'];
-			$record[] = 'KW' . date("Ymd", strtotime($v['cpipratgl'])) . str_repeat("0", 8 - strlen($v['praid'])) . $v['praid'];
-
 			if($v['appv']==0):
 
 				$btn_list .='<a href="'.site_url('praout/edit/'.$v['praid']).'" id="editPraIn" class="btn btn-xs btn-warning">edit</a>&nbsp;';
@@ -166,6 +117,19 @@ class PraIn extends \CodeIgniter\Controller
 			endif;
 			
             $record[] = '<div>'.$btn_list.'</div>';
+            $record[] = $no;
+            $record[] = $v['cpiorderno'];
+            $record[] = $v['cpipratgl'];
+            $record[] = $v['cpives'];
+            $record[] = $v['cpivoyid'];
+			$record[] = $v['cpirefin'];
+			
+			if((check_bukti_bayar2($v['praid'])=="exist")) {
+				$record[] = 'KW' . date("Ymd", strtotime($v['cpipratgl'])) . str_repeat("0", 8 - strlen($v['praid'])) . $v['praid'];
+			} else {
+				$record[] = '-';
+			}
+
             $no++;
 
             $output['data'][] = $record;
@@ -2121,10 +2085,10 @@ class PraIn extends \CodeIgniter\Controller
 			<div class="wrapper">
 
 			<div class="page-header t-center">
-				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR BONGKAR</h3>
-				<h4 style="text-decoration: underline;line-height:0.5;">'.$REFIN.'</h3>
+				<h5 style="line-height:0.5;font-weight:bold;padding-top:20px;">KITIR BONGKAR</h5>
+				<h5 style="text-decoration: underline;line-height:0.5;">'.$REFIN.'</h5>
 				<img src="' . $QRCODE_IMG . '" style="height:120px;">
-				<h5 style="text-decoration: underline;line-height:0.5;">'.$CPID.'</h4>
+				<h5 style="text-decoration: underline;line-height:0.5;">'.$CPID.'</h5>
 			</div>
 		';		
 		$html .='

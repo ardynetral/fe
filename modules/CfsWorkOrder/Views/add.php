@@ -39,6 +39,7 @@ if(isset($data) && ($data!='')) {
 				</div>
 				<form id="fWO" class="form-horizontal" role="form">
 					<?= csrf_field() ?>
+					<input type="hidden" name="wonoid" id="wonoid">
 					<fieldset>
 					<table class="tbl-form" width="100%">
 						<!-- 9 kolom -->
@@ -66,7 +67,7 @@ if(isset($data) && ($data!='')) {
 							<td class="text-right" width="130"><label for="wodate" class="text-right">Use Container In :</label></td>
 							<td>
 								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="wopraorderin" id="wopraorderin" value="1">
+								<input type="checkbox" name="wopraorderin" id="wopraorderin" value="0">
 								<span></span>
 								</label>
 							</td>
@@ -74,10 +75,10 @@ if(isset($data) && ($data!='')) {
 						<tr>
 							<td class="text-right" width="130"><label for="woto" class="text-right">To :</label></td>
 							<td><input type="text" name="woto" class="form-control" id="woto" value="<?=@$data['woto'];?>"></td>
-							<td class="text-right" width="130"><label for="wodate" class="text-right">Use Container Out :</label></td>
+							<td class="text-right" width="130"><label for="wodate" class="text-right">Use Container Outs :</label></td>
 							<td>
 								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="wopraorderout" id="wopraorderout" value="1">
+								<input type="checkbox" name="wopraorderout" id="wopraorderout" value="0">
 								<span></span>								
 							</td>
 						</tr>
@@ -87,7 +88,7 @@ if(isset($data) && ($data!='')) {
 							<td class="text-right" width="130"><label for="wodate" class="text-right">Change Stock :</label></td>
 							<td>
 								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="wostock" id="wostock" value="1">
+								<input type="checkbox" name="wostock" id="wostock" value="0">
 								<span></span>
 								</label>
 							</td>
@@ -106,11 +107,10 @@ if(isset($data) && ($data!='')) {
 						</tr>									
 							
 						<tr><td colspan="9">&nbsp;</td></tr>									
-
 						<tr>
 							<td colspan="9" class="text-center">
-								<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
-								<a href="<?=site_url('wo')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+								<button type="submit" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
+								<a href="<?=site_url('cfswo')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 							</td>
 						</tr>						
 					</tbody>
@@ -122,7 +122,7 @@ if(isset($data) && ($data!='')) {
 				<ul class="nav nav-tabs" role="tablist">
 					<li class="active"><a href="#container" role="tab" data-toggle="tab" aria-expanded="true">CONTAINER</a></li>
 					<li class=""><a href="#barang" role="tab" data-toggle="tab" aria-expanded="false">BARANG</a></li>
-					<li class=""><a href="#kwitansi" role="tab" data-toggle="tab" aria-expanded="false">KWITANSI</a></li>
+					<li class=""><a href="#kwitansi" role="tab" data-toggle="tab" aria-expanded="false" id="tab_kwitansi">KWITANSI</a></li>
 					<!-- <li class=""><a href="#proforma" role="tab" data-toggle="tab" aria-expanded="false">PROFORMA</a></li> -->
 				</ul>
 

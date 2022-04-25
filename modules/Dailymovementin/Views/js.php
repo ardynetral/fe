@@ -43,8 +43,8 @@
 			var prcode = $("#prcode").val();
 			var startDate = $("#startDate").val();
 			var endDate = $("#endDate").val();
-			var hour_from = $("#timepicker1").val();
-			var hour_to = $("#timepicker2").val();
+			var hour_from = ($("#timepicker1").val() == "") ? "00:00" : $("#timepicker1").val();
+			var hour_to = ($("#timepicker2").val() == "") ? "23:59" : $("#timepicker2").val();			
 
 			var date_from = startDate.split("/").reverse().join("-");
 			var date_to = endDate.split("/").reverse().join("-");
@@ -61,8 +61,8 @@
 			var prcode = $("#prcode").val();
 			var startDate = $("#startDate").val();
 			var endDate = $("#endDate").val();
-			var hour_from = $("#timepicker1").val();
-			var hour_to = $("#timepicker2").val();
+			var hour_from = ($("#timepicker1").val() == "") ? "00:00" : $("#timepicker1").val();
+			var hour_to = ($("#timepicker2").val() == "") ? "23:59" : $("#timepicker2").val();	
 
 			var date_from = startDate.split("/").reverse().join("-");
 			var date_to = endDate.split("/").reverse().join("-");

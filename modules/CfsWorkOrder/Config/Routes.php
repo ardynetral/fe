@@ -13,3 +13,9 @@ $routes->add('/cfswo/edit/(:alphanum)', '\Modules\CfsWorkOrder\Controllers\CfsWo
 $routes->add('/cfswo/delete_container', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::delete_container', ['filter' => 'login']);
 // PRINT
 $routes->add('/cfswo/print/(:alphanum)', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::print/$1', ['filter' => 'login']);
+
+
+// RECEPT
+$routes->add('/cfswo/get_data_receipt', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::get_data_receipt', ['filter' => 'login']);
+$routes->post('/cfswo/update_receipt', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::update_receipt', ['filter' => 'login']);
+

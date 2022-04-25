@@ -198,7 +198,7 @@
 												<span><i></i>Full</span>
 											</label>
 											<label class="control-inline fancy-radio custom-bgcolor-green">
-												<input type="radio" name="repofe" id="repofe" value="0" <?=((isset($data['repofe'])&&$data['repofe']==0)?'checked':'')?>>
+												<input type="radio" name="repofe" id="repofe" value="0" <?=($data['repofe']==NULL || $data['repofe']==0)?'checked':''?>>
 												<span><i></i>Empty</span>
 											</label>								
 										</div>

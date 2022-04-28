@@ -774,6 +774,27 @@ class Estimation extends \CodeIgniter\Controller
 			die();
 		}
 	}
+
+	public function getFileToPrint($crno) 
+	{
+		$response = $this->client->request('GET', 'estimasi/getFileDetail', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'crno' => $crno
+			]
+		]);	
+
+		$result = json_decode($response->getBody()->getContents(), true);
+		if($result['data'] == NULL) {
+			$data = "";			
+		} 
+		return $result['data'];
+
+	}
+		
 	public function print($crno,$type) 
 	{
 		$mpdf = new \Mpdf\Mpdf();
@@ -781,6 +802,7 @@ class Estimation extends \CodeIgniter\Controller
 		$data = $this->getOneEstimasi($crno);
 		$header = $data['dataOne'][0];
 		$detail = $data['dataTwo'];
+		$files = $this->getFileToPrint($crno);
 		$ESTIMATE_DATE = ($header['rptglest']==null) ? "" : date('d-m-Y',strtotime($header['rptglest'])).' '.date('H:i:s',strtotime($header['rptglest']));
 		// dd($header);
 		$html = '';
@@ -1008,6 +1030,17 @@ class Estimation extends \CodeIgniter\Controller
 			</tr>	
 		</table>';
 		
+		if($files != NULL) {
+			$html .= '<p style="page-break-before: always;">&nbsp;</p>';
+			$html .= '<h3>Files:</h3>';
+			$html .= '<div class="img-container">';
+			foreach($files as $row) {
+			$html .= '<div class="img-box">';
+			$html .= '<img src="'.$row['url'].'">';
+			$html .= '</div>';
+			}			
+			$html .= '</div>';
+		}
 
 		$html .='
 		</body>

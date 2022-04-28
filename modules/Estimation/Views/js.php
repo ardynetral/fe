@@ -446,7 +446,8 @@ $(document).ready(function() {
 		$("#rdtotal").val(rdtotal);
 		$("input[name=rdcalmtd][value=" + rdcalmtd + "]").prop('checked', true);
 		$("input[name=rdaccount][value=" + rdaccount + "]").prop('checked', true);
-		  $("#fileList").html("");		
+		  // $("#fileList").html("");	
+		  loadFileList(crno);	
 	});
 
 	function loadFileList(crno) {

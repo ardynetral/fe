@@ -136,11 +136,12 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 							<h4 class="modal-title" id="myModalLabel">Add Item Estimation</h4>
 						</div>
 						<div class="modal-body">
-							<form method="post" id="formDetail" class="form-horizontal" role="form" enctype="multipart/form-data" style="display:none;">
+							<form method="post" id="formDetail" class="form-horizontal" role="form" enctype="multipart/form-data">
 								<fieldset>
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Location</label>
 										<div class="col-sm-8">
+											<input type="hidden" name="act" id="act" value="add">
 											<input type="hidden" name="det_crno" id="det_crno">
 											<input type="hidden" name="det_svid" id="det_svid">
 											<input type="hidden" name="rpid" id="rpid">

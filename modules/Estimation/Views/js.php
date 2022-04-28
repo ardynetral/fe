@@ -141,8 +141,11 @@ $(document).ready(function() {
 	$("#formDetail").on("submit", function(e) {
 		e.preventDefault();
 		$("#tblList_add tbody").html("");
+		var url="";
+		if($("#act").val()=="add") { url = "<?php echo site_url('estimation/save_detail'); ?>"; }
+		else if($("#act").val()=="edit") { url = "<?php echo site_url('estimation/update_detail'); ?>"; }
 		$.ajax({
-			url: "<?php echo site_url('estimation/save_detail'); ?>",
+			url: url,
 			type: "POST",
 			data: new FormData(this),
             processData: false,
@@ -239,6 +242,7 @@ $(document).ready(function() {
 	});
 
 	$("#addDetail").on("click", function(e){
+		$("#act").val("add");
 		var det_crno = $("#rpcrno").val();
 		var det_svid = $("#svid").val();
 		var tblRow = parseInt($("#tblList_add tr").length);
@@ -333,8 +337,19 @@ $(document).ready(function() {
 					$(".err-crno").hide();
 					$("#rpcrno").css("background", "#fff!important");
 					$("#rpcrno").css("border-color", "#ccc");
+
+					// CHECK DATA HEADER
+					if(json.data_estimasi==""){
+						// bisa insert header
+						$("#saveData").prop("disabled", false);					
+					} else {
+						// tidak bisa insert header
+						// bisa insert detail
+						$("#saveData").prop("disabled", true);
+						$("#addDetail").prop("disabled", false);							
+					}
+
 					// fill data Header
-					// var rptglest = $.format.date(json.header.rptglest,"dd-MM-yyyy");
 					var svsurdat = $.format.date(json.header.svsurdat,"dd-MM-yyyy");
 					$("#det_crno").val(crno);
 					$("#svid").val(json.header.svid);
@@ -343,7 +358,6 @@ $(document).ready(function() {
 					$("#rpcrton").val(json.header.svcrton);
 					$("#rpcrtby").val(json.header.svcrtby);
 					$("#rpnoest").val(json.header.rpnoest);
-					// $("#rptglest").val(rptglest);
 					$("#cccode").val(json.header.cccode);
 					$("#ctcode").val(json.header.ctcode);
 					$("#cclength").val(json.header.cclength);
@@ -361,9 +375,10 @@ $(document).ready(function() {
 		});
 	});
 
-	$("#tblList_add tbody").on("click",".view", function(e){
+	$("#tblList_add tbody").on("click",".edit", function(e){
 		e.preventDefault();
 		$("#saveDetail").prop("disabled",false);
+		$("#act").val("edit");
 		var row = $(this).closest("tr");
 		var rpid = row.find(".no").text();
 		var lccode = row.find(".lccode").text();
@@ -396,7 +411,7 @@ $(document).ready(function() {
 		$("#tucode").val(curr_code);
 		$("#rdmat").val(rdmat);
 		$("input[name=rdcalmtd][value=" + rdcalmtd + "]").prop('checked', true);
-		$("input[name=rdaccount][value=" + rdaccount + "]").prop('checked', true);			
+		$("input[name=rdaccount][value=" + rdaccount + "]").prop('checked', true);			console.log(rpid);
 	});
 
 	$("#tblList_edit tbody").on("click",".edit", function(e){

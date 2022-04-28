@@ -10,10 +10,10 @@ $(document).ready(function() {
 		$(".err-crno").hide(); //container number check
 
 		// DATATABLE
-		$("#tblList_add").DataTable({
-			"paging": false,
-			"info": false,
-		});
+		// $("#tblList_add").DataTable({
+		// 	"paging": false,
+		// 	"info": false,
+		// });
 
 		$(".tanggal").datepicker({
 			autoclose: true,
@@ -123,6 +123,7 @@ $(document).ready(function() {
 		$("#addDetail").on("click", function(e){
 			var det_crno = $("#det_crno").val();
 			var tblRow = parseInt($("#tblList_add tr").length);
+			$("#act").val("add");
 			$("#saveDetail").prop('disabled', false);
 			$("#formDetail").trigger("reset");
 			$("#det_crno").val(det_crno);
@@ -139,8 +140,11 @@ $(document).ready(function() {
 		$("#formDetail").on("submit", function(e) {
 			e.preventDefault();
 			$("#tblList_add tbody").html("");
+			var url="";
+			if($("#act").val()=="add") { url = "<?php echo site_url('approval/save_detail'); ?>"; }
+			else if($("#act").val()=="edit") { url = "<?php echo site_url('approval/update_detail'); ?>"; }			
 			$.ajax({
-				url: "<?php echo site_url('approval/save_detail'); ?>",
+				url: url,
 				type: "POST",
 				data: new FormData(this),
 	            processData: false,
@@ -221,7 +225,7 @@ $(document).ready(function() {
 				dataType: 'json',
 				success: function(json) {
 					if (json.status == "success") {
-						$("#tblList_edit tbody").html("");
+						// $("#tblList_edit tbody").html("");
 						Swal.fire({
 							icon: 'success',
 							title: "Success",
@@ -324,8 +328,9 @@ $(document).ready(function() {
 			});
 		});
 
-		$("#tblList_add tbody").on("click",".view", function(e){
+		$("#tblList_add tbody").on("click",".edit", function(e){
 			e.preventDefault();
+			$("#act").val("edit");
 			$("#saveDetail").prop("disabled",false);
 			var row = $(this).closest("tr");
 			var rpid = row.find(".no").text();

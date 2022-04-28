@@ -549,6 +549,25 @@ class Estimation extends \CodeIgniter\Controller
 		return $data;	
 	}
 
+	public function checkHeaderEstimasi($CRNO)
+	{
+		$response = $this->client->request('GET', 'estimasi/checkValidasiHeader', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'rpcrno' => $CRNO
+			]
+		]);	
+		$result = json_decode($response->getBody()->getContents(), true);
+		if($result['data']==null) {
+			$data = "";
+		}
+		$data = $result['data'];
+		return $data;			
+	}
+
 	// ajax request
 	public function getDataEstimasi() 
 	{
@@ -572,6 +591,7 @@ class Estimation extends \CodeIgniter\Controller
 			}
 			$data['status'] = "success";
 			$data['header'] = $result['data']['dataOne'][0];
+			$data['data_estimasi'] = $this->checkHeaderEstimasi($CRNO);
 			$data['detail'] = $this->fill_table_detail($result['data']['dataTwo']);
 			// echo var_dump($result);die();		
 			echo json_encode($data);
@@ -643,7 +663,9 @@ class Estimation extends \CodeIgniter\Controller
 				else {$rdaccount="i";}				
 				$html .= '<tr>';
 				$html .= '<td>
-						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
+					<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
+					<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a>
+				</td>';
 				$html .= '<td class="no">'.$no.'</td>';
 				$html .= '<td class="lccode" style="display:none">'.$row['lccode'].'</td>';
 				$html .= '<td class="cmcode">'.$row['cmcode'].'</td>';
@@ -794,7 +816,7 @@ class Estimation extends \CodeIgniter\Controller
 		return $result['data'];
 
 	}
-		
+
 	public function print($crno,$type) 
 	{
 		$mpdf = new \Mpdf\Mpdf();
@@ -857,7 +879,7 @@ class Estimation extends \CodeIgniter\Controller
 			<table class="tbl_det">
 			<tr><td width="130">EOR/EIR NUMBER</td><td width="130">'.$header['rpnoest'].'</td></tr>			
 			<tr><td>ESTIMATE DATE</td><td>'.$ESTIMATE_DATE.'</td></tr>			
-			<tr><td>RETURN DATE</td><td></td></tr>			
+			<tr><td>RETURN DATE</td><td>'.$header['cpitgl'].'</td></tr>			
 			<tr><td>TERM/ORIGINAL PORT</td><td></td></tr>			
 			<tr><td>ORIGINAL PORT</td><td></td></tr>			
 			<tr><td>TARA</td><td>' . $header['crtarak'] . '</td></tr>			
@@ -868,7 +890,7 @@ class Estimation extends \CodeIgniter\Controller
 			<table class="tbl_det">
 			<tr><td width="130">CONT. NUMBER </td><td width="130">'.$header['crno'].'</td></tr>			
 			<tr><td>EQUIPMENT DESCRIP</td><td>'.$header['cclength'].' '.$header['ccheight'].' '.$header['ctcode'].'</td></tr>			
-			<tr><td>INSPECTED AT</td><td></td></tr>			
+			<tr><td>INSPECTED AT</td><td>CONTINDO RAYA</td></tr>			
 			<tr><td>CONDITION</td><td>'.$header['svcond'].'</td></tr>			
 			<tr><td>CUSTOMER</td><td>'.$header['cpopr'].'</td></tr>	
 			<tr><td>CONT. OPERATOR</td><td>'.$header['cpopr'].'</td></tr>			
@@ -999,12 +1021,12 @@ class Estimation extends \CodeIgniter\Controller
 				<tr>
 				<td></td><td></td>
 				<td class="t-right">Total Owner Account(IDR)</td>
-				<td class="t-right">'.number_format($tot_rdmhr_o,0).'</td><td class="t-right">'.number_format($tot_rdlab_o,0).'</td><td class="t-right">'.number_format($tot_rdmat_o,0).'</td><td class="t-right">'.number_format($tot_rdtotal_o,0).'</td><td></td>
+				<td class="t-right"></td><td class="t-right"></td><td class="t-right"></td><td class="t-right">'.number_format($tot_rdtotal_o,0).'</td><td></td>
 				</tr>
 				<tr>
 				<td></td><td></td>
 				<td class="t-right">Total User Account(IDR)</td>
-				<td class="t-right">'.$tot_rdmhr_u.'</td><td class="t-right">'.number_format($tot_rdlab_u,0).'</td><td class="t-right">'.number_format($tot_rdmat_u,0).'</td><td class="t-right">'.number_format($tot_rdtotal_u,0).'</td><td></td>
+				<td class="t-right"></td><td class="t-right"></td><td class="t-right"></td><td class="t-right">'.number_format($tot_rdtotal_u,0).'</td><td></td>
 				</tr>';				
 		}			
 

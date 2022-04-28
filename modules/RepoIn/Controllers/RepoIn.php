@@ -55,9 +55,9 @@ class RepoIn extends \CodeIgniter\Controller
 			$record[] = $v['recpivoyid'];
 			// $record[] = (isset($v['repofe'])&&$v['repofe']==1)?'Full':'Empty';
 
-			$btn_list .= '<a href="' . site_url() . '/repoin/view/' . $reorderno . '" class="btn btn-xs btn-primary btn-tbl">Cetak kitir</a>';
 			$btn_list .= '<a href="' . site_url() . '/repoin/edit/' . $reorderno . '" class="btn btn-xs btn-success btn-tbl">Edit</a>';
-			// $btn_list .= '<a href="' . site_url() . '/repoin/proforma/' . $reorderno . '" class="btn btn-xs btn-success btn-tbl">Proforma</a>';
+			$btn_list .= '<a href="#" class="btn btn-xs btn-primary btn-tbl proforma" data-reorderno = "'.$reorderno.'">Proforma</a>';
+			$btn_list .= '<a href="' . site_url() . '/repoin/view/' . $reorderno . '" class="btn btn-xs btn-primary btn-tbl">Cetak kitir</a>';
 			// $btn_list .= '<a href="#" class="btn btn-xs btn-success btn-tbl">Invoice</a>';
 			// $btn_list .= '<a href="#" data-repoid="'.$v['reorderno'].'" class="btn btn-xs btn-info print_order btn-tbl">Print Kitir</a>';
 			$btn_list .= '<a href="#" id="" class="btn btn-xs btn-danger btn-tbl delete" data-kode="' . $reorderno . '">Delete</a>';
@@ -450,15 +450,406 @@ class RepoIn extends \CodeIgniter\Controller
 		return view('Modules\RepoIn\Views\edit', $data);
 	}
 
-	public function proforma($reorderno)
+	// public function proforma($reorderno)
+	// {
+	// 	check_exp_time();
+	// 	$datarepo = $this->getOneRepo($reorderno);
+	// 	$data['data'] = $datarepo['data'];
+	// 	$data['repoid'] = $datarepo['data']['repoid'];
+	// 	$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
+	// 	return view('Modules\RepoIn\Views\proforma', $data);
+	// }
+
+	public function proforma($reorderno) 
 	{
 		check_exp_time();
-		$datarepo = $this->getOneRepo($reorderno);
-		$data['data'] = $datarepo['data'];
-		$data['repoid'] = $datarepo['data']['repoid'];
-		$data['containers'] = $this->getRepoContainers($datarepo['data']['repoid']);
-		return view('Modules\RepoIn\Views\proforma', $data);
+		$mpdf = new \Mpdf\Mpdf();
+
+		$data = [];
+		$dataorder = $this->getOneRepo($reorderno);
+		$header= $dataorder['data'];
+		if($header!="") {
+			$datadetail = $this->getRepoContainers($header['repoid']);
+			$detail = $datadetail;
+		}
+		// dd($detail);
+		// $pratgl = $header['cpipratgl'];
+		// $recept = $header['orderPraRecept'][0];
+		// $debitur = $this->get_debitur($header['cpideliver']);
+		// $detail = $header['orderPraContainers'];
+		// $depo = $this->get_depo($header['cpdepo']);
+
+		// $contract = $this->get_contract($detail[0]['cpopr']);
+		// if($pratgl < "2022-04-01") {
+		// 	$ppn = 10;
+		// } else {
+		// 	$ppn = (isset($contract['cotax'])?$contract['cotax']:0);
+		// }				
+
+		$qty=0;
+		(int)$qty20 = 0;
+		(int)$qty40 = 0;
+		(int)$qty45 = 0;		
+		(int)$price20 = 0;
+		(int)$price40 = 0;
+		(int)$price45 = 0;		
+		(int)$subtot20 = 0;
+		(int)$subtot40 = 0;
+		(int)$subtot45 = 0;		
+		// (int)$price_cleaning = 0;
+		// (int)$subtot_cleaning = 0;
+		(int)$subtotal = 0;
+		(int)$total = 0;
+		
+		foreach($detail as $det) {			
+			$qty = $qty+1;
+
+			if($det['cclength']<=20) {
+				$qty20 = $qty20 + 1;  
+			} 
+			if ($det['cclength']==40) {
+				$qty40 = $qty40 + 1;
+			}
+			if($det['cclength']>40) {
+				$qty45 = $qty45 + 1;
+			}
+		}
+
+		// Billing Type
+		$billingType = $header['rebill'];
+
+		if($billingType=="Breakdown") {
+			$total = $header['totbreak'];
+		} else if($billingType=="Package") {
+			$total = $header['totpack'];
+		}
+
+		$terbilang = strtoupper(toEnglish($total)) . ' IDR';
+		$materai = ($total > 5000000)?"10000":"0";
+
+		$html = '';
+
+		$html .= '
+		<html>
+			<head>
+				<title>Order PraIn</title>
+
+				<style>
+					body{font-family: Arial;font-size:12px;}
+					.page-header{display:block;padding:0;min-height:30px;}
+					h2{font-weight:normal;line-height:.5;}
+					.head-left{float:left;width:200px;padding:0px;}
+					.head-right{float:left;padding:0px;margin-left:200px;text-align: right;}
+
+					.tbl_head, .tbl_det_prain, .tbl-borderless{border-spacing: 0;border-collapse: collapse;}
+					.tbl_head_prain td{border-collapse: collapse;}
+					.t-right{text-align:right;}
+					.t-left{text-align:left;}
+					.t-center{text-align:center;}
+
+					.tbl_head td, .tbl_det_prain th,.tbl_det_prain td {
+						border:1px solid #000000!important;
+						border-spacing: 0;
+						border-collapse: collapse;
+						padding:5px;
+
+					}					
+					.tbl-borderless td {
+						border:none!important;
+						border-spacing: 0;
+						border-collapse: collapse;
+					}
+					.line-space{border-bottom:1px solid #000000;margin:30px 0;}
+				</style>
+			</head>
+		';
+
+		$html .= '<body>
+			<div class="page-header">
+				<table width="100%">
+				<tr>
+				<td>
+					<h4>PT. CONTINDO RAYA</h4>
+				</td>
+				<td class="t-center" width="40%"><h2>PROFORMA</h2></td>
+				<td class="t-right"><p>&nbsp;</p></td>
+				</tr>
+				</table>
+			</div>
+		';
+		$html .='
+			<table class="tbl_head" width="100%">
+				<tbody>
+					<tr>
+						<td width="60%" style="vertical-align:baseline!important;">
+							<h2></h2>
+							<table class="tbl-borderless">
+								<tr><td>NPWP</td><td>:</td></tr>
+							</table>
+						</td>
+						<td width="40%" style="vertical-align:baseline!important;">
+							<p>
+							ADDRESS :<br>
+							
+							</p>
+						</td>
+					</tr>		
+				</tbody>
+			</table>
+		';
+
+		$html .='
+		<br>
+		<table class="tbl-borderless">
+			<tr>
+				<td style="border-botom:1px solid #000;">BANYAK UANG</td>
+				<td rowspan="3" class="t-center" style="vertical-align:baseline!important;"><br><h2>'.$terbilang.'</h2>
+			</td></tr>
+			<tr><td>----------------------</td></tr>
+			<tr><td><i>THE SUM OF</i></td></tr>
+		</table>
+		<br>
+		';
+
+		$html .='
+			<table class="tbl_det_prain" width="100%">
+				<thead>
+					<tr>
+						<th>NO</th>
+						<th>URAIAN / PEMBAYARAN</th>
+						<th>LATTER NO</th>
+						<th>QTY</th>
+						<th>SIZE</th>
+						<th COLSPAN="2">PRICE</th>
+						<th>JUMLAH</th>
+					</tr>
+				</thead>
+				<tbody>
+				';
+
+				if($billingType=="Breakdown") {
+					$html .='
+					<tr>
+						<td>001</td>
+						<td>Lift On Adm</td>
+						<td></td>
+						<td class="t-center">1</td>
+						<td class="t-center"></td>
+						<td class="t-center">IDR</td>
+						<td class="t-right">'.number_format($header['relift'],2).'</td>
+						<td class="t-right">'.number_format($header['relift'],2).'</td>
+					</tr>
+					<tr>
+						<td>002</td>
+						<td>Doc Fee</td>
+						<td></td>
+						<td class="t-center">1</td>
+						<td class="t-center"></td>
+						<td class="t-center">IDR</td>
+						<td class="t-right">'.number_format($header['redoc'],2).'</td>
+						<td class="t-right">'.number_format($header['redoc'],2).'</td>
+					</tr>';
+
+					if($qty20>0) {
+						$html .='
+						<tr>
+							<td>003</td>
+							<td>Port Charge 20</td>
+							<td></td>
+							<td class="t-center">'.$qty20.'</td>
+							<td class="t-center"></td>
+							<td class="t-center">IDR</td>
+							<td class="t-right">'.number_format($header['reportcharger20'],2).'</td>
+							<td class="t-right">'.number_format($header['reportchargertot20'],2).'</td>
+						</tr>
+						<tr>
+							<td>005</td>
+							<td>Trucking 20</td>
+							<td></td>
+							<td class="t-center">'.$qty20.'</td>
+							<td class="t-center"></td>
+							<td class="t-center">IDR</td>
+							<td class="t-right">'.number_format($header['retruck20'],2).'</td>
+							<td class="t-right">'.number_format($header['retrucktot20'],2).'</td>
+						</tr>
+						<tr>
+							<td>007</td>
+							<td>Haulage 20</td>
+							<td></td>
+							<td class="t-center">'.$qty20.'</td>
+							<td class="t-center"></td>
+							<td class="t-center">IDR</td>
+							<td class="t-right">'.number_format($header['re20'],2).'</td>
+							<td class="t-right">'.number_format($header['retot20'],2).'</td>
+						</tr>												
+						';
+					}
+					if($qty40>0) {
+						$html .='
+						<tr>
+							<td>004</td>
+							<td>Port Charge 40</td>
+							<td></td>
+							<td class="t-center">'.$qty40.'</td>
+							<td class="t-center"></td>
+							<td class="t-center">IDR</td>
+							<td class="t-right">'.number_format($header['reportcharger40'],2).'</td>
+							<td class="t-right">'.number_format($header['reportchargertot40'],2).'</td>
+						</tr>														
+															
+						<tr>
+							<td>006</td>
+							<td>Trucking 40</td>
+							<td></td>
+							<td class="t-center">'.$qty40.'</td>
+							<td class="t-center"></td>
+							<td class="t-center">IDR</td>
+							<td class="t-right">'.number_format($header['retruck40'],2).'</td>
+							<td class="t-right">'.number_format($header['retrucktot40'],2).'</td>
+						</tr>														
+															
+						<tr>
+							<td>008</td>
+							<td>Haulage 40</td>
+							<td></td>
+							<td class="t-center">'.$qty40.'</td>
+							<td class="t-center"></td>
+							<td class="t-center">IDR</td>
+							<td class="t-right">'.number_format($header['re40'],2).'</td>
+							<td class="t-right">'.number_format($header['retot40'],2).'</td>
+						</tr>
+						';
+					}
+					if($qty45>0) {
+						$html .='
+						<tr>
+							<td>009</td>
+							<td>Haulage 45</td>
+							<td></td>
+							<td class="t-center">'.$qty45.'</td>
+							<td class="t-center"></td>
+							<td class="t-center">IDR</td>
+							<td class="t-right">'.number_format($header['re45'],2).'</td>
+							<td class="t-right">'.number_format($header['retot45'],2).'</td>
+						</tr>				
+						';
+					}
+
+				} else if($billingType=="Package") {
+					if($qty20>0) {
+						$html .= '
+						<tr>
+							<td>010</td>
+							<td>Pack 20</td>
+							<td></td>
+							<td class="t-center">'.$qty.'</td>
+							<td class="t-center"></td>
+							<td class="t-center">IDR</td>
+							<td class="t-right">'.number_format($header['recpack20'],2).'</td>
+							<td class="t-right">'.number_format($header['recpacktot20'],2).'</td>
+						</tr>
+						';
+					}														
+					if($qty40>0) {
+						$html .= '
+						<tr>
+							<td>011</td>
+							<td>Pack 40</td>
+							<td></td>
+							<td class="t-center">'.$qty.'</td>
+							<td class="t-center"></td>
+							<td class="t-center">IDR</td>
+							<td class="t-right">'.number_format($header['recpack40'],2).'</td>
+							<td class="t-right">'.number_format($header['recpacktot40'],2).'</td>
+						</tr>';
+					}	
+					if($qty45>0) {
+						$html .= '
+						<tr>
+							<td>012</td>
+							<td>Pack 45</td>
+							<td></td>
+							<td class="t-center">'.$qty.'</td>
+							<td class="t-center"></td>
+							<td class="t-center">IDR</td>
+							<td class="t-right">'.number_format($header['recpack45'],2).'</td>
+							<td class="t-right">'.number_format($header['recpacktot45'],2).'</td>
+						</tr>';	
+					}
+				}
+
+				$html .='
+
+				<tr>
+					<td>997</td>
+					<td>PPN </td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right"></td>
+					<td class="t-right"></td>
+				</tr>
+				<tr>
+					<td>998</td>
+					<td>ADMINISTRATION</td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right"></td>
+					<td class="t-right"></td>
+				</tr>
+				<tr>
+					<td>999</td>
+					<td>MATERAI</td>
+					<td></td>
+					<td class="t-center">1</td>
+					<td class="t-center"></td>
+					<td class="t-center">IDR</td>
+					<td class="t-right"></td>
+					<td class="t-right"></td>
+				</tr>
+				<tr><th colspan="7" class="t-right">Total</th>
+					<th class="t-right">'.number_format($total,2).'</th></tr>
+
+				</tbody>
+			</table>';
+
+		$html .='
+		<br>
+			<table class="tbl-borderless" width="100%">
+				<tbody>			
+	
+					<tr>
+						<td width="60%">REMARK : </td>
+						<td class="t-center">PADANG, '.date('d-M-Y').'</td>
+					</tr>
+					<tr>
+						<td><b></b></td>
+						<td></td>
+					</tr>
+					<tr>
+						<td width="60%"><div style="width:600px;word-break: break-all;">
+						</div></td>
+						<td class="t-center" style="vertical-align:baseline!important;"  width="25%"></td>
+					</tr>
+				</tbody>
+			</table>	
+			<div style="width:300px;"><h5>CONTAINERS:</h5>';
+			foreach($detail as $dt):
+				$html .= '<span>'.$dt['crno'] . '</span>,&nbsp;';
+			endforeach;			
+			$html .= '</p>		
+		</body>
+		</html>
+		';
+		$mpdf->WriteHTML($html);
+		$mpdf->Output();
+		// echo $html;
+		die();		
 	}
+
 
 	public function delete($code)
 	{

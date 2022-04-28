@@ -112,17 +112,23 @@
 
 		<div class="row">
 			<!-- List Final Estimation -->
-			<div class="col-lg-4">
-				<div class="widget widget-table">
-					<div class="widget-header">
-						<h3><i class="fa fa-table"></i> Form Input Estimation Detail</h3>
-					</div>
-					<div class="widget-content">
+
+<!-- start modal -->
+<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title" id="myModalLabel">Form Add Estimation Detail</h4>
+			</div>
+			<div class="modal-body">
+
 						<form method="post" id="formDetail" class="form-horizontal" role="form"  enctype="multipart/form-data">
 							<fieldset>
 								<div class="form-group">
 									<label class="col-sm-4 control-label text-right">Location</label>
 									<div class="col-sm-8">
+										<input type="hidden" name="act" id="act" value="add">
 										<input type="hidden" name="det_crno" id="det_crno">
 										<input type="hidden" name="det_svid" id="det_svid">
 										<input type="hidden" name="rpid" id="rpid">
@@ -255,18 +261,22 @@
 								<div class="form-group">
 									<div class="col-sm-offset-4 col-sm-8">
 										<button type="submit" id="saveDetail" class="btn btn-primary" disabled=""><i class="fa fa-check-circle"></i> Save</button>
+										<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle"></i> Close</button>
 									</div>
 								</div>
 							</fieldset>
 						</form>
-					</div>
-				</div>
+
 			</div>
+		</div>
+	</div>
+</div>
+<!-- end modal -->
 
 			<!-- List Final Estimation -->
-			<div class="col-lg-8">
+			<div class="col-lg-12">
 				<p>
-					<button type="button" id="addDetail" class="btn btn-success"><i class="fa fa-plus"></i> Add Detail</button>
+					<button type="button" id="addDetail" class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add Detail</button>
 					<a href="#" id="nextEstimasi" class="btn btn-primary" data-svid=""><i class="fa fa-arrow-circle-o-right"></i>Revisi Estimasi</a>&nbsp;
 					<button type="button" id="finalEstimasi" class="btn btn-primary"  data-toggle="modal" data-target="#myModal"><i class="fa fa-check-circle"></i> Final Estimasi</button>&nbsp;
 
@@ -295,7 +305,7 @@
 									<th>CUR</th>
 									<th>DESC</th>
 									<th>Lab. Cost</th>
-									<th>Mat. Cost</th>
+									<th>Mat.fCost</th>
 								</tr>
 							</thead>
 							<tbody>

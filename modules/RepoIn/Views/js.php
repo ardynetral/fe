@@ -635,6 +635,12 @@ $(document).ready(function() {
 	}
 
 	// End Step 2
+	$('#ctTable tbody').on("click", ".proforma", function(e){
+		e.preventDefault();
+		var reorderno = $(this).data("reorderno");
+        window.open("<?php echo site_url('repoin/proforma/'); ?>" + reorderno, '_blank', 'height=600,width=900,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes');
+	});
+
 	$('#ctTable tbody').on("click",".print_order", function(e){
 		e.preventDefault();
 		var praid = $(this).data("praid");

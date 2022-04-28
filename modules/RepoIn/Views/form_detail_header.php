@@ -8,7 +8,6 @@
 			<form id="formDetail" class="form-horizontal" role="form">
 			<div class="modal-body">
 
-				<?= csrf_field() ?>
 				<fieldset>
 					<div class="form-group">
 						<label class="col-sm-3 control-label text-right">Container No. </label>

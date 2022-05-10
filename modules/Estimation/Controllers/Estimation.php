@@ -619,16 +619,17 @@ class Estimation extends \CodeIgniter\Controller
 			return $data;
 		}
 	}
-	public function getFileList($crno) 
+	public function getFileList($svid,$rpid) 
 	{
 		if($this->request->isAjax()) {
-			$response = $this->client->request('GET', 'estimasi/getFileDetail', [
+			$response = $this->client->request('GET', 'estimasi/getFile', [
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
 				],
 				'query' => [
-					'crno' => $crno
+					'svid' => $svid,
+					'rpid' => $rpid,
 				]
 			]);	
 
@@ -641,9 +642,9 @@ class Estimation extends \CodeIgniter\Controller
 			} 
 			$data = $result['data'];
 			$html = "";
+			$no=1;
 			foreach($data as $row) {
-				$no=1;
-			$html .= '<a href="'.$row['url'].'" class="btn btn-default btn-sm" target="_blank">File '.$no.'</a>&nbsp;';
+			$html .= '<a href="'.$row['url'].'" class="btn btn-warning btn-sm" target="_blank">File '.$no.'</a>&nbsp;';
 			$no++;
 			}
 			echo json_encode($html);
@@ -855,6 +856,8 @@ class Estimation extends \CodeIgniter\Controller
 						border-collapse: collapse;
 					}
 					.line-space{border-bottom:1px solid #000000;margin:30px 0;}
+
+					.img-box{margin-bottom:30px;}
 				</style>
 			</head>
 			<body>

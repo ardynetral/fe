@@ -462,12 +462,12 @@ $(document).ready(function() {
 		$("input[name=rdcalmtd][value=" + rdcalmtd + "]").prop('checked', true);
 		$("input[name=rdaccount][value=" + rdaccount + "]").prop('checked', true);
 		  // $("#fileList").html("");	
-		  loadFileList(crno);	
+		  loadFileList(svid,rpid);	
 	});
 
-	function loadFileList(crno) {
+	function loadFileList(svid,rpid) {
 		$.ajax({
-			url: "<?= site_url('estimation/getFileList/'); ?>" + crno,
+			url: "<?= site_url('estimation/getFileList/'); ?>" + svid +"/"+ rpid,
 			type: "POST",
 			dataType: "JSON",
 			success: function(json) {

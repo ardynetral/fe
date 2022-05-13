@@ -94,25 +94,25 @@ class PraIn extends \CodeIgniter\Controller
             $record = array(); 
 			if($v['appv']==0):
 
-				$btn_list .='<a href="'.site_url('praout/edit/'.$v['praid']).'" id="editPraIn" class="btn btn-xs btn-warning">edit</a>&nbsp;';
+				$btn_list .='<a href="'.site_url('prain/edit/'.$v['praid']).'" id="editPraIn" class="btn btn-xs btn-warning">edit</a>&nbsp;';
 
 				if($group_id!=1):
-				$btn_list .='<a href="'.site_url('praout/approve_order/'.$v['praid']).'" id="" class="btn btn-xs btn-primary" data-praid="'.$v['praid'].'">Approval</a>&nbsp;';
+				$btn_list .='<a href="'.site_url('prain/approve_order/'.$v['praid']).'" id="" class="btn btn-xs btn-primary" data-praid="'.$v['praid'].'">Approval</a>&nbsp;';
 				endif;
 					
 				$btn_list .='<a href="#" id="" class="btn btn-xs btn-danger delete" data-kode="'.$v['praid'].'">delete</a>';
 					
 			elseif($v['appv']==1):
 
-				$btn_list .='<a href="'.site_url('praout/proforma/'.$v['praid']).'" id="" class="btn btn-xs btn-primary" data-praid="'.$v['praid'].'">Proforma</a>&nbsp;';
+				$btn_list .='<a href="'.site_url('prain/proforma/'.$v['praid']).'" id="" class="btn btn-xs btn-primary" data-praid="'.$v['praid'].'">Proforma</a>&nbsp;';
 				
 				if((check_bukti_bayar2($v['praid'])=="exist")&&($group_id!=1)):
-				$btn_list .='<a href="'.site_url('praout/approval2/'.$v['praid']).'" id="" class="btn btn-xs btn-success approve" data-praid="'.$v['praid'].'">Approval 2</a>&nbsp;';
+				$btn_list .='<a href="'.site_url('prain/approval2/'.$v['praid']).'" id="" class="btn btn-xs btn-success approve" data-praid="'.$v['praid'].'">Approval 2</a>&nbsp;';
 				endif;
 
 			elseif($v['appv']==2):
-				$btn_list .='<a href="'.site_url('praout/view/'.$v['praid']).'" id="" class="btn btn-xs btn-default" data-praid="'.$v['praid'].'">view</a>&nbsp;';
-				$btn_list .='<a href="'.site_url('praout/final_order/'.$v['praid']).'" class="btn btn-xs btn-info">Cetak kitir</a>';
+				$btn_list .='<a href="'.site_url('prain/view/'.$v['praid']).'" id="" class="btn btn-xs btn-default" data-praid="'.$v['praid'].'">view</a>&nbsp;';
+				$btn_list .='<a href="'.site_url('prain/final_order/'.$v['praid']).'" class="btn btn-xs btn-info">Cetak kitir</a>';
 
 			endif;
 			

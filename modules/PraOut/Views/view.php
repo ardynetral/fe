@@ -102,7 +102,7 @@
 							<th>Length</th>
 							<th>Height</th>
 							<th>F/E</th>
-							<th>Gate In Date</th>
+							<th>Gate Out Date</th>
 						</tr>
 					</thead>
 					<tbody>

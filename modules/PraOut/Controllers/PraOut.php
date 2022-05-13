@@ -1269,7 +1269,7 @@ class PraOut extends \CodeIgniter\Controller
 		$data['std40'] = ((isset($dt_order['data']['datas'][0]['orderPraContainers'])&&($dt_order['data']['datas'][0]['orderPraContainers']!=null)) ? $this->hitungHCSTD($dt_order['data']['datas'][0]['orderPraContainers'])['std40'] : 0);
 
 		// bukti_bayar
-		if(check_bukti_bayar($dt_order['data']['datas'][0]['praid'])==true) {
+		if(check_bukti_bayar2($dt_order['data']['datas'][0]['praid'])=="exist") {
 			$recept_files = $dt_order['data']['datas'][0]['orderPraRecept'][1];
 			$response_bukti = $this->client->request('GET','orderPraRecepts/getDetailData',[
 				'headers' => [
@@ -2809,7 +2809,7 @@ public function edit_get_container($praid)
 						<th>Length</th>
 						<th>Height</th>
 						<th>F/E</th>
-						<th>Gate In Date</th>
+						<th>Gate Out Date</th>
 						<th>Principal</th>
 						<th>Deposit</th>					
 					</tr>

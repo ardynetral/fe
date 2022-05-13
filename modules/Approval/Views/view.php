@@ -284,7 +284,7 @@
 				<p>
 					<button type="button" id="addDetailEdit" class="btn btn-success" data-toggle="modal" data-target="#myModal"><i class="fa fa-plus"></i> Add Detail</button>
 					<a href="#" id="nextEstimasi" class="btn btn-primary" data-svid=""><i class="fa fa-arrow-circle-o-right"></i>Revisi Estimasi</a>&nbsp;
-					<button type="button" id="finalEstimasi" class="btn btn-primary"  data-toggle="modal" data-target="#myModal"><i class="fa fa-check-circle"></i> Final Estimasi</button>&nbsp;
+					<button type="button" id="finalEstimasi" class="btn btn-primary"  data-toggle="modal" data-target="#finalModal"><i class="fa fa-check-circle"></i> Final Estimasi</button>&nbsp;
 					<a href="#" id="print" class="btn btn-info btn-tbl" data-crno="<?=$header['crno']?>"><i class="fa fa-print"></i>&nbsp;Print</a>
 					<a href="<?= site_url('approval') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>					
 				</p>

@@ -778,41 +778,48 @@ class RepoIn extends \CodeIgniter\Controller
 					}
 				}
 
-				$html .='
+			// 	$html .='
 
-				<tr>
-					<td>997</td>
-					<td>PPN </td>
-					<td></td>
-					<td class="t-center">1</td>
-					<td class="t-center"></td>
-					<td class="t-center">IDR</td>
-					<td class="t-right"></td>
-					<td class="t-right"></td>
-				</tr>
-				<tr>
-					<td>998</td>
-					<td>ADMINISTRATION</td>
-					<td></td>
-					<td class="t-center">1</td>
-					<td class="t-center"></td>
-					<td class="t-center">IDR</td>
-					<td class="t-right"></td>
-					<td class="t-right"></td>
-				</tr>
-				<tr>
-					<td>999</td>
-					<td>MATERAI</td>
-					<td></td>
-					<td class="t-center">1</td>
-					<td class="t-center"></td>
-					<td class="t-center">IDR</td>
-					<td class="t-right"></td>
-					<td class="t-right"></td>
-				</tr>
+			// 	<tr>
+			// 		<td>997</td>
+			// 		<td>PPN </td>
+			// 		<td></td>
+			// 		<td class="t-center">1</td>
+			// 		<td class="t-center"></td>
+			// 		<td class="t-center">IDR</td>
+			// 		<td class="t-right"></td>
+			// 		<td class="t-right"></td>
+			// 	</tr>
+			// 	<tr>
+			// 		<td>998</td>
+			// 		<td>ADMINISTRATION</td>
+			// 		<td></td>
+			// 		<td class="t-center">1</td>
+			// 		<td class="t-center"></td>
+			// 		<td class="t-center">IDR</td>
+			// 		<td class="t-right"></td>
+			// 		<td class="t-right"></td>
+			// 	</tr>
+			// 	<tr>
+			// 		<td>999</td>
+			// 		<td>MATERAI</td>
+			// 		<td></td>
+			// 		<td class="t-center">1</td>
+			// 		<td class="t-center"></td>
+			// 		<td class="t-center">IDR</td>
+			// 		<td class="t-right"></td>
+			// 		<td class="t-right"></td>
+			// 	</tr>
+			// 	<tr><th colspan="7" class="t-right">Total</th>
+			// 		<th class="t-right">'.number_format($total,2).'</th></tr>
+			// ';
+			
+			$html .='
 				<tr><th colspan="7" class="t-right">Total</th>
 					<th class="t-right">'.number_format($total,2).'</th></tr>
+			';
 
+			$html .='
 				</tbody>
 			</table>';
 

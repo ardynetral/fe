@@ -1,9 +1,9 @@
-<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade in" id="finalModal" tabindex="-1" role="dialog" aria-labelledby="finalModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title" id="myModalLabel">Final Estimasi</h4>
+				<h4 class="modal-title" id="finalModalLabel">Final Estimasi</h4>
 			</div>
 			<form id="formFinalEstimasi" class="form-horizontal" role="form"  enctype="multipart/form-data">
 			<div class="modal-body">

@@ -15,7 +15,7 @@ $(document).ready(function() {
 			data : {"wotype": $("#wotype").val(), "woopr": $("#prcode").val()},
 			dataType: "JSON",
 			success: function(json){
-				$("#tblDetail tbody").html(json);
+				$("#tblDetail tbody").html(json);				
 			}
 		});
 	});
@@ -28,7 +28,7 @@ $(document).ready(function() {
 			data : {"wotype": $("#wotype").val(), "woopr": $("#prcode").val()},
 			dataType: "JSON",
 			success: function(json){
-				$("#tblDetail tbody").html(json);
+				$("#tblDetail tbody").html(json);			
 			}
 		});
 	});
@@ -60,6 +60,10 @@ $(document).ready(function() {
 					$('#cancel').prop('disabled',true);
 					$("#checkAll").prop('disabled',false);
 					$("#wono").val(res.data.wono);
+					
+					$('#tblDetail tbody tr td:nth-child(1)').map(function() {
+			            return $(this).find('input:checkbox').prop("disabled", false);
+			        });				
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -77,7 +81,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var CRNOS =  $('#tblDetail tbody tr td:nth-child(3)').map(function() {
             return $(this).text();
-        }).get().join('","');	
+        }).get().join("','");	
 		console.log(CRNOS);
 		$.ajax({
 			url: "<?php echo site_url('wo/save_all_detail'); ?>",
@@ -91,7 +95,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+res.message+'</div>'
 					});
-					$('#tblDetail tbody').find('input:checkbox').prop("disabled", true);
+					// $('#tblDetail tbody').find('input:checkbox').prop("disabled", true);
 				} else {
 					Swal.fire({
 					  icon: 'error',

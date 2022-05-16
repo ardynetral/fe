@@ -174,7 +174,7 @@ class WorkOrder extends \CodeIgniter\Controller
 			// echo var_dump($result['data']['crno']);
 			foreach($result['data']['allData'] as $row) {
 			$html .= '<tr>';
-			$html .= '<td><input type="checkbox" name="checked_cr" class="checked_cr" value="0" ></td>';
+			$html .= '<td><input type="checkbox" name="checked_cr" class="checked_cr" value="0" disabled></td>';
 			$html .= '<td>'.$no.'</td>';
 			$html .= '<td>'.$row['crno'].'</td>';
 			$html .= '<td>'.$row['ctcode'].'</td>';
@@ -197,6 +197,7 @@ class WorkOrder extends \CodeIgniter\Controller
 
 	public function save_all_detail()
 	{
+		echo var_dump($_POST['CRNOS']);die();
 		$response = $this->client->request('PUT','workorder/updateAllWO',[
 			'headers' => [
 				'Accept' => 'application/json',
@@ -279,7 +280,7 @@ class WorkOrder extends \CodeIgniter\Controller
 		]);		
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		// dd($result['data']);
+		dd($result['data']);
 		$data['act'] = "Add";
 		$data['page_title'] = "Work Order";
 		$data['page_subtitle'] = "Work Order Page";		

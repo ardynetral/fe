@@ -280,7 +280,6 @@ class WorkOrder extends \CodeIgniter\Controller
 		]);		
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		dd($result['data']);
 		$data['act'] = "Add";
 		$data['page_title'] = "Work Order";
 		$data['page_subtitle'] = "Work Order Page";		

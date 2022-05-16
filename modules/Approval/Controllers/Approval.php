@@ -587,7 +587,7 @@ class Approval extends \CodeIgniter\Controller
 	{
 		$CRNO = $this->request->getPost('crno');
 		if($this->request->isAjax()) {
-			$response = $this->client->request('GET', 'estimasi/listOneCrno', [
+			$response = $this->client->request('GET', 'estimasi/listOneWApprov', [
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')

@@ -95,7 +95,7 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+res.message+'</div>'
 					});
-					// $('#tblDetail tbody').find('input:checkbox').prop("disabled", true);
+					window.location.href = "<?php echo site_url('wo')?>";
 				} else {
 					Swal.fire({
 					  icon: 'error',

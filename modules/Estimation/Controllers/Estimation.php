@@ -857,7 +857,9 @@ class Estimation extends \CodeIgniter\Controller
 					}
 					.line-space{border-bottom:1px solid #000000;margin:30px 0;}
 
-					.img-box{margin-bottom:30px;}
+					.img-container{display:block;}
+					.img-box{float:left;width:47%;padding:10px;}
+					.img-box img{display:inline-block;}
 				</style>
 			</head>
 			<body>

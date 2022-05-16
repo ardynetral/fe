@@ -412,6 +412,8 @@ $(document).ready(function() {
 		$("#rdmat").val(rdmat);
 		$("input[name=rdcalmtd][value=" + rdcalmtd + "]").prop('checked', true);
 		$("input[name=rdaccount][value=" + rdaccount + "]").prop('checked', true);			console.log(rpid);
+		$("#fileList").html("");	
+		loadFileList(svid,rpid);		
 	});
 
 	$("#tblList_edit tbody").on("click",".edit", function(e){
@@ -461,7 +463,7 @@ $(document).ready(function() {
 		$("#rdtotal").val(rdtotal);
 		$("input[name=rdcalmtd][value=" + rdcalmtd + "]").prop('checked', true);
 		$("input[name=rdaccount][value=" + rdaccount + "]").prop('checked', true);
-		  // $("#fileList").html("");	
+		  $("#fileList").html("");	
 		  loadFileList(svid,rpid);	
 	});
 

@@ -77,7 +77,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var CRNOS =  $('#tblDetail tbody tr td:nth-child(3)').map(function() {
             return $(this).text();
-        }).get().join(',');	
+        }).get().join('","');	
 		console.log(CRNOS);
 		$.ajax({
 			url: "<?php echo site_url('wo/save_all_detail'); ?>",

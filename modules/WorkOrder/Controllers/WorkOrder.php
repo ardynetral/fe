@@ -205,7 +205,7 @@ class WorkOrder extends \CodeIgniter\Controller
 				'Authorization' => session()->get('login_token')
 			],
 			'form_params' => [
-				'wono' => $_POST['WONO'],
+				'wonumber' => $_POST['WONO'],
 				'crno' => $_POST['CRNOS']
 			]
 		]);		

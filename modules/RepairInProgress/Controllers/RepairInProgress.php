@@ -19,7 +19,12 @@ class RepairInProgress extends \CodeIgniter\Controller
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
         // $sort_dir = $this->get_sort_dir();		
 		// PULL data from API
-		$response = $this->client->request('GET','dataListReports/listAllEstimations',[
+
+/*
+/containerRepair/listMnr
+param limit, offset, search
+*/		
+		$response = $this->client->request('GET','containerRepair/listMnr',[
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
@@ -32,6 +37,7 @@ class RepairInProgress extends \CodeIgniter\Controller
 			]);
 
 		$result = json_decode($response->getBody()->getContents(), true);
+		// echo var_dump($result);die();
         $output = array(
             "draw" => $this->request->getPost('draw'),
             "recordsTotal" => @$result['data']['Total'],

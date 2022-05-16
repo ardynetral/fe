@@ -197,7 +197,8 @@ class WorkOrder extends \CodeIgniter\Controller
 
 	public function save_all_detail()
 	{
-		echo var_dump($_POST['CRNOS']);die();
+		$CRNOS = "'".$_POST['CRNOS']."'";
+		// print_r($CRNOS);die();
 		$response = $this->client->request('PUT','workorder/updateAllWO',[
 			'headers' => [
 				'Accept' => 'application/json',

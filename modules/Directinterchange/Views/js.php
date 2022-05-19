@@ -73,6 +73,26 @@ $(document).ready(function() {
         $("#cpcust").val(prcode);
     });
 
+    $("#crno").on("keyup", function() {
+        var crno = $("#crno").val();
+        var status = "";
+        $("#rpcrno").val(crno);   
+        $("#cpopr0").val("");          
+        $("#cpcust0").val("");          
+        $(this).val($(this).val().toUpperCase());
+        $.ajax({
+            url: "<?= site_url('directinterchange/getContainer'); ?>",
+            type: "POST",
+            data: { "crno": crno },
+            dataType: "JSON",
+            success: function(json) {
+                $("#cpcust0").val(json.cpcust);                
+                $("#cpopr0").val(json.cpopr);
+            }
+        });
+    });
+
+
 });
 
 function runDataTables() {      

@@ -40,7 +40,21 @@
 							<div class="col-sm-3">
 								<input type="text" name="crno" class="form-control" id="crno">
 							</div>
-						</div>							
+						</div>		
+						<!-- Principal lama -->
+						<div class="form-group">
+							<label for="chfrom" class="col-sm-2 control-label text-right">Principal</label>
+							<div class="col-sm-3">
+								<input type="text" name="cpopr0" id="cpopr0" class="form-control" readonly>
+							</div>
+						</div>	
+						<div class="form-group">
+							<label for="chto" class="col-sm-2 control-label text-right">Customer</label>
+							<div class="col-sm-3">
+								<input type="text" name="cpcust0" class="form-control" id="cpcust0" readonly>
+							</div>
+						</div>	
+						<!-- Principal baru -->
 						<div class="form-group">
 							<label for="chfrom" class="col-sm-2 control-label text-right">Principal</label>
 							<div class="col-sm-3">

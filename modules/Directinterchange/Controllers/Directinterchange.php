@@ -27,10 +27,10 @@ param limit, offset, search
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
 			],
-			'json' => [
-				'offset' => (int)$offset,
+			'form_params' => [
 				'limit'	=> (int)$limit,
-				'search' => $search
+				'offset' => (int)$offset,
+				'search' => (string)$search
 			]
 		]);
 
@@ -56,6 +56,7 @@ param limit, offset, search
 			$output['data'][] = $record;
 		}
 
+		// echo varrdump($result);
 		echo json_encode($output);
 		die();
 	}
@@ -136,4 +137,22 @@ param limit, offset, search
 		return view('Modules\Directinterchange\Views\add', $data);
 	}
 
+	public function getContainer()
+	{
+		$crno = $_POST['crno'];
+
+
+		$getContainer = $this->client->request('GET', 'containers/containerSearch', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'crno' => $crno
+			]
+		]);
+		$result = json_decode($getContainer->getBody()->getContents(), true);
+		// echo var_dump($result);die();
+		echo json_encode($result['data'][0]);
+	}
 }

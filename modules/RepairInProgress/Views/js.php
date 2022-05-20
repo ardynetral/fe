@@ -393,17 +393,88 @@ $(document).ready(function() {
 					$("#svcond").val(json.header.svcond);
 					$("#rpver").val(json.header.rpver);
 					$("#tblList_add tbody").html(json.detail);
+
+					if(json.header.crlastact=="WR") {
+						$("#finishRepair").prop("disabled",false);
+						$("#finishCleaning").prop("disabled",true);
+					} else if(json.header.crlastact=="WC") {
+						$("#finishRepair").prop("disabled",true);
+						$("#finishCleaning").prop("disabled",false);
+					} else {
+						$("#finishRepair").prop("disabled",true);
+						$("#finishCleaning").prop("disabled",true);
+					}
+
+
 					console.log(json.header);
 				}
 			}
 		});
 	});
 
+	$("#finishRepair").on("click", function(e){
+		$.ajax({
+			url:"<?=site_url('rip/finish_repair');?>",
+			type:"POST",
+			data:{"crno":$("#rpcrno").val(),"svid":$("#svid").val()},
+			dataType:"JSON",
+			success: function(res){
+				if (res.status == "success") {
+					Swal.fire({
+						icon: 'success',
+						title: "Success",
+						html: '<div class="text-success">' + res.message + '</div>'
+					});
+					$("#finishRepair").prop("disabled", true);
+					$("#finishCleaning").prop("disabled", false);
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: "Error",
+						html: '<div class="text-danger">' + res.message + '</div>'
+					});
+					$("#finishRepair").prop("disabled", false);
+					$("#finishCleaning").prop("disabled", true);					
+				}
+
+			}
+		});
+	});
+
+	$("#finishCleaning").on("click", function(e){
+		$.ajax({
+			url:"<?=site_url('rip/finish_cleaning');?>",
+			type:"POST",
+			data:{"crno":$("#rpcrno").val(),"svid":$("#svid").val()},
+			dataType:"JSON",
+			success: function(res){
+				if (res.status == "success") {
+					Swal.fire({
+						icon: 'success',
+						title: "Success",
+						html: '<div class="text-success">' + res.message + '</div>'
+					});
+					$("#finishRepair").prop("disabled", true);
+					$("#finishCleaning").prop("disabled", true);
+				} else {
+					Swal.fire({
+						icon: 'error',
+						title: "Error",
+						html: '<div class="text-danger">' + res.message + '</div>'
+					});
+					$("#finishRepair").prop("disabled", true);
+					$("#finishCleaning").prop("disabled", false);					
+				}
+
+			}
+		});
+	});
 	$("#tblList_add tbody").on("click",".edit", function(e){
 		e.preventDefault();
 		$("#saveDetail").prop("disabled",false);
 		$("#act").val("edit");
 		var row = $(this).closest("tr");
+		var svid = $("#fEstimasi").find("#svid").val();
 		var rpid = row.find(".no").text();
 		var lccode = row.find(".lccode").text();
 		var cmcode = row.find(".cmcode").text();
@@ -423,6 +494,7 @@ $(document).ready(function() {
 		else if(tucode=="JPY") { curr_code="003"; }
 		else if(tucode=="SGD") { curr_code="004"; }
 		else if(tucode=="EUD") { curr_code="005"; }
+		$("#svid").val(svid);
 		$("#rpid").val(rpid);
 		$("#lccode").val(lccode);
 		$("#cmcode").val(cmcode);

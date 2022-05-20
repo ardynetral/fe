@@ -17,13 +17,7 @@ class RepairInProgress extends \CodeIgniter\Controller
 		$search = ($this->request->getPost('search[value]') != "")?$this->request->getPost('search[value]'):"";
         $offset = ($this->request->getPost('start')!= 0)?$this->request->getPost('start'):0;
         $limit = ($this->request->getPost('rows') !="")? $this->request->getPost('rows'):10;
-        // $sort_dir = $this->get_sort_dir();		
-		// PULL data from API
 
-/*
-/containerRepair/listMnr
-param limit, offset, search
-*/		
 		$response = $this->client->request('GET','containerRepair/listMnr',[
 				'headers' => [
 					'Accept' => 'application/json',
@@ -37,7 +31,7 @@ param limit, offset, search
 			]);
 
 		$result = json_decode($response->getBody()->getContents(), true);
-		// echo var_dump($result);die();
+
         $output = array(
             "draw" => $this->request->getPost('draw'),
             "recordsTotal" => @$result['data']['Total'],
@@ -57,12 +51,11 @@ param limit, offset, search
             $record[] = $v['RPNOEST'];
             $record[] = $v['RPVER'];
 			
-			// $btn_list .= '<a href="#" id="" class="btn btn-xs btn-primary btn-tbl" data-praid="">view</a>';	
 			if(has_privilege_check($module, '_update')==true):
+				// $btn_list .= '<a href="#" class="btn btn-xs btn-success btn-tbl">edit</a>';
 				$btn_list .= '<a href="'.site_url('rip/edit/').$v['RPCRNO'].'" id="editPraIn" class="btn btn-xs btn-success btn-tbl">edit</a>';
 			endif;
 			
-			// $btn_list .= '<a href="#" class="btn btn-xs btn-info btn-tbl print" data-crno="'.$v['RPCRNO'].'">print</a>';
 			$btn_list .= '
 				<div class="btn-group">
 					<button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Print <span class="caret"></span></button>
@@ -72,10 +65,6 @@ param limit, offset, search
 						<li><a href="#" class="print" data-crno="'.$v['RPCRNO'].'" data-type="user">User</a></li>
 					</ul>
 				</div>';
-
-			// if(has_privilege_check($module, '_delete')==true):
-			// 	$btn_list .= '<a href="#" id="deletePraIn" class="btn btn-xs btn-danger btn-tbl">delete</a>';
-			// endif;
 
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
@@ -101,10 +90,7 @@ param limit, offset, search
 		$token = get_token_item();
 		$user_id = $token['id'];
 		$group_id = $token['groupId'];
-		// $prcode = $token['prcode'];
-
 		$data = [];
-		
 
 		$data['page_title'] = "Repair In Progress";
 		$data['page_subtitle'] = "Repair In Progress Page";
@@ -117,8 +103,8 @@ param limit, offset, search
 		$data = [];
 		$data['data'] = "";
 		$form_params = [];
+
 		if($this->request->isAjax()) {
-			// echo var_dump($this->request->getPost());die();
 			$form_params= [
 			"svid" => $this->request->getPost('svid'),
 			"rpver" => ($this->request->getPost('rpver')!=''?$this->request->getPost('rpver'):1),
@@ -139,8 +125,6 @@ param limit, offset, search
 			]);	
 
 			$result = json_decode($response->getBody()->getContents(), true);	
-			
-			// echo var_dump($result);die();
 			
 			if(isset($result['status']) && $result['status']=="Failled") {
 				$data['status'] = "Failled";	
@@ -167,7 +151,11 @@ param limit, offset, search
 		$data['data'] = "";
 		$form_params = [];
 		if($this->request->isAjax()) {
-			// echo var_dump($this->request->getPost());die();
+
+			/*
+			estimasi/insertfilemnr
+			param svid, rpid, flag, file --> POST
+			*/
 
 			$form_params[] = [
 				"name" => "svid",
@@ -178,101 +166,10 @@ param limit, offset, search
 				"name" => "rpid",
 				"contents" => $this->request->getPost('rpid')
 			];
-			$form_params[] = [
-				"name" => "rdteb",
-				"contents" => ""
-			];
-			$form_params[] = [
-				"name" => "rdloc",
-				"contents" => $this->request->getPost('lccode')
-			];
-			$form_params[] = [
-				"name" => "rdcom",
-				"contents" => $this->request->getPost('cmcode')
-			];
-			$form_params[] = [
-				"name" => "rddmtype",
-				"contents" => $this->request->getPost('dycode')
-			];
-			$form_params[] = [
-				"name" => "rdrepmtd",
-				"contents" => $this->request->getPost('rmcode')
-			];
-			$form_params[] = [
-				"name" => "rdcalmtd",
-				"contents" => $this->request->getPost('rdcalmtd')
-			];
-			$form_params[] = [
-				"name" => "rdsize",
-				"contents" => $this->request->getPost('rdsize')
-			];
-			$form_params[] = [
-				"name" => "muname",
-				"contents" => $this->request->getPost('muname')
-			];
-			$form_params[] = [
-				"name" => "rdqty",
-				"contents" => $this->request->getPost('rdqtyact')
-			];
-			$form_params[] = [
-				"name" => "rdmhr",
-				"contents" => $this->request->getPost('rdmhr')
-			];
-			$form_params[] = [
-				"name" => "rdcurr",
-				"contents" => $this->request->getPost('tucode')
-			];
-			$form_params[] = [
-				"name" => "rdmat",
-				"contents" => $this->request->getPost('rdmat')
-			];
-			$form_params[] = [
-				"name" => "rdtotal",
-				"contents" => $this->request->getPost('rdtotal')
-			];
-			$form_params[] = [
-				"name" => "rdaccount",
-				"contents" => $this->request->getPost('rdaccount')
-			];
-			$form_params[] = [
-				"name" => "rdno",
-				"contents" => "1"
-			];
-			$form_params[] = [
-				"name" => "rdlab",
-				"contents" => "1"
-			];
-			$form_params[] = [
-				"name" => "rddesc",
-				"contents" => ""
-			];
-			$form_params[] = [
-				"name" => "rdpic",
-				"contents" => ""
-			];
-			$form_params[] = [
-				"name" => "rdsizea",
-				"contents" => "1"
-			];
-			$form_params[] = [
-				"name" => "rdqtya",
-				"contents" => "1"
-			];
-			$form_params[] = [
-				"name" => "rdmhra",
-				"contents" => "1"
-			];
-			$form_params[] = [
-				"name" => "rdmata",
-				"contents" => "1"
-			];
-			$form_params[] = [
-				"name" => "rdlaba",
-				"contents" => "1"
-			];
+
 			$form_params[] = [
 				"name" => "flag",
-				"contents" => "1"
+				"contents" => "2"
 			];
 
 			if($_FILES["files"] !="") {
@@ -288,25 +185,7 @@ param limit, offset, search
 				}
 			}
 
-			$validate = $this->validate([
-            'rdmhr'		=> 'required',
-            'rdmat'		=> 'required',
-            'rdtotal'	=> 'required',
-        	],
-            [
-            'rdmhr'		=> ['required' => 'MAN HOUR field required'],
-            'rdmat'		=> ['required' => 'MATERIAL COST field required'],
-            'rdtotal'	=> ['required' => 'TOTAL COST field required'],
-	        ]);
-			
-			if(!$validate) {
-				$data['status'] = "Failled";	
-				$data['message'] = \Config\Services::validation()->listErrors();
-				echo json_encode($data);
-				die();	
-			}
-
-			$response = $this->client->request('POST', 'estimasi/createDetail', [
+			$response = $this->client->request('POST', 'estimasi/insertfilemnr', [
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
@@ -355,10 +234,15 @@ param limit, offset, search
 		$data['header'] = $header;
 		$data['detail'] = $detail;	
 			
-		$data['lccode_dropdown'] = $this->lccode_dropdown();
-		$data['cmcode_dropdown'] = $this->cmcode_dropdown();
-		$data['dycode_dropdown'] = $this->dycode_dropdown();
-		$data['rmcode_dropdown'] = $this->rmcode_dropdown();
+		// $data['lccode_dropdown'] = $this->lccode_dropdown();
+		// $data['cmcode_dropdown'] = $this->cmcode_dropdown();
+		// $data['dycode_dropdown'] = $this->dycode_dropdown();
+		// $data['rmcode_dropdown'] = $this->rmcode_dropdown();
+
+		$data['lccode_dropdown'] = "";
+		$data['cmcode_dropdown'] = "";
+		$data['dycode_dropdown'] = "";
+		$data['rmcode_dropdown'] = "";		
 		$data['act'] = "Add";
 		$data['page_title'] = "Repair In Progress";
 		$data['page_subtitle'] = "Repair In Progress Page";
@@ -379,108 +263,16 @@ param limit, offset, search
 				"contents" => $this->request->getPost('rpid')
 			];
 			$form_params[] = [
-				"name" => "rdteb",
-				"contents" => ""
-			];
-			$form_params[] = [
-				"name" => "rdloc",
-				"contents" => $this->request->getPost('lccode')
-			];
-			$form_params[] = [
-				"name" => "rdcom",
-				"contents" => $this->request->getPost('cmcode')
-			];
-			$form_params[] = [
-				"name" => "rddmtype",
-				"contents" => $this->request->getPost('dycode')
-			];
-			$form_params[] = [
-				"name" => "rdrepmtd",
-				"contents" => $this->request->getPost('rmcode')
-			];
-			$form_params[] = [
-				"name" => "rdcalmtd",
-				"contents" => $this->request->getPost('rdcalmtd')
-			];
-			$form_params[] = [
-				"name" => "rdsize",
-				"contents" => $this->request->getPost('rdsize')
-			];
-			$form_params[] = [
-				"name" => "muname",
-				"contents" => $this->request->getPost('muname')
-			];
-			$form_params[] = [
-				"name" => "rdqty",
-				"contents" => $this->request->getPost('rdqtyact')
-			];
-			$form_params[] = [
-				"name" => "rdmhr",
-				"contents" => $this->request->getPost('rdmhr')
-			];
-			$form_params[] = [
-				"name" => "rdcurr",
-				"contents" => $this->request->getPost('tucode')
-			];
-			$form_params[] = [
-				"name" => "rdmat",
-				"contents" => $this->request->getPost('rdmat')
-			];
-			$form_params[] = [
-				"name" => "rdtotal",
-				"contents" => $this->request->getPost('rdtotal')
-			];
-			$form_params[] = [
-				"name" => "rdaccount",
-				"contents" => $this->request->getPost('rdaccount')
-			];
-			$form_params[] = [
-				"name" => "rdno",
-				"contents" => "1"
-			];
-			$form_params[] = [
-				"name" => "rdlab",
-				"contents" => "1"
-			];
-			$form_params[] = [
-				"name" => "rddesc",
-				"contents" => ""
-			];
-			$form_params[] = [
-				"name" => "rdpic",
-				"contents" => ""
-			];
-			$form_params[] = [
-				"name" => "rdsizea",
-				"contents" => "1"
-			];
-			$form_params[] = [
-				"name" => "rdqtya",
-				"contents" => "1"
-			];
-			$form_params[] = [
-				"name" => "rdmhra",
-				"contents" => "1"
-			];
-			$form_params[] = [
-				"name" => "rdmata",
-				"contents" => "1"
-			];
-			$form_params[] = [
-				"name" => "rdlaba",
-				"contents" => "1"
-			];
-			$form_params[] = [
 				"name" => "flag",
-				"contents" => "1"
+				"contents" => "2"
 			];
 			// echo var_dump($_FILES);die();
 			if($_FILES["files"]['name'][0] =="") {
 
 				$form_params[] = [
 					'name' => 'file',
-					'contents'	=> "",
-					'filename'	=> "",
+					'contents'	=> fopen($_FILES["files"]['tmp_name'][$key],'r'),
+					'filename'	=> $_FILES["files"]['name'][$key],
 				];	
 
 			} else {
@@ -497,7 +289,7 @@ param limit, offset, search
 				}
 			}
 
-			$response = $this->client->request('PUT', 'estimasi/updateDetail', [
+			$response = $this->client->request('POST', 'estimasi/insertfilemnr', [
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
@@ -525,7 +317,7 @@ param limit, offset, search
 	// by param 
 	public function getOneEstimasi($CRNO) 
 	{
-		$response = $this->client->request('GET', 'estimasi/listOneCrno', [
+		$response = $this->client->request('GET', 'containerRepair/listbycrno', [
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
@@ -546,7 +338,7 @@ param limit, offset, search
 	{
 		$CRNO = $this->request->getPost('crno');
 		if($this->request->isAjax()) {
-			$response = $this->client->request('GET', 'estimasi/listOneCrno', [
+			$response = $this->client->request('GET', 'containerRepair/listbycrno', [
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
@@ -595,7 +387,7 @@ param limit, offset, search
 	public function getFileList($svid,$rpid) 
 	{
 		if($this->request->isAjax()) {
-			$response = $this->client->request('GET', 'estimasi/getFile', [
+			$response = $this->client->request('GET', 'containerRepair/getFile', [
 				'headers' => [
 					'Accept' => 'application/json',
 					'Authorization' => session()->get('login_token')
@@ -617,7 +409,9 @@ param limit, offset, search
 			$html = "";
 			$no=1;
 			foreach($data as $row) {
-			$html .= '<a href="'.$row['url'].'" class="btn btn-warning btn-sm" target="_blank">File '.$no.'</a>&nbsp;';
+			$html .= '<a href="'.$row['url'].'" class="" target="_blank">
+				<img src="'.$row['url'].'" style="width: 50%;float: left;padding: 5px;">
+			</a>&nbsp;';
 			$no++;
 			}
 			echo json_encode($html);
@@ -638,7 +432,8 @@ param limit, offset, search
 				$html .= '<tr>';
 				$html .= '<td>
 					<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal"><i class="fa fa-picture-o"></i>&nbsp;Add picture</a>
-				</td>';
+				</td>';				
+
 				$html .= '<td class="no">'.$no.'</td>';
 				$html .= '<td class="lccode" style="display:none">'.$row['lccode'].'</td>';
 				$html .= '<td class="cmcode">'.$row['cmcode'].'</td>';
@@ -771,7 +566,7 @@ param limit, offset, search
 
 	public function getFileToPrint($crno) 
 	{
-		$response = $this->client->request('GET', 'estimasi/getFileDetail', [
+		$response = $this->client->request('GET', 'containerRepair/getFileDetail', [
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
@@ -806,6 +601,60 @@ param limit, offset, search
 		}
 		$data = $result['data'];
 		return $data;			
+	}
+
+	public function finish_repair() 
+	{
+		$CRNO = $_POST['crno'];
+		$SVID = $_POST['svid'];
+		$response = $this->client->request('POST', 'containerRepair/finisRepair', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json' => [
+				'crno' => $CRNO,
+				'svid' => $SVID
+			]
+		]);	
+		$result = json_decode($response->getBody()->getContents(), true);
+
+		if(isset($result['status']) && $result['status']=="Failled") {
+			$data['status'] = "Failled";
+			$data['message'] = "Finish Repair Gagal..";
+			echo json_encode($data);die();
+		}		
+
+		$data['status'] = "success";
+		$data['message'] = "Finish Repair Berhasil..";	
+		echo json_encode($data);die();
+	}
+
+	public function finish_cleaning() 
+	{
+		$CRNO = $_POST['crno'];
+		$SVID = $_POST['svid'];
+		$response = $this->client->request('POST', 'containerRepair/finisCleaning', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'json' => [
+				'crno' => $CRNO,
+				'svid' => $SVID
+			]
+		]);	
+		$result = json_decode($response->getBody()->getContents(), true);
+
+		if(isset($result['status']) && $result['status']=="Failled") {
+			$data['status'] = "Failled";
+			$data['message'] = "Finish Cleaning Gagal..";
+			echo json_encode($data);die();
+		}		
+
+		$data['status'] = "success";
+		$data['message'] = "Finish Cleaning Berhasil..";	
+		echo json_encode($data);die();
 	}
 
 	public function print($crno,$type) 
@@ -847,7 +696,9 @@ param limit, offset, search
 					}
 					.line-space{border-bottom:1px solid #000000;margin:30px 0;}
 
-					.img-box{margin-bottom:30px;}
+					.img-container{display:block;}
+					.img-box{float:left;width:47%;padding:10px;}
+					.img-box img{display:inline-block;}
 				</style>
 			</head>
 			<body>

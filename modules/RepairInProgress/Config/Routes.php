@@ -15,4 +15,6 @@ $routes->add('/rip/delete_detail', '\Modules\RepairInProgress\Controllers\Repair
 $routes->add('/rip/delete_detail_edit', '\Modules\RepairInProgress\Controllers\RepairInProgress::delete_detail_edit', ['filter' => 'login']);
 $routes->add('/rip/print/(:alphanum)/(:alphanum)', '\Modules\RepairInProgress\Controllers\RepairInProgress::print/$1/$2', ['filter' => 'login']);
 $routes->add('/rip/calculateTotalCost', '\Modules\RepairInProgress\Controllers\RepairInProgress::calculateTotalCost', ['filter' => 'login']);
+$routes->add('/rip/finish_repair', '\Modules\RepairInProgress\Controllers\RepairInProgress::finish_repair', ['filter' => 'login']);
+$routes->add('/rip/finish_cleaning', '\Modules\RepairInProgress\Controllers\RepairInProgress::finish_cleaning', ['filter' => 'login']);
 

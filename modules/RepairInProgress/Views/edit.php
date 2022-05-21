@@ -156,7 +156,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<div class="col-sm-6" id="fileList"></div>
 								</div>
 
-								<div class="tab-pane fade active in" id="detailData">
+								<div class="tab-pane fade" id="detailData">
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Location</label>
 										<div class="col-sm-8">
@@ -305,7 +305,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 
 					<button type="button" id="finishCleaning" class="btn btn-primary" <?=($header['crlastact']=="WC")?"":"disabled"?>><i class="fa fa-check-circle"></i> FINISH CLEANING</button>&nbsp;
 
-					<a href="<?= site_url('rip') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+					<a href="<?= site_url('rip') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Exit</a>
 				</p>
 				<div class="widget widget-table">
 					<div class="widget-header">
@@ -379,7 +379,7 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 		</div>
 	</div>
 	<div class="widget-footer text-center">
-		<a href="<?= site_url('estimation') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> BACK</a>
+		<a href="<?= site_url('rip') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> BACK</a>
 	</div>
 </div>
 

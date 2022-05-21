@@ -120,7 +120,7 @@ if(isset($data) && ($data!='')) {
 							<button type="button" id="finishRepair" class="btn btn-success"><i class="fa fa-cogs"></i> FINISH REPAIR</button>
 							<button type="button" id="finishCleaning" class="btn btn-primary"><i class="fa fa-check-circle"></i> FINISH CLEANING</button>&nbsp;
 
-							<a href="<?= site_url('rip') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+							<a href="<?= site_url('rip') ?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Exit</a>
 						</p>
 						<div class="widget widget-table">
 							<div class="widget-header">

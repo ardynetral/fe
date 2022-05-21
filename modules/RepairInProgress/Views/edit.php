@@ -164,25 +164,25 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 											<input type="hidden" name="det_crno" id="det_crno">
 											<input type="hidden" name="det_svid" id="det_svid">
 											<input type="hidden" name="rpid" id="rpid">
-											<?= $lccode_dropdown; ?>
+											<input class="form-control" type="text" name="lccode" id="lccode" readonly>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Component</label>
 										<div class="col-sm-8">
-											<?= $cmcode_dropdown; ?>
+											<input class="form-control" type="text" name="cmccode" id="cmcode" readonly>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Damage Type</label>
 										<div class="col-sm-8">
-											<?= $dycode_dropdown; ?>
+											<input class="form-control" type="text" name="dycode" id="dycode" readonly>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Repair Method</label>
 										<div class="col-sm-8">
-											<?= $rmcode_dropdown; ?>
+											<input class="form-control" type="text" name="rmcode" id="rmcode" readonly>
 										</div>
 									</div>
 									<div class="form-group">
@@ -213,14 +213,14 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Size</label>
 										<div class="col-sm-8">
-											<input type="text" name="rdsize" class="form-control" id="rdsize">
+											<input type="text" name="rdsize" class="form-control" id="rdsize" readonly>
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Measurement Unit</label>
 										<div class="col-sm-8">
 											<!-- <input type="text" name="muname" class="form-control" id="muname"> -->
-											<select name="muname" class="form-control" id="muname">
+											<select name="muname" class="form-control" id="muname" readonly>
 												<option value=""> - select - </option>
 												<option value="%">%</option>
 												<option value="20">20</option>
@@ -240,14 +240,14 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Quantity</label>
 										<div class="col-sm-8">
-											<input type="text" name="rdqtyact" class="form-control" id="rdqtyact">
+											<input type="text" name="rdqtyact" class="form-control" id="rdqtyact" readonly>
 											
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Man Hour</label>
 										<div class="col-sm-8">
-											<input type="text" name="rdmhr" class="form-control" id="rdmhr">
+											<input type="text" name="rdmhr" class="form-control" id="rdmhr" readonly>
 											
 										</div>
 									</div>
@@ -260,14 +260,14 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Material Cost</label>
 										<div class="col-sm-8">
-											<input type="text" name="rdmat" class="form-control" id="rdmat">
+											<input type="text" name="rdmat" class="form-control" id="rdmat" readonly>
 											
 										</div>
 									</div>
 									<div class="form-group">
 										<label class="col-sm-4 control-label text-right">Total Cost</label>
 										<div class="col-sm-8">
-											<input type="text" name="rdtotal" class="form-control" id="rdtotal">
+											<input type="text" name="rdtotal" class="form-control" id="rdtotal" readonly>
 										</div>
 									</div>
 
@@ -284,8 +284,8 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 											</label>
 										</div>
 									</div>									
-									<div class="form-group">
-										<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle"></i> Close</button>										
+									<div class="form-group text-center">
+										<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle"></i> Close</button>
 									</div>
 								</div>							
 							</div>

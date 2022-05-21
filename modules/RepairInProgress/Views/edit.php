@@ -105,13 +105,12 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 							<td></td>
 						</tr>
 						<tr>
-							<td colspan="6"></td>
-						</tr>
-						<tr>
+							<td class="text-right" width="130">WO Number :</td>
+							<td><input <?php echo $readonly; ?> type="text" name="wono" class="form-control" id="wono" value="<?= $header['wono']; ?>"></td>
+							<td class="text-right">Inspektor :</td>
+							<td colspan="3"><input <?php echo $readonly; ?> type="text" name="inspektor" id="inspektor" class="form-control" value="<?= $header['syid']; ?>"></td>
 							<td></td>
-							<td colspan="5">
-								
-							</td>
+							<td></td>
 						</tr>
 					</tbody>
 				</table>

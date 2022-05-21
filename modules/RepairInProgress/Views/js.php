@@ -392,6 +392,8 @@ $(document).ready(function() {
 					$("#svcond").val(json.header.svcond);
 					$("#svcond").val(json.header.svcond);
 					$("#rpver").val(json.header.rpver);
+					$("#wono").val(json.header.wono);
+					$("#inspektor").val(json.header.syid);
 					$("#tblList_add tbody").html(json.detail);
 
 					if(json.header.crlastact=="WR") {

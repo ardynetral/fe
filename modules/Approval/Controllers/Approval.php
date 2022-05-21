@@ -693,8 +693,8 @@ class Approval extends \CodeIgniter\Controller
 				else {$rdaccount="i";}				
 				$html .= '<tr>';
 				$html .= '<td>
-						<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
-						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
+						<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal" style="display:none;">edit</a>
+						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'" style="display:none;">delete</a></td>';
 				$html .= '<td class="no">'.$no.'</td>';
 				$html .= '<td class="lccode" style="display:none">'.$row['lccode'].'</td>';
 				$html .= '<td class="cmcode">'.$row['cmcode'].'</td>';
@@ -731,8 +731,8 @@ class Approval extends \CodeIgniter\Controller
 				else {$rdaccount="i";}				
 				$html .= '<tr>';
 				$html .= '<td>
-						<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
-						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'">delete</a></td>';
+						<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal" style="display:none;">edit</a>
+						<a href="#" class="btn btn-danger btn-xs delete" data-svid="'.$row['svid'].'" data-rpid="'.$row['rpid'].'" data-rdno="'.$row['rdno'].'" data-crno="'.$row['rpcrno'].'" style="display:none;">delete</a></td>';
 				$html .= '<td class="no">'.$no.'</td>';
 				$html .= '<td class="crno" style="display:none">'.$row['rpcrno'].'</td>';
 				$html .= '<td class="svid" style="display:none">'.$row['svid'].'</td>';

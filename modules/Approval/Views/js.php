@@ -54,6 +54,7 @@ $(document).ready(function() {
 			e.preventDefault();
 			var svid = $("#svid").val();
 			var crno = $("#rpcrno").val();
+
 			$.ajax({
 				url: "<?=site_url('approval/next_estimasi/')?>" + svid,
 				type: "POST",
@@ -66,7 +67,9 @@ $(document).ready(function() {
 							title: "Success",
 							html: '<div class="text-success">' + json.message + '</div>'
 						});	
-						$("#rpver").val(json.header.rpver);					
+						$("#rpver").val(json.header.rpver);	
+						$("#tblList_add tbody").find(".edit").show();
+						$("#tblList_add tbody").find(".delete").show();										
 					} else {
 						Swal.fire({
 							icon: 'warning',

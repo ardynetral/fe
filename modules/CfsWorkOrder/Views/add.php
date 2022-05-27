@@ -9,6 +9,17 @@ if(isset($data) && ($data!='')) {
 }
 ?>
 
+<!-- STYLE FORM INPUT UNDERLINE -->
+<style>
+	.input-underline {
+		border-top: none!important;
+	    border-left: none!important;
+	    border-right: none!important;
+	    text-align: right!important;		
+	}
+	.hide-block { display:none!important; }
+</style>
+
 
 <div class="content">
 	<div class="main-header">
@@ -64,46 +75,67 @@ if(isset($data) && ($data!='')) {
 						<tr>
 							<td class="text-right" width="130"><label for="wodate" class="text-right">WO Date :</label></td>
 							<td><input type="text" name="wodate" class="form-control" id="wodate" value="<?= date('d-m-Y');?>" readonly></td>
-							<td class="text-right" width="130"><label for="wodate" class="text-right">Use Container In :</label></td>
+							<td class="text-right" width="130">
+								<label for="wodate" class="text-right hide-block">Use Container In :</label>
+								<label for="wodate" class="text-right"> On Stock Depo :</label>
+							</td>
 							<td>
-								<label class="control-inline fancy-checkbox custom-color-green">
+								<label class="control-inline fancy-checkbox custom-color-green hide-block">
 								<input type="checkbox" name="wopraorderin" id="wopraorderin" value="0">
 								<span></span>
 								</label>
+
+								<label class="control-inline fancy-radio custom-bgcolor-green">
+								<input type="radio" name="onstock" id="onstock" value="1" checked>
+								<span><i></i>Yes</span>
+								</label>
+								<label class="control-inline fancy-radio custom-bgcolor-green">
+								<input type="radio" name="onstock" id="onstock" value="0">
+								<span><i></i>No</span>
+								</label>								
 							</td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="woto" class="text-right">To :</label></td>
 							<td><input type="text" name="woto" class="form-control" id="woto" value="<?=@$data['woto'];?>"></td>
-							<td class="text-right" width="130"><label for="wodate" class="text-right">Use Container Outs :</label></td>
+							<td class="text-right" width="130">
+								<label for="wodate" class="text-right hide-block">Use Container Outs :</label>
+								<label for="wodate" class="text-right">RO/DO :</label>
+							</td>
 							<td>
-								<label class="control-inline fancy-checkbox custom-color-green">
+								<label class="control-inline fancy-checkbox custom-color-green hide-block">
 								<input type="checkbox" name="wopraorderout" id="wopraorderout" value="0">
-								<span></span>								
+								<span></span>	
+								</label>
+								<input type="text" name="ro_do" class="form-control" id="ro_do">
 							</td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="wofrom" class="text-right">From :</label></td>
 							<td><input type="text" name="wofrom" class="form-control" id="wofrom" value="<?=@$data['wofrom'];?>"></td>
-							<td class="text-right" width="130"><label for="wodate" class="text-right">Change Stock :</label></td>
-							<td>
-								<label class="control-inline fancy-checkbox custom-color-green">
-								<input type="checkbox" name="wostock" id="wostock" value="0">
-								<span></span>
-								</label>
-							</td>
+
+							<td class="text-right" width="130"><label for="wocc" class="text-right">SI/SJ:</label></td>
+							<td><input type="text" name="wosinum" class="form-control" id="wosinum" value="<?=@$data['wosinum'];?>"></td>
 						</tr>		
 						<tr>
 							<td class="text-right" width="130"><label for="wocc" class="text-right">CC :</label></td>
 							<td><input type="text" name="wocc" class="form-control" id="wocc" value="<?=@$data['wocc'];?>"></td>
-							<td class="text-right" width="130"><label for="wocc" class="text-right">Shipping Instruction No. :</label></td>
-							<td><input type="text" name="wosinum" class="form-control" id="wosinum" value="<?=@$data['wosinum'];?>"></td>
+							<td class="text-right" width="130"><label for="woopr" class="text-right">Principal :</label></td>
+							<td><?=principal_dropdown();?></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="wocc" class="text-right">Notes :</label></td>
 							<td><input type="text" name="wonotes" class="form-control" id="wonotes" value="<?=@$data['wonotes'];?>"></td>
-							<td class="text-right" width="130"><label for="woopr" class="text-right">Principal :</label></td>
-							<td><?=principal_dropdown();?></td>
+
+							<td class="text-right hide-block" width="130">
+								<label for="wodate" class="text-right">Change Stock :</label>
+							</td>
+							<td class="hide-block">
+								<label class="control-inline fancy-checkbox custom-color-green">
+								<input type="checkbox" name="wostock" id="wostock" value="0">
+								<span></span>
+								</label>
+							</td>							
 						</tr>									
 							
 						<tr><td colspan="9">&nbsp;</td></tr>									
@@ -120,21 +152,24 @@ if(isset($data) && ($data!='')) {
 
 				<legend>&nbsp;</legend>
 				<ul class="nav nav-tabs" role="tablist">
-					<li class="active"><a href="#container" role="tab" data-toggle="tab" aria-expanded="true">CONTAINER</a></li>
-					<li class=""><a href="#barang" role="tab" data-toggle="tab" aria-expanded="false">BARANG</a></li>
-					<li class=""><a href="#kwitansi" role="tab" data-toggle="tab" aria-expanded="false" id="tab_kwitansi">KWITANSI</a></li>
-					<!-- <li class=""><a href="#proforma" role="tab" data-toggle="tab" aria-expanded="false">PROFORMA</a></li> -->
+					<li class="active"><a href="#proforma" role="tab" data-toggle="tab" aria-expanded="false" id="tab_proforma">PROFORMA</a></li>
+					<li class=""><a href="#rab" role="tab" data-toggle="tab" aria-expanded="false" id="tab_rab">RAB</a></li>
+					<li class=""><a href="#container" role="tab" data-toggle="tab" aria-expanded="true" id="tab_container">CONTAINER</a></li>
+					<li class=""><a href="#barang" role="tab" data-toggle="tab" aria-expanded="false" id="tab_barang">BARANG</a></li>
 				</ul>
 
 				<div class="tab-content">
-					<div class="tab-pane fade active in" id="container">
+					<div class="tab-pane fade active in" id="proforma">
+						<?= $this->include('\Modules\CfsWorkOrder\Views\tab_proforma');?>
+					</div>
+					<div class="tab-pane fade" id="rab">
+						<?= $this->include('\Modules\CfsWorkOrder\Views\tab_rab');?>
+					</div>					
+					<div class="tab-pane fade" id="container">
 						<?= $this->include('\Modules\CfsWorkOrder\Views\tab_container');?>
 					</div>
 					<div class="tab-pane fade" id="barang">
 						<?= $this->include('\Modules\CfsWorkOrder\Views\tab_barang');?>
-					</div>
-					<div class="tab-pane fade" id="kwitansi">
-						<?= $this->include('\Modules\CfsWorkOrder\Views\tab_kwitansi');?>
 					</div>
 				</div>
 			</div>

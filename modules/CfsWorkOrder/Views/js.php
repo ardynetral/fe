@@ -21,18 +21,18 @@ $(document).ready(function() {
 		});
 	});
 		// getDetail
-	$("#prcode").on("change", function(e){
-		e.preventDefault();
-		$.ajax({
-			url : "<?=site_url('cfswo/get_data_detail')?>",
-			type : "POST",
-			data : {"wotype": $("#wotype").val(), "woopr": $("#prcode").val()},
-			dataType: "JSON",
-			success: function(json){
-				$("#tblDetail tbody").html(json);
-			}
-		});
-	});
+	// $("#prcode").on("change", function(e){
+	// 	e.preventDefault();
+	// 	$.ajax({
+	// 		url : "<?=site_url('cfswo/get_data_detail')?>",
+	// 		type : "POST",
+	// 		data : {"wotype": $("#wotype").val(), "woopr": $("#prcode").val()},
+	// 		dataType: "JSON",
+	// 		success: function(json){
+	// 			$("#tblDetail tbody").html(json);
+	// 		}
+	// 	});
+	// });
 
 	// SAveHeader
 	$("form#fWO").on("submit", function(e){
@@ -76,46 +76,12 @@ $(document).ready(function() {
 			}
 		});		
 	});
-
-	// TAB
-	$("#tab_kwitansi").on("click", function(e){
-		$.ajax({
-			url: "<?php echo site_url('cfswo/get_data_receipt'); ?>",
-			type: "POST",
-			data: {"wonoid":$("#wonoid").val()},
-			dataType: 'json',
-			success: function(json) {
-				$("#fReceipt #woreceptid").val(json.wodreceptid);
-				$("#fReceipt #woreceptdate").val(json.woreceptdate);
-				$("#fReceipt #wodescbiaya1").val(json.wodescbiaya1);
-				$("#fReceipt #wobiaya1").val(json.wobiaya1);
-				$("#fReceipt #wodescbiaya2").val(json.wodescbiaya2);
-				$("#fReceipt #wobiaya2").val(json.wobiaya2);				
-				$("#fReceipt #wodescbiaya3").val(json.wodescbiaya3);
-				$("#fReceipt #wobiaya3").val(json.wobiaya3);
-				$("#fReceipt #wodescbiaya4").val(json.wodescbiaya4);
-				$("#fReceipt #wobiaya4").val(json.wobiaya4);	
-				$("#fReceipt #wodescbiaya5").val(json.wodescbiaya5);
-				$("#fReceipt #wobiaya5").val(json.wobiaya5);
-				$("#fReceipt #wodescbiaya6").val(json.wodescbiaya6);
-				$("#fReceipt #wobiaya6").val(json.wobiaya6);
-				$("#fReceipt #wodescbiaya7").val(json.wodescbiaya7);
-				$("#fReceipt #wobiaya7").val(json.wobiaya7);
-				$("#fReceipt #wototal_pajak").val(json.wototal_pajak);
-				$("#fReceipt #wobiaya_adm").val(json.wobiaya_adm);
-				$("#fReceipt #womaterai").val(json.womaterai);
-				$("#fReceipt #wototbiaya_lain").val(json.wototbiaya_lain);
-				$("#fReceipt #wototpph23").val(json.wototpph23);
-				$("#fReceipt #wototal_tagihan").val(json.wototal_tagihan);
-				console.log(json);
-			}			
-		});
-	});
-	$("form#fReceipt").on("submit", function(e){
+	// UpdateHeader
+	$("form#fEditWO").on("submit", function(e){
 		e.preventDefault();
-		// $('#saveData').prop('disabled','disabled');
+		$('#saveData').prop('disabled','disabled');
 		$.ajax({
-			url: "<?php echo site_url('cfswo/update_receipt'); ?>",
+			url: "<?php echo site_url('cfswo/edit/'); ?>"+$("form#fEditWO #wonoid").val(),
 			type: "POST",
 			data: new FormData(this),
 			dataType: 'json',
@@ -123,7 +89,42 @@ $(document).ready(function() {
             contentType: false,
             cache: false,			
 			beforeSend: function(){
-				// $('#saveData').prop('disabled',true);
+				$('#saveData').prop('disabled',true);
+			},
+			success: function(res) {
+				if(res.status == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+res.message+'</div>'
+					});
+					$('#saveData').prop('disabled',true);
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+res.message+'</div>'
+					});						
+					$('#saveData').prop('disabled',false);
+				}
+			}
+		});		
+	});
+
+	// TAB PROFORMA
+	$("form#fReceipt").on("submit", function(e){
+		e.preventDefault();
+		// $('#saveData').prop('disabled','disabled');
+		$.ajax({
+			url: "<?php echo site_url('cfswo/insertReceipt/'); ?>"+$("#fWO #wonoid").val(),
+			type: "POST",
+			data: new FormData(this),
+			dataType: 'json',
+            processData: false,
+            contentType: false,
+            cache: false,			
+			beforeSend: function(){
+				$('#saveDataReceipt').prop('disabled',true);
 				// $('#cancel').prop('disabled',true);
 			},
 			success: function(res) {
@@ -133,21 +134,52 @@ $(document).ready(function() {
 					  title: "Success",
 					  html: '<div class="text-success">'+res.message+'</div>'
 					});
-					// $('#saveData').prop('disabled',true);
-					// $("#fWO #wonoid").val(res.data.wonoid);
-					// $("#fReceipt #wonoid").val(res.data.wonoid);
-					// $('#prcode').prop('disabled',true);
-					// $('#wotype').prop('disabled',true);
-					// $('#cancel').prop('disabled',true);
-					// $("#checkAll").prop('disabled',false);
-					// $("#wono").val(res.data.wono);
+					$('#saveDataReceipt').prop('disabled',true);
+					$('#tab_rab').trigger('click');
 				} else {
 					Swal.fire({
 					  icon: 'error',
 					  title: "Error",
 					  html: '<div class="text-danger">'+res.message+'</div>'
 					});						
-					// $('#saveData').prop('disabled',false);
+					$('#saveDataReceipt').prop('disabled',false);
+				}
+			}
+		});		
+	});
+
+	// TAB RAB
+	$("form#fRab").on("submit", function(e){
+		e.preventDefault();
+		// $('#saveData').prop('disabled','disabled');
+		$.ajax({
+			url: "<?php echo site_url('cfswo/insertRab/'); ?>"+$("#fWO #wonoid").val(),
+			type: "POST",
+			data: new FormData(this),
+			dataType: 'json',
+            processData: false,
+            contentType: false,
+            cache: false,			
+			beforeSend: function(){
+				$('#saveDataRab').prop('disabled',true);
+				// $('#cancel').prop('disabled',true);
+			},
+			success: function(res) {
+				if(res.status == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+res.message+'</div>'
+					});
+					$('#saveDataRab').prop('disabled',true);
+					$('#tab_container').trigger('click');
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+res.message+'</div>'
+					});						
+					$('#saveDataRab').prop('disabled',false);
 				}
 			}
 		});		

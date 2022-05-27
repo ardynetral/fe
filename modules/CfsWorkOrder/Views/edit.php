@@ -2,13 +2,16 @@
 
 <?= $this->section('content') ?>
 
-<?php
-if(isset($data) && ($data!='')) {
-	$codate = date('d/m/Y',strtotime($data['codate']));
-	$coexpdate = date('d/m/Y',strtotime($data['coexpdate']));
-}
-?>
-
+<!-- STYLE FORM INPUT UNDERLINE -->
+<style>
+	.input-underline {
+		border-top: none!important;
+	    border-left: none!important;
+	    border-right: none!important;
+	    text-align: right!important;		
+	}
+	.hide-block { display:none!important; }
+</style>
 
 <div class="content">
 	<div class="main-header">
@@ -37,64 +40,103 @@ if(isset($data) && ($data!='')) {
 				<div id="alert">
 					
 				</div>
-				<form id="fWO" class="form-horizontal" role="form">
+				<form id="fEditWO" class="form-horizontal" role="form">
 					<?= csrf_field() ?>
+					<input type="hidden" name="wonoid" id="wonoid" value="<?=@$wonoid;?>">
 					<fieldset>
 					<table class="tbl-form" width="100%">
 						<!-- 9 kolom -->
 					<tbody>
 						<tr>
 							<td class="text-right" width="130"><label for="cono" class="text-right">WO No :</label></td>
-							<td width="300"><input type="text" name="wono" class="form-control" id="wono" value="<?=$header['wono'];?>" readonly></td>
-							<td></td>
+							<td width="300">
+								<input type="text" name="wono" class="form-control" id="wono" value="<?=$header['wono'];?>" readonly>
+							</td>
+							<td class="text-right" width="130"><label for="wotype" class="text-right">WO Type :</label></td>
+							<td width="300">
+								<select name="wotype" id="wotype" class="form-control">
+									<option value="">-select-</option>
+									<option value="1" <?=($header['wotype']==1)?"selected":"";?>>Stuffing</option>
+									<option value="2" <?=($header['wotype']==2)?"selected":"";?>>Stripping</option>
+									<option value="3" <?=($header['wotype']==3)?"selected":"";?>>Delivery</option>
+									<option value="4" <?=($header['wotype']==4)?"selected":"";?>>Sale Unit</option>
+									<option value="5" <?=($header['wotype']==5)?"selected":"";?>>Modifkasi</option>
+									<option value="6" <?=($header['wotype']==6)?"selected":"";?>>Other</option>
+								</select>
+							</td>
+
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="wodate" class="text-right">WO Date :</label></td>
-							<td><input type="text" name="wodate" class="form-control" id="wodate" value="<?= date('d-m-Y',strtotime($header['wodate']));?>" readonly></td>
-							<td></td>
+							<td><input type="text" name="wodate" class="form-control" id="wodate" value="<?= $header['wodate'];?>" readonly></td>
+							<td class="text-right" width="130">
+								<label for="wodate" class="text-right hide-block">Use Container In :</label>
+								<label for="wodate" class="text-right"> On Stock Depo :</label>
+							</td>
+							<td>
+								<label class="control-inline fancy-checkbox custom-color-green hide-block">
+								<input type="checkbox" name="wopraorderin" id="wopraorderin" value="0">
+								<span></span>
+								</label>
+
+								<label class="control-inline fancy-radio custom-bgcolor-green">
+								<input type="radio" name="wostok" id="wostok" value="1" <?=($header['wostok']==1)?"checked":"";?>>
+								<span><i></i>Yes</span>
+								</label>
+								<label class="control-inline fancy-radio custom-bgcolor-green">
+								<input type="radio" name="wostok" id="wostok" value="0" <?=($header['wostok']==0)?"checked":"";?>>
+								<span><i></i>No</span>
+								</label>								
+							</td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="woto" class="text-right">To :</label></td>
-							<td><input type="text" name="woto" class="form-control" id="woto" value="<?=@$header['woto'];?>" required></td>
-							<td></td>
+							<td><input type="text" name="woto" class="form-control" id="woto" value="<?=@$header['woto'];?>"></td>
+							<td class="text-right" width="130">
+								<label for="wodate" class="text-right hide-block">Use Container Outs :</label>
+								<label for="wodate" class="text-right">RO/DO :</label>
+							</td>
+							<td>
+								<label class="control-inline fancy-checkbox custom-color-green hide-block">
+								<input type="checkbox" name="wopraorderout" id="wopraorderout" value="0">
+								<span></span>	
+								</label>
+								<input type="text" name="ro_do" class="form-control" id="ro_do">
+							</td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="wofrom" class="text-right">From :</label></td>
-							<td><input type="text" name="wofrom" class="form-control" id="wofrom" value="<?=@$header['wofrom'];?>" required></td>
-							<td></td>
+							<td><input type="text" name="wofrom" class="form-control" id="wofrom" value="<?=@$header['wofrom'];?>"></td>
+
+							<td class="text-right" width="130"><label for="wocc" class="text-right">SI/SJ:</label></td>
+							<td><input type="text" name="wosinum" class="form-control" id="wosinum" value="<?=@$header['wosinum'];?>"></td>
 						</tr>		
 						<tr>
 							<td class="text-right" width="130"><label for="wocc" class="text-right">CC :</label></td>
-							<td><input type="text" name="wocc" class="form-control" id="wocc" value="<?=@$header['wocc'];?>" required></td>
-							<td></td>
+							<td><input type="text" name="wocc" class="form-control" id="wocc" value="<?=@$header['wocc'];?>"></td>
+							<td class="text-right" width="130"><label for="woopr" class="text-right">Principal :</label></td>
+							<td><?=principal_dropdown($header['woopr']);?></td>
 						</tr>
 						<tr>
 							<td class="text-right" width="130"><label for="wocc" class="text-right">Notes :</label></td>
-							<td><input type="text" name="wonotes" class="form-control" id="wonotes" value="<?=@$header['wonotes'];?>" required></td>
-							<td></td>
-						</tr>									
-						<tr>
-							<td class="text-right" width="130"><label for="woopr" class="text-right">Principal :</label></td>
-							<td><?=principal_dropdown(@$header['woopr']);?></td>
-							<td></td>
-						</tr>	
-						<tr>
-							<td class="text-right" width="130"><label for="wotype" class="text-right">Condition Box :</label></td>
-							<td>
-								<!-- <input type="text" name="cono" class="form-control" id="cono" value="<?=@$data['cono'];?>"> -->
-								<select name="wotype" id="wotype" class="input form-control" required>
-									<option value="">- select -</option>
-									<option value='AU' <?php echo $select = (@$header['wotype'] == 'AU') ? 'selected="selected"' : ''; ?>>AU</option>
-									<option value='DN' <?php echo $select = (@$header['wotype'] == 'DN') ? 'selected="selected"' : ''; ?>>DN</option>
-								</select>
+							<td><input type="text" name="wonotes" class="form-control" id="wonotes" value="<?=@$header['wonotes'];?>"></td>
+
+							<td class="text-right hide-block" width="130">
+								<label for="wodate" class="text-right">Change Stock :</label>
 							</td>
-							<td></td>
-						</tr>													
+							<td class="hide-block">
+								<label class="control-inline fancy-checkbox custom-color-green">
+								<input type="checkbox" name="wostock" id="wostock" value="0">
+								<span></span>
+								</label>
+							</td>							
+						</tr>									
+							
+						<tr><td colspan="9">&nbsp;</td></tr>									
 						<tr>
-							<td></td>
-							<td colspan="8">
-								<button type="button" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Update</button>&nbsp;
-								<a href="<?=site_url('wo')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
+							<td colspan="9" class="text-center">
+								<button type="submit" id="saveData" class="btn btn-primary"><i class="fa fa-check-circle"></i> Save</button>&nbsp;
+								<a href="<?=site_url('cfswo')?>" class="btn btn-default"><i class="fa fa-times-circle"></i> Cancel</a>
 							</td>
 						</tr>						
 					</tbody>
@@ -102,43 +144,27 @@ if(isset($data) && ($data!='')) {
 					</fieldset>
 				</form>
 
-				<legend>Header Status Container WR(Waiting Repair)</legend>
-				<!-- <p><button type="button" class="btn btn-success" id="checkAll" disabled><i class="fa fa-list"></i> SAVE ALL CONTAINER</button></p> -->
-				<div class="table-responsive vscroll">
-				<table id="tblDetail" class="table">
-					<thead>
-						<tr><th width="20" style="display: none;"></th>
-							<th width="20">No.</th>
-							<th>Container No.</th>
-							<th>Type</th>
-							<th>Length</th>
-							<th>Height</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
+				<legend>&nbsp;</legend>
+				<ul class="nav nav-tabs" role="tablist">
+					<li class="active"><a href="#proforma" role="tab" data-toggle="tab" aria-expanded="false" id="tab_proforma">PROFORMA</a></li>
+					<li class=""><a href="#rab" role="tab" data-toggle="tab" aria-expanded="false">RAB</a></li>
+					<li class=""><a href="#container" role="tab" data-toggle="tab" aria-expanded="true">CONTAINER</a></li>
+					<li class=""><a href="#barang" role="tab" data-toggle="tab" aria-expanded="false">BARANG</a></li>
+				</ul>
 
-						<?php 
-						if($detail != NULL) :
-						$no=1; 
-						foreach($detail as $dt): ?>
-
-						<tr>
-						<td style="display:none;"><input type="checkbox" name="checked_cr" class="checked_cr" value="0" ></td>
-						<td><?= $no ?></td>
-						<td><?= $dt['crno'] ?></td>
-						<td><?= $dt['ctcode'] ?></td>
-						<td><?= $dt['cclength'] ?></td>
-						<td><?= $dt['ccheight'] ?></td>
-						<td style="display:none;"><?= $dt['svid'] ?></td>
-						<td><a href="#" class="btn btn-xs btn-danger delete" data-svid="<?=$dt['svid']?>" data-crno="<?=$dt['crno']?>">delete</a></td>
-						</tr>						
-						<?php 
-						$no++;
-						endforeach; 
-						endif;?>
-					</tbody>
-				</table>
+				<div class="tab-content">
+					<div class="tab-pane fade active in" id="proforma">
+						<?= $this->include('\Modules\CfsWorkOrder\Views\tab_edit_proforma');?>
+					</div>
+					<div class="tab-pane fade" id="rab">
+						<?= $this->include('\Modules\CfsWorkOrder\Views\tab_edit_rab');?>
+					</div>					
+					<div class="tab-pane fade" id="container">
+						<?= $this->include('\Modules\CfsWorkOrder\Views\tab_edit_container');?>
+					</div>
+					<div class="tab-pane fade" id="barang">
+						<?= $this->include('\Modules\CfsWorkOrder\Views\tab_edit_barang');?>
+					</div>
 				</div>
 			</div>
 		</div>

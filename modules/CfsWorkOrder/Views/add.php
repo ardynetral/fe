@@ -56,8 +56,10 @@ if(isset($data) && ($data!='')) {
 						<!-- 9 kolom -->
 					<tbody>
 						<tr>
-							<td class="text-right" width="130"><label for="cono" class="text-right">WO No :</label></td>
-							<td width="300"><input type="text" name="wono" class="form-control" id="wono" value="<?=@$wo_number;?>" readonly></td>
+<!-- 							<td class="text-right" width="130"><label for="cono" class="text-right">WO No :</label></td>
+							<td width="300"><input type="text" name="wono" class="form-control" id="wono" value="<?=@$wo_number;?>" readonly></td> -->
+							<td class="text-right" width="130"><label for="wodate" class="text-right">WO Date :</label></td>
+							<td><input type="text" name="wodate" class="form-control" id="wodate" value="<?= date('d-m-Y');?>" readonly></td>
 							<td class="text-right" width="130"><label for="wotype" class="text-right">WO Type :</label></td>
 							<td width="300">
 								<select name="wotype" id="wotype" class="form-control">
@@ -73,8 +75,8 @@ if(isset($data) && ($data!='')) {
 
 						</tr>
 						<tr>
-							<td class="text-right" width="130"><label for="wodate" class="text-right">WO Date :</label></td>
-							<td><input type="text" name="wodate" class="form-control" id="wodate" value="<?= date('d-m-Y');?>" readonly></td>
+							<td class="text-right" width="130"><label for="woto" class="text-right">To :</label></td>
+							<td><input type="text" name="woto" class="form-control" id="woto" value="<?=@$data['woto'];?>"></td>
 							<td class="text-right" width="130">
 								<label for="wodate" class="text-right hide-block">Use Container In :</label>
 								<label for="wodate" class="text-right"> On Stock Depo :</label>
@@ -86,48 +88,46 @@ if(isset($data) && ($data!='')) {
 								</label>
 
 								<label class="control-inline fancy-radio custom-bgcolor-green">
-								<input type="radio" name="onstock" id="onstock" value="1" checked>
+								<input type="radio" name="wostok" id="wostok" value="1" checked>
 								<span><i></i>Yes</span>
 								</label>
 								<label class="control-inline fancy-radio custom-bgcolor-green">
-								<input type="radio" name="onstock" id="onstock" value="0">
+								<input type="radio" name="wostok" id="wostok" value="0">
 								<span><i></i>No</span>
 								</label>								
 							</td>
 						</tr>
 						<tr>
-							<td class="text-right" width="130"><label for="woto" class="text-right">To :</label></td>
-							<td><input type="text" name="woto" class="form-control" id="woto" value="<?=@$data['woto'];?>"></td>
+							<td class="text-right" width="130"><label for="wofrom" class="text-right">From :</label></td>
+							<td><input type="text" name="wofrom" class="form-control" id="wofrom" value="<?=@$data['wofrom'];?>"></td>
 							<td class="text-right" width="130">
 								<label for="wodate" class="text-right hide-block">Use Container Outs :</label>
-								<label for="wodate" class="text-right">RO/DO :</label>
+								<label for="wodoro" class="text-right">RO/DO :</label>
 							</td>
 							<td>
 								<label class="control-inline fancy-checkbox custom-color-green hide-block">
 								<input type="checkbox" name="wopraorderout" id="wopraorderout" value="0">
 								<span></span>	
 								</label>
-								<input type="text" name="ro_do" class="form-control" id="ro_do">
+								<input type="text" name="wodoro" class="form-control" id="wodoro">
 							</td>
 						</tr>
 						<tr>
-							<td class="text-right" width="130"><label for="wofrom" class="text-right">From :</label></td>
-							<td><input type="text" name="wofrom" class="form-control" id="wofrom" value="<?=@$data['wofrom'];?>"></td>
+							<td class="text-right" width="130"><label for="wocc" class="text-right">CC :</label></td>
+							<td><input type="text" name="wocc" class="form-control" id="wocc" value="<?=@$data['wocc'];?>"></td>
 
 							<td class="text-right" width="130"><label for="wocc" class="text-right">SI/SJ:</label></td>
 							<td><input type="text" name="wosinum" class="form-control" id="wosinum" value="<?=@$data['wosinum'];?>"></td>
 						</tr>		
 						<tr>
-							<td class="text-right" width="130"><label for="wocc" class="text-right">CC :</label></td>
-							<td><input type="text" name="wocc" class="form-control" id="wocc" value="<?=@$data['wocc'];?>"></td>
+							<td class="text-right" width="130"><label for="wocc" class="text-right">Notes :</label></td>
+							<td><input type="text" name="wonotes" class="form-control" id="wonotes" value="<?=@$data['wonotes'];?>"></td>
 							<td class="text-right" width="130"><label for="woopr" class="text-right">Principal :</label></td>
 							<td><?=principal_dropdown();?></td>
 						</tr>
 						<tr>
-							<td class="text-right" width="130"><label for="wocc" class="text-right">Notes :</label></td>
-							<td><input type="text" name="wonotes" class="form-control" id="wonotes" value="<?=@$data['wonotes'];?>"></td>
 
-							<td class="text-right hide-block" width="130">
+<!-- 							<td class="text-right hide-block" width="130">
 								<label for="wodate" class="text-right">Change Stock :</label>
 							</td>
 							<td class="hide-block">
@@ -135,7 +135,7 @@ if(isset($data) && ($data!='')) {
 								<input type="checkbox" name="wostock" id="wostock" value="0">
 								<span></span>
 								</label>
-							</td>							
+							</td>		 -->					
 						</tr>									
 							
 						<tr><td colspan="9">&nbsp;</td></tr>									

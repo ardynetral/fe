@@ -13,8 +13,12 @@
 					<table class="tbl-form" width="100%">
 					<tbody>
 						<tr>
-							<td style="width:200px;"><input type="text" name="wodescbiaya1" id="wodescbiaya1" class="form-control input-underline"></td>
-							<td><input type="text" name="wobiaya1" id="wobiaya1" class="form-control" value="0"></td>
+							<th class="text-muted">DESKRIPSI</th>
+							<th class="text-muted">NOMINAL</th>
+						</tr>						
+						<tr>
+							<td> <input type="text" name="wodescbiaya1" id="wodescbiaya1" class="form-control input-underline"></td>
+							<td> <input type="text" name="wobiaya1" id="wobiaya1" class="form-control" value="0"></td>
 						</tr>
 						<tr>
 							<td><input type="text" name="wodescbiaya2" id="wodescbiaya2" class="form-control input-underline"></td>

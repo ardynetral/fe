@@ -19,9 +19,14 @@ $routes->add('/cfswo/print/(:alphanum)', '\Modules\CfsWorkOrder\Controllers\CfsW
 // RECEPT
 $routes->add('/cfswo/get_data_receipt', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::get_data_receipt', ['filter' => 'login']);
 $routes->add('/cfswo/insertReceipt/(:alphanum)', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::insertReceipt/$1', ['filter' => 'login']);
-$routes->post('/cfswo/update_receipt', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::update_receipt', ['filter' => 'login']);
+$routes->post('/cfswo/update_receipt/(:alphanum)', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::update_receipt/$1', ['filter' => 'login']);
 
 // RAB
 $routes->add('/cfswo/get_data_rab', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::get_data_rab', ['filter' => 'login']);
 $routes->add('/cfswo/insertRab/(:alphanum)', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::insertRab/$1', ['filter' => 'login']);
-$routes->post('/cfswo/update_rab', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::update_rab', ['filter' => 'login']);
+$routes->post('/cfswo/update_rab/(:alphanum)', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::update_rab/$1', ['filter' => 'login']);
+
+// CONTAINER
+$routes->add('/cfswo/get_data_container', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::get_data_container', ['filter' => 'login']);
+$routes->add('/cfswo/insertContainer/(:alphanum)', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::insertContainer/$1', ['filter' => 'login']);
+$routes->post('/cfswo/update_container/(:alphanum)', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::update_container/$1', ['filter' => 'login']);

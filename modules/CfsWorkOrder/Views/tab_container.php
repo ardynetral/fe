@@ -5,7 +5,7 @@
 				<h3><i class="fa fa-table"></i> WO Container</h3>
 			</div>
 			<div class="widget-content">
-				<p><button class="btn btn-success" data-toggle="modal" data-target="#myModal" id="insertContainer"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
+				<p><button class="btn btn-success" data-toggle="modal" data-target="#containerModal" id="insertContainer"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
 				</p>
 				<div class="table-responsive vscroll">
 				<table id="rcTable" class="table table-hover table-bordered" style="width:100%;">
@@ -19,6 +19,7 @@
 							<th>Length</th>
 							<th>Height</th>
 							<th>Hold/Release</th>
+							<th>Seal No.</th>
 							<th>Remark</th>
 						</tr>
 					</thead>
@@ -56,14 +57,14 @@
 
 
 <!-- FORM CONTAINER -->
-<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade in" id="containerModal" tabindex="-1" role="dialog" aria-labelledby="containerModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title" id="myModalLabel">Add Container</h4>
+				<h4 class="modal-title" id="containerModalLabel">Add Container</h4>
 			</div>
-			<form id="formDetail" class="form-horizontal" role="form">
+			<form id="formContainer" class="form-horizontal" role="form">
 			<div class="modal-body">
 
 				<?= csrf_field() ?>
@@ -130,8 +131,8 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle"></i> Close</button>
-				<button type="button" id="saveDetail" class="btn btn-custom-primary"><i class="fa fa-check-circle"></i> Save Container</button>
-				<button type="button" id="updateDetail" class="btn btn-custom-primary" style="display:none;"><i class="fa fa-check-circle"></i> Update Container</button>
+				<button type="button" id="saveContainer" class="btn btn-custom-primary"><i class="fa fa-check-circle"></i> Save Container</button>
+				<button type="button" id="updateContainer" class="btn btn-custom-primary" style="display:none;"><i class="fa fa-check-circle"></i> Update Container</button>
 			</div>
 			</form>			
 		</div>

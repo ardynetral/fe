@@ -119,7 +119,7 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 	            'prcode'	=> ['required' => 'PRINCIPAL field required']
 		        ]
 	    	);	
-
+			// print_r($form_params);die();
 	    	if(!$validate) {
 	    		$data["status"] = "Failled";
 	    		$data["message"] = \Config\Services::validation()->listErrors();
@@ -334,9 +334,9 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 		// data proforma
 		$data["wonoid"] = $wonoid;		
 		$data['proforma'] = $this->get_data_receipt2($wonoid);
-		// dd($data['proforma']);
 		// data rab
-		$data['rab'] = $this->get_data_receipt2($wonoid);
+		$data['rab'] = $this->get_data_rab($wonoid);
+		// dd($data['rab']);
 		//data container 
 		// data barang
 		$data["select_ccode"] = $this->select_ccode("");		
@@ -374,7 +374,7 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 		}
 	}
 
-	// RECEIPT
+	// PROFORMA
 	public function insertReceipt($wonoid) 
 	{
 		$totalcharge = $_POST['wobiaya1']+$_POST['wobiaya2']+$_POST['wobiaya3']+$_POST['wobiaya4']+$_POST['wobiaya5']+$_POST['wobiaya6']+$_POST['wobiaya7']+$_POST['wobiaya_adm']+$_POST['wototal_pajak']+$_POST['womaterai']+$_POST['wototbiaya_lain']+$_POST['wototpph23'];
@@ -405,6 +405,28 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 		"wototpph23" => $_POST['wototpph23'],
 		"wototal_tagihan" => $totalcharge 
 		];
+
+		$validate = $this->validate([
+            'wototal_pajak'	=> 'required',
+            'wobiaya_adm'	=> 'required',
+            'womaterai'		=> 'required',
+            'wototbiaya_lain'	=> 'required',
+            'wototpph23'	=> 'required',
+        	],
+            [
+            'wototal_pajak'	=> ['required' => 'PPH field required'],
+            'wobiaya_adm'	=> ['required' => 'ADMINISTRATION field required'],
+            'womaterai'		=> ['required' => 'MATERAI field required'],
+            'wototbiaya_lain'	=> ['required' => 'BIAYA LAIN field required'],
+            'wototpph23'	=> ['required' => 'BIAYA LAIN field required'],
+	        ]
+    	);	
+
+    	if(!$validate) {
+    		$data["status"] = "Failled";
+    		$data["message"] = \Config\Services::validation()->listErrors();
+    		echo json_encode($data);die();
+    	}
 
 		$response = $this->client->request('POST','worecept/insertData',[
 			'headers' => [
@@ -500,7 +522,7 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 		return $data;
 	}
 	public function generateWONumber() {
-		$response = $this->client->request('GET','workorder/getWOnumber',[
+		$response = $this->client->request('GET','otherwo/getWODnumber',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')
@@ -516,11 +538,11 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 	*****************/	
 	public function insertRab($wonoid) 
 	{
-		$totalcharge = $_POST['wobiaya1']+$_POST['wobiaya2']+$_POST['wobiaya3']+$_POST['wobiaya4']+$_POST['wobiaya5']+$_POST['wobiaya6']+$_POST['wobiaya7']+$_POST['wobiaya_adm']+$_POST['wototal_pajak']+$_POST['womaterai']+$_POST['wototbiaya_lain']+$_POST['wototpph23'];
+		$totalcharge = $_POST['wobiaya1']+$_POST['wobiaya2']+$_POST['wobiaya3']+$_POST['wobiaya4']+$_POST['wobiaya5']+$_POST['wobiaya6']+$_POST['wobiaya7']+$_POST['wobiaya8']+$_POST['wobiaya9']+$_POST['wobiaya10']+$_POST['wobiaya11']+$_POST['wobiaya12']+$_POST['wobiaya13']+$_POST['wobiaya14']+$_POST['wobiaya15']+$_POST['wobiaya16']+$_POST['wobiaya17']+$_POST['wobiaya18']+$_POST['wobiaya19']+$_POST['wobiaya20']+$_POST['wobiaya_adm']+$_POST['wototal_pajak']+$_POST['womaterai']+$_POST['wototbiaya_lain']+$_POST['wototpph23'];
 		$form_params = [
 		"wonoid" => $wonoid,
-		"worrabdate" => date("Y-m-d"), 
-		"worrabno" => "", 
+		"worabdate" => date("Y-m-d"), 
+		"worabno" => "", 
 		"wocurr" => "IDR", 
 		"worate" => "1", 
 		"wodescrab1" => $_POST['wodescbiaya1'], 
@@ -586,7 +608,7 @@ class CfsWorkOrder extends \CodeIgniter\Controller
     		echo json_encode($data);die();
 		} else {
 			$data["status"] = "success";
-			$data["message"] = "Data proforma saved";	
+			$data["message"] = "Data RAB saved";	
 			echo json_encode($data);
 			die();
 		}
@@ -597,7 +619,7 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 	{
 		// $form_params = []; woreceptid
 		$validate = $this->validate([
-            'woreceptid'	=> 'required',
+            'worabid'	=> 'required',
         	]
     	);	
 
@@ -630,7 +652,7 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 
 	// masih kurang endpoint getRabByWonoID
 	public function get_data_rab($wonoid) {
-		$response = $this->client->request('GET','worecept/detailWoRecept',[
+		$response = $this->client->request('GET','worab/getRabByWonoID',[
 			'headers' => [
 				'Accept' => 'application/json',
 				'Authorization' => session()->get('login_token')

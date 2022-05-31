@@ -101,7 +101,7 @@
 								<input type="checkbox" name="wopraorderout" id="wopraorderout" value="0">
 								<span></span>	
 								</label>
-								<input type="text" name="ro_do" class="form-control" id="ro_do">
+								<input type="text" name="wodoro" class="form-control" id="wodoro" value="<?=@$header['wodoro'];?>">
 							</td>
 						</tr>
 						<tr>
@@ -121,7 +121,7 @@
 							<td class="text-right" width="130"><label for="wocc" class="text-right">Notes :</label></td>
 							<td><input type="text" name="wonotes" class="form-control" id="wonotes" value="<?=@$header['wonotes'];?>"></td>
 
-							<td class="text-right hide-block" width="130">
+<!-- 							<td class="text-right hide-block" width="130">
 								<label for="wodate" class="text-right">Change Stock :</label>
 							</td>
 							<td class="hide-block">
@@ -129,7 +129,7 @@
 								<input type="checkbox" name="wostock" id="wostock" value="0">
 								<span></span>
 								</label>
-							</td>							
+							</td> -->							
 						</tr>									
 							
 						<tr><td colspan="9">&nbsp;</td></tr>									

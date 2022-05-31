@@ -8,18 +8,18 @@ $(document).ready(function() {
 	// datePicker
 
 	// getDetail
-	$("#wotype").on("change", function(e){
-		e.preventDefault();
-		$.ajax({
-			url : "<?=site_url('cfswo/get_data_detail')?>",
-			type : "POST",
-			data : {"wotype": $("#wotype").val(), "woopr": $("#prcode").val()},
-			dataType: "JSON",
-			success: function(json){
-				$("#tblDetail tbody").html(json);
-			}
-		});
-	});
+	// $("#wotype").on("change", function(e){
+	// 	e.preventDefault();
+	// 	$.ajax({
+	// 		url : "<?=site_url('cfswo/get_data_detail')?>",
+	// 		type : "POST",
+	// 		data : {"wotype": $("#wotype").val(), "woopr": $("#prcode").val()},
+	// 		dataType: "JSON",
+	// 		success: function(json){
+	// 			$("#tblDetail tbody").html(json);
+	// 		}
+	// 	});
+	// });
 		// getDetail
 	// $("#prcode").on("change", function(e){
 	// 	e.preventDefault();
@@ -147,6 +147,41 @@ $(document).ready(function() {
 			}
 		});		
 	});
+	$("form#fEditReceipt").on("submit", function(e){
+		e.preventDefault();
+		// $('#saveData').prop('disabled','disabled');
+		$.ajax({
+			url: "<?php echo site_url('cfswo/update_receipt/'); ?>"+$("#fEditWO #wonoid").val(),
+			type: "POST",
+			data: new FormData(this),
+			dataType: 'json',
+            processData: false,
+            contentType: false,
+            cache: false,			
+			beforeSend: function(){
+				$('#updateDataReceipt').prop('disabled',true);
+				// $('#cancel').prop('disabled',true);
+			},
+			success: function(res) {
+				if(res.status == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+res.message+'</div>'
+					});
+					$('#updateDataReceipt').prop('disabled',true);
+					$('#tab_rab').trigger('click');
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+res.message+'</div>'
+					});						
+					$('#updateDataReceipt').prop('disabled',false);
+				}
+			}
+		});		
+	});
 
 	// TAB RAB
 	$("form#fRab").on("submit", function(e){
@@ -184,6 +219,139 @@ $(document).ready(function() {
 			}
 		});		
 	});
+	$("form#fEditRab").on("submit", function(e){
+		e.preventDefault();
+		// $('#saveData').prop('disabled','disabled');
+		$.ajax({
+			url: "<?php echo site_url('cfswo/update_rab/'); ?>"+$("#fEditWO #wonoid").val(),
+			type: "POST",
+			data: new FormData(this),
+			dataType: 'json',
+            processData: false,
+            contentType: false,
+            cache: false,			
+			beforeSend: function(){
+				$('#updateDataRab').prop('disabled',true);
+				// $('#cancel').prop('disabled',true);
+			},
+			success: function(res) {
+				if(res.status == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+res.message+'</div>'
+					});
+					$('#updateDataRab').prop('disabled',true);
+					$('#tab_rab').trigger('click');
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+res.message+'</div>'
+					});						
+					$('#updateDataRab').prop('disabled',false);
+				}
+			}
+		});		
+	});
+
+	// TAB CONTAINER
+	$("form#fContainer").on("submit", function(e){
+		e.preventDefault();
+		// $('#saveData').prop('disabled','disabled');
+		$.ajax({
+			url: "<?php echo site_url('cfswo/insertContainer/'); ?>"+$("#fWO #wonoid").val(),
+			type: "POST",
+			data: new FormData(this),
+			dataType: 'json',
+            processData: false,
+            contentType: false,
+            cache: false,			
+			beforeSend: function(){
+				$('#saveDataContainer').prop('disabled',true);
+				// $('#cancel').prop('disabled',true);
+			},
+			success: function(res) {
+				if(res.status == "success") {
+					Swal.fire({
+					  icon: 'success',
+					  title: "Success",
+					  html: '<div class="text-success">'+res.message+'</div>'
+					});
+					$('#saveDataContainer').prop('disabled',true);
+					$('#tab_barang').trigger('click');
+				} else {
+					Swal.fire({
+					  icon: 'error',
+					  title: "Error",
+					  html: '<div class="text-danger">'+res.message+'</div>'
+					});						
+					$('#saveDataContainer').prop('disabled',false);
+				}
+			}
+		});		
+	});
+
+	$("form#fEditContainer").on("submit", function(e){
+	});
+
+	$("#crno").on("keyup", function(){
+		var onstok = $('input:radio[name=wostok]:checked').val();
+		var crno = $("#crno").val();
+		$(this).val($(this).val().toUpperCase());	
+		var url ="";
+
+		if(onstock=="1") {
+			url = "<?=site_url('cfswo/checkContainerNumber');?>";
+		} else if(onstock=="0") {
+			url = "<?=site_url('cfswo/checkContainerOut');?>";
+		}
+
+		$.ajax({
+			url:url,
+			type:"POST",
+			data: {"ccode":crno},
+			dataType:"JSON",
+			success: function(json){
+
+				// $("#formDetail").trigger("reset");
+				// $("#ccode").select2().select2('val',"");
+				$("#ccode").select2().select2('val','');
+				$("#ctcode").val("");
+				$("#cclength").val("");
+				$("#ccheight").val("");
+				if(json.status=="Failled") {
+
+					$(".err-crno").show();
+					$(".err-crno").html(json.message);
+					$("#crno").css("background", "#ffbfbf!important");
+					$("#crno").css("border-color", "#ea2525");
+					$("#saveContainer").prop("disabled",true);					
+
+				} else {
+
+					$(".err-crno").html("");
+					$(".err-crno").hide();
+					$("#crno").css("background", "#fff!important");
+					$("#crno").css("border-color", "#ccc");
+					$("#saveContainer").removeAttr("disabled");					
+
+					if(json.data!=null) {
+						$("#ccode").select2().select2('val',json.data.cccode);
+						$("#ctcode").val(json.data.container_code.ctcode);
+						$("#cclength").val(json.data.container_code.cclength);
+						$("#ccheight").val(json.data.container_code.ccheight);
+					}
+				}
+			}
+		});
+
+	});
+
+	// $("input:radio[name=onstock]").on("change", function(){
+	// 	var onstock_val = $("input:radio[name=onstock]:checked").val();
+	// 	$("#containerModal #onstockVal").val(onstock_val);
+	// });
 
 	$("#tblDetail tbody").on("change",".checked_cr", function(e){
 		e.preventDefault();
@@ -253,7 +421,7 @@ $(document).ready(function() {
 	// CHECKBOX
 	if($("#wopraorderin").val()=="1") {	$("#wopraorderin").prop('checked',true); }
 	if($("#wopraorderout").val()=="1") { $("#wopraorderout").prop('checked',true); }
-	if($("#wostock").val()=="1") { $("#wostock").prop('checked',true); }
+	if($("#wostok").val()=="1") { $("#wostok").prop('checked',true); }
 
 	$("#wopraorderin").on("change", function(){
 		var val = this.checked ? '1' : '0';
@@ -263,11 +431,52 @@ $(document).ready(function() {
 		var val = this.checked ? '1' : '0';
 		return $(this).val(val);
 	});
-	$("#wostock").on("change", function(){
+	$("#wostok").on("change", function(){
 		var val = this.checked ? '1' : '0';
 		return $(this).val(val);
 	});	
 
+
+	// HITUNG TOTAL CHARGE
+	// TAB PROFORMA
+	$("#fReceipt #wototal_pajak").on("keyup", function(){
+		hitungTotalProforma();
+	});	
+	$("#fReceipt #wobiaya_adm").on("keyup", function(){
+		hitungTotal();
+	});	
+	$("#fReceipt #womaterai").on("keyup", function(){
+		hitungTotalProforma();
+	});
+	$("#fReceipt #wototal_pajak").on("keyup", function(){
+		hitungTotalProforma();
+	});	
+	$("#fReceipt #wototbiaya_lain").on("keyup", function(){
+		hitungTotalProforma();
+	});
+	$("#fReceipt #wototpph23").on("keyup", function(){
+		hitungTotalProforma();
+	});	
+
+	// Tab RAB
+	$("#fRab #wototal_pajak").on("keyup", function(){
+		hitungTotalRab();
+	});	
+	$("#fRab #wobiaya_adm").on("keyup", function(){
+		hitungTotalRab();
+	});	
+	$("#fRab #womaterai").on("keyup", function(){
+		hitungTotalRab();
+	});
+	$("#fRab #wototal_pajak").on("keyup", function(){
+		hitungTotalRab();
+	});	
+	$("#fRab #wototbiaya_lain").on("keyup", function(){
+		hitungTotalRab();
+	});
+	$("#fRab #wototpph23").on("keyup", function(){
+		hitungTotalRab();
+	});		
 	// DATATABLE
 	runDataTables();
 	var table = $('#ctTable').DataTable({
@@ -292,6 +501,51 @@ $(document).ready(function() {
     // END DATATABLE
 });
 
+function hitungTotalProforma() {
+	var b1 = parseInt($("#fReceipt #wobiaya1").val());
+	var b2 = parseInt($("#fReceipt #wobiaya2").val());
+	var b3 = parseInt($("#fReceipt #wobiaya3").val());
+	var b4 = parseInt($("#fReceipt #wobiaya4").val());
+	var b5 = parseInt($("#fReceipt #wobiaya5").val());
+	var b6 = parseInt($("#fReceipt #wobiaya6").val());
+	var b7 = parseInt($("#fReceipt #wobiaya7").val());
+	var pph = parseInt($("#fReceipt #wototal_pajak").val());
+	var adm = parseInt($("#fReceipt #wobiaya_adm").val());
+	var materai = parseInt($("#fReceipt #womaterai").val());
+	var biaya_lain = parseInt($("#fReceipt #wototbiaya_lain").val());
+	var pph23 = parseInt($("#fReceipt #wototpph23").val());
+	var total = b1+b2+b3+b4+b5+b6+b7+pph+adm+materai+biaya_lain+pph23;
+	$("#fReceipt #wototal_tagihan").val(total);
+}
+function hitungTotalRab() {
+	var b1 = parseInt($("#fRab #wobiaya1").val());
+	var b2 = parseInt($("#fRab #wobiaya2").val());
+	var b3 = parseInt($("#fRab #wobiaya3").val());
+	var b4 = parseInt($("#fRab #wobiaya4").val());
+	var b5 = parseInt($("#fRab #wobiaya5").val());
+	var b6 = parseInt($("#fRab #wobiaya6").val());
+	var b7 = parseInt($("#fRab #wobiaya7").val());
+	var b8 = parseInt($("#fRab #wobiaya8").val());
+	var b9 = parseInt($("#fRab #wobiaya9").val());
+	var b10 = parseInt($("#fRab #wobiaya10").val());
+	var b11 = parseInt($("#fRab #wobiaya11").val());
+	var b12 = parseInt($("#fRab #wobiaya12").val());
+	var b13 = parseInt($("#fRab #wobiaya13").val());
+	var b14 = parseInt($("#fRab #wobiaya14").val());
+	var b15 = parseInt($("#fRab #wobiaya15").val());
+	var b16 = parseInt($("#fRab #wobiaya16").val());
+	var b17 = parseInt($("#fRab #wobiaya17").val());
+	var b18 = parseInt($("#fRab #wobiaya18").val());
+	var b19 = parseInt($("#fRab #wobiaya19").val());
+	var b20 = parseInt($("#fRab #wobiaya20").val());
+	var pph = parseInt($("#fRab #wototal_pajak").val());
+	var adm = parseInt($("#fRab #wobiaya_adm").val());
+	var materai = parseInt($("#fRab #womaterai").val());
+	var biaya_lain = parseInt($("#fRab #wototbiaya_lain").val());
+	var pph23 = parseInt($("#fRab #wototpph23").val());
+	var total = b1+b2+b3+b4+b5+b6+b7+b8+b9+b10+b11+b12+b13+b14+b15+b16+b17+b18+b19+b20+pph+adm+materai+biaya_lain+pph23;
+	$("#fRab #wototal_tagihan").val(total);
+}
 function delete_data(CRNO,SVID) {
 	$.ajax({
 		url: "<?php echo site_url('cfswo/delete_container'); ?>",
@@ -416,4 +670,5 @@ function runDataTables() {
         }
     } 	   
 }
+
 </script>

@@ -46,16 +46,26 @@ class CfsWorkOrder extends \CodeIgniter\Controller
             $record[] = date('d-m-Y', strtotime($v['wodate']));		
 
 			$btn_list .= '<a href="'.site_url('cfswo/edit/').$v['wonoid'].'" id="" class="btn btn-xs btn-success btn-tbl">edit</a>&nbsp;';
+			// $btn_list .= '
+			// 	<div class="btn-group">
+			// 		<button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Print <span class="caret"></span></button>
+			// 		<ul class="dropdown-menu" role="menu">
+			// 			<li><a href="#" class="print" data-wono="'.$v['wono'].'">Proforma</a></li>
+			// 			<li><a href="#" class="print" data-wono="'.$v['wono'].'">RAB</a></li>
+			// 			<li><a href="#" class="print" data-wono="'.$v['wono'].'">Surat Jalan</a></li>
+			// 		</ul>
+			// 	</div>
+			// ';
 			$btn_list .= '
 				<div class="btn-group">
 					<button type="button" class="btn btn-info btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Print <span class="caret"></span></button>
 					<ul class="dropdown-menu" role="menu">
-						<li><a href="#" class="print" data-wono="'.$v['wono'].'">Kwitansi</a></li>
-						<li><a href="#" class="print" data-wono="'.$v['wono'].'">Kitir</a></li>
-						<li><a href="#" class="print" data-wono="'.$v['wono'].'">Surat Jalan</a></li>
+						<li><a href="#" class="" data-wono="'.$v['wono'].'">Proforma</a></li>
+						<li><a href="#" class="" data-wono="'.$v['wono'].'">RAB</a></li>
+						<li><a href="#" class="" data-wono="'.$v['wono'].'">Surat Jalan</a></li>
 					</ul>
 				</div>
-			';
+			';			
 			$btn_list .= '<a href="#" id="deleteWo" class="btn btn-xs btn-danger btn-tbl delete" data-wono="'.$v['wono'].'">delete</a>';
 
             $record[] = '<div>'.$btn_list.'</div>';
@@ -344,35 +354,7 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 		return view('Modules\CfsWorkOrder\Views\edit',$data);
 	}
 
-	public function delete_container() {
-		if($this->request->isAjax()) {
-			$SVID = $_POST['SVID'];
-			$CRNO = $_POST['CRNO'];
-			$response = $this->client->request('PUT','workorder/deleteWO',[
-				'headers' => [
-					'Accept' => 'application/json',
-					'Authorization' => session()->get('login_token')
-				],
-				'form_params' => [
-					'svid' => $SVID,
-					'rpcrno' => $CRNO,
-				]
-			]);	
-			$result = json_decode($response->getBody()->getContents(), true);
-			// echo var_dump($result);die();
-			if(isset($result['status']) && $result['status']=="Failled") {
-	    		$data["status"] = "Failled";
-	    		$data["message"] = $result['message'];
-	    		echo json_encode($data);die();
-			}
 
-			$data["status"] = "success";
-			$data["message"] = "Data Work Order";
-			$data['data'] = $result['data'];		
-			echo json_encode($data);	
-
-		}
-	}
 
 	// PROFORMA
 	public function insertReceipt($wonoid) 
@@ -676,41 +658,62 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 	/*****************
 	 TAB CONTAINER
 	*****************/
-	public function insert_container()
+	public function insertContainer()
 	{
 		/*
 		/wocontainer/insertData
+		wonoid, ordertype, cpopr, cpcust, crno, cccode, ctcode, cclength, ccheight,
+		fe, remark, gatedate, sealno, wotype, cpiremark1, cpovoyid, cponotes,
+		cpiorderno, cpireceptno, cpoorderno, cporeceptno, cpopratgl, cpocargo,
+		cpitruck, cpinopol, cpinotes, wostok		
 		*/
+		if($_POST['wo_stok']=='1') {
+			$wostok = true;
+		} else if($_POST['wo_stok']=='0'){
+			$wostok = false;
+		}
 		$form_params = [
-			'wocid' => $_POST['wocid'], 
-			'wonoid' => $_POST['wonoid'], 
-			'ordertype' => $_POST['ordertype'], 
-			'cpopr' => $_POST['cpopr'], 
-			'cpcust' => $_POST['cpcust'], 
+			'wonoid' => $_POST['wono_id'], 
+			'ordertype' => $_POST['wo_stok'], 
+			'cpopr' => "", 
+			'cpcust' => "", 
 			'crno' => $_POST['crno'], 
 			'cccode' => $_POST['cccode'], 
 			'ctcode' => $_POST['ctcode'], 
 			'cclength' => $_POST['cclength'], 
 			'ccheight' => $_POST['ccheight'],
-			'fe' => $_POST['fe'], 
+			'fe' => $_POST['cpife'], 
 			'remark' => $_POST['remark'], 
-			'gatedate' => $_POST['gatedate'], 
+			'gatedate' => date('Y-m-d'), 
 			'sealno' => $_POST['sealno'], 
-			'wotype' => $_POST['wotype'], 
-			'wopraoderin' => $_POST['wopraoderin'], 
-			'wopraoderout' => $_POST['wopraoderout'], 
-			'cpiremark1' => $_POST['cpiremark1'], 
-			'cpovoyid' => $_POST['cpovoyid'], 
-			'cponotes' => $_POST['cponotes'],
-			'cpid' => $_POST['cpid'], 
-			'cpiorderno' => $_POST['cpiorderno'], 
-			'cpireceptno' => $_POST['cpireceptno'], 
-			'cpitruck' => $_POST['cpitruck'], 
-			'cpinopol' => $_POST['cpinopol'], 
-			'cpinotes' => $_POST['cpinotes']
+			'wotype' => $_POST['wo_type'], 
+			'cpiremark1' => $_POST['remark'], 
+			'cpovoyid' => "", 
+			'cpovoy' => null, 
+			'cponotes' => $_POST['remark'],
+			// 'cpiorderno' => $_POST['wo_no'], 
+			'cpoorderno' => $_POST['wo_no'], 
+			'cpireceptno' => "", 
+			'cporeceptno' => "", 
+			'cpopratgl' => date('Y-m-d'), 
+			'cpocargo' => "", 
+			'cpitruck' => "", 
+			'cpinopol' => "", 
+			'cpinotes' => $_POST['remark'],
+			'wostok' => $wostok, 
 		];	
 
 		if($this->request->isAjax()) {
+
+			// jika Container baru=>insert ke tabel container
+			if(isset($_POST['statusContainer']) && $_POST['statusContainer']=="new") {
+				$dataContainer = [
+		            "crno" 		=> $_POST['crno'],
+		            "mtcode" 	=> $_POST['ctcode'],
+		            "cccode" 	=> $_POST['cccode']					
+				];
+				$this->insertTableContainer($dataContainer);
+			}
 
 			$response = $this->client->request('POST','wocontainer/insertData',[
 				'headers' => [
@@ -721,100 +724,157 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 			]);	
 
 			$result = json_decode($response->getBody()->getContents(), true);
-
+			// print_r($result);die();
+			$data_container = $this->getContainerByWonoId($_POST['wono_id']);
 			if(isset($result['status']) && $result['status']=="Failled") {
 				$data['status'] = "Failled";
 				$data['message'] = "Gagal menyimpan data.";
+				// $data['dataContainer'] = $this->fill_table_container($data_container);				
 				echo json_encode($data);
 				die();
 			} else {
 				$data['status'] = "success";
 				$data['message'] = "Berhasil menyimpan data.";
+				$data['dataContainer'] = $this->fill_table_container($data_container);				
 				echo json_encode($data);
 				die();			
 			}
 		}
 	}
-	// dipakai jika "Use Container Outs"=true/checked
-	public function checkContainerOut() 
-	{
-		/*
-		return:
-		- 
-		*/
-		$data = [];
-		
-		if($this->request->isAjax()) {
 
-			$crno = $_POST['crno'];
-			$praid = $_POST['praid'];
-
-			if(strlen($crno)<11){
-				$data['status'] = "Failled";
-				$data['message'] = "Invalid Container";
-				echo json_encode($data);die();					
-			}
-
-			$container = $this->get_container($crno);
-
-			if($container=="" || $container['lastact'] == "HC") {
-				$data['status'] = "Failled";
-				$data['message'] = "Invalid Container";
-				echo json_encode($data);die();
-			}
-
-			if((($container['crlastact'] == "CO") && ($container['crlastcond'] == "AC")) || ($container['lastact'] == "AC")) {
-
-		    	// check table order_pra_Container
-				// $reqPraContainer = $this->client->request('GET','orderPraContainers/getAllData',[
-				// 	'headers' => [
-				// 		'Accept' => 'application/json',
-				// 		'Authorization' => session()->get('login_token')
-				// 	],
-				// 	'query' => [
-				// 		'praid' => $praid,
-				// 		'offset' => 0,
-				// 		'limit' => 500,
-				// 	]
-				// ]);
-
-				// $resPraContainer= json_decode($reqPraContainer->getBody()->getContents(), true);		
-				// $orderPraContainers = $resPraContainer['data']['datas'];
-				// if(isset($orderPraContainers) && ($orderPraContainers!=null)) {
-				// 	foreach($orderPraContainers as $opc) {
-				// 		$crnos[] = $opc['crno'];
-				// 	}
-				// 	if(in_array($crno,$crnos)) {
-				// 		$data['status'] = "Failled";
-				// 		$data['message'] = "Container ini sudah diinput";
-				// 		echo json_encode($data);die();					
-				// 	}
-				// }	
-
-				$data['status'] = "success";
-				$data['message'] = "Valid Container";
-				$data['data'] = $container;
-				$data['container_code'] = $data['data']['container_code'];
-				echo json_encode($data);die();
-
-			} else {		
-
-				$data['status'] = "Failled";
-				$data['message'] = "Invalid Container";
-				echo json_encode($data);die();					
+	public function fill_table_container($data) {
+		$html = "";
+		if($data=="") {
+			$html="";
+		} else {
+			$no=1;
+			foreach($data[0] as $row) {		
+				$html .= '<tr>';
+				// $html .= '<td>
+				// 	<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
+				// 	<a href="#" class="btn btn-danger btn-xs delete" data-wocid="'.$row['wocid'].'">delete</a>
+				// </td>';
+				$html .= '<td>
+					<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
+					<a href="#" class="btn btn-danger btn-xs delete" data-wocid="">delete</a>
+				</td>';				
+				$html .= '<td class="no">'.$no.'</td>';
+				// $html .= '<td class="wocid" style="display:none">'.$row['wocid'].'</td>';
+				$html .= '<td class="crno">'.$row['crno'].'</td>';
+				$html .= '<td class="cccode">'.$row['cccode'].'</td>';
+				$html .= '<td class="ctcode">'.$row['ctcode'].'</td>';
+				$html .= '<td class="cclength">'.$row['cclength'].'</td>';
+				$html .= '<td class="ccheight">'.$row['ccheight'].'</td>';
+				$html .= '<td class="ccheight">'.((isset($row['fe'])&&$row['fe']=="1")?'Full':'Empty').'</td>';
+				$html .= '<td class="sealno">'.$row['sealno'].'</td>';
+				$html .= '<td class="remark">'.$row['remark'].'</td>';
+				$html .= '</tr>';
+				$no++;
 			}
 		}
-	}	
 
-	// dipakai jik "Use Container In"==true/checked
-	public function checkContainerNumber($crno) 
+		return $html;
+	}
+	public function fill_table_edit_container($data) {
+		$html = "";
+		if($data=="") {
+			$html="";
+		} else {
+			$no=1;
+			foreach($data as $row) {
+				if($row['rdaccount']=='user') {$rdaccount="U";}
+				else if($row['rdaccount']=='owner') {$rdaccount="O";}
+				else {$rdaccount="i";}				
+				$html .= '<tr>';
+				// $html .= '<td>
+				// 		<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
+				// 	<a href="#" class="btn btn-danger btn-xs delete" data-wocid="'.$row['wocid'].'">delete</a>';
+				$html .= '<td>
+						<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
+					<a href="#" class="btn btn-danger btn-xs delete" data-wocid="">delete</a>';				
+				$html .= '<td class="no">'.$no.'</td>';
+				// $html .= '<td class="wocid" style="display:none">'.$row['wocid'].'</td>';
+				$html .= '<td class="crno">'.$row['crno'].'</td>';
+				$html .= '<td class="cccode">'.$row['cccode'].'</td>';
+				$html .= '<td class="ctcode">'.$row['ctcode'].'</td>';
+				$html .= '<td class="cclength">'.$row['cclength'].'</td>';
+				$html .= '<td class="ccheight">'.$row['ccheight'].'</td>';
+				$html .= '<td class="ccheight">'.((isset($row['fe'])&&$row['fe']=="1")?'Full':'Empty').'</td>';
+				$html .= '<td class="sealno">'.$row['sealno'].'</td>';
+				$html .= '<td class="remark">'.$row['remark'].'</td>';
+				$html .= '</tr>';
+				$no++;
+			}
+		}
+
+		return $html;
+	}
+	// public function delete_container() {
+	// 	if($this->request->isAjax()) {
+	// 		$CRNO = $_POST['CRNO'];
+	// 		$response = $this->client->request('PUT','workorder/deleteWO',[
+	// 			'headers' => [
+	// 				'Accept' => 'application/json',
+	// 				'Authorization' => session()->get('login_token')
+	// 			],
+	// 			'form_params' => [
+	// 				'crno' => $CRNO,
+	// 			]
+	// 		]);	
+	// 		$result = json_decode($response->getBody()->getContents(), true);
+	// 		// echo var_dump($result);die();
+	// 		if(isset($result['status']) && $result['status']=="Failled") {
+	//     		$data["status"] = "Failled";
+	//     		$data["message"] = $result['message'];
+	//     		echo json_encode($data);die();
+	// 		}
+
+	// 		$data["status"] = "success";
+	// 		$data["message"] = "Data Work Order";
+	// 		$data['data'] = $result['data'];		
+	// 		echo json_encode($data);	
+
+	// 	}
+	// }
+
+	public function ajax_ccode_listOne($code)
+	{
+		$data = [];
+		if($this->request->isAjax()) {
+			$response = $this->client->request('GET','containercode/listOne',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'form_params'=>[
+					'ccCode' => $code, 
+				]
+			]);
+
+			$result = json_decode($response->getBody()->getContents(),true);
+
+			if(isset($result['status']) && ($result['status']=="Failled"))
+			{
+				$data['status'] = "Failled";
+				$data['message'] = $result['message'];
+				echo json_encode($data);die();				
+			}
+
+			$data['status'] = "Success";
+			$data['data'] = $result['data'];
+			echo json_encode($data);die();						
+		}
+	}
+
+	// dipakai jika "Use Container Outs"=true/checked
+	public function checkContainerIn() 
 	{
 		/*
 		return:
-		- 
+		- jika kontainer baru {"success":true,"message":"Data Empty","data":false}
+		- jika salah format {"success":false,"message":"Invalid code"}
 		*/
 		$data = [];
-		
 		if($this->request->isAjax()) {
 
 			$crno = $_POST['crno'];
@@ -829,16 +889,125 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 			]);
 
 			$result = json_decode($response->getBody()->getContents(),true);
-			return $result;
-			// if(isset($result['success']) && ($result['success']==false))
-			// {
-			// 	$status = "invalid";				
-			// } else {
-			// 	$status = "valid";
-			// }
-		 //    return $status;
+			// echo var_dump($result);die();
+			if(isset($result['success']) && ($result['success']==false))
+			{
+				$data['status'] = "invalid";
+				$data['message'] = "Invalid Container";
+			} 
+			else 
+			{
+				if(isset($result['data']) && ($result['data']==false)) 
+				{
+					$data['status'] = "new";
+					// container baru (offstock container)
+				} 
+				else 
+				{
+					$cont = $result['data']['rows'][0];
+					$data['status'] = "invalid";
+					$data['message'] = "Invalid Container";
+					$data['data'] = $cont;
+				}
+			}
+
+		    // return $status;
+
+			echo json_encode($data);die();
 		}
 	}	
+
+	// dipakai jik "Use Container In"==true/checked
+	public function checkContainerOut() 
+	{
+		/*
+		return:
+		- jika kontainer baru {"success":true,"message":"Data Empty","data":false}
+		- jika salah format {"success":false,"message":"Invalid code"}
+		*/
+		$data = [];
+		if($this->request->isAjax()) {
+
+			$crno = $_POST['crno'];
+			$response = $this->client->request('GET','containers/checkcCode',[
+				'headers' => [
+					'Accept' => 'application/json',
+					'Authorization' => session()->get('login_token')
+				],
+				'query'=>[
+					'cContainer' => $crno, 
+				]
+			]);
+
+			$result = json_decode($response->getBody()->getContents(),true);
+			// echo var_dump($result);die();
+			if(isset($result['success']) && ($result['success']==false))
+			{
+				$data['status'] = "invalid";	
+				$data['message'] = "Invalid Container";			
+			} 
+			else 
+			{
+				if(isset($result['data']) && ($result['data']==false)) 
+				{
+					$data['status'] = "invalid";
+					$data['message'] = "Container not Found";
+				} 
+				else 
+				{
+					$data['status'] = "exists";
+					$cont = $result['data']['rows'][0];
+					if($cont['lastact'] == "HC") 
+					{
+						$data['status'] = "invalid";
+						$data['message'] = "Invalid Container";
+					} 
+					else 
+					{
+						if(($cont['crlastact']=="CO" && $cont['crlastcond']=="AC") || ($cont['lastact']=="AC")) 
+						{
+							$data['status'] = "valid";
+							$data['data'] = $cont;
+						} 
+						else 
+						{
+							$data['status'] = "invalid";
+							// $data['message'] = "LASTACT: " . $cont['lastact'] . "LASTCOND: " . $cont['crlastcond'];
+							$data['message'] = "Invalid Container";
+						}
+					}
+
+				}
+			}
+
+		    // return $status;
+
+			echo json_encode($data);die();
+		}
+	}	
+
+	public function getContainerByWonoId($wonoid) 
+	{
+		$response = $this->client->request('GET', 'wocontainer/detailByWonoid', [
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'query' => [
+				'wonoid' => $wonoid
+			]
+		]);	
+		
+		$result = json_decode($response->getBody()->getContents(), true);
+		
+		if($result['data']==null) {
+			$data = "";
+		} else {
+			$data = $result['data'];
+		}
+
+		return $data;
+	}
 
 	public function get_container($crno) {
 		$response = $this->client->request('GET','containers/listOne',[
@@ -852,8 +1021,48 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);	
-		$data  = (isset($result['data']) && $result['data'] != null)?$result['data']:"";
-		return $data;
+		if(isset($result['status'])&&($result['status']=="Failled")) {
+			$status = 0;
+		} else {
+			$status = 1;
+		}
+		return $status;
+	}
+
+	public function insertTableContainer($data)
+	{
+		$body = [
+            "crno" 		=> $data['crno'],
+            "mtcode" 	=> $data['mtcode'],
+            "cccode" 	=> $data['cccode'],
+            "crowner" 	=> 0,
+            "crcdp" 	=> 0,
+            "crcsc" 	=> 0,
+            "cracep" 	=> 0,
+            "crmmyy" 	=> 0,
+            "crweightk" => 0,
+            "crweightl" => 0,
+            "crtarak" 	=> 0,
+            "crtaral" 	=> 0,
+            "crnetk" 	=> 0,
+            "crnetl" 	=> 0,
+            "crvol" 	=> 0,
+            "crmanuf" 	=> 0,
+            "crmandat" 	=> 0,
+            "crlastact" => "BI"
+        ];
+
+
+		$this->client->request('POST','containers/create',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			],
+			'form_params' => [
+				'crNo' => $data['crno'],
+				'dset' => $body
+			]
+		]);			
 	}
 
 	public function print($wono)

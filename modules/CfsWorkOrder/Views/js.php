@@ -270,7 +270,7 @@ $(document).ready(function() {
 					});
 					// $('#saveDataContainer').prop('disabled',true);
 					$("#tblList_add tbody").html(res.dataContainer);
-					// $('#tab_barang').trigger('click');
+					$("#formContainer").trigger("reset");
 				} else {
 					Swal.fire({
 					  icon: 'error',
@@ -284,7 +284,7 @@ $(document).ready(function() {
 		});		
 	});
 
-	$("form#fEditContainer").on("submit", function(e){
+	$("form#formContainerEdit").on("submit", function(e){
 	});
 
 	$("#crno").on("keyup", function(){
@@ -412,6 +412,41 @@ $(document).ready(function() {
 				}
 			}
 		});
+	});
+	
+	// btn insertContainer
+	$("#insertContainer").on("click", function(e){
+		$('#containerEditModal').modal('toggle');
+		$("#formContainerEdit").trigger('reset');
+		$("#formContainerEdit #act").val('add');	
+		$("#formContainerEdit #saveDetail").show();
+		$("#formContainerEdit #updateDetail").hide();
+	});
+	
+	// edit container
+	$('#tblList_edit tbody').on('click', '.edit', function(e){
+		e.preventDefault();	
+		$('#containerEditModal').modal('toggle');
+		$("#formContainerEdit #act").val('edit');
+		$("#formContainerEdit #saveDetail").hide();
+		$("#formContainerEdit #updateDetail").show();
+		var row = $(this).closest("tr");
+		var crno = row.find(".crno").text();
+		var cccode = row.find(".cccode").text();
+		var ctcode = row.find(".ctcode").text();
+		var cclength = row.find(".cclength").text();
+		var ccheight = row.find(".ccheight").text();
+		var fe = row.find(".fe").text();
+		var sealno = row.find(".sealno").text();
+		var remark = row.find(".remark").text();
+		$("#formContainerEdit #crno").val(crno);
+		$("#cccode").select2().select2('val',cccode);
+		$("#formContainerEdit #ctcode").val(ctcode);
+		$("#formContainerEdit #cclength").val(cclength);
+		$("#formContainerEdit #ccheight").val(ccheight);
+		$("#formContainerEdit #sealno").val(sealno);
+		$("#formContainerEdit #remark").val(remark);
+
 	});
 
 	$('#tblDetail tbody').on('click', '.delete', function(e){

@@ -346,8 +346,10 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 		$data['proforma'] = $this->get_data_receipt2($wonoid);
 		// data rab
 		$data['rab'] = $this->get_data_rab($wonoid);
-		// dd($data['rab']);
 		//data container 
+		$data_container = $this->getContainerByWonoId($wonoid);
+		// dd($data_container);
+		$data['dataContainer'] = $data_container;		
 		// data barang
 		$data["select_ccode"] = $this->select_ccode("");		
 
@@ -750,14 +752,14 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 			$no=1;
 			foreach($data[0] as $row) {		
 				$html .= '<tr>';
-				// $html .= '<td>
-				// 	<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
-				// 	<a href="#" class="btn btn-danger btn-xs delete" data-wocid="'.$row['wocid'].'">delete</a>
-				// </td>';
 				$html .= '<td>
 					<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
-					<a href="#" class="btn btn-danger btn-xs delete" data-wocid="">delete</a>
-				</td>';				
+					<a href="#" class="btn btn-danger btn-xs delete" data-wocid="'.$row['wocid'].'">delete</a>
+				</td>';
+				// $html .= '<td>
+				// 	<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
+				// 	<a href="#" class="btn btn-danger btn-xs delete" data-wocid="">delete</a>
+				// </td>';				
 				$html .= '<td class="no">'.$no.'</td>';
 				// $html .= '<td class="wocid" style="display:none">'.$row['wocid'].'</td>';
 				$html .= '<td class="crno">'.$row['crno'].'</td>';
@@ -786,20 +788,20 @@ class CfsWorkOrder extends \CodeIgniter\Controller
 				else if($row['rdaccount']=='owner') {$rdaccount="O";}
 				else {$rdaccount="i";}				
 				$html .= '<tr>';
-				// $html .= '<td>
-				// 		<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
-				// 	<a href="#" class="btn btn-danger btn-xs delete" data-wocid="'.$row['wocid'].'">delete</a>';
 				$html .= '<td>
 						<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
-					<a href="#" class="btn btn-danger btn-xs delete" data-wocid="">delete</a>';				
+					<a href="#" class="btn btn-danger btn-xs delete" data-wocid="'.$row['wocid'].'">delete</a>';
+				// $html .= '<td>
+				// 		<a href="#" class="btn btn-primary btn-xs edit" data-toggle="modal" data-target="#myModal">edit</a>
+				// 	<a href="#" class="btn btn-danger btn-xs delete" data-wocid="">delete</a>';				
 				$html .= '<td class="no">'.$no.'</td>';
-				// $html .= '<td class="wocid" style="display:none">'.$row['wocid'].'</td>';
+				$html .= '<td class="wocid" style="display:none">'.$row['wocid'].'</td>';
 				$html .= '<td class="crno">'.$row['crno'].'</td>';
 				$html .= '<td class="cccode">'.$row['cccode'].'</td>';
 				$html .= '<td class="ctcode">'.$row['ctcode'].'</td>';
 				$html .= '<td class="cclength">'.$row['cclength'].'</td>';
 				$html .= '<td class="ccheight">'.$row['ccheight'].'</td>';
-				$html .= '<td class="ccheight">'.((isset($row['fe'])&&$row['fe']=="1")?'Full':'Empty').'</td>';
+				$html .= '<td class="fe">'.((isset($row['fe'])&&$row['fe']=="1")?'Full':'Empty').'</td>';
 				$html .= '<td class="sealno">'.$row['sealno'].'</td>';
 				$html .= '<td class="remark">'.$row['remark'].'</td>';
 				$html .= '</tr>';

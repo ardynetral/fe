@@ -5,10 +5,10 @@
 				<h3><i class="fa fa-table"></i> WO Container</h3>
 			</div>
 			<div class="widget-content">
-				<p><button class="btn btn-success" data-toggle="modal" data-target="#myModal" id="insertContainer"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
+				<p><button class="btn btn-success" id="insertContainer"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
 				</p>
 				<div class="table-responsive vscroll">
-				<table id="rcTable" class="table table-hover table-bordered" style="width:100%;">
+				<table id="tblList_edit" class="table table-hover table-bordered" style="width:100%;">
 					<thead>
 						<tr>
 							<th></th>
@@ -18,31 +18,37 @@
 							<th>Type</th>
 							<th>Length</th>
 							<th>Height</th>
-							<th>Hold/Release</th>
+							<th>Full/Empty</th>
+							<th>Seal No.</th>
 							<th>Remark</th>
 						</tr>
 					</thead>
-					<?php if(isset($containers) && $containers!=""):?>
 					<tbody id="listOrderPra">
-						<?php $no=1; foreach($containers as $c):?>
+					<?php if(isset($dataContainer[0]) && $dataContainer[0]!=""):?>
+						<?php $no=1; foreach($dataContainer[0] as $c):?>
 						<tr>
 							<td>
-								<a href='#' class='btn btn-xs btn-danger delete' data-kode="<?=$c['repocrnoid']?>">delete</a>
+								<a href='#' class='btn btn-xs btn-primary edit' data-kode="<?=$c['wocid']?>">edit</a>
+								<a href='#' class='btn btn-xs btn-danger delete' data-kode="<?=$c['wocid']?>">delete</a>
 							</td>									
 							<td><?=$no;?></td>
-							<td><?=$c['crno'];?></td>
-							<td><?=$c['cccode'];?></td>
-							<td><?=$c['ctcode'];?></td>
-							<td><?=$c['cclength'];?></td>
-							<td><?=$c['ccheight'];?></td>
-							<td><?=((isset($c['reposhold'])&&$c['reposhold']==1)?'Hold':'Release');?></td>
-							<td><?=$c['reporemark'];?></td>
+							<td class="crno"><?=$c['crno'];?></td>
+							<td class="cccode"><?=$c['cccode'];?></td>
+							<td class="ctcode"><?=$c['ctcode'];?></td>
+							<td class="cclength"><?=$c['cclength'];?></td>
+							<td class="ccheight"><?=$c['ccheight'];?></td>
+							<td class="fe"><?=((isset($c['fe'])&&$c['fe']=="1")?'Full':'Empty')?></td>
+							<td class="sealno"><?=$c['sealno'];?></td>
+							<td class="remark"><?=$c['remark'];?></td>
 						</tr>
 						<?php $no++; endforeach; ?>
-					</tbody>
 					<?php else:?>
-						<tr><td colspan="9">Data Container kosong.</td></tr>
-					<?php endif?>
+						<tr>
+							<td colspan="11">Data not found</td>
+						</tr>						
+					<?php endif;?>
+					</tbody>
+
 				</table>
 				</div>						
 			</div>
@@ -56,14 +62,14 @@
 
 
 <!-- FORM CONTAINER -->
-<div class="modal fade in" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade in" id="containerEditModal" tabindex="-1" role="dialog" aria-labelledby="containerEditModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title" id="myModalLabel">Add Container</h4>
+				<h4 class="modal-title" id="myModalEditLabel">Container</h4>
 			</div>
-			<form id="formDetail" class="form-horizontal" role="form">
+			<form id="formContainerEdit" class="form-horizontal" role="form">
 			<div class="modal-body">
 
 				<?= csrf_field() ?>
@@ -71,8 +77,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label text-right">Container No. </label>
 						<div class="col-sm-7">
-							<input type="hidden" name="repoid" class="form-control" id="repoid" value="<?=@$repoid?>">
-							<input type="hidden" name="repo_orderno" class="form-control" id="repo_orderno" value="<?=@$reorderno?>">
+							<input type="hidden" name="act" class="form-control" id="act" value="">
 							<input type="text" name="crno" class="form-control" id="crno">
 							<i class="err-crno text-danger"></i>
 						</div>
@@ -122,7 +127,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label text-right">Remark</label>
 						<div class="col-sm-7">
-							<textarea name="reporemark" id="reporemark" class="form-control" ></textarea>
+							<textarea name="remark" id="remark" class="form-control" ></textarea>
 						</div>	
 					</div>		
 				</fieldset>

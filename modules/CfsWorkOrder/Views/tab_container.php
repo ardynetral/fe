@@ -8,7 +8,7 @@
 				<p><button class="btn btn-success" data-toggle="modal" data-target="#containerModal" id="insertContainer"><i class="fa fa-plus"></i>&nbsp;Add Container</button>
 				</p>
 				<div class="table-responsive vscroll">
-				<table id="rcTable" class="table table-hover table-bordered" style="width:100%;">
+				<table id="tblList_add" class="table table-hover table-bordered" style="width:100%;">
 					<thead>
 						<tr>
 							<th></th>
@@ -18,32 +18,14 @@
 							<th>Type</th>
 							<th>Length</th>
 							<th>Height</th>
-							<th>Hold/Release</th>
+							<th>Full/Empty</th>
 							<th>Seal No.</th>
 							<th>Remark</th>
 						</tr>
 					</thead>
-					<?php if(isset($containers) && $containers!=""):?>
-					<tbody id="listOrderPra">
-						<?php $no=1; foreach($containers as $c):?>
-						<tr>
-							<td>
-								<a href='#' class='btn btn-xs btn-danger delete' data-kode="<?=$c['repocrnoid']?>">delete</a>
-							</td>									
-							<td><?=$no;?></td>
-							<td><?=$c['crno'];?></td>
-							<td><?=$c['cccode'];?></td>
-							<td><?=$c['ctcode'];?></td>
-							<td><?=$c['cclength'];?></td>
-							<td><?=$c['ccheight'];?></td>
-							<td><?=((isset($c['reposhold'])&&$c['reposhold']==1)?'Hold':'Release');?></td>
-							<td><?=$c['reporemark'];?></td>
-						</tr>
-						<?php $no++; endforeach; ?>
-					</tbody>
-					<?php else:?>
-						<tr><td colspan="9">Data Container kosong.</td></tr>
-					<?php endif?>
+
+					<tbody> </tbody>
+
 				</table>
 				</div>						
 			</div>
@@ -72,8 +54,11 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label text-right">Container No. </label>
 						<div class="col-sm-7">
-							<input type="hidden" name="repoid" class="form-control" id="repoid" value="<?=@$repoid?>">
-							<input type="hidden" name="repo_orderno" class="form-control" id="repo_orderno" value="<?=@$reorderno?>">
+							<input type="hidden" name="statusContainer" class="form-control" id="statusContainer" value="">
+							<input type="hidden" name="wono_id" class="form-control" id="wono_id" value="">
+							<input type="hidden" name="wo_no" class="form-control" id="wo_no" value="">
+							<input type="hidden" name="wo_type" class="form-control" id="wo_type" value="">
+							<input type="hidden" name="wo_stok" class="form-control" id="wo_stok" value="">
 							<input type="text" name="crno" class="form-control" id="crno">
 							<i class="err-crno text-danger"></i>
 						</div>
@@ -88,7 +73,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label text-right">Container Type</label>
 						<div class="col-sm-7">
-							<input type="text" id="ctcode" class="form-control" readonly="">
+							<input type="text" name="ctcode" id="ctcode" class="form-control" readonly="">
 						</div>
 					</div>	
 
@@ -104,7 +89,19 @@
 							<input type="text" name="ccheight" id="ccheight" class="form-control" readonly="">
 						</div>	
 					</div>			
-			
+					<div class="form-group">
+						<label class="col-sm-3 control-label text-right">F/E</label>
+						<div class="col-sm-7">
+							<label class="control-inline fancy-radio custom-bgcolor-green">
+								<input type="radio" name="cpife" id="cpife" value="1">
+								<span><i></i>Full</span>
+							</label>
+							<label class="control-inline fancy-radio custom-bgcolor-green">
+								<input type="radio" name="cpife" id="cpife" value="0" checked>
+								<span><i></i>Empty</span>
+							</label>				
+						</div>	
+					</div>					
 					<div class="form-group" style="display:none;">
 						<label class="col-sm-3 control-label text-right">Hold</label>
 						<div class="col-sm-7">
@@ -123,7 +120,7 @@
 					<div class="form-group">
 						<label class="col-sm-3 control-label text-right">Remark</label>
 						<div class="col-sm-7">
-							<textarea name="reporemark" id="reporemark" class="form-control" ></textarea>
+							<textarea name="remark" id="remark" class="form-control" ></textarea>
 						</div>	
 					</div>		
 				</fieldset>
@@ -131,7 +128,7 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal"><i class="fa fa-times-circle"></i> Close</button>
-				<button type="button" id="saveContainer" class="btn btn-custom-primary"><i class="fa fa-check-circle"></i> Save Container</button>
+				<button type="submit" id="saveContainer" class="btn btn-custom-primary"><i class="fa fa-check-circle"></i> Save Container</button>
 				<button type="button" id="updateContainer" class="btn btn-custom-primary" style="display:none;"><i class="fa fa-check-circle"></i> Update Container</button>
 			</div>
 			</form>			

@@ -28,5 +28,8 @@ $routes->post('/cfswo/update_rab/(:alphanum)', '\Modules\CfsWorkOrder\Controller
 
 // CONTAINER
 $routes->add('/cfswo/get_data_container', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::get_data_container', ['filter' => 'login']);
-$routes->add('/cfswo/insertContainer/(:alphanum)', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::insertContainer/$1', ['filter' => 'login']);
+$routes->post('/cfswo/insertContainer', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::insertContainer', ['filter' => 'login']);
 $routes->post('/cfswo/update_container/(:alphanum)', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::update_container/$1', ['filter' => 'login']);
+$routes->add('/cfswo/checkContainerOut', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::checkContainerOut', ['filter' => 'login']);
+$routes->add('/cfswo/checkContainerIn', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::checkContainerIn', ['filter' => 'login']);
+$routes->add('/cfswo/ajax_ccode_listOne/(:alphanum)', '\Modules\CfsWorkOrder\Controllers\CfsWorkOrder::ajax_ccode_listOne/$1', ['filter' => 'login']);

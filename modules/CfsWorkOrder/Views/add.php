@@ -59,7 +59,7 @@ if(isset($data) && ($data!='')) {
 <!-- 							<td class="text-right" width="130"><label for="cono" class="text-right">WO No :</label></td>
 							<td width="300"><input type="text" name="wono" class="form-control" id="wono" value="<?=@$wo_number;?>" readonly></td> -->
 							<td class="text-right" width="130"><label for="wodate" class="text-right">WO Date :</label></td>
-							<td><input type="text" name="wodate" class="form-control" id="wodate" value="<?= date('d-m-Y');?>" readonly></td>
+							<td width="300"><input type="text" name="wodate" class="form-control" id="wodate" value="<?= date('d-m-Y');?>" readonly></td>
 							<td class="text-right" width="130"><label for="wotype" class="text-right">WO Type :</label></td>
 							<td width="300">
 								<select name="wotype" id="wotype" class="form-control">
@@ -77,7 +77,7 @@ if(isset($data) && ($data!='')) {
 						<tr>
 							<td class="text-right" width="130"><label for="woto" class="text-right">To :</label></td>
 							<td><input type="text" name="woto" class="form-control" id="woto" value="<?=@$data['woto'];?>"></td>
-							<td class="text-right" width="130">
+							<td class="text-right" width="130" class="hide-block">
 								<label for="wodate" class="text-right hide-block">Use Container In :</label>
 								<label for="wodate" class="text-right"> On Stock Depo :</label>
 							</td>
@@ -150,27 +150,30 @@ if(isset($data) && ($data!='')) {
 					</fieldset>
 				</form>
 
-				<legend>&nbsp;</legend>
-				<ul class="nav nav-tabs" role="tablist">
-					<li class="active"><a href="#proforma" role="tab" data-toggle="tab" aria-expanded="false" id="tab_proforma">PROFORMA</a></li>
-					<li class=""><a href="#rab" role="tab" data-toggle="tab" aria-expanded="false" id="tab_rab">RAB</a></li>
-					<li class=""><a href="#container" role="tab" data-toggle="tab" aria-expanded="true" id="tab_container">CONTAINER</a></li>
-					<li class=""><a href="#barang" role="tab" data-toggle="tab" aria-expanded="false" id="tab_barang">BARANG</a></li>
-				</ul>
+				<div id="contentDetail" class="hide-block">
+					<legend>&nbsp;</legend>
+					<ul class="nav nav-tabs" role="tablist">
+						<li class="active"><a href="#proforma" role="tab" data-toggle="tab" aria-expanded="false" id="tab_proforma">PROFORMA</a></li>
+						<li class=""><a href="#rab" role="tab" data-toggle="tab" aria-expanded="false" id="tab_rab">RAB</a></li>
+						<li class="" id="tContainer"><a href="#container" role="tab" data-toggle="tab" aria-expanded="true" id="tab_container">CONTAINER</a></li>
+						<li class=""><a href="#barang" role="tab" data-toggle="tab" aria-expanded="false" id="tab_barang">BARANG</a></li>
+					</ul>
 
-				<div class="tab-content">
-					<div class="tab-pane fade active in" id="proforma">
-						<?= $this->include('\Modules\CfsWorkOrder\Views\tab_proforma');?>
+					<div class="tab-content">
+						<div class="tab-pane fade active in" id="proforma">
+							<?= $this->include('\Modules\CfsWorkOrder\Views\tab_proforma');?>
+						</div>
+						<div class="tab-pane fade" id="rab">
+							<?= $this->include('\Modules\CfsWorkOrder\Views\tab_rab');?>
+						</div>					
+						<div class="tab-pane fade" id="container">
+							<?= $this->include('\Modules\CfsWorkOrder\Views\tab_container');?>
+						</div>
+						<div class="tab-pane fade" id="barang">
+							<?= $this->include('\Modules\CfsWorkOrder\Views\tab_barang');?>
+						</div>
 					</div>
-					<div class="tab-pane fade" id="rab">
-						<?= $this->include('\Modules\CfsWorkOrder\Views\tab_rab');?>
-					</div>					
-					<div class="tab-pane fade" id="container">
-						<?= $this->include('\Modules\CfsWorkOrder\Views\tab_container');?>
-					</div>
-					<div class="tab-pane fade" id="barang">
-						<?= $this->include('\Modules\CfsWorkOrder\Views\tab_barang');?>
-					</div>
+					
 				</div>
 			</div>
 		</div>

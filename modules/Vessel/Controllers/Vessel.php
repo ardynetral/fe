@@ -60,8 +60,8 @@ class Vessel extends \CodeIgniter\Controller
             $record[] = $v['cncode'];
             $record[] = $v['prcode'];
 			
-			$btn_list .= '<a href="'.site_url().'/vessel/view/'.$v['vesid'].'" class="btn btn-xs btn-primary btn-tbl">View</a>';	
-			$btn_list .= '<a href="'.site_url().'/vessel/edit/'.$v['vesid'].'" class="btn btn-xs btn-success btn-tbl">Edit</a>';
+			$btn_list .= '<a href="'.site_url().'/vessel/view/'.str_replace(' ','_',$v['vesid']).'" class="btn btn-xs btn-primary btn-tbl">View</a>';	
+			$btn_list .= '<a href="'.site_url().'/vessel/edit/'.str_replace(' ','_',$v['vesid']).'" class="btn btn-xs btn-success btn-tbl">Edit</a>';
 			$btn_list .= '<a href="#" class="btn btn-xs btn-danger delete btn-tbl" id="delete" data-kode="'.$v['vesid'].'">Delete</a>';
             $record[] = '<div>'.$btn_list.'</div>';
             $no++;
@@ -104,7 +104,7 @@ class Vessel extends \CodeIgniter\Controller
 				'Authorization' => session()->get('login_token')
 			],
 			'form_params' => [
-				'id' => $code,
+				'id' => str_replace('_',' ',$code),
 			]
 		]);
 
@@ -235,11 +235,12 @@ class Vessel extends \CodeIgniter\Controller
 				'Authorization' => session()->get('login_token')
 			],
 			'form_params' => [
-				'id' => $code,
+				'id' => str_replace('_',' ',$code),
 			]
 		]);
 
 		$result = json_decode($response->getBody()->getContents(), true);	
+		// dd($result);
 		$data['data'] = isset($result['data'])?$result['data']:"";
 		$data['country_dropdown'] = $this->country_dropdown($result['data']['cncode']);
 		return view('Modules\Vessel\Views\edit',$data);		

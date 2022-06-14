@@ -34,7 +34,7 @@
 				<div class="row">
 					<div class="col-md-12">
 						<a href="<?=site_url('vessel');?>" class="btn btn-default">Back</a>
-						<a href="<?=site_url('vessel/edit/'.$data['vesid']);?>" class="btn btn-success">Edit</a>
+						<a href="<?=site_url('vessel/edit/'.str_replace(' ','_',$data['vesid']));?>" class="btn btn-success">Edit</a>
 					</div>
 				</div>
 			</div>		

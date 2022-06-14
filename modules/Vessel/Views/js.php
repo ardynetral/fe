@@ -63,14 +63,15 @@ $(document).ready(function() {
 	// EDIT DATA
 	$("#updateData").click(function(e){
 		e.preventDefault();
-		var formData = "code=" + $("#code").val();
+		var vescode = $("#code").val();
+		var formData = "code=" + vescode;
 		formData += "&title=" + $("#title").val();
 		formData += "&operator=" + $("#operator").val();
 		formData += "&cncode=" + $("#cncode").val();
 		formData += "&prcode=" + $("#prcode").val();
 		
 		$.ajax({
-			url: "<?php echo site_url('vessel/edit/'); ?>"+$("#code").val(),
+			url: "<?php echo site_url('vessel/edit/'); ?>"+vescode.replace(' ','_'),
 			type: "POST",
 			data: formData,
 			dataType: 'json',

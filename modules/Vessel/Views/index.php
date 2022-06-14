@@ -60,8 +60,8 @@
 									<td><?=$row['cncode'];?></td>
 									<td><?=$row['prcode'];?></td>
 									<td width="150">
-										<a href="<?=site_url('vessel/view/'.$row['vesid']);?>" class="btn btn-xs btn-primary">View</a>
-										<a href="<?=site_url('vessel/edit/'.$row['vesid'])?>" class="btn btn-xs btn-success">Edit</a>
+										<a href="<?=site_url('vessel/view/'.str_replace(' ','_',$row['vesid']));?>" class="btn btn-xs btn-primary">View</a>
+										<a href="<?=site_url('vessel/edit/'.str_replace(' ','_',$row['vesid']));?>" class="btn btn-xs btn-success">Edit</a>
 										<a href="#" class="btn btn-xs btn-danger delete" id="delete" data-kode="<?=$row['vesid'];?>">Delete</a>
 									</td>
 								</tr>

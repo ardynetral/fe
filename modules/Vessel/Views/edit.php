@@ -37,31 +37,31 @@
 					<fieldset>
 						<div class="form-group">
 							<label for="code" class="col-sm-2 control-label text-right">Vessel ID</label>
-							<div class="col-sm-3">
-								<input type="text" name="code" class="form-control" id="code" value="<?=@$data['vesid'];?>">
+							<div class="col-sm-6">
+								<input type="text" name="code" class="form-control" id="code" value="<?=@$data['vesid'];?>" readonly>
 							</div>
 						</div>	
 						<div class="form-group">
 							<label for="description" class="col-sm-2 control-label text-right">Vessel Title</label>
-							<div class="col-sm-3">
+							<div class="col-sm-6">
 								<input type="text" name="title" class="form-control" id="title" value="<?=@$data['vestitle'];?>">
 							</div>
 						</div>	
 						<div class="form-group">
 							<label for="operator" class="col-sm-2 control-label text-right">Vessel Operator</label>
-							<div class="col-sm-3">
+							<div class="col-sm-6">
 								<input type="text" name="operator" class="form-control" id="operator" value="<?=@$data['vesopr'];?>">
 							</div>
 						</div>							
 						<div class="form-group">
 							<label for="cncode" class="col-sm-2 control-label text-right">Vessel Flag</label>
-							<div class="col-sm-3">
+							<div class="col-sm-6">
 								<?=$country_dropdown;?>
 							</div>
 						</div>	
 						<div class="form-group">
 							<label for="operator" class="col-sm-2 control-label text-right">Principal</label>
-							<div class="col-sm-3">
+							<div class="col-sm-6">
 								<input type="text" name="prcode" class="form-control" id="prcode" value="<?=@$data['prcode'];?>">
 							</div>
 						</div>			

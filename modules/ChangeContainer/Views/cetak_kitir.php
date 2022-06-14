@@ -4,8 +4,8 @@
 <?php $data = $data; ?>
 <div class="content">
 	<div class="main-header">
-		<h2>Order</h2>
-		<em>Change Container</em>
+		<h2>Change Container</h2>
+		<em>Change Container page</em>
 	</div>
 	<div class="main-content">
 

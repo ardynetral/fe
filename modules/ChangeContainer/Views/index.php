@@ -4,8 +4,8 @@
 
 <div class="content">
 	<div class="main-header">
-		<h2>Pra Out</h2>
-		<em>Pra-Out page</em>
+		<h2>Change Container</h2>
+		<em>Change Container page</em>
 	</div>
 
 	<?php if(session()->getFlashdata('sukses')):?>
@@ -19,7 +19,7 @@
 
 		<div class="widget widget-table">
 			<div class="widget-header">
-				<h3><i class="fa fa-table"></i> Change Container</h3>
+				<h3><i class="fa fa-table"></i> Data Order</h3>
 			</div>
 
 			<div class="widget-content">

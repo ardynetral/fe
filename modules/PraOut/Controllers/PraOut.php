@@ -1307,7 +1307,8 @@ class PraOut extends \CodeIgniter\Controller
 
 		$data['message'] = "success";
 		$data['data'] = $dt_order['data']['datas'][0];
-		$data['recept'] = $dt_order['data']['datas'][0]['orderPraRecept'][0];
+		$data['recept'] = (isset($dt_order['data']['datas'][0]['orderPraRecept'][1])?$dt_order['data']['datas'][0]['orderPraRecept'][1]:$dt_order['data']['datas'][0]['orderPraRecept'][0]);
+		// dd($data['recept']);
 		$data['bukti_bayar'] = $bukti_bayar;
 		$data['contract'] = $dt_order['data']['datas'][0];
 		$data['depo'] = $this->get_depo($data['data']['cpdepo']);

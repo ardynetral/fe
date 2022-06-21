@@ -14,6 +14,7 @@ $(document).ready(function() {
 	$('.select-vessel').select2();
 	$('.select-voyage').select2();
 	$('.select-ccode').select2();
+	$('.select-syid').select2();
 	// $('#CRLASTCOND').select2();
 	$("input:radio[name=CPIFE]").prop('disabled', true);
 	$("input:radio[name=CPITERM]").prop('disabled', true);
@@ -28,6 +29,10 @@ $(document).ready(function() {
 	$(".tanggal").datepicker({
 		autoclose:true,
 	});
+
+	if($("#act").val()=="Update") {
+		$("#saveData").prop("disabled", false);
+	}
 
 	// $("#cpipratgl").datepicker("disable");
 

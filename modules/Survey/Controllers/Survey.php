@@ -49,7 +49,7 @@ class Survey extends \CodeIgniter\Controller
             $record[] = $v['SVSURDAT'];
             $record[] = $v['SVCOND'];
 
-			$btn_list .= '<a href="'.site_url().'/survey/view/'.$v['CRNO'].'" class="btn btn-xs btn-info btn-tbl">View</a>';
+			// $btn_list .= '<a href="'.site_url().'/survey/view/'.$v['CRNO'].'" class="btn btn-xs btn-info btn-tbl">View</a>';
 			if(has_privilege_check($module, '_update')==true): 
 				$btn_list .= '<a href="'.site_url().'/survey/add/'.$v['CRNO'].'" class="btn btn-xs btn-success btn-tbl">Edit</a>';
 			endif;
@@ -146,6 +146,7 @@ class Survey extends \CodeIgniter\Controller
 		$data['page_title'] = "Survey";
 		$data['page_subtitle'] = "Survey Page";		
 		$data['uname'] = $token['username'];
+		$data['surveyor'] = $this->surveyor_dropdown();
 
 		// $data['crno'] = $this->request->uri->getSegment(3);
 		if ($crno!='') {
@@ -161,6 +162,7 @@ class Survey extends \CodeIgniter\Controller
 
 			$result = json_decode($response->getBody()->getContents(), true);	
 			$data['details'] = $result['data'];
+			$data['surveyor'] = $this->surveyor_dropdown($data['details']['datas']['svid']);
 			$data['crno'] = $crno;
 		}
 		return view('Modules\Survey\Views\add',$data);
@@ -185,7 +187,7 @@ class Survey extends \CodeIgniter\Controller
 		$result = json_decode($response->getBody()->getContents(), true);	
 		$data['details'] = isset($result['data']) ? $result['data'] : '';
 		$data['crno'] = $crno;
-
+		$data['surveyor'] = $this->surveyor_dropdown($data['details']['datas']['svid']);
 		return view('Modules\Survey\Views\view',$data);
 	}	
 
@@ -203,19 +205,19 @@ class Survey extends \CodeIgniter\Controller
 			'query' => []
 		]);
 		$result = json_decode($getsvid->getBody()->getContents(), true);	
-		if($_POST['SVID']=="" || $_POST['SVID']==null) {
-			$SVID = $result['data'];
-		} else {
-			$SVID = $_POST['SVID'];
-		}
+		// if($_POST['SVID']=="" || $_POST['SVID']==null) {
+		// 	$SVID = $result['data'];
+		// } else {
+		// 	$SVID = $_POST['SVID'];
+		// }
 		// echo $SVID . " - " . $result['data'];die();
 		$form_params = array(
 			"CRNO" => $this->request->getPost('CRNO'),
 		    "CPIORDERNO" => $this->request->getPost('CPIPRANO'),
 		    "CPIRECEPTNO" => $this->request->getPost('CPIRECEPTNO'),
 		    "CPIPRANO" => $this->request->getPost('CPIPRANO'),
-		    "SVID" => $SVID,
-		    "SYID" => $this->request->getPost('SYID'),
+		    "SVID" => $this->request->getPost('syid'),
+		    "SYID" => $this->request->getPost('syid'),
 		    "SVCRNO" => $this->request->getPost('CRNO'),
 		    "SVSURDAT" => ($this->request->getPost('SVSURDAT')!=''?$this->request->getPost('SVSURDAT'):$date),
 		    "SVCOND" => $this->request->getPost('CRLASTCOND'),
@@ -279,13 +281,15 @@ class Survey extends \CodeIgniter\Controller
             'CRTARAK'		=> 'required',
             'CRLASTCOND'	=> 'required',
             'CRMANDAT'		=> 'required',
-            'RMCODE'		=> 'required'
+            'RMCODE'		=> 'required',
+            'syid'			=> 'required'
         	],
             [
             'CRTARAK'		=> ['required' => 'TARE field required'],
             'CRLASTCOND'	=> ['required' => 'CONDITION BOX field required'],
             'CRMANDAT'		=> ['required' => 'MANUFACTURE DATE field required'],
-            'RMCODE'		=> ['required' => 'CLEANING field required']
+            'RMCODE'		=> ['required' => 'CLEANING field required'],
+            'syid'			=> ['required' => 'SURVEYOR field required']
 	        ]
     	);			
 
@@ -335,4 +339,28 @@ class Survey extends \CodeIgniter\Controller
 		}
 		echo json_encode(array('message'=>$msg, 'err'=> $err));
 	}
+
+	public function surveyor_dropdown($selected="") 
+	{
+		$client = api_connect();
+
+		$response = $client->request('GET','gateOut/getAllSurveyor',[
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => session()->get('login_token')
+			]
+		]);
+
+		$result = json_decode($response->getBody()->getContents(),true);
+		$res = $result['data'];
+		$option = "";
+		$option .= '<select name="syid" id="syid" class="select-syid">';
+		$option .= '<option value="">-select-</option>';
+		foreach($res as $r) {
+			$option .= "<option value='".$r['syid'] ."'". ((isset($selected) && $selected==$r['syid']) ? ' selected' : '').">".$r['syname']."</option>"; 
+		}
+		$option .="</select>";
+		return $option; 
+		die();
+	}	
 }

@@ -44,8 +44,9 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 				<table class="tbl-form" width="100%">
 					<!-- 9 kolom -->
 					<input type="hidden" name="UPDATE_ID" value="<?= @$crno; ?>">
-					<input type="hidden" name="SVID" class="form-control" id="SVID" value="<?= @$svid; ?>">
-					<input type="hidden" name="SYID" class="form-control" id="SYID" value="<?= $uname; ?>">
+					<input type="hidden" name="act" id="act" value="<?= @$act; ?>">
+<!-- 					<input type="hidden" name="SVID" class="form-control" id="SVID" value="<?= @$svid; ?>">
+					<input type="hidden" name="SYID" class="form-control" id="SYID" value="<?= $uname; ?>"> -->
 					<tbody>
 						<tr>
 							<td class="text-right" width="130">Container No :</td>
@@ -208,8 +209,8 @@ $coexpdate = date('d/m/Y', strtotime($data['coexpdate']));
 						<tr>
 							<td class="text-right">Cleaning  <span class="text-danger">**</span>:</td>
 							<td><?=cleaning_method("RMCODE","WW")?></td>
-							<td class="text-right" width="130"></td>
-							<td></td>
+							<td class="text-right" width="130">Surveyor :</td>
+							<td><?=$surveyor;?></td>
 							<td></td>
 							<td></td>
 

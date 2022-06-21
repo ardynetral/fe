@@ -31,7 +31,7 @@
 
 				</div>
 
-				<form id="#formCType" class="form-horizontal" role="form">
+				<form id="fEDI1" class="form-horizontal" role="form">
 					<?= csrf_field(); ?>
 
 					<input type="hidden" name="prcode" id="prcode" value="<?= $prcode; ?>">
@@ -85,7 +85,7 @@
 						</div>
 
 						<div class="rows">
-							<button type="button" id="printEDI" class="btn btn-primary"><i class="fa fa-check-circle"></i> Proses </button>
+							<button type="submit" id="printEDI" class="btn btn-primary"><i class="fa fa-check-circle"></i> Proses </button>
 						</div>
 					</fieldset>
 				</form>

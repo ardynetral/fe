@@ -70,7 +70,7 @@ class Dailymovementin extends \CodeIgniter\Controller
 		$hour_to = '';
 		$result =   $this->getAllData($prcode, $date_from, $date_to, $hour_from, $hour_to);
 
-		$mpdf = new \Mpdf\Mpdf();
+		$mpdf = new \Mpdf\Mpdf(['setAutoTopMargin' => 'pad']);
 		$html = '';
 		$html .= '
 		<html>
@@ -100,79 +100,148 @@ class Dailymovementin extends \CodeIgniter\Controller
 			</head>
 		';
 
-		$html .= '<body>
-			<div class="page-header center">
-				<div>
-					<h3>DAILY MOVEMENT REPORT</h3>
+		$html .= '<body>';
+
+		if($prcode=="All") 
+		{
+			$no = 1;
+			$grouping = array();
+			foreach ($result['data'] as $row) {
+				$grouping[$row['cpopr']][]=$row;
+			}
+			
+			$j=0;
+			foreach ($grouping as $key=>$pr_code) {
+				$html .= '
+				<div clas="row">
+					<div class="head-left">
+							Depot : CONTINDO - PADANG
+					</div>
+					<div class="head-right">
+					Gate In Date :' . date('d/m/y', strtotime($date_from)) . ' to ' . date('d/m/y', strtotime($date_to)) . '</p>		
+					</div>
+				</div>
+				<div clas="row">
+					<div class="head-left">
+						Container Operator :   ' . $key . '
+					</div>
+				</div>
+				
+				<table class="tbl_det_prain">
+				<thead>
+					<tr>
+						<th>NO</th>
+						
+						<th>Container No.</th>
+						<th>Ty</th>
+						<th>L/H</th>
+						<th>Original Vessel/Voyage</th>
+						<th>C-Box</th>
+						<th>Deliverer</th>
+						<th>Date</th>
+						<th>Vehicle Id</th>
+						<th>Remarks</th>
+					</tr>
+				</thead>
+				<tbody>';
+
+				$n=1;
+				foreach($pr_code as $prc) {
+					$debitur = get_debitur($row['cpideliver']);
+					$html .= '
+					<tr>
+						<td>' . $n . '</td>
+						<td>' . $prc['crno'] . '</td>
+						<td>' . $prc['ctcode'] . '</td>
+						<td>' . $prc['cclength'] . '/' . $prc['ccheight'] . '</td>
+						<td>' . $prc['vesid'] . '/' . $prc['voyid'] . '</td>
+						<td>' . $prc['svcond'] . '</td>
+						<td>' . $debitur['name'] . '</td>
+						<td>' . $prc['cpitgl'] . '</td>
+						<td>' . $prc['cpinopol'] . '</td>
+						<td>' . $prc['cpiremark'] . '</td>
+					</tr>';
+					$n++;
+				}
+
+				$html .= '
+				</tbody>
+				</table>';	
+
+				$len = count($grouping);
+				if($no<$len){
+					$html .= '<p style="page-break-after: always;"></p>';
+				}
+			$no++;
+			$j++;												
+			}
+		}
+		else
+		{
+			$html .= '
+			<div clas="row">
+				<div class="head-left">
+						Depot : CONTINDO - PADANG
+				</div>
+				<div class="head-right">
+				Gate In Date :' . date('d/m/y', strtotime($date_from)) . ' to ' . date('d/m/y', strtotime($date_to)) . '</p>		
 				</div>
 			</div>
-		';
-
-		$html .= '
-			<table class="tbl_head_prain" width="100%">
-				<tbody>
+			<div clas="row">
+				<div class="head-left">
+					Container Operator :   ' . $prcode . '
+				</div>
+			</div>
 					
-				</tbody>
-			</table>
-		';
-		$html .= '
-		<div clas="row">
-			<div class="head-left">
-					Depot : CONTINDO - PADANG
-			</div>
-			<div class="head-right">
-			Gate In Date :' . date('d/m/y', strtotime($date_from)) . ' to ' . date('d/m/y', strtotime($date_to)) . '</p>		
-			</div>
-		</div>
-		<div clas="row">
-			<div class="head-left">
-				Container Operator :   ' . $prcode . '
-			</div>
-		</div>
-				
-		<table class="tbl_det_prain">
-			<thead>
-				<tr>
-					<th>NO</th>
-					
-					<th>Container No.</th>
-					<th>Ty</th>
-					<th>L/H</th>
-					<th>Original Vessel/Voyage</th>
-					<th>C-Box</th>
-					<th>Deliverer</th>
-					<th>Date</th>
-					<th>Vehicle Id</th>
-					<th>Remarks</th>
-				</tr>
-			</thead>
-			<tbody>';
-
-		$no = 1;
-		foreach ($result['data'] as $row) {
-			$debitur = get_debitur($row['cpideliver']);
-			$html .= '
+			<table class="tbl_det_prain">
+				<thead>
 					<tr>
-						<td>' . $no . '</td>
-						<td>' . $row['crno'] . '</td>
-						<td>' . $row['ctcode'] . '</td>
-						<td>' . $row['cclength'] . '/' . $row['ccheight'] . '</td>
-						<td>' . $row['vesid'] . '/' . $row['voyid'] . '</td>
-						<td>' . $row['svcond'] . '</td>
-						<td>' . $debitur['name'] . '</td>
-						<td>' . $row['cpitgl'] . '</td>
-						<td>' . $row['cpinopol'] . '</td>
-						<td>' . $row['cpiremark'] . '</td>
-					</tr>';
-			$no++;
-		}
-		$html .= '
-				</tbody>
-			</table>
+						<th>NO</th>
+						
+						<th>Container No.</th>
+						<th>Ty</th>
+						<th>L/H</th>
+						<th>Original Vessel/Voyage</th>
+						<th>C-Box</th>
+						<th>Deliverer</th>
+						<th>Date</th>
+						<th>Vehicle Id</th>
+						<th>Remarks</th>
+					</tr>
+				</thead>
+				<tbody>';
 
-		</body>
+			$no = 1;
+			foreach ($result['data'] as $row) {
+				$debitur = get_debitur($row['cpideliver']);
+				$html .= '
+						<tr>
+							<td>' . $no . '</td>
+							<td>' . $row['crno'] . '</td>
+							<td>' . $row['ctcode'] . '</td>
+							<td>' . $row['cclength'] . '/' . $row['ccheight'] . '</td>
+							<td>' . $row['vesid'] . '/' . $row['voyid'] . '</td>
+							<td>' . $row['svcond'] . '</td>
+							<td>' . $debitur['name'] . '</td>
+							<td>' . $row['cpitgl'] . '</td>
+							<td>' . $row['cpinopol'] . '</td>
+							<td>' . $row['cpiremark'] . '</td>
+						</tr>';
+				$no++;
+			}
+
+			$html .= '
+					</tbody>
+				</table>';
+		}
+
+
+		$html .= '</body>
 		</html>
 		';
+
+		$mpdf->setHeader('|<h3>PT. CONTINDO RAYA<br>
+					DAILY MOVEMENT REPORT (IN)</h3>|PAGE {PAGENO}');
 		$mpdf->WriteHTML($html);
 		$mpdf->Output();
 		die();
@@ -182,7 +251,8 @@ class Dailymovementin extends \CodeIgniter\Controller
 	public function reportExcel($prcode = '', $date_from = '', $date_to = '', $hour_from = '', $hour_to = '')
 	{
 		check_exp_time();
-
+		$hour_from = '';
+		$hour_to = '';
 		$result =   $this->getAllData($prcode, $date_from, $date_to, $hour_from, $hour_to);
 
 		$exl = new Spreadsheet();

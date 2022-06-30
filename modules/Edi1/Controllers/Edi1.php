@@ -105,7 +105,7 @@ class Edi1 extends \CodeIgniter\Controller
 		}
 
 		$filename = trim($_POST['prcode'])."_CODECO" . "-" . $loc . "-" . $Hdate . "-" . $subDate . ".txt";
-		$tmpFile 	= FCPATH . 'public/media/' . $filename;
+		$tmpFile 	= FCPATH . 'public/media/codeco/' . $filename;
 		
 		$tmpText ="";
 

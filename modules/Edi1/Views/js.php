@@ -49,7 +49,7 @@ $(document).ready(function() {
             },					
 			success: function(json) {
 				if (json.status == "success") {
-					window.open("<?=base_url('public/media')?>"+"/"+json.data, "EDI", "height=700,width=400,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes");
+					window.open("<?=base_url('public/media/codeco')?>"+"/"+json.data, "EDI", "height=700,width=400,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes");
 					// myWindow.document.write(json.data);							
 				} else {
 					Swal.fire({

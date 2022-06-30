@@ -22,6 +22,6 @@
 <!-- JS -->
 <?= $this->Section('script_js'); ?>
 
-<?= $this->include('\Modules\Principal\Views\js'); ?>
+<?= $this->include('\Modules\Edi1\Views\js'); ?>
 
 <?= $this->endSection(); ?>

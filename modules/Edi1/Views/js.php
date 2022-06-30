@@ -49,19 +49,16 @@ $(document).ready(function() {
             },					
 			success: function(json) {
 				if (json.status == "success") {
-					Swal.fire({
-						icon: 'success',
-						title: "Success",
-						html: '<div class="text-success">' + json.message + '</div>'
-					});
+					window.open("<?=base_url('public/media')?>"+"/"+json.data, "EDI", "height=700,width=400,toolbar=no,directories=no,status=no, menubar=no,scrollbars=no,resizable=no ,modal=yes");
+					// myWindow.document.write(json.data);							
 				} else {
 					Swal.fire({
 						icon: 'warning',
 						title: "Alert",
 						html: '<div class="text-danger">' + json.message + '</div>'
 					});
-					// $("#printEDI").prop('disabled', false);
 				}
+	
 			},
             complete: function () {
                 $("#printEDI").prop('disabled', false);

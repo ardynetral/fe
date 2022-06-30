@@ -257,59 +257,131 @@ class Dailymovementin extends \CodeIgniter\Controller
 
 		$exl = new Spreadsheet();
 		// Judul Dokumen
-		$exl->setActiveSheetIndex(0)
-			->setCellValue('A1', 'DAILY MOVEMENT REPORT');
-		$exl->getActiveSheet()->mergeCells("A1:J1");
-		$exl->getActiveSheet()->getStyle('A1:J1')->getFont()->setSize(20);
-		$exl->getActiveSheet(0)->setCellValue('A2', 'Depot : CONTINDO - PADANG');
-		$exl->getActiveSheet()->mergeCells("A2:J2");
-		$exl->getActiveSheet(0)->setCellValue('A3', 'Container Operator : ' . $prcode);
-		$exl->getActiveSheet()->mergeCells("A3:J3");
-		$exl->getActiveSheet(0)->setCellValue('A4', 'Gate In Date : ' . date('d/m/y', strtotime($date_from)) . ' to ' . date('d/m/y', strtotime($date_to)));
-		$exl->getActiveSheet()->mergeCells("A4:J4");
-		// Header Tabel
-		$exl->setActiveSheetIndex(0)
-			->setCellValue('A5', 'No')
-			->setCellValue('B5', 'Container No.')
-			->setCellValue('C5', 'Ty')
-			->setCellValue('D5', 'L/H')
-			->setCellValue('E5', 'Original Vessel/Voyage')
-			->setCellValue('F5', 'C-Box')
-			->setCellValue('G5', 'Deliverer')
-			->setCellValue('H5', 'Date')
-			->setCellValue('I5', 'Vehicle Id')
-			->setCellValue('J5', 'Remarks');
+
 		// Body Tabel
-		$col = 6;
-		$i = 1;
-		$num = 5;
-		foreach ($result['data'] as $row) {
-			$debitur = get_debitur($row['cpideliver']);
+
+		if($prcode=="All") 
+		{
 			$exl->setActiveSheetIndex(0)
-				->setCellValue('A' . $col, $i)
-				->setCellValue('B' . $col, $row['crno'])
-				->setCellValue('C' . $col, $row['ctcode'])
-				->setCellValue('D' . $col, $row['cclength'] . '/' . $row['ccheight'])
-				->setCellValue('E' . $col, $row['vesid'] . '/' . $row['voyid'])
-				->setCellValue('F' . $col, $row['svcond'])
-				->setCellValue('G' . $col, $debitur['name'])
-				->setCellValue('H' . $col, $row['cpitgl'])
-				->setCellValue('I' . $col, $row['cpinopol'])
-				->setCellValue('J' . $col, $row['cpiremark']);
-			$col++;
-			$i++;
-			$num = $num + 1;
+				->setCellValue('A1', 'DAILY MOVEMENT REPORT(IN)');
+			$exl->getActiveSheet()->mergeCells("A1:J1");
+			$exl->getActiveSheet()->getStyle('A1:J1')->getFont()->setSize(20);
+			// $exl->getActiveSheet(0)->setCellValue('A2', '');
+			// $exl->getActiveSheet()->mergeCells("A2:J2");
+
+			$exl->getActiveSheet(0)->setCellValue('A3', 'Depot : CONTINDO - PADANG');
+			$exl->getActiveSheet()->mergeCells("A3:J3");
+			$exl->getActiveSheet(0)->setCellValue('A4', 'Gate In Date : ' . date('d/m/y', strtotime($date_from)) . ' to ' . date('d/m/y', strtotime($date_to)));
+			$exl->getActiveSheet()->mergeCells("A4:J4");
+			$exl->setActiveSheetIndex(0)
+				->setCellValue('A5', 'No')
+				->setCellValue('B5', 'Container No.')
+				->setCellValue('C5', 'Ty')
+				->setCellValue('D5', 'L/H')
+				->setCellValue('E5', 'Original Vessel/Voyage')
+				->setCellValue('F5', 'C-Box')
+				->setCellValue('G5', 'Deliverer')
+				->setCellValue('H5', 'Date')
+				->setCellValue('I5', 'Vehicle Id')
+				->setCellValue('J5', 'Remarks');
+
+			$grouping = array();
+			foreach ($result['data'] as $row) {
+				$grouping[$row['cpopr']][]=$row;
+			}
+			
+			$j=0;
+			$colhead = 3;
+			$col=6;
+			foreach ($grouping as $key=>$pr_code) {		
+				if($col>6) {
+					$col=$rows_subtot+1;
+				}						
+				$j++;
+				$no = 0;
+				foreach($pr_code as $prc) {
+					$no++;
+					$col++;
+					$debitur = get_debitur($row['cpideliver']);
+
+					$exl->setActiveSheetIndex(0)
+						->setCellValue('A' . $col, $no)
+						->setCellValue('B' . $col, $prc['crno'])
+						->setCellValue('C' . $col, $prc['ctcode'])
+						->setCellValue('D' . $col, $prc['cclength'] . '/' . $prc['ccheight'])
+						->setCellValue('E' . $col, $prc['vesid'] . '/' . $prc['voyid'])
+						->setCellValue('F' . $col, $prc['svcond'])
+						->setCellValue('G' . $col, $debitur['name'])
+						->setCellValue('H' . $col, $prc['cpitgl'])
+						->setCellValue('I' . $col, $prc['cpinopol'])
+						->setCellValue('J' . $col, $prc['cpiremark']);		
+					$rows_subtot=$col;
+				}
+				$row_prcode = $rows_subtot-count($pr_code);
+				$exl->getActiveSheet()->setCellValue('A'.$row_prcode, $key);			
+				$exl->getActiveSheet()->mergeCells("A" . $row_prcode . ":J" . $row_prcode);
+				$exl->getActiveSheet()->getStyle("A" . $row_prcode . ":J" . $row_prcode)->getAlignment()->applyFromArray(['horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT, 'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => TRUE]);							
+				$exl->getActiveSheet()->getStyle("A" . $row_prcode . ":J" . $row_prcode)->getFont()->applyFromArray(['name' => 'Arial', 'bold' => TRUE, 'color' => ['rgb' => '000000']]);	
+			}
+
+		} else {
+			$exl->setActiveSheetIndex(0)
+				->setCellValue('A1', 'DAILY MOVEMENT REPORT(IN)');
+			$exl->getActiveSheet()->mergeCells("A1:J1");
+			$exl->getActiveSheet()->getStyle('A1:J1')->getFont()->setSize(20);
+			$exl->getActiveSheet(0)->setCellValue('A2', 'Container Operator : ' . $prcode);
+			$exl->getActiveSheet()->mergeCells("A2:J2");
+
+			$exl->getActiveSheet(0)->setCellValue('A3', 'Depot : CONTINDO - PADANG');
+			$exl->getActiveSheet()->mergeCells("A3:J3");
+			$exl->getActiveSheet(0)->setCellValue('A4', 'Gate In Date : ' . date('d/m/y', strtotime($date_from)) . ' to ' . date('d/m/y', strtotime($date_to)));
+			$exl->getActiveSheet()->mergeCells("A4:J4");
+			$exl->setActiveSheetIndex(0)
+				->setCellValue('A5', 'No')
+				->setCellValue('B5', 'Container No.')
+				->setCellValue('C5', 'Ty')
+				->setCellValue('D5', 'L/H')
+				->setCellValue('E5', 'Original Vessel/Voyage')
+				->setCellValue('F5', 'C-Box')
+				->setCellValue('G5', 'Deliverer')
+				->setCellValue('H5', 'Date')
+				->setCellValue('I5', 'Vehicle Id')
+				->setCellValue('J5', 'Remarks');
+			$no=0;
+			$col=5;
+			foreach ($result['data'] as $prc) {
+				$no++;
+				$col++;
+				$debitur = get_debitur($prc['cpideliver']);
+
+				$exl->setActiveSheetIndex(0)
+					->setCellValue('A' . $col, $no)
+					->setCellValue('B' . $col, $prc['crno'])
+					->setCellValue('C' . $col, $prc['ctcode'])
+					->setCellValue('D' . $col, $prc['cclength'] . '/' . $prc['ccheight'])
+					->setCellValue('E' . $col, $prc['vesid'] . '/' . $prc['voyid'])
+					->setCellValue('F' . $col, $prc['svcond'])
+					->setCellValue('G' . $col, $debitur['name'])
+					->setCellValue('H' . $col, $prc['cpitgl'])
+					->setCellValue('I' . $col, $prc['cpinopol'])
+					->setCellValue('J' . $col, $prc['cpiremark']);
+			}
 		}
 
 		//Style font
+		
 		$exl->getActiveSheet()->getStyle('A5:J5')->getFont()->applyFromArray(['name' => 'Arial', 'bold' => TRUE, 'color' => ['rgb' => '000000']]);
+
 		// autosize Column
+
 		foreach (range('A', 'J') as $columnID) {
 			$exl->getActiveSheet()->getColumnDimension($columnID)
 				->setAutoSize(true);
 		}
+
 		// style border
 		// tabel_header
+
 		$exl->getActiveSheet()->getStyle('A1:J1')->getAlignment()->applyFromArray([
 			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
 			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE
@@ -318,13 +390,15 @@ class Dailymovementin extends \CodeIgniter\Controller
 			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_LEFT,
 			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE
 		]);
+
 		// Tabel_content
-		$exl->getActiveSheet()->getStyle('A5:J' . $num)->getAlignment()->applyFromArray([
+
+		$exl->getActiveSheet()->getStyle('A5:J' . $col)->getAlignment()->applyFromArray([
 			'horizontal' => \PhpOffice\PhpSpreadsheet\Style\Alignment::HORIZONTAL_CENTER,
 			'vertical' => \PhpOffice\PhpSpreadsheet\Style\Alignment::VERTICAL_CENTER, 'textRotation' => 0, 'wrapText' => FALSE
 		]);
 
-		$exl->getActiveSheet()->getStyle('A5:J' . $num)->getBorders()->getAllBorders()->applyFromArray(['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => '000000']]);
+		$exl->getActiveSheet()->getStyle('A5:J' . $col)->getBorders()->getAllBorders()->applyFromArray(['borderStyle' => Border::BORDER_THIN, 'color' => ['rgb' => '000000']]);
 
 		$writer = new Xlsx($exl);
 		$filename = 'DailyMovInReport-' . date('Y-m-d-His');
